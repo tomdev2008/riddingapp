@@ -40,9 +40,7 @@ static RequestUtil *requestUtil=nil;
   ASIHTTPRequest* asiRequest=[ASIHTTPRequest requestWithURL:url];
   [asiRequest startSynchronous];
   NSString* apiResponse=[asiRequest responseString];
-  NSLog(@"apiResponse:%@",apiResponse);
   NSMutableDictionary *responseDic=[apiResponse JSONValue];
-  NSLog(@"[asiRequest responseStatusCode]%d",[asiRequest responseStatusCode]);
   if(![checker checkResponseCode:[[responseDic objectForKey:@"code"]intValue] statusCode:[asiRequest responseStatusCode]]){
     return nil;
   }
@@ -263,7 +261,6 @@ static RequestUtil *requestUtil=nil;
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
   NSDictionary *responseDic=[apiResponse JSONValue];
-  NSLog(@"apiResponse%@",apiResponse);
   NSArray *array=[responseDic objectForKey:@"riddingPictures"];
   NSMutableArray *mulArray=[[NSMutableArray alloc]init];
   for(NSDictionary *dic in array){
@@ -326,21 +323,17 @@ static RequestUtil *requestUtil=nil;
 -(NSDictionary*)googleGeoCoder:(NSString *)address{
   address=[address stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
   NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"http://ditu.google.com/maps/api/geocode/json?address=%@&sensor=false&components=country:cn",address]];
-  NSLog(@"%@",url);
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
-  NSLog(@"%@",apiResponse);
   return [apiResponse JSONValue];
 }
 
 -(NSDictionary*)antyGoogleGeoCoder:(CGFloat)latitude longtitude:(CGFloat)longtitude{
   NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"http://ditu.google.com/maps/api/geocode/json?latlng=%f,%f&sensor=false",latitude,longtitude]];
-  NSLog(@"%@",url);
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
-  NSLog(@"%@",apiResponse);
   return [apiResponse JSONValue];
 }
 @end

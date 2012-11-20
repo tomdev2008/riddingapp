@@ -59,7 +59,7 @@
         NSURL *url = [NSURL URLWithString:self.bavatorUrl];
         return [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     }
-    return [UIImage imageNamed:@"bDefault.png"];
+    return [UIImage imageNamed:@"duser.png"];
 }
 
 -(UIImage*) getSSavator {

@@ -22,9 +22,9 @@
 {
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
-    [MobClick startWithAppkey:YouMenAppKey reportPolicy:REALTIME channelId:nil];
-    [MobClick checkUpdate];
   });
+  [MobClick startWithAppkey:YouMenAppKey reportPolicy:REALTIME channelId:nil];
+  [MobClick checkUpdate];
   [self initGolbalValue];
   [[ResponseCodeCheck getSinglton] checkConnect];
   //检查网络

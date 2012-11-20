@@ -37,12 +37,14 @@
   NSString *url = [[NSString alloc]initWithString:OAuthUrl];
   NSURLRequest *loginRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
   [self.web loadRequest:loginRequest];
+  _sendWeiBo=TRUE;
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   if(![prefs objectForKey:@"recomApp"]){
-    [self setFollowView];
-    [prefs setObject:@"" forKey:@"recomApp"];
+    [self setFollowView];    
   }
   
+  
+
 }
 
 -(void)leftBtnClicked:(id)sender
@@ -116,12 +118,14 @@
     [[RequestUtil getSinglton] sendApns];
     
     QQNRFeedViewController *CVF=[[QQNRFeedViewController alloc]initWithUser:staticInfo.user exUser:nil];
+     
     if(_sendWeiBo){
-          [[SinaApiRequestUtil getSinglton]sendLoginRidding:[NSString stringWithFormat:@"我刚刚下载了#骑行者#,在这里推荐给热爱骑行的好友们。@骑去哪儿网 下载地址:%@ %@",downLoadPath,QIQUNARHOME]];
+      [[SinaApiRequestUtil getSinglton]sendLoginRidding:[NSString stringWithFormat:@"我刚刚下载了#骑行者#,在这里推荐给热爱骑行的好友们。@骑去哪儿网 下载地址:%@ %@",downLoadPath,QIQUNARHOME]];
+      
     }else{
       [MobClick event:@"2012111906"];
     }
-
+   [prefs setObject:@"" forKey:@"recomApp"];
     
     CVF.isMyFeedHome=TRUE;
     [self.navigationController pushViewController:CVF animated:YES];
@@ -133,7 +137,7 @@
 - (void)setFollowView{
   CGRect frame = self.view.frame;
   
-	CGRect toolbarFrame = CGRectMake(0, frame.size.height + frame.origin.y - 44, frame.size.width, 44);
+	CGRect toolbarFrame = CGRectMake(0, SCREEN_HEIGHT - 44, frame.size.width, 44);
 	UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:toolbarFrame];
 	NSMutableArray *items = [[NSMutableArray alloc] init];
 	

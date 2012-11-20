@@ -67,8 +67,6 @@
 		183886C0161853B2007D1FCA /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1838861C161853B1007D1FCA /* back@2x.png */; };
 		183886C1161853B2007D1FCA /* backSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 1838861D161853B1007D1FCA /* backSelected.png */; };
 		183886C2161853B2007D1FCA /* backSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1838861E161853B1007D1FCA /* backSelected@2x.png */; };
-		183886C3161853B2007D1FCA /* bDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 1838861F161853B1007D1FCA /* bDefault.png */; };
-		183886C4161853B2007D1FCA /* bDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18388620161853B1007D1FCA /* bDefault@2x.png */; };
 		183886C5161853B2007D1FCA /* bf.png in Resources */ = {isa = PBXBuildFile; fileRef = 18388621161853B1007D1FCA /* bf.png */; };
 		183886C6161853B2007D1FCA /* bf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18388622161853B1007D1FCA /* bf@2x.png */; };
 		183886C7161853B2007D1FCA /* btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 18388623161853B1007D1FCA /* btn.png */; };
@@ -385,6 +383,8 @@
 		18F430B3164EA0D1009EEBAD /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F430B1164EA0D1009EEBAD /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		18F430BF164EA535009EEBAD /* QiNiuUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F430BE164EA535009EEBAD /* QiNiuUtils.m */; };
 		18F654CC151C626900BCD0F8 /* SqlUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F654CB151C626900BCD0F8 /* SqlUtil.m */; };
+		18F7AEC1165A9000000D09BF /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18F7AEC0165A9000000D09BF /* Icon@2x.png */; };
+		18F7AEC3165A901E000D09BF /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 18F7AEC2165A901E000D09BF /* Icon.png */; };
 		18FA533A16304225008064B1 /* location.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FA533916304225008064B1 /* location.png */; };
 		18FA533D1630422F008064B1 /* location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FA533B1630422F008064B1 /* location@2x.png */; };
 		18FA533E1630422F008064B1 /* loginBg-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FA533C1630422F008064B1 /* loginBg-568h@2x.png */; };
@@ -488,8 +488,6 @@
 		1838861C161853B1007D1FCA /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
 		1838861D161853B1007D1FCA /* backSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backSelected.png; sourceTree = "<group>"; };
 		1838861E161853B1007D1FCA /* backSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backSelected@2x.png"; sourceTree = "<group>"; };
-		1838861F161853B1007D1FCA /* bDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bDefault.png; sourceTree = "<group>"; };
-		18388620161853B1007D1FCA /* bDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bDefault@2x.png"; sourceTree = "<group>"; };
 		18388621161853B1007D1FCA /* bf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bf.png; sourceTree = "<group>"; };
 		18388622161853B1007D1FCA /* bf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bf@2x.png"; sourceTree = "<group>"; };
 		18388623161853B1007D1FCA /* btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn.png; sourceTree = "<group>"; };
@@ -963,6 +961,8 @@
 		18F430BE164EA535009EEBAD /* QiNiuUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QiNiuUtils.m; sourceTree = "<group>"; };
 		18F654CA151C626900BCD0F8 /* SqlUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlUtil.h; sourceTree = "<group>"; };
 		18F654CB151C626900BCD0F8 /* SqlUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SqlUtil.m; sourceTree = "<group>"; };
+		18F7AEC0165A9000000D09BF /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		18F7AEC2165A901E000D09BF /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		18FA533916304225008064B1 /* location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location.png; sourceTree = "<group>"; };
 		18FA533B1630422F008064B1 /* location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location@2x.png"; sourceTree = "<group>"; };
 		18FA533C1630422F008064B1 /* loginBg-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginBg-568h@2x.png"; sourceTree = "<group>"; };
@@ -1186,8 +1186,6 @@
 				1838861C161853B1007D1FCA /* back@2x.png */,
 				1838861D161853B1007D1FCA /* backSelected.png */,
 				1838861E161853B1007D1FCA /* backSelected@2x.png */,
-				1838861F161853B1007D1FCA /* bDefault.png */,
-				18388620161853B1007D1FCA /* bDefault@2x.png */,
 				18388621161853B1007D1FCA /* bf.png */,
 				18388622161853B1007D1FCA /* bf@2x.png */,
 				18388623161853B1007D1FCA /* btn.png */,
@@ -1650,6 +1648,8 @@
 		1878B8981516DF2D00985FC8 = {
 			isa = PBXGroup;
 			children = (
+				18F7AEC2165A901E000D09BF /* Icon.png */,
+				18F7AEC0165A9000000D09BF /* Icon@2x.png */,
 				187D35FB160B636300FE1640 /* 3part */,
 				18BB9BE115AF3694002FCBC1 /* Util */,
 				182982111520C14500146A71 /* User */,
@@ -2188,8 +2188,6 @@
 				183886C0161853B2007D1FCA /* back@2x.png in Resources */,
 				183886C1161853B2007D1FCA /* backSelected.png in Resources */,
 				183886C2161853B2007D1FCA /* backSelected@2x.png in Resources */,
-				183886C3161853B2007D1FCA /* bDefault.png in Resources */,
-				183886C4161853B2007D1FCA /* bDefault@2x.png in Resources */,
 				183886C5161853B2007D1FCA /* bf.png in Resources */,
 				183886C6161853B2007D1FCA /* bf@2x.png in Resources */,
 				183886C7161853B2007D1FCA /* btn.png in Resources */,
@@ -2360,6 +2358,8 @@
 				18E0A3361657EC3A006E1916 /* feed_shuaxin@2x.png in Resources */,
 				18E0A3391657F165006E1916 /* feed_Bg.png in Resources */,
 				18E0A33A1657F165006E1916 /* feed_Bg@2x.png in Resources */,
+				18F7AEC1165A9000000D09BF /* Icon@2x.png in Resources */,
+				18F7AEC3165A901E000D09BF /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2603,13 +2603,13 @@
 		1878B8C31516DF2D00985FC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: zheng yisheng (F286NP9S62)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zheng yisheng (F286NP9S62)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: zheng yisheng";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zheng yisheng";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ridding/Ridding-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "Ridding/Ridding-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -2617,8 +2617,8 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "83B54460-2BC6-4645-8B91-61B16D3A41A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "83B54460-2BC6-4645-8B91-61B16D3A41A5";
+				PROVISIONING_PROFILE = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
@@ -2628,13 +2628,13 @@
 		1878B8C41516DF2D00985FC8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: zheng yisheng (F286NP9S62)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zheng yisheng (F286NP9S62)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: zheng yisheng";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zheng yisheng";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ridding/Ridding-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
 				INFOPLIST_FILE = "Ridding/Ridding-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -2642,8 +2642,8 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "83B54460-2BC6-4645-8B91-61B16D3A41A5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "83B54460-2BC6-4645-8B91-61B16D3A41A5";
+				PROVISIONING_PROFILE = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

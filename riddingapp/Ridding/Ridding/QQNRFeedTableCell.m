@@ -132,19 +132,17 @@
   stackView.displayAsStack = YES;
   stackView.backgroundColor=[UIColor clearColor];
   
-
-  
-  NSString *urlString=_cell.info.mapAvatorPicUrl;
+  NSString *urlString=[QiNiuUtils getUrlBySize:stackView.frame.size url:_cell.info.mapAvatorPicUrl type:DEDEFAULT];
   UIImage *image=[[SDImageCache sharedImageCache]imageFromKey:urlString];
   if(!image){
     image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]]];
     [[SDImageCache sharedImageCache] storeImage:image forKey:urlString];
   }
-  CGFloat width= CGImageGetWidth([image CGImage]);
-  CGFloat height= CGImageGetHeight([image CGImage]);
-  CGRect frame=stackView.frame;
-  frame.size.width=width/height*frame.size.height;
-  stackView.frame=frame;
+//  CGFloat width= CGImageGetWidth([image CGImage]);
+//  CGFloat height= CGImageGetHeight([image CGImage]);
+//  CGRect frame=stackView.frame;
+//  frame.size.width=width/height*frame.size.height;
+//  stackView.frame=frame;
   stackView.image=[image resizedImage:stackView.frame.size imageOrientation:UIImageOrientationUp];
   [self addSubview:stackView];
   [self setStatus];

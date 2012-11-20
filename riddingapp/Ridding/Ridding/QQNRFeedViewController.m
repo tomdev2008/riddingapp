@@ -56,7 +56,7 @@
   [self download:_latestCreateTime isLarger:0];
   if([[ResponseCodeCheck getSinglton] isWifi]){
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    NSLog(@"%d",[StaticInfo getSinglton].user.nowRiddingCount);
+   
     if([StaticInfo getSinglton].user.nowRiddingCount>=3&&![prefs objectForKey:@"recomComment"]){
       UIAlertView *alert=nil;
       if([StaticInfo getSinglton].user.nowRiddingCount>=10){
@@ -170,7 +170,7 @@
     }
     ActivityInfo *info=(ActivityInfo*)[_activities objectAtIndex:0];
     _latestCreateTime = info.serverCreateTime;
-    NSLog(@"_latestCreateTime:%@",_latestCreateTime);
+   
     info=(ActivityInfo*)[_activities objectAtIndex:([_activities count]-1)];
     _endCreateTime=info.serverCreateTime;
   }
@@ -218,8 +218,7 @@
   static NSString *kCellID = @"CellID";
 	QQNRFeedTableCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
   ActivityInfo *info=[_activities objectAtIndex:indexPath.row];
-  NSLog(@"indexPath.row:%d",indexPath.row);
-  NSLog(@"info.name:%@",info.name);
+
 	if (cell == nil)
 	{
 		cell = [[QQNRFeedTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID info:info];

@@ -69,8 +69,6 @@
   NSDictionary *category=[noti userInfo];
   int statusCode=[[category objectForKey:@"statusCode"]intValue];
   int code=[[category objectForKey:@"code"]intValue];
-  NSLog(@"code%d",code);
-  NSLog(@"statusCode%d",statusCode);
   if(code==1){
     return ;
   }

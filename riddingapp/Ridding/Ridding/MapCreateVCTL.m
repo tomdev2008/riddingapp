@@ -75,6 +75,12 @@
   [self.barView.rightButton setHidden:NO];
   self.barView.titleLabel.text=@"画路线";
   _createInfo=[[MapCreateInfo alloc]init];
+  
+  
+  self.mapView.frame=CGRectMake(0, 0, SCREEN_WIDTH ,SCREEN_HEIGHT_WITHOUT_STATUS_BAR);
+  self.clearBtn.frame=CGRectMake(self.clearBtn.frame.origin.x, SCREEN_HEIGHT-84, self.clearBtn.frame.size.width, self.clearBtn.frame.size.height);
+  self.createBtn.frame=CGRectMake(self.createBtn.frame.origin.x, SCREEN_HEIGHT-84, self.createBtn.frame.size.width, self.createBtn.frame.size.height);
+  self.tapView.frame=CGRectMake(self.tapView.frame.origin.x, SCREEN_HEIGHT-104, self.tapView.frame.size.width, self.tapView.frame.size.height);
   [self.mapView setRegion:region animated:YES];
 }
 
