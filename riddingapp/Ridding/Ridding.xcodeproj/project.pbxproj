@@ -961,8 +961,8 @@
 		18F430BE164EA535009EEBAD /* QiNiuUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QiNiuUtils.m; sourceTree = "<group>"; };
 		18F654CA151C626900BCD0F8 /* SqlUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlUtil.h; sourceTree = "<group>"; };
 		18F654CB151C626900BCD0F8 /* SqlUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SqlUtil.m; sourceTree = "<group>"; };
-		18F7AEC0165A9000000D09BF /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		18F7AEC2165A901E000D09BF /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		18F7AEC0165A9000000D09BF /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "../Icon@2x.png"; sourceTree = "<group>"; };
+		18F7AEC2165A901E000D09BF /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
 		18FA533916304225008064B1 /* location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location.png; sourceTree = "<group>"; };
 		18FA533B1630422F008064B1 /* location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location@2x.png"; sourceTree = "<group>"; };
 		18FA533C1630422F008064B1 /* loginBg-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginBg-568h@2x.png"; sourceTree = "<group>"; };
@@ -1148,6 +1148,8 @@
 		18388610161853B1007D1FCA /* image */ = {
 			isa = PBXGroup;
 			children = (
+				18F7AEC2165A901E000D09BF /* Icon.png */,
+				18F7AEC0165A9000000D09BF /* Icon@2x.png */,
 				18E0A3371657F165006E1916 /* feed_Bg.png */,
 				18E0A3381657F165006E1916 /* feed_Bg@2x.png */,
 				18E0A3331657EC3A006E1916 /* feed_shuaxin.png */,
@@ -1648,8 +1650,6 @@
 		1878B8981516DF2D00985FC8 = {
 			isa = PBXGroup;
 			children = (
-				18F7AEC2165A901E000D09BF /* Icon.png */,
-				18F7AEC0165A9000000D09BF /* Icon@2x.png */,
 				187D35FB160B636300FE1640 /* 3part */,
 				18BB9BE115AF3694002FCBC1 /* Util */,
 				182982111520C14500146A71 /* User */,
@@ -2603,8 +2603,8 @@
 		1878B8C31516DF2D00985FC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: zheng yisheng";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zheng yisheng";
+				CODE_SIGN_IDENTITY = "iPhone Developer: zheng yisheng (F286NP9S62)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zheng yisheng (F286NP9S62)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ridding/Ridding-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
@@ -2617,8 +2617,8 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
+				PROVISIONING_PROFILE = "EF492F0D-365D-458B-B8F5-F92283B7131F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EF492F0D-365D-458B-B8F5-F92283B7131F";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
@@ -2628,8 +2628,8 @@
 		1878B8C41516DF2D00985FC8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: zheng yisheng";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zheng yisheng";
+				CODE_SIGN_IDENTITY = "iPhone Developer: zheng yisheng (F286NP9S62)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zheng yisheng (F286NP9S62)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ridding/Ridding-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
@@ -2642,8 +2642,8 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
+				PROVISIONING_PROFILE = "EF492F0D-365D-458B-B8F5-F92283B7131F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EF492F0D-365D-458B-B8F5-F92283B7131F";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

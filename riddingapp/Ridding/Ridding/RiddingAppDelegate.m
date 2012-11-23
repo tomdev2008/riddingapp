@@ -103,6 +103,7 @@
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
   NSString* dt = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+  NSLog(@"%@",dt);
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   [prefs setObject:dt forKey:@"apnsToken"];
 }

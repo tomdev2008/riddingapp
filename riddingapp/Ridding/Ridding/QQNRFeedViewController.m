@@ -265,7 +265,7 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
   [_timeScroller scrollViewDidEndDecelerating];
-  [self loadImagesForOnscreenRows];
+  //[self loadImagesForOnscreenRows];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -276,7 +276,7 @@
   if (!decelerate) {
     [_timeScroller scrollViewDidEndDecelerating];
     //在滚动停止是加载图片
-    [self loadImagesForOnscreenRows];
+   // [self loadImagesForOnscreenRows];
   }
   if(!_isTheEnd){
      [_ego egoRefreshScrollViewDidEndDragging:scrollView];
