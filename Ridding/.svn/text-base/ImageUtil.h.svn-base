@@ -1,0 +1,16 @@
+//
+//  ImageUtil.h
+//  Ridding
+//
+//  Created by zys on 12-9-19.
+//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface ImageUtil : NSObject
+
+
++ (NSString*)uploadPhotoToServer:(NSString*)localPath prefixPath:(NSString*)prefixPath;
+
+@end
