@@ -1,0 +1,136 @@
+//
+//  SourceLoginViewController.m
+//  Ridding
+//
+//  Created by zys on 12-6-15.
+//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//
+
+#import "QQNRSourceLoginViewController.h"
+#import "SqlUtil.h"
+#import "ASIFormDataRequest.h"
+#import "UserMap.h"
+#import "Reachability.h"
+#import "QQNRFeedViewController.h"
+
+@interface QQNRSourceLoginViewController ()
+
+@end
+
+@implementation QQNRSourceLoginViewController
+@synthesize web=_web;
+@synthesize activityView=_activityView;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.barView.titleLabel.text=@"登录";
+    NSString *OAuthUrl=[NSString stringWithFormat:@"%@/bind/mobilesinabind/",QIQUNARHOME];
+    NSString *url = [[NSString alloc]initWithString:OAuthUrl];
+    NSURLRequest *loginRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:url]]; 
+    [self.web loadRequest:loginRequest];
+}
+
+-(void)leftBtnClicked:(id)sender
+{
+    if (self.navigationController) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait||interfaceOrientation ==UIInterfaceOrientationPortraitUpsideDown);
+}
+
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBarHidden = YES;
+    [super viewWillAppear:animated];
+    
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    self.web.delegate=nil;
+   	[super viewWillDisappear:animated];
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView{
+    if(!self.activityView){
+        self.activityView=[[ActivityView alloc]init:@"加载中..." lat:self.view.frame.size.width/2 log:self.view.frame.size.height/2];
+        [self.view addSubview:self.activityView];
+    }
+    [self.activityView setHidden:NO];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView{
+       [self.activityView setHidden:YES];
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSString  *queryStr=[[request URL] query];
+    NSDictionary *dic = [[self explodeString:queryStr ToDictionaryInnerGlue:@"=" outterGlue:@"&"] copy];
+    if ([dic objectForKey:@"userId"] != nil) {
+      StaticInfo *staticInfo=[StaticInfo getSinglton];
+      staticInfo.user.userId=[dic objectForKey:@"userId"];
+      staticInfo.user.authToken=[dic objectForKey:@"authToken"];
+      staticInfo.user.sourceType=SOURCE_SINA;//新浪微博
+      
+      NSDictionary *profileDic=[[RequestUtil getSinglton] getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType];
+      [staticInfo.user setProperties:profileDic];
+      
+      NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+      [prefs setObject:staticInfo.user.userId forKey:@"userId"];
+      [prefs setObject:staticInfo.user.authToken forKey:@"authToken"];
+      [prefs setInteger:staticInfo.user.sourceType forKey:@"sourceType"];
+      [prefs setObject:staticInfo.user.accessToken forKey:@"accessToken"];
+      [prefs setObject:staticInfo.user.accessUserId forKey:@"accessUserId"];
+      [prefs setInteger:staticInfo.user.nowRiddingCount forKey:@"riddingCount"];
+      
+      staticInfo.logined=true;
+      [[SinaApiRequestUtil getSinglton] friendShip:@"骑去哪儿网" accessUserId:riddingappuid];
+      
+      [[RequestUtil getSinglton] sendApns];
+      
+      QQNRFeedViewController *CVF=[[QQNRFeedViewController alloc]initWithUser:staticInfo.user exUser:nil];
+      CVF.isMyFeedHome=TRUE;
+      [self.navigationController pushViewController:CVF animated:YES];
+      [self.activityView removeFromSuperview];
+    }
+    return  YES;
+}
+
+- (NSMutableDictionary *)explodeString:(NSString*)src ToDictionaryInnerGlue:(NSString *)innerGlue outterGlue:(NSString *)outterGlue {
+    // Explode based on outter glue
+    NSArray *firstExplode = [src componentsSeparatedByString:outterGlue];
+    NSArray *secondExplode;
+    
+    // Explode based on inner glue
+    NSInteger count = [firstExplode count];
+    NSMutableDictionary *returnDictionary = [NSMutableDictionary dictionaryWithCapacity:count];
+    for (NSInteger i = 0; i < count; i++) {
+        secondExplode = [(NSString *)[firstExplode objectAtIndex:i] componentsSeparatedByString:innerGlue];
+        if ([secondExplode count] == 2) {
+            [returnDictionary setObject:[secondExplode objectAtIndex:1] forKey:[secondExplode objectAtIndex:0]];
+        }
+    }
+    
+    return returnDictionary;
+}
+
+
+@end
