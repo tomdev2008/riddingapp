@@ -251,7 +251,11 @@ static RequestUtil *requestUtil=nil;
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
   DLog(@"apiResponse%@",apiResponse);
-  return [apiResponse JSONValue];
+  NSDictionary *dic=[apiResponse JSONValue];
+  if(dic&&[[dic objectForKey:@"code"]intValue]==-444){
+    return nil;
+  }
+  return dic;
   
 }
 

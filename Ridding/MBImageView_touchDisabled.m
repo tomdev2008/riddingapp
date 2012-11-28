@@ -2,8 +2,8 @@
 //  MBImageView_touchDisabled.m
 //  MMBang
 //
-//  Created by 陈剑飞 Tom on 4/4/12.
-//  Copyright (c) 2012 儒果网络. All rights reserved.
+//  Created by zys on 4/4/12.
+//  Copyright (c) 2012 骑去哪儿网. All rights reserved.
 //
 
 #import "MBImageView_touchDisabled.h"

@@ -237,13 +237,16 @@
         user.userId = [auser objectForKey:@"userid"];
         user.userRole = [auser objectForKey:@"userRole"];
         user.name = [auser objectForKey:@"nickname"];
-        //如果是当前用户，不添加
+        staticInfo.user.isLeader=FALSE;
         if ([staticInfo.user.userId longLongValue]==[user.userId longLongValue]) {
           staticInfo.user.userRole = user.userRole;
+          if([user.userRole intValue]==20){
+               staticInfo.user.isLeader=TRUE;
+          }
         }
-        staticInfo.user.isLeader=FALSE;
-        if([staticInfo.user.userRole isEqualToNumber:[[NSNumber alloc]initWithInt:20]]){
-          staticInfo.user.isLeader=TRUE;
+        //如果是当前用户，不添加
+        user.isLeader=FALSE;
+        if([user.userRole intValue]==20){
           user.isLeader=TRUE;
         }
         if(![[auser objectForKey:@"bavatorUrl"] isEqualToString:@""]){

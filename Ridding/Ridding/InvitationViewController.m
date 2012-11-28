@@ -162,7 +162,7 @@
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewStylePlain reuseIdentifier:kCellID];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
-    User *user=[self getTableCellUser:indexPath.row];
+  User *user=[self getTableCellUser:indexPath.row];
     
 	cell.textLabel.text = user.name;
     if([self.selectedDic objectForKey:user.accessUserId]){
@@ -181,7 +181,7 @@
         if(rowCount>[selectedDic count]){
             user = [self.careUsers objectAtIndex:(rowCount-[selectedDic count]-1)];
         }else{
-            user=[[selectedDic allValues] objectAtIndex:([selectedDic count]-rowCount-1)];
+            user=[[selectedDic allValues] objectAtIndex:rowCount];
         }
     }
     return user;

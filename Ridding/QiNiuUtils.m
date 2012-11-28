@@ -3,7 +3,7 @@
 //  Phamily
 //
 //  Created by zys on 12-11-10.
-//  Copyright (c) 2012年 儒果网络. All rights reserved.
+//  Copyright (c) 2012年 骑去哪儿网. All rights reserved.
 //
 
 #import "QiNiuUtils.h"

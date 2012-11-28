@@ -3,7 +3,7 @@
 //  MyBabyCare
 //
 //  Created by Tom on 1/18/12.
-//  Copyright (c) 2012 儒果网络. All rights reserved.
+//  Copyright (c) 2012 骑去哪儿网. All rights reserved.
 //
 
 #import "NSIndexPath+RG_Utilities.h"
