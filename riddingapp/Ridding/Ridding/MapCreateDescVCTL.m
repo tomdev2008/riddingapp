@@ -31,6 +31,7 @@
 {
   [super viewDidLoad];
   [self initHUD];
+  
   [self.barView.rightButton setTitle:@"确定" forState:UIControlStateNormal];
   [self.barView.rightButton setTitle:@"确定" forState:UIControlStateHighlighted];
   [self.barView.rightButton setHidden:NO];
@@ -44,6 +45,7 @@
   self.endLocationLB.text=[NSString stringWithFormat:@"%@",_createInfo.endLocation];
   self.totalDistanceLB.text=[NSString stringWithFormat:@"总行程:%0.2fKM",_createInfo.distance*1.0/1000];
   
+  self.nameField.returnKeyType=UIReturnKeyGo;
   self.mapImageView.image=_createInfo.coverImage;
   self.view.backgroundColor=[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"bg_dt")];
   
@@ -55,6 +57,8 @@
   [self.view addSubview:_redSC];
   _redSC.center = CGPointMake(240,355);
   _sendWeiBo=TRUE;
+  
+  
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,17 +80,17 @@
     return;
   }
   _createInfo.riddingName=self.nameField.text;
-  NSDictionary *dic= [[RequestUtil getSinglton]addRidding:_createInfo];
-  if(dic){
+  NSDictionary *dic= [[RequestUtil getSinglton] addRidding:_createInfo];
+  if([[dic objectForKey:@"code"]intValue]==200){
     if(_sendWeiBo){
       NSString *status=[NSString stringWithFormat:@"我刚刚用#骑行者#创建了一个骑行活动:%@,推荐给大家。链接:http://qiqunar.com.cn/user/%@/ridding/%@/ @骑去哪儿网 http://qiqunar.com.cn 下载地址:%@",_createInfo.riddingName,[StaticInfo getSinglton].user.userId,[dic objectForKey:@"riddingId"],downLoadPath];
       [[SinaApiRequestUtil getSinglton] sendCreateRidding:status url:[dic objectForKey:@"imageUrl"]];
     }else{
       [MobClick event:@"2012111905"];
     }
-    if(self.delegate){
-      [self.delegate finishCreate:self];
-    }
+  }
+  if(self.delegate){
+    [self.delegate finishCreate:self];
   }
   self.barView.rightButton.enabled=YES;
   [_HUD hide:YES];
@@ -100,6 +104,7 @@
 #pragma mark -
 #pragma mark textFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
+  [textField resignFirstResponder];
   return YES;
 }
 
@@ -107,11 +112,20 @@
   [self.nameField setText:@""];
   return YES;
 }
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+  [textField resignFirstResponder];
+}
 -(IBAction)viewClick:(id)sender{
   UIView *view=(UIView*)sender;
   if(view!=self.nameField){
     [self.nameField resignFirstResponder];
   }
+}
+
+-(BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+  NSMutableString *text = [textField.text mutableCopy];
+  [text replaceCharactersInRange:range withString:string];
+  return [text length] <= 12;
 }
 
 #pragma mark -
@@ -123,4 +137,6 @@
     _sendWeiBo=TRUE;
   }
 }
+
+
 @end

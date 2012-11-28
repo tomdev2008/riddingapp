@@ -3,7 +3,7 @@
 //  MMBang
 //
 //  Created by Tom 陈剑飞 on 4/10/12.
-//  Copyright (c) 2012 儒果网络. All rights reserved.
+//  Copyright (c) 2012 骑去哪儿网. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

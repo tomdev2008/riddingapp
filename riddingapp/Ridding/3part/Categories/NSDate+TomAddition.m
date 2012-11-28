@@ -342,5 +342,13 @@
 }
 
 
+- (NSString*)pd_yyyyMMddhhmmsss{
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  [formatter setDateFormat: @"yyyyMMddHHmmsss"];
+  NSString *dateString =[formatter stringFromDate:self];
+  [formatter release];
+  return dateString;
+}
+
 
 @end

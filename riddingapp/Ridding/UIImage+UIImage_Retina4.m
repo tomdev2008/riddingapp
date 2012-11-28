@@ -3,7 +3,7 @@
 //  MMBang
 //
 //  Created by Tom on 12-9-24.
-//  Copyright (c) 2012年 儒果网络. All rights reserved.
+//  Copyright (c) 2012年 骑去哪儿网. All rights reserved.
 //
 
 #import "UIImage+UIImage_Retina4.h"

@@ -31,6 +31,7 @@
   BOOL _succCreate;
   MapCreateInfo *_createInfo;
   UIImage *_newCoverImage;
+  NSDictionary *_myLocationDic;
 }
 @property(nonatomic,retain) IBOutlet UIImageView *route_view;
 @property(nonatomic,retain) IBOutlet MKMapView *mapView;
@@ -44,6 +45,7 @@
 @property(nonatomic,retain) IBOutlet UIButton *createBtn;
 @property(nonatomic,retain) IBOutlet UIButton *clearBtn;
 @property(nonatomic,retain) IBOutlet UILabel *tipsLabel;
+@property(nonatomic,retain) IBOutlet UIButton *myLocationBtn;
 
 @property(nonatomic,assign) id<MapCreateVCTLDelegate> delegate;
 

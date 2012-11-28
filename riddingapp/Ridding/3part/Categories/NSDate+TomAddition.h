@@ -58,7 +58,7 @@
 // 返回北京时间对应的本地时区时间,receiver 是北京时区
 - (NSDate *)pd_beijingToLocalDate;
 
-
+- (NSString*)pd_yyyyMMddhhmmsss;
 
 @end
 

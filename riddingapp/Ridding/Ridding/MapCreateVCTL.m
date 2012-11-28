@@ -24,10 +24,6 @@
 {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
-    _myLocation = [[CLLocationManager alloc] init];
-    [_myLocation setDelegate:self];
-    [_myLocation setDesiredAccuracy:kCLLocationAccuracyBest];
-    [_myLocation startUpdatingLocation];
   }
   return self;
 }
@@ -35,17 +31,20 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  
+  _myLocation = [[CLLocationManager alloc] init];
+  [_myLocation setDelegate:self];
+  [_myLocation setDesiredAccuracy:kCLLocationAccuracyBest];
+  [_myLocation startUpdatingLocation];
+  
   [self initHUD];
-  [self.mapView setShowsUserLocation:YES];
+  
   UITapGestureRecognizer *viewTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(mapViewClick:)]; //动态添加点击操作
   [self.mapView addGestureRecognizer:viewTap];
   UILongPressGestureRecognizer *dropPin = [[UILongPressGestureRecognizer alloc] init];
   [dropPin addTarget:self action:@selector(handleLongPress:)];
 	dropPin.minimumPressDuration = 0.3;
 	[self.mapView addGestureRecognizer:dropPin];
-  MKCoordinateRegion region;
-  region.center=_myLocation.location.coordinate;
-  region.span=MKCoordinateSpanMake(0.1,0.1);
   
   self.searchField.backgroundColor=[UIColor blackColor];
   self.searchField.alpha=0.7;
@@ -76,15 +75,19 @@
   self.barView.titleLabel.text=@"画路线";
   _createInfo=[[MapCreateInfo alloc]init];
   
+  self.myLocationBtn.layer.cornerRadius=10;
+  self.myLocationBtn.layer.masksToBounds=YES;
+  
   
   self.mapView.frame=CGRectMake(0, 0, SCREEN_WIDTH ,SCREEN_HEIGHT_WITHOUT_STATUS_BAR);
   self.clearBtn.frame=CGRectMake(self.clearBtn.frame.origin.x, SCREEN_HEIGHT-84, self.clearBtn.frame.size.width, self.clearBtn.frame.size.height);
   self.createBtn.frame=CGRectMake(self.createBtn.frame.origin.x, SCREEN_HEIGHT-84, self.createBtn.frame.size.width, self.createBtn.frame.size.height);
   self.tapView.frame=CGRectMake(self.tapView.frame.origin.x, SCREEN_HEIGHT-104, self.tapView.frame.size.width, self.tapView.frame.size.height);
-  [self.mapView setRegion:region animated:YES];
+
 }
 
 -(void)rightBtnClicked:(id)sender{
+  self.barView.rightButton.enabled=NO;
   [_HUD show:YES];
   _HUD.labelText=@"";
   if(!_succCreate){
@@ -94,25 +97,40 @@
     [_HUD hide:YES afterDelay:2];
     return;
   }
- _createInfo.coverImage=_newCoverImage;
-   dispatch_async(dispatch_queue_create("drawRoutes", NULL), ^{
-    NSString *key= [ImageUtil uploadPhotoToServerByImage:_createInfo.coverImage prefixPath:@"map" type:IMAGETYPE_MAP];
-    dispatch_async(dispatch_get_main_queue(), ^{
-      if(key==nil){
-        _HUD.mode = MBProgressHUDModeText;
-        _HUD.labelText = @"上传截图失败,请重新上传";
-        _HUD.margin = 5.f;
-        [_HUD hide:YES afterDelay:2];
-      }
-      _createInfo.urlKey=key;
-      if(self.delegate){
-        [self.delegate finishCreate:self info:_createInfo];
-      }
-      [_HUD setHidden:YES];
-    });
-  });
-
+  
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                  message:@"请先确认您的地图已经加载完成,否则骑行图片会不清晰"
+                                                 delegate:self cancelButtonTitle:@"取消"
+                                        otherButtonTitles:@"确定", nil];
+  [alert show];
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  if(buttonIndex==1){
+    [_HUD show:YES];
+    _createInfo.coverImage=_newCoverImage;
+    dispatch_async(dispatch_queue_create("drawRoutes", NULL), ^{
+      NSString *key= [ImageUtil uploadPhotoToServerByImage:_createInfo.coverImage prefixPath:@"map" type:IMAGETYPE_MAP];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        if(key==nil){
+          _HUD.mode = MBProgressHUDModeText;
+          _HUD.labelText = @"上传截图失败,请重新上传";
+          _HUD.margin = 5.f;
+          [_HUD hide:YES afterDelay:2];
+        }
+        _createInfo.urlKey=key;
+        if(self.delegate){
+          [self.delegate finishCreate:self info:_createInfo];
+        }
+        [_HUD setHidden:YES];
+      });
+    });
+  }else{
+    [_HUD setHidden:YES];
+  }
+  self.barView.rightButton.enabled=YES;
+}
+
 
 -(void)leftBtnClicked:(id)sender
 {
@@ -144,8 +162,10 @@
       annotation.title=mark.name;
       if(mark.locality){
         annotation.city=mark.locality;
-      }else{
+      }else if(annotation.title){
         annotation.city=annotation.title;
+      }else{
+        annotation.city=@"";
       }
       [self addNewAnnotation:annotation];
       break;
@@ -153,6 +173,30 @@
   }];
 }
 
+#pragma mark locationManager delegate functions
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error{
+  [_HUD show:YES];
+  _HUD.mode = MBProgressHUDModeText;
+  _HUD.labelText = @"请开启定位服务以便定位到您的位置";
+  _HUD.margin = 5.f;
+  [_HUD hide:YES afterDelay:2];
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation{
+  MKCoordinateRegion region;
+  region.center=_myLocation.location.coordinate;
+  region.span=MKCoordinateSpanMake(0.1,0.1);
+  [self.mapView setRegion:region animated:YES];
+  [self getMyLocationDic];
+}
+-(void)getMyLocationDic{
+  dispatch_async(dispatch_queue_create("getMyLocationDic", NULL), ^{
+    _myLocationDic=[[RequestUtil getSinglton] getMapFix:_myLocation.location.coordinate.latitude longtitude:_myLocation.location.coordinate.longitude];
+  });
+}
 #pragma mark mapView delegate functions
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
 {
@@ -178,7 +222,7 @@
     [pinView setPinColor:MKPinAnnotationColorGreen];
     [pinView setAnimatesDrop:YES];
     [pinView setCanShowCallout:YES];
-    [pinView setDraggable:YES];
+    [pinView setDraggable:NO];
     pinView.delegate=self;
     pinView.annotation = annotation;
     return pinView;
@@ -313,8 +357,10 @@
         annotation.title=mark.name;
         if(mark.locality){
           annotation.city=mark.locality;
-        }else{
+        }else if(annotation.title){
           annotation.city=annotation.title;
+        }else{
+          annotation.city=@"";
         }
         [self addNewAnnotation:annotation];
       }else{
@@ -335,21 +381,6 @@
   return YES;
 }
 
-#pragma mark UIScrollView Delegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-  
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-}
-
-
 
 #pragma mark IBAction
 - (IBAction)beginClick:(id)sender{
@@ -360,22 +391,62 @@
   self.midBtn.enabled=NO;
   [self addTapView:LOCATIONTYPE_MID];
 }
+
 - (IBAction)endClick:(id)sender{
   self.endBtn.enabled=NO;
   [self addTapView:LOCATIONTYPE_END];
 }
+
 - (IBAction)clearClick:(id)sender{
   self.createBtn.enabled=NO;
   for(LocationView *locationView in _locationViews){
     [self.mapView removeAnnotation:locationView.annotation];
     [locationView removeFromSuperview];
   }
+  if(_nowAnnotation){
+    [self.mapView removeAnnotation:_nowAnnotation];
+  }
   [_locationViews removeAllObjects];
   [_routes removeAllObjects];
   _nowAnnotation=nil;
   self.route_view.image=nil;
+  [self hideTapView];
   self.createBtn.enabled=YES;
 }
+
+- (IBAction)myLocationBtn:(id)sender{
+  self.myLocationBtn.enabled=NO;
+  MKCoordinateRegion region;
+  region.center=[self.mapView userLocation].coordinate;
+  region.span=self.mapView.region.span;
+  [self.mapView setRegion:region animated:YES];
+  [_HUD show:YES];
+  
+  if([_myLocationDic objectForKey:@"realLongtitude"]&&[_myLocationDic objectForKey:@"realLatitude"]){
+    CLLocation *location=[[CLLocation alloc]initWithLatitude:[[_myLocationDic objectForKey:@"realLatitude"]doubleValue] longitude:[[_myLocationDic objectForKey:@"realLongtitude"]doubleValue]];
+    CLGeocoder *geoCoder=[[CLGeocoder alloc]init];
+    [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+      if(placemarks){
+        CLPlacemark *mark=[placemarks objectAtIndex:0];
+        MyAnnotation *annotation = [[MyAnnotation alloc]initWithLocation:mark.location.coordinate];
+        annotation.title=mark.name;
+        if(mark.locality){
+          annotation.city=mark.locality;
+        }else if(annotation.title){
+          annotation.city=annotation.title;
+        }else{
+          annotation.city=@"";
+        }
+        [self addNewAnnotation:annotation];
+      }
+    }];
+  }else{
+    [self getMyLocationDic];
+  }
+ [_HUD hide:YES];
+  self.myLocationBtn.enabled=YES;
+}
+
 - (IBAction)createClick:(id)sender{
   [MobClick event:@"2012111902"];
   [self.mapView deselectAnnotation:_nowAnnotation animated:YES];
@@ -402,12 +473,15 @@
   NSMutableArray *locationArray=[[NSMutableArray alloc]initWithCapacity:[_locationViews count]];
   NSMutableArray *nameArray=[[NSMutableArray alloc]init];
   int index=0;
-  for(LocationView *view in _locationViews){
-    if(index!=0&&index!=[_locationViews count]-1){
-      [nameArray addObject:view.totalLocation];
+  if([_locationViews count]>0){
+    for(LocationView *view in _locationViews){
+      if(index!=0&&index!=[_locationViews count]-1){
+        [nameArray addObject:view.totalLocation];
+      }
+      [locationArray addObject:[NSString stringWithFormat:@"%f,%f",view.latitude,view.longtitude]];
     }
-    [locationArray addObject:[NSString stringWithFormat:@"%f,%f",view.latitude,view.longtitude]];
   }
+  _createInfo=[[MapCreateInfo alloc]init];
   _createInfo.midLocations=nameArray;
   _createInfo.beginLocation=((LocationView*)[_locationViews objectAtIndex:0]).totalLocation;
   _createInfo.endLocation=((LocationView*)[_locationViews lastObject]).totalLocation;
@@ -418,32 +492,36 @@
   dispatch_async(dispatch_queue_create("drawRoutes", NULL), ^{
     line_color = [UIColor getColor:lineColor];
     [[MapUtil getSinglton] calculate_routes_from:locationArray map_dic:dic];
-    NSArray *array = [dic objectForKey:@"points"];
-    _routes = [[MapUtil getSinglton] decodePolyLineArray:array];
-    _createInfo.points=array;
-    _createInfo.distance=[[dic objectForKey:@"distance"] intValue];
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [_HUD hide:YES];
-      if(self){
-        [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:line_color routes:_routes];
-        if([_routes count]>0){
-          [[MapUtil getSinglton] center_map:self.mapView routes:_routes];
-          _succCreate=TRUE;
-          UIGraphicsBeginImageContext(self.coverImageView.frame.size); //currentView 当前的view
-          [self.coverImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
-          _newCoverImage = UIGraphicsGetImageFromCurrentImageContext();
-          UIGraphicsEndImageContext();
-        }else{
-          _HUD.mode = MBProgressHUDModeText;
-          _HUD.labelText = @"生成失败,google的网络不太好,再来一次吧^_^!!";
-          _HUD.labelFont=[UIFont systemFontOfSize:14];
-          _HUD.margin = 5.f;
-          [_HUD hide:YES afterDelay:2];
-          [MobClick event:@"2012111907"];
+    if(dic){
+      NSArray *array = [dic objectForKey:@"points"];
+      _routes = [[MapUtil getSinglton] decodePolyLineArray:array];
+      _createInfo.points=array;
+      _createInfo.distance=[[dic objectForKey:@"distance"] intValue];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [_HUD hide:YES];
+        if(self){
+          [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:line_color routes:_routes];
+          if([_routes count]>0){
+            [[MapUtil getSinglton] center_map:self.mapView routes:_routes];
+            _succCreate=TRUE;
+            UIGraphicsBeginImageContext(self.coverImageView.frame.size); //currentView 当前的view
+            [self.coverImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
+            _newCoverImage = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+          }else{
+            _HUD.mode = MBProgressHUDModeText;
+            _HUD.labelText = @"生成失败,google的网络不太好,再来一次吧^_^!!";
+            _HUD.labelFont=[UIFont systemFontOfSize:14];
+            _HUD.margin = 5.f;
+            [_HUD hide:YES afterDelay:2];
+            [MobClick event:@"2012111907"];
+          }
         }
-      }
-      self.createBtn.enabled=YES;
-    });
+        
+      });
+    }
+    
+    self.createBtn.enabled=YES;
   });
 }
 #pragma mark TapView

@@ -24,10 +24,10 @@
 {
   CGFloat space=10.0;
   CGPoint last = CGPointMake(5, 5);
-  CGSize descSize=[self.desc sizeWithFont:[UIFont fontWithName:@"Arial" size:12] constrainedToSize:CGSizeMake(300, 9999) lineBreakMode:UILineBreakModeWordWrap];
+  CGSize descSize=[self.desc sizeWithFont:[UIFont fontWithName:@"Arial" size:12] constrainedToSize:CGSizeMake(300, 999) lineBreakMode:UILineBreakModeWordWrap];
   
   last.y+=descSize.height;
-  CGSize timeSize=[self.time sizeWithFont:[UIFont fontWithName:@"Arial" size:12] constrainedToSize:CGSizeMake(300, 9999) lineBreakMode:UILineBreakModeWordWrap];
+  CGSize timeSize=[self.time sizeWithFont:[UIFont fontWithName:@"Arial" size:12] constrainedToSize:CGSizeMake(300, 999) lineBreakMode:UILineBreakModeWordWrap];
   last.y+=timeSize.height;
   if (space <40) {
     return 40;

@@ -90,7 +90,7 @@
         }else if([indexPath row]==1){
             cell.textLabel.text=@"喜欢这款应用吗?";
         }else if([indexPath row]==2){
-            cell.textLabel.text=@"一起来设计骑行者";
+            cell.textLabel.text=@"骑行者反馈";
         }else if([indexPath row]==3){
             cell.textLabel.text=@"查看新版本!有惊喜!";
         }

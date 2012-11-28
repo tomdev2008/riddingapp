@@ -118,14 +118,17 @@
                                                    delegate:self cancelButtonTitle:@"确定"
                                           otherButtonTitles:nil];
     [alert show];
-  }else {
+  }else if(statusCode==200){
+    
+  }
+  else{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"未知错误"
                                                     message:@"未知错误"
                                                    delegate:self cancelButtonTitle:@"确定"
                                           otherButtonTitles:nil];
     [alert show];
   }
-  [MobClick event:@"2012112002" attributes:[[NSDictionary alloc] initWithObjectsAndKeys:category,@"category", nil]];
+  [MobClick event:@"2012112002"];
   return;
 }
 @end
