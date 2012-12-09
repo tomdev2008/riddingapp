@@ -16,7 +16,7 @@
 #import "TimeScroller.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Utilities.h"
-#import "NSDate+TomAddition.h"
+#import "NSDate+Addition.h"
 #define kPI_DIV_180   0.01745329251994
 
 @interface TimeScroller() {

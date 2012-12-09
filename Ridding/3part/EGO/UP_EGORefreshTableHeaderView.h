@@ -17,7 +17,6 @@ typedef enum{
 	EGOOPullRefreshPulling = 0,
 	EGOOPullRefreshNormal,
 	EGOOPullRefreshLoading,
-  EGOOPullRefreshEnd,
 	
 } EGOPullRefreshState;
 
@@ -43,10 +42,10 @@ typedef enum{
 - (void)egoRefreshScrollViewDidScroll:(UIScrollView *)scrollView;
 - (void)egoRefreshScrollViewDidEndDragging:(UIScrollView *)scrollView;
 - (void)egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)scrollView;
-- (void)egoRefreshScrollViewDataSourceDidEnd:(UIScrollView *)scrollView;
+
 - (id)initWithFrame:(CGRect)frame withBackgroundColor:(UIColor*)bgColor;
 - (id)initWithFrame:(CGRect)frame withBackgroundColor:(UIColor*)bgColor normalStatusText:(NSString *)normalText;
-- (UILabel*)getStatusLabel;
+
 @end
 
 @protocol UP_EGORefreshTableHeaderDelegate

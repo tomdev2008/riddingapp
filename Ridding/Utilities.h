@@ -18,4 +18,8 @@
 
 /* 功能：获取设备类型 */
 + (NSString *)getDeviceVersion;
+
++ (UITableViewCell*)cellByClassName:(NSString*)className inNib:(NSString *)nibName forTableView:(UITableView *)tableView;
+
++ (void)alertInstant:(NSString*)message isError:(BOOL)isError;
 @end

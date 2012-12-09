@@ -9,18 +9,6 @@
 #import "MapListCell.h"
 
 @implementation MapListCell
-@synthesize titleLab;
-@synthesize reTitleBtn;
-@synthesize distanceLab;
-@synthesize quitBtn;
-@synthesize finishBtn;
-@synthesize editTitleField;
-@synthesize Id;
-@synthesize status;
-@synthesize distance;
-@synthesize name;
-@synthesize cellView;
-@synthesize createTime;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -33,50 +21,50 @@
 }
 
 -(void)reload{
-    titleLab=[[UILabel alloc]initWithFrame:CGRectMake(5, 5, 100, 30)];
-    titleLab.text=[NSString stringWithFormat:@"名称:%@",name];
-    [titleLab setTextAlignment:UITextAlignmentCenter];
-    [self addSubview:titleLab];
-    distanceLab=[[UILabel alloc]initWithFrame:CGRectMake(120, 5, 100, 30)];
-    distanceLab.text=[NSString stringWithFormat:@"%dkm",distance/1000];
-    [distanceLab setFont:[UIFont fontWithName:@"123" size:0.8]];
-    [distanceLab setTextAlignment:UITextAlignmentCenter];
-    [self addSubview:distanceLab];
+    self.titleLab=[[UILabel alloc]initWithFrame:CGRectMake(5, 5, 100, 30)];
+    self.titleLab.text=[NSString stringWithFormat:@"名称:%@",self.name];
+    [self.titleLab setTextAlignment:UITextAlignmentCenter];
+    [self addSubview:self.titleLab];
+    self.distanceLab=[[UILabel alloc]initWithFrame:CGRectMake(120, 5, 100, 30)];
+    self.distanceLab.text=[NSString stringWithFormat:@"%dkm",self.distance/1000];
+    [self.distanceLab setFont:[UIFont fontWithName:@"123" size:0.8]];
+    [self.distanceLab setTextAlignment:UITextAlignmentCenter];
+    [self addSubview:self.distanceLab];
     
-    reTitleBtn=[UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [reTitleBtn setTitle:@"重命名" forState:UIControlStateNormal];
-    [reTitleBtn setFrame:CGRectMake(80, 5+44, 55, 20)];
-    [reTitleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [reTitleBtn setAdjustsImageWhenHighlighted:NO];
-    reTitleBtn.hidden=YES;
-    [self addSubview:reTitleBtn];
+    self.reTitleBtn=[UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.reTitleBtn setTitle:@"重命名" forState:UIControlStateNormal];
+    [self.reTitleBtn setFrame:CGRectMake(80, 5+44, 55, 20)];
+    [self.reTitleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.reTitleBtn setAdjustsImageWhenHighlighted:NO];
+    self.reTitleBtn.hidden=YES;
+    [self addSubview:self.reTitleBtn];
     
-    finishBtn=[UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [finishBtn setFrame:CGRectMake(145, 5+44, 55, 20)];
-    [finishBtn setTitle:@"完成" forState:UIControlStateNormal];
-    [finishBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [finishBtn setAdjustsImageWhenHighlighted:NO];
-    finishBtn.hidden=YES;
-    [self addSubview:finishBtn];
+    self.finishBtn=[UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.finishBtn setFrame:CGRectMake(145, 5+44, 55, 20)];
+    [self.finishBtn setTitle:@"完成" forState:UIControlStateNormal];
+    [self.finishBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.finishBtn setAdjustsImageWhenHighlighted:NO];
+    self.finishBtn.hidden=YES;
+    [self addSubview:self.finishBtn];
     
-    quitBtn=[UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [quitBtn setFrame:CGRectMake(210, 5+44, 55, 20)];
-    [quitBtn setTitle:@"退出" forState:UIControlStateNormal];
-    [quitBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [quitBtn setAdjustsImageWhenHighlighted:NO];
-    quitBtn.hidden=YES;
-    [self addSubview:quitBtn];
+    self.quitBtn=[UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.quitBtn setFrame:CGRectMake(210, 5+44, 55, 20)];
+    [self.quitBtn setTitle:@"退出" forState:UIControlStateNormal];
+    [self.quitBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.quitBtn setAdjustsImageWhenHighlighted:NO];
+    self.quitBtn.hidden=YES;
+    [self addSubview:self.quitBtn];
 }
 
 -(void)showHidden:(BOOL)isShow{
     if(isShow){
-        finishBtn.hidden=NO; 
-        quitBtn.hidden=NO;
-        reTitleBtn.hidden=NO;
+        self.finishBtn.hidden=NO;
+        self.quitBtn.hidden=NO;
+        self.reTitleBtn.hidden=NO;
     }else{
-        finishBtn.hidden=YES; 
-        quitBtn.hidden=YES;
-        reTitleBtn.hidden=YES;
+        self.finishBtn.hidden=YES; 
+        self.quitBtn.hidden=YES;
+        self.reTitleBtn.hidden=YES;
     }
 }
 

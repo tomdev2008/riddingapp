@@ -8,31 +8,24 @@
 
 #import "InvitationViewController.h"
 #import "UIColor+XMin.h"
+#import "RequestUtil.h"
+#import "SinaApiRequestUtil.h"
+
 @implementation InvitationViewController
-@synthesize atableView;
-@synthesize riddingId;
-@synthesize sinaApiRequestUtil;
-@synthesize searchField;
-@synthesize careUsers;
-@synthesize sinaUsers;
-@synthesize isSearchIng;
-@synthesize selectedDic;
-@synthesize backButton;
-@synthesize requestUtil;
-@synthesize originalDic;
-@synthesize searchButton;
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingId:(long long)riddingId nowTeamers:(NSArray*)nowTeamers
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        sinaApiRequestUtil=[SinaApiRequestUtil getSinglton];
-        requestUtil=[RequestUtil getSinglton];
-        self.careUsers=[[NSMutableArray alloc]init];
-        self.sinaUsers=[[NSMutableArray alloc]init];
-        self.selectedDic=[[NSMutableDictionary alloc]init];
-        self.originalDic=[[NSMutableDictionary alloc]init];
-        isSearchIng=FALSE;
-       
+      _riddingId=riddingId;
+      _originUser=[[NSMutableDictionary alloc]init];
+      for(User *user in nowTeamers){
+        NSLog(@"%lld",user.sourceUserId);
+        [_originUser setObject:user forKey:LONGLONG2NUM(user.sourceUserId)];
+      }
+      _sinaUsers=[[NSMutableArray alloc]init];
+      _nowUser=[[NSMutableArray alloc]init];
+      _isSearching=FALSE;
+      
     }
     return self;
 }
@@ -43,8 +36,6 @@
 }
 
 #pragma mark - View lifecycle
-
-
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
@@ -55,56 +46,78 @@
     
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+  [super viewDidAppear:animated];
+  [self download];
+}
+
+- (void)download{
+  dispatch_async(dispatch_queue_create("download", NULL), ^{
+    NSArray *array= [[SinaApiRequestUtil getSinglton]getBilateralUserList];
+    if([array count]>0){
+      for(NSDictionary *dic in array){
+        SinaUserProfile *userProfile=[[SinaUserProfile alloc]initWithJSONDic:dic];
+        if(![_originUser objectForKey:LONGLONG2NUM(userProfile.dbId)]){
+          [_nowUser addObject:userProfile];
+        }
+      }
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self.atableView reloadData];
+    });
+  });
+}
+
 -(void)initView{
     //动态添加点击操作
-    [searchField addTarget:self action:@selector(textFieldDidChange:)forControlEvents:UIControlEventEditingChanged];
-    [atableView setBackgroundColor:[UIColor getColor:@"5F5F5F"]];
-    UIColor *color = [UIColor colorWithPatternImage:[UIImage imageNamed:@"I分割线.png"]];
-    [self.atableView setSeparatorColor:color];
+  [self.searchField addTarget:self action:@selector(textFieldDidChange:)forControlEvents:UIControlEventEditingChanged];
+  [self.atableView setBackgroundColor:[UIColor getColor:@"5F5F5F"]];
+  UIColor *color = [UIColor colorWithPatternImage:[UIImage imageNamed:@"I分割线.png"]];
+  [self.atableView setSeparatorColor:color];
 }
 
 -(IBAction)searchButtonClicked:(id)sender{
-    if(isSearchIng){
-        isSearchIng=FALSE;
-        [self.searchButton setImage:[UIImage imageNamed:@"search2.png"] forState:UIControlStateNormal];
-        [self.searchButton setImage:[UIImage imageNamed:@"search1.png"] forState:UIControlStateHighlighted];
-        [searchField resignFirstResponder];
-        [self.atableView reloadData];
-    }
+  if(_isSearching){
+    _isSearching=FALSE;
+    [self.searchButton setImage:[UIImage imageNamed:@"search2.png"] forState:UIControlStateNormal];
+    [self.searchButton setImage:[UIImage imageNamed:@"search1.png"] forState:UIControlStateHighlighted];
+    [self.searchField resignFirstResponder];
+    [self sort];
+    [self.atableView reloadData];
+    
+  }
 }
 //点击返回
 -(IBAction)backButtonClicked:(id)sender{
-    for(User *user in [selectedDic allValues]){
-        [originalDic removeObjectForKey:user.accessUserId];
-    }
-    [requestUtil deleteRiddingUser:riddingId deleteUserIds:[originalDic allValues]];
-    [requestUtil tryAddRiddingUser:riddingId addUsers:[selectedDic allValues]];
-    [self.navigationController popViewControllerAnimated:YES];
+  [[RequestUtil getSinglton] tryAddRiddingUser:_riddingId addUsers:_nowUser];
+  [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(IBAction)textFieldDidChange:(id)sender{
-    NSString *t=[(UITextField*)sender text];
-    _loadCount++;
-    dispatch_queue_t q;
-    q=dispatch_queue_create("textFieldDidChange", NULL);
-    dispatch_async(q, ^{
-        NSArray *array= [sinaApiRequestUtil getAtUserList:t type:[NSNumber numberWithInt:0]];
-        [self.sinaUsers removeAllObjects];
-        if (array&&[array count]>0) {
-            for(NSDictionary *dic in array){
-                User *user=[[User alloc]init];
-                user.name=[dic objectForKey:@"nickname"];
-                user.accessUserId=[[dic objectForKey:@"uid"]stringValue];
-                [self.sinaUsers addObject:user];
-            }
+  NSString *t=[(UITextField*)sender text];
+  _loadCount++;
+  dispatch_queue_t q;
+  q=dispatch_queue_create("textFieldDidChange", NULL);
+  dispatch_async(q, ^{
+    NSArray *array= [[SinaApiRequestUtil getSinglton] getAtUserList:t type:[NSNumber numberWithInt:0]];
+    [_sinaUsers removeAllObjects];
+    if (array&&[array count]>0) {
+      for(NSDictionary *dic in array){
+        NSLog(@"dic%@",dic);
+        SinaUserProfile *userProfile=[[SinaUserProfile alloc]initWithJSONDic:dic];
+        if(![_originUser objectForKey:LONGLONG2NUM(userProfile.dbId)]){
+          [_sinaUsers addObject:userProfile];
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            _loadCount--;
-            if(_loadCount==0){
-                [self.atableView reloadData];
-            }
-        });
+        
+      }
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+      _loadCount--;
+      if(_loadCount==0){
+        [self.atableView reloadData];
+      }
     });
+  });
 }
 //<!--textfield代理
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
@@ -119,7 +132,7 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    isSearchIng=TRUE;
+    _isSearching=TRUE;
     [self.searchButton setImage:[UIImage imageNamed:@"searchFinish1.png"] forState:UIControlStateNormal];
     [self.searchButton setImage:[UIImage imageNamed:@"searchFinish2.png"] forState:UIControlStateHighlighted];
     [textField setText:@""];
@@ -141,6 +154,11 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait||interfaceOrientation ==UIInterfaceOrientationPortraitUpsideDown);
 }
 
+- (void) sort{
+  NSArray *sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"isSelected" ascending:YES], nil];
+  [_nowUser sortUsingDescriptors:sortDescriptors];
+}
+
 //table的委托实现
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -148,10 +166,10 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if(isSearchIng){
-        return [self.sinaUsers count];
+    if(_isSearching){
+        return [_sinaUsers count];
     }
-    return [self.selectedDic count]+[self.careUsers count];
+  return [_nowUser count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{	
@@ -162,29 +180,20 @@
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewStylePlain reuseIdentifier:kCellID];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
-  User *user=[self getTableCellUser:indexPath.row];
-    
-	cell.textLabel.text = user.name;
-    if([self.selectedDic objectForKey:user.accessUserId]){
-         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }else{
-         cell.accessoryType = UITableViewCellAccessoryNone;
-    }
+  SinaUserProfile *userProfile;
+  if (_isSearching) {
+    userProfile = [_sinaUsers objectAtIndex:indexPath.row];
+  }else{
+    userProfile=[_nowUser objectAtIndex:indexPath.row];
+  }
+  cell.textLabel.text = userProfile.screen_name;
+  if(userProfile.isSelected){
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+  }else{
+    cell.accessoryType = UITableViewCellAccessoryNone;
+  }
+	
 	return cell;
-}
-
--(User*)getTableCellUser:(NSInteger)rowCount{
-    User *user;
-    if (isSearchIng) {
-        user = [self.sinaUsers objectAtIndex:rowCount];
-    }else{
-        if(rowCount>[selectedDic count]){
-            user = [self.careUsers objectAtIndex:(rowCount-[selectedDic count]-1)];
-        }else{
-            user=[[selectedDic allValues] objectAtIndex:rowCount];
-        }
-    }
-    return user;
 }
 
 /**
@@ -192,28 +201,28 @@
  **/
 - (void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    User *user=[self getTableCellUser:indexPath.row];
-    if (user) {
-        UITableViewCell *newCell = [tableView cellForRowAtIndexPath:
-                                    indexPath];
-        if (newCell.accessoryType==UITableViewCellAccessoryCheckmark&&!user.isLeader) {
-            [newCell setAccessoryType:UITableViewCellAccessoryNone];
-            if([selectedDic objectForKey:user.accessUserId]){
-                [selectedDic removeObjectForKey:user.accessUserId];
-            }
-        }else if(newCell.accessoryType==UITableViewCellAccessoryCheckmark&&user.isLeader){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"退出失败" 
-                                                            message:@"你是队长，不能退出噢，只有大家都退出了，你才能删除活动" 
-                                                           delegate:self cancelButtonTitle:@"好吧，我懂了"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        }else{
-            [newCell setAccessoryType:UITableViewCellAccessoryCheckmark];
-            [selectedDic setValue:user forKey:user.accessUserId];
-        }
+  if(_isSearching){
+    if([_sinaUsers count]>=indexPath.row){
+      SinaUserProfile *userProflie=[_sinaUsers objectAtIndex:indexPath.row];
+      if(userProflie.isSelected){
+        [_nowUser removeObject:userProflie];
+        userProflie.isSelected=FALSE;
+      }else{
+        userProflie.isSelected=TRUE;
+        [_nowUser addObject:userProflie];
+      }
     }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self.atableView reloadData];
+  }else{
+    if([_nowUser count]>=indexPath.row){
+      SinaUserProfile *userProflie=[_nowUser objectAtIndex:indexPath.row];
+      if(userProflie.isSelected){
+        userProflie.isSelected=FALSE;
+      }else{
+        userProflie.isSelected=TRUE;
+      }
+    }
+  }
+  [self.atableView reloadData];
 }
 
 

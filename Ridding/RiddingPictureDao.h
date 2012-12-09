@@ -16,9 +16,9 @@
 
 + (RiddingPictureDao*)getSinglton;
 -(Boolean)addRiddingPicture:(RiddingPicture*)picture;
--(NSArray*)getRiddingPicture:riddingId userId:(NSString*)userId;
--(int)getMaxRiddingPictureId:riddingId userId:(NSString*)userId;
--(BOOL)deleteRiddingPicture:riddingId userId:(NSString*)userId dbId:(NSString*)dbId;
--(int)getNextDbId:(NSString*)riddingId userId:(NSString*)userId;
--(BOOL)updateRiddingPictureText:(NSString*)text dbId:(NSString*)dbId location:(NSString*)location;
+-(NSArray*)getRiddingPicture:(long long)riddingId userId:(long long)userId;
+-(long long)getMaxRiddingPictureId:(long long)riddingId userId:(long long)userId;
+-(BOOL)deleteRiddingPicture:(long long)riddingId userId:(long long)userId dbId:(long long)dbId;
+-(int)getNextDbId:(long long)riddingId userId:(long long)userId;
+-(BOOL)updateRiddingPictureText:(NSString*)pictureDescription dbId:(long long)dbId;
 @end

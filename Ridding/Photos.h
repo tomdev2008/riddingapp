@@ -26,13 +26,13 @@
 }
 
 @property (nonatomic, assign) id<PhotosDelegate> delegate;
-@property (nonatomic, retain) NSString *riddingId;
+@property (nonatomic) long long riddingId;
 
 - (void)flushCache;
 - (void)savePhoto:(UIImage *)photo withName:(NSString *)name addToPhotoAlbum:(BOOL)addToPhotoAlbum;
 - (UIImage*)getPhoto:(NSString*)name;
 - (NSString*)getPhotoPath:(NSString*)name;
-- (NSString*)getFileName:(NSString*)riddingId userId:(NSString*)userId nextDbId:(int)nextDbId;
+- (NSString*)getFileName:(long long)aRiddingId userId:(long long)userId dateStr:(NSString*)dateStr;
 @end
 
 

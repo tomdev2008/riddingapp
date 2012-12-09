@@ -33,7 +33,9 @@
 #import "EndAnnotation.h"
 #import "MobClick.h"
 #import "InvitationViewController.h"
-
+#import "NSDate+Addition.h"
+#import "Map.h"
+#import "User.h"
 @implementation UserMap
 @synthesize mapView;
 @synthesize route_view=_route_view;
@@ -44,7 +46,6 @@
 @synthesize userArray=_userArray;
 @synthesize staticInfo;
 @synthesize lastLocation;
-@synthesize myLocation=_myLocation;
 @synthesize coordinate;
 @synthesize isShowDelete;
 @synthesize loadingView;
@@ -64,14 +65,6 @@
     requestUtil=[RequestUtil getSinglton];
     requestUtil.requestUtilDelegate=self;
     staticInfo=[StaticInfo getSinglton];
-    self.myLocation = [[CLLocationManager alloc] init];
-    [self.myLocation setDelegate:self];
-    if ([CLLocationManager headingAvailable])
-    {
-      self.myLocation.headingFilter=5;
-    }
-    
-    [self.myLocation setDesiredAccuracy:kCLLocationAccuracyBest];
     
   }
   return self;
@@ -82,12 +75,11 @@
   [super didReceiveMemoryWarning];
 }
 
-- (id)initWithUser:(User*)nowUser info:(ActivityInfo *)info riddingStatus:(NSNumber *)riddingStatus{
+- (id)initWithUser:(User*)nowUser ridding:(Ridding*)ridding riddingStatus:(int)riddingStatus{
   self=[super init];
   if(self){
     _nowUser=nowUser;
-    _riddingId=[info.dbId stringValue];
-    _info=info;
+    _ridding=ridding;
     _riddingStatus=riddingStatus;
   }
   return self;
@@ -98,7 +90,7 @@
 {
   [super viewDidLoad];
   _isMyRidding=FALSE;
-  if([[StaticInfo getSinglton].user.userId longLongValue]==[_nowUser.userId longLongValue]){
+  if([StaticInfo getSinglton].user.userId==_nowUser.userId){
     _isMyRidding=TRUE;
   }
   if(_isMyRidding){
@@ -124,7 +116,6 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-  self.myLocation.delegate=self;
   requestUtil.requestUtilDelegate=self;
   mapView.delegate=self;
   self.userScrollView.delegate=self;
@@ -176,7 +167,6 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
-  self.myLocation.delegate=nil;
   requestUtil.requestUtilDelegate=nil;
   mapView.delegate=nil;
   self.userScrollView.delegate=nil;
@@ -196,18 +186,18 @@
 //得到我离终点的距离
 -(void)getToDestinationDistance{
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    NSArray *array=[[RiddingLocationDao getSinglton] getRiddingLocations:_riddingId beginWeight:[NSNumber numberWithInt:0]];
+    NSArray *array=[[RiddingLocationDao getSinglton] getRiddingLocations:_ridding.riddingId beginWeight:0];
     if(!array||[array count]==0){
       return;
     }
-    CLLocation* checkLocation=self.myLocation.location;
+    QQNRMyLocation *myLocation=[[RiddingAppDelegate shareDelegate]myLocation];
     CLLocationDistance nearestLength=-1;
     RiddingLocation *nearestLocation=nil;
     int index=0;
     for(int i=0;i<[array count];i++){
       RiddingLocation* location=(RiddingLocation*)[array objectAtIndex:i];
       CLLocation *alocation=[[CLLocation alloc]initWithLatitude:location.latitude longitude:location.longtitude];
-      CLLocationDistance kilometers=[alocation distanceFromLocation:checkLocation]/1000;
+      CLLocationDistance kilometers=[alocation distanceFromLocation:myLocation.location]/1000;
       if(kilometers < nearestLength||nearestLength==-1){
         nearestLength=kilometers;
         nearestLocation=location;
@@ -216,7 +206,7 @@
     }
     for(int i=index;i<[array count];i++){
       RiddingLocation* location=(RiddingLocation*)[array objectAtIndex:i];
-      nearestLength+=[location.toNextDistance doubleValue];
+      nearestLength+=location.toNextDistance;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
       [self.toDistanceLabel setText:[NSString stringWithFormat:@"还有距离:%0.2lf km",nearestLength/1000]];
@@ -230,33 +220,16 @@
   dispatch_queue_t q;
   q=dispatch_queue_create("setUsers", NULL);
   dispatch_async(q, ^{
-    NSArray *array = [requestUtil getUserList:_riddingId];
+    NSArray *array = [requestUtil getUserList:_ridding.riddingId];
     if(array&&[array count]>0){
-      for(NSDictionary *auser in array){
-        User *user=[[User alloc]init];
-        user.userId = [auser objectForKey:@"userid"];
-        user.userRole = [auser objectForKey:@"userRole"];
-        user.name = [auser objectForKey:@"nickname"];
-        staticInfo.user.isLeader=FALSE;
-        if ([staticInfo.user.userId longLongValue]==[user.userId longLongValue]) {
-          staticInfo.user.userRole = user.userRole;
-          if([user.userRole intValue]==20){
-               staticInfo.user.isLeader=TRUE;
+      for(NSDictionary *dic in array){
+        User *user=[[User alloc]initWithJSONDic:[dic objectForKey:@"user"]];
+        if(staticInfo.user.userId==user.userId){
+          if([Ridding isLeader:user.userRole]){
+            staticInfo.user.isLeader=TRUE;
+          }else{
+            staticInfo.user.isLeader=FALSE;
           }
-        }
-        //如果是当前用户，不添加
-        user.isLeader=FALSE;
-        if([user.userRole intValue]==20){
-          user.isLeader=TRUE;
-        }
-        if(![[auser objectForKey:@"bavatorUrl"] isEqualToString:@""]){
-          user.bavatorUrl=[auser objectForKey:@"bavatorUrl"];
-        }
-        if(![[auser objectForKey:@"savatorUrl"] isEqualToString:@""]){
-          user.savatorUrl=[auser objectForKey:@"savatorUrl"];
-        }
-        if(![[auser objectForKey:@"nickname"] isEqualToString:@""]){
-          user.name=[auser objectForKey:@"nickname"];
         }
         [self.userArray addObject:user];
       }
@@ -272,28 +245,22 @@
 }
 //定时发送我的当前位置
 -(void)sendMyLocationQuartz{
-  [self.myLocation startUpdatingLocation];
-  [self.myLocation startUpdatingHeading];
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  [delegate startUpdateMyLocation];
+  [delegate startUpdateMyLocationHeading];
   dispatch_queue_t q;
   q=dispatch_queue_create("sendMyLocationQuartz", NULL);
   dispatch_async(q, ^{
     MKCoordinateRegion theRegion;
-    theRegion.center = [[self.myLocation location] coordinate];
+    theRegion.center = [delegate myLocation].location.coordinate;
     CLLocationDegrees latitude=theRegion.center.latitude;
     CLLocationDegrees longtitude=theRegion.center.longitude;
     double speed=[self getSpeed];
-    [requestUtil sendAndGetAnnotation:_riddingId latitude:[NSString stringWithFormat:@"%lf",latitude] longtitude:[NSString stringWithFormat:@"%lf",longtitude] status:@"1" speend:speed isGetUsers:_isShowTeamers?1:0];
+    [requestUtil sendAndGetAnnotation:_ridding.riddingId latitude:latitude longtitude:longtitude status:1 speed:speed isGetUsers:_isShowTeamers?1:0];
   });
 }
 
-//插入用户位置的异步回调
--(void)sendAndGetAnnotationReturn:(NSArray*)returnArray{
-  NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
-  for(NSDictionary *location in returnArray){
-    [dic setValue:location forKey:[[location objectForKey:@"userId"]stringValue]];
-  }
-  [self updateAnnotations:dic];
-}
+
 
 //得到当前速度
 -(double)getSpeed{
@@ -301,7 +268,8 @@
     lastLocation=[[CLLocation alloc]init];
     return 0;
   }
-  CLLocation *nowLocation=[self.myLocation location];
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  CLLocation *nowLocation=[delegate myLocation].location;
   CLLocationDistance meters=[nowLocation distanceFromLocation:lastLocation];
   lastLocation=[nowLocation copy];
   return (meters*3.6)/([[NSString stringWithFormat:@"%@",getToDestinationTime]doubleValue]);
@@ -314,16 +282,16 @@
     line_color = [UIColor getColor:lineColor];
     //如果数据库中存在，那么取数据库中的地图路径，如果不存在，http去请求服务器。
     //数据库中取出是mapTaps或者points
-    NSMutableDictionary *map_dic = [[NSMutableDictionary alloc]init];
-    map_dic = [requestUtil getMapMessage:_riddingId];
-    NSArray *array = [map_dic objectForKey:@"points"];
+    NSMutableDictionary *map_dic = [requestUtil getMapMessage:_ridding.riddingId userId:staticInfo.user.userId];
+    Map *map=[[Map alloc]initWithJSONDic:[map_dic objectForKey:@"map"]];
+    NSArray *array = map.mapPoint;//[ JSONValue];
     if (!array) {
-      array = [map_dic objectForKey:@"mapTaps"];
+      array = map.mapTaps;//[ JSONValue];
       if(!array){
         [self.navigationController popViewControllerAnimated:YES];
       }
       //基本不会使用了 by zys 20120719
-      [[MapUtil getSinglton] calculate_routes_from:array map_dic:map_dic];
+      [[MapUtil getSinglton] calculate_routes_from:array map:map];
       if(map_dic){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"错误提示"
                                                         message:@"生成地图失败。"
@@ -332,10 +300,10 @@
         [alert show];
         [self.navigationController popToRootViewControllerAnimated:YES];
       }
-      array = [map_dic objectForKey:@"points"];
-      [requestUtil sendMapPoiont:_riddingId point:array mapId:[map_dic objectForKey:@"id"] distance:[map_dic objectForKey:@"distance"]];
+      array = map.mapPoint;
+      [requestUtil sendMapPoiont:_ridding.riddingId point:array mapId:map.mapId distance:map.distance];
     }
-    float dis = [[map_dic objectForKey:@"distance"] intValue]*1.0/1000;
+    float dis = map.distance*1.0/1000;
     self.routes = [[MapUtil getSinglton] decodePolyLineArray:array];
     dispatch_async(dispatch_get_main_queue(), ^{
       if(self){
@@ -352,7 +320,7 @@
         }
       }
     });
-    [self setRiddingLocationToDB:map_dic];
+    [self setRiddingLocationToDB:map];
   });
 }
 
@@ -402,42 +370,49 @@
 }
 
 //插入骑行的经纬度等信息到数据库
--(void)setRiddingLocationToDB:(NSMutableDictionary*)map_dic{
+-(void)setRiddingLocationToDB:(Map*)map{
   dispatch_queue_t q;
   q=dispatch_queue_create("setRiddingLocationToDB", NULL);
   dispatch_async(q, ^{
-    if([[RiddingLocationDao getSinglton] getRiddingLocationCount:_riddingId]>0){
+    if([[RiddingLocationDao getSinglton] getRiddingLocationCount:_ridding.riddingId]>0){
       return;
     }
-    if([[map_dic objectForKey:@"startLocations"] count]==0){
-      NSArray *array = [map_dic objectForKey:@"mapTaps"];
+    if([map.startLocations count]==0){
+      NSArray *array = map.mapTaps;//[ JSONValue];
       if(!array||[array count]==0){
         return;
       }
-      [[MapUtil getSinglton] calculate_routes_from:array map_dic:map_dic];
+      [[MapUtil getSinglton] calculate_routes_from:array map:map];
     }
-    if([[map_dic objectForKey:@"startLocations"] count]!=[[map_dic objectForKey:@"toNextDistance"] count]){
+    if([map.startLocations count]!=[map.toNextDistance count]){
       return;
     }
     NSMutableArray *locations=[[NSMutableArray alloc]init];
     int index=0;
-    for(CLLocation *location in [map_dic objectForKey:@"startLocations"]){
+    for(CLLocation *location in map.startLocations){
       RiddingLocation *riddingLocation=[[RiddingLocation alloc]init];
       riddingLocation.latitude=location.coordinate.latitude;
       riddingLocation.longtitude=location.coordinate.longitude;
-      riddingLocation.riddingId=_riddingId;
-      riddingLocation.toNextDistance=[[map_dic objectForKey:@"toNextDistance"] objectAtIndex:index];
-      riddingLocation.weight=[NSNumber numberWithInt:index++];
+      riddingLocation.riddingId=_ridding.riddingId;
+      riddingLocation.toNextDistance=[[map.toNextDistance objectAtIndex:index]intValue];
+      riddingLocation.weight=index++;
       [locations addObject:riddingLocation];
     }
-    [[RiddingLocationDao getSinglton] addRiddingLocation:_riddingId locations:locations];
+    [[RiddingLocationDao getSinglton] addRiddingLocation:_ridding.riddingId locations:locations];
   });
 }
 
-//插入用户坐标
--(void)updateAnnotations:(NSMutableDictionary*)locations{
-  if(locations==nil||self.userArray==nil){
+//插入用户位置的异步回调
+#pragma requestUtil delegate
+-(void)sendAndGetAnnotationReturn:(NSDictionary*)dic{
+  NSArray *userArray=[dic objectForKey:@"users"];
+  if(dic==nil||self.userArray==nil){
     return;
+  }
+  NSMutableDictionary *mulDic=[[NSMutableDictionary alloc]init];
+  for(NSDictionary *location in userArray){
+    User *user=[[User alloc]initWithJSONDic:location];
+    [mulDic setObject:user forKey:LONGLONG2NUM(user.userId)];
   }
   NSMutableDictionary* annotationDic=[[NSMutableDictionary alloc]init];
   NSArray* annotations=[self.mapView annotations];
@@ -445,7 +420,7 @@
     for(id<MKAnnotation> annotation in annotations){
       if ([annotation isKindOfClass:[UserAnnotation class]]){
         UserAnnotation* userAnnotation=(UserAnnotation*)annotation;
-        [annotationDic setValue:userAnnotation forKey:[NSString stringWithFormat:@"%@",userAnnotation.userId]];
+        [annotationDic setObject:userAnnotation forKey:LONGLONG2NUM(userAnnotation.userId)];
       }
     }
   }
@@ -453,19 +428,19 @@
   q=dispatch_queue_create("updateAnnotations", NULL);
   for (User *user in self.userArray) {
     //如果是当前用户
-    if([user.userId longLongValue]==[staticInfo.user.userId longLongValue]){
+    if(user.userId==staticInfo.user.userId){
       continue;
     }
     dispatch_async(q, ^{
       
-      NSDictionary *dic=[locations objectForKey:[NSString stringWithFormat:@"%@",user.userId]];
+      User *serverUser=[mulDic objectForKey:[NSString stringWithFormat:@"%lld",user.userId]];
       if (dic!=nil) {
-        CLLocationDegrees latitude=[[dic objectForKey:@"latitude"] doubleValue];
-        CLLocationDegrees longtitude=[[dic objectForKey:@"longtitude"] doubleValue];
+        CLLocationDegrees latitude=serverUser.latitude;
+        CLLocationDegrees longtitude=serverUser.longtitude;
         CLLocationCoordinate2D coordinate2D=CLLocationCoordinate2DMake(latitude, longtitude);
-        user.speed=[[dic objectForKey:@"speed"]doubleValue];
-        user.status=[[dic objectForKey:@"status"]intValue];
-        UserAnnotation* userAnnotation=[annotationDic objectForKey:[NSString stringWithFormat:@"%@",user.userId]];
+        user.speed=serverUser.speed;
+        user.status=serverUser.status;
+        UserAnnotation* userAnnotation=[annotationDic objectForKey:LONGLONG2NUM(user.userId)];
         if(!userAnnotation){
           userAnnotation=[[UserAnnotation alloc]init];
           userAnnotation.userId=user.userId;
@@ -475,7 +450,7 @@
         }
         userAnnotation.headImage=[user getSSavator];
         userAnnotation.coordinate=coordinate2D;
-        userAnnotation.subtitle=[NSString stringWithFormat:@"更新时间:%@",[dic objectForKey:@"timebefore"]];
+        userAnnotation.subtitle=[NSString stringWithFormat:@"更新时间:%@",serverUser.timeBefore];
         userAnnotation.title = user.name;
         user.annotation=userAnnotation;
       }
@@ -485,8 +460,8 @@
   for(UIView *view in [self.userScrollView subviews]){
     if([view isKindOfClass:[UserView class]]){
       UserView *userView=(UserView*)view;
-      NSDictionary *dic=[locations objectForKey:[NSString stringWithFormat:@"%@",userView.user.userId]];
-      int status=[[dic objectForKey:@"status"]intValue];
+      User *user=[mulDic objectForKey:LONGLONG2NUM(userView.user.userId)];
+      int status=user.status;
       [userView changeStatus:status];
       if(status==1){
         onlineUserCount++;
@@ -497,18 +472,18 @@
 }
 
 -(void)updatePhotoAnnotation{
-  NSArray *pictureArray=[[RiddingPictureDao getSinglton]getRiddingPicture:_riddingId userId:[StaticInfo getSinglton].user.userId];
+  NSArray *pictureArray=[[RiddingPictureDao getSinglton]getRiddingPicture:_ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
   if(!pictureArray||[pictureArray count]==0){
     return;
   }
   Photos *photos=[[Photos alloc]init];
-  photos.riddingId=_riddingId;
+  photos.riddingId=_ridding.riddingId;
   int index=0;
   for(RiddingPicture *picture in pictureArray){
     CLLocationDegrees latitude=picture.latitude;
     CLLocationDegrees longtitude=picture.longtitude;
     Photos *photos=[[Photos alloc]init];
-    photos.riddingId=_riddingId;
+    photos.riddingId=_ridding.riddingId;
     PhotoAnnotation *photoAnnotation=[[PhotoAnnotation alloc]initWithLatitude:latitude andLongitude:longtitude];
     photoAnnotation.image= [photos getPhoto:picture.fileName];
     photoAnnotation.index=index++;
@@ -574,7 +549,8 @@
 -(void)reLocationClick:(UITapGestureRecognizer*) gestureRecognize{
   [self sendMyLocationQuartz];
   MKCoordinateRegion region;
-  region.center = self.myLocation.location.coordinate;
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  region.center = [delegate myLocation].location.coordinate;
   region.span = self.mapView.region.span;
   [self.mapView setRegion:region animated:YES];
 }
@@ -635,7 +611,7 @@
   int outWidth=width+10;
   int addViewCount=1;
   //如果不是队长是成员
-  if(!staticInfo.user.isLeader||[_riddingStatus isEqualToNumber:[NSNumber numberWithInt:20]]){
+  if(!staticInfo.user.isLeader||_riddingStatus==20){
     addViewCount=0;
     index=0;
   }
@@ -649,7 +625,7 @@
   outActionView.userInteractionEnabled=YES;
   UITapGestureRecognizer *viewTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(actionViewClick:)];
   [outActionView addGestureRecognizer:viewTap];
-  if(staticInfo.user.isLeader&&![_riddingStatus isEqualToNumber:[NSNumber numberWithInt:20]]){
+  if(staticInfo.user.isLeader&&_riddingStatus!=20){
     UIImageView *actionview=[[UIImageView alloc]initWithFrame:CGRectMake(10, 15, 60, 60)];
     UIImage *image=[UIImage imageNamed:@"addUser.png"];
     actionview.image=image;
@@ -690,13 +666,14 @@
 }
 
 //userView.h的代理,点击头像后在地图中间显示
--(void)avatorViewClick:(UITapGestureRecognizer*) gestureRecognize userId:(NSString*)userId{
-  if([userId longLongValue]==[staticInfo.user.userId longLongValue]){
+#pragma UserView delegate
+-(void)avatorViewClick:(UITapGestureRecognizer*) gestureRecognize userId:(long long)userId{
+  if(userId==staticInfo.user.userId){
     return;
   }
   if(self.userArray){
     for(User *user in self.userArray){
-      if([userId longLongValue]==[user.userId longLongValue]){
+      if(userId==user.userId){
         MKCoordinateRegion region;
         region.center.latitude=user.annotation.coordinate.latitude;
         region.center.longitude=user.annotation.coordinate.longitude;
@@ -713,7 +690,7 @@
 -(void)deleteViewClick:(UITapGestureRecognizer*) gestureRecognize userView:(UserView*)userView{
   [MobClick event:@"2012070205"];
   CGFloat x=userView.frame.origin.x;
-  [requestUtil deleteRiddingUser:_riddingId deleteUserIds:[[NSArray alloc]initWithObjects:userView.user.userId, nil]];
+  [requestUtil deleteRiddingUser:_ridding.riddingId deleteUserIds:[[NSArray alloc]initWithObjects:LONGLONG2NUM(userView.user.userId), nil]];
   if(self.userScrollView){
     [userView removeFromSuperview];
     NSArray* userView=[self.userScrollView subviews];
@@ -730,7 +707,7 @@
   if(self.userArray&&[self.userArray count]>0){
     NSMutableArray *tempArray=[[NSMutableArray alloc]init];
     for (User *user in self.userArray) {
-      if([user.userId longLongValue]!=[userView.user.userId longLongValue]){
+      if(user.userId!=userView.user.userId){
         [tempArray addObject:user];
       }
     }
@@ -751,34 +728,10 @@
 //添加用户按钮
 -(void)actionViewClick:(UITapGestureRecognizer*) gestureRecognize{
   [MobClick event:@"2012070203"];
-  InvitationViewController* invitationView=[[InvitationViewController alloc]init];
-  invitationView.riddingId=_riddingId;
+  InvitationViewController* invitationView=[[InvitationViewController alloc]initWithNibName:@"InvitationViewController" bundle:nil riddingId:_ridding.riddingId nowTeamers:self.userArray];
   _userInited=FALSE;
-  loadingView=[[ActivityView alloc]init:@"获取队员信息" lat:self.view.frame.size.width/2 log:self.view.frame.size.height/2];
-  loadingView.hidden=NO;
-  [self.view addSubview:loadingView];
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    NSMutableArray* userIdArray=[[NSMutableArray alloc]init];
-    for(User *user in self.userArray){
-      [userIdArray addObject:user.userId];
-    }
-    NSDictionary* dic=[requestUtil getAccessUserId:userIdArray souceType:1];
-    dispatch_async(dispatch_get_main_queue(), ^{
-      for(User *user in self.userArray){
-        NSNumber* accessUserId=[dic objectForKey:user.userId];
-        if(accessUserId){
-          user.accessUserId=[NSString stringWithFormat:@"%@",accessUserId];
-          [invitationView.selectedDic setValue:user forKey:user.accessUserId];
-          [invitationView.originalDic setValue:user.userId forKey:user.accessUserId];
-        }
-      }
-      [self.navigationController pushViewController:invitationView animated:YES];
-      loadingView.hidden=YES;
-    });
-  });
   [self membersViewUpToDown];
-  
-  
+  [self.navigationController pushViewController:invitationView animated:YES];
 }
 #pragma mark - Animation for Member Views
 //点击地图后，scrollview隐藏显示的信息操作
@@ -959,7 +912,7 @@
 - (void)photoViewTap:(UIGestureRecognizer*)gesture{
   CalloutMapAnnotationView *view=(CalloutMapAnnotationView*)gesture.view;
   Photos *myPhotos = [[Photos alloc] init];
-  myPhotos.riddingId=_riddingId;
+  myPhotos.riddingId=_ridding.riddingId;
   id <KTPhotoBrowserDataSource> dataSource=myPhotos;
   KTPhotoScrollViewController *newController = [[KTPhotoScrollViewController alloc]
                                                 initWithDataSource:dataSource
@@ -972,14 +925,7 @@
 }
 //显示用户详情列表
 - (void) showDetails{
-//  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//    NSDictionary *dic= [[RequestUtil getSinglton]getUserProfile:[StaticInfo getSinglton].user sourceType:SOURCE_SINA];
-//    User *_user=[[User alloc]init];
-//    [_user setProperties:dic];
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        QQNRFeedViewController *QQNRFVC=[QQNRFeedViewController alloc]initWithUser:<#(User *)#> exUser:<#(User *)#>
-//    });
-//  });
+
   
 
 }
@@ -1067,13 +1013,13 @@
                                                          highlightedImage:storyMenuItemImagePressed
                                                              ContentImage:photoImg
                                                   highlightedContentImage:nil];
-//  AwesomeMenuItem *starMenuItem5 = [[AwesomeMenuItem alloc] initWithImage:storyMenuItemImage
-//                                                         highlightedImage:storyMenuItemImagePressed
-//                                                             ContentImage:photoImg
-//                                                  highlightedContentImage:nil];
+  AwesomeMenuItem *starMenuItem5 = [[AwesomeMenuItem alloc] initWithImage:storyMenuItemImage
+                                                         highlightedImage:storyMenuItemImagePressed
+                                                             ContentImage:photoImg
+                                                  highlightedContentImage:nil];
   
   
-  NSArray *menus = [NSArray arrayWithObjects:starMenuItem2, starMenuItem3,starMenuItem4, nil];
+  NSArray *menus = [NSArray arrayWithObjects:starMenuItem2, starMenuItem3,starMenuItem4,starMenuItem5, nil];
   
   
   _menu = [[AwesomeMenu alloc] initWithFrame:CGRectMake(-130, 170, 38, 38) menus:menus];
@@ -1107,13 +1053,14 @@
     case 2:
     {
       PhotoListViewController *lirVc=[[PhotoListViewController alloc]initWithNibName:@"PhotoListViewController" bundle:nil];
-      lirVc.riddingId=_riddingId;
+      lirVc.riddingId=_ridding.riddingId;
       [self.navigationController pushViewController:lirVc animated:YES];
     }
+    break;
     case 3:
     {
-//      PublicDetailViewController *pdVCTL=[[PublicDetailViewController alloc]initWithNibName:@"PublicDetailViewController" bundle:nil info:_info];
-//      [self.navigationController pushViewController:pdVCTL animated:YES];
+      PublicDetailViewController *pdVCTL=[[PublicDetailViewController alloc]initWithNibName:@"PublicDetailViewController" bundle:nil ridding:_ridding isMyHome:_isMyRidding];
+      [self.navigationController pushViewController:pdVCTL animated:YES];
     }
     break;
     default:
@@ -1168,7 +1115,7 @@
 - (void)showWithCamera {
   _isFromCamera=YES;
   UIImagePickerController *imagePicker=[self genImagePicker];
-  imagePicker.videoQuality=UIImagePickerControllerQualityType640x480;
+  imagePicker.videoQuality=UIImagePickerControllerQualityTypeLow;
   [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
   [self presentModalViewController:imagePicker animated:YES];
 }
@@ -1183,7 +1130,6 @@
 - (UIImagePickerController *)genImagePicker {
   UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
   [imagePicker setDelegate:self];
-  [imagePicker setAllowsEditing:NO];
   return imagePicker;
 }
 
@@ -1191,15 +1137,24 @@
 #pragma mark UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
   UIImage *newImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+  CGFloat width;
+  CGFloat height;
+  if(newImage.imageOrientation==UIImageOrientationLeft||newImage.imageOrientation==UIImageOrientationRight){
+    width=CGImageGetHeight([newImage CGImage]);
+    height=CGImageGetWidth([newImage CGImage]);
+  }else{
+    width=CGImageGetWidth([newImage CGImage]);
+    height=CGImageGetHeight([newImage CGImage]);
+  }
   dispatch_queue_t q;
   q=dispatch_queue_create("didFinishPickingMediaWithInfo", NULL);
   dispatch_async(q, ^{
-    int nextDBId=[[RiddingPictureDao getSinglton]getNextDbId:_riddingId userId:[StaticInfo getSinglton].user.userId];
     Photos *photo= [[Photos alloc] init];
-    photo.riddingId=_riddingId;
-    NSString *fileName=[photo getFileName:_riddingId userId:[StaticInfo getSinglton].user.userId nextDbId:nextDBId];
+    photo.riddingId=_ridding.riddingId;
+    NSString *dateStr=[[NSDate date] pd_fileNameyyyyMMddHHmmssString];
+    NSString *fileName=[photo getFileName:_ridding.riddingId userId:[StaticInfo getSinglton].user.userId dateStr:dateStr];
     //保存到本地数据库
-    RiddingPicture *picture = [self saveToDB:fileName dbId:nextDBId];
+    RiddingPicture *picture = [self saveToDB:fileName width:width height:height];
     picture.image=newImage;
     if(picture){
       dispatch_async(dispatch_get_main_queue(), ^{
@@ -1211,14 +1166,7 @@
       //保存图片
       [photo savePhoto:newImage withName:fileName addToPhotoAlbum:_isFromCamera];
     }
-    if(_isFromCamera){
-      UIImageWriteToSavedPhotosAlbum(newImage,nil,nil, nil);
-    }
   });
-}
-
-- (void) video: (NSString *) videoPath didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo {
-  DLog(@"%@",error);
 }
 
 
@@ -1226,18 +1174,26 @@
   [picker dismissModalViewControllerAnimated:YES];
 }
 
-- (RiddingPicture*)saveToDB:(NSString*)name dbId:(int)dbId{
+- (RiddingPicture*)saveToDB:(NSString*)name width:(int)width height:(int)height{
   RiddingPicture* picture=[[RiddingPicture alloc]init];
-  picture.dbId=[NSNumber numberWithInt:dbId];
-  picture.riddingId=_riddingId;
-  picture.userId=[StaticInfo getSinglton].user.userId;
-  [_myLocation startUpdatingLocation];
-  NSDictionary *dic=[[RequestUtil getSinglton]getMapFix:_myLocation.location.coordinate.latitude longtitude:_myLocation.location.coordinate.longitude];
-  picture.latitude=[[dic objectForKey:@"realLatitude"]floatValue];
-  picture.longtitude=[[dic objectForKey:@"realLongtitude"]floatValue];
+  picture.riddingId=_ridding.riddingId;
+  
+  User *user=[[User alloc]init];
+  user.userId=[StaticInfo getSinglton].user.userId;
+  picture.user=user;
+  
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  [delegate startUpdateMyLocation];
+  QQNRMyLocation *myLocation=[delegate myLocation];
+  picture.latitude=myLocation.latitude;
+  picture.longtitude=myLocation.longtitude;
   picture.fileName=name;
-  picture.text=@"";
+  picture.takePicDateL=[[NSDate date] pd_yyyyMMddhhmmsss];
+  picture.location=myLocation.city;
+  picture.width=width;
+  picture.height=height;
   if([[RiddingPictureDao getSinglton] addRiddingPicture:picture]){
+    picture.dbId= [[RiddingPictureDao getSinglton] getMaxRiddingPictureId:picture.riddingId userId:picture.user.userId];
     return picture;
   }
   return nil;

@@ -7,6 +7,7 @@
 //
 
 #import "MapUtil.h"
+#import "Map.h"
 static MapUtil *mapUtil=nil;
 @implementation MapUtil
 @synthesize request;
@@ -33,41 +34,40 @@ static MapUtil *mapUtil=nil;
 }
 
 //得到point的array
--(void)calculate_routes_from:(NSArray*)mapLoactions map_dic:(NSMutableDictionary*)map_dic{
-    if (!mapLoactions||[mapLoactions count]==0) {
-        return;
+-(void)calculate_routes_from:(NSArray*)mapLoactions map:(Map*)map{
+  if (!mapLoactions||[mapLoactions count]==0) {
+    return;
+  }
+  NSMutableArray *mulpoint=[[NSMutableArray alloc]init];
+  NSMutableArray *mulToNextDistance=[[NSMutableArray alloc]init];
+  NSMutableArray *mulStartLocations=[[NSMutableArray alloc]init];
+  NSString* saddr;
+  NSString* daddr;
+  NSString* point;
+  int distance=0;
+  NSDictionary* response;
+  bool succ=true;
+  for (int i=1;i<[mapLoactions count];i++) {
+    saddr=[mapLoactions objectAtIndex:i-1];
+    daddr=[mapLoactions objectAtIndex:i];
+    response=[self getResponFromGoogle:saddr to:daddr];
+    if(response==nil){
+      succ=false;
+      break;
     }
-    NSMutableArray *mulpoint=[[NSMutableArray alloc]init];
-    NSMutableArray *mulToNextDistance=[[NSMutableArray alloc]init];
-    NSMutableArray *mulStartLocations=[[NSMutableArray alloc]init];
-    NSString* saddr;
-    NSString* daddr;
-    NSString* point;
-    int distance=0;
-    NSDictionary* response;
-    bool succ=true;
-    for (int i=1;i<[mapLoactions count];i++) {
-        saddr=[mapLoactions objectAtIndex:i-1];
-        daddr=[mapLoactions objectAtIndex:i];
-        response=[self getResponFromGoogle:saddr to:daddr];
-        if(response==nil){
-            succ=false;
-            break;
-        }
-        point=[self getPoints:response];
-        [mulpoint addObject:point];
-        distance+=[self getTotalDistance:response];
-        [mulToNextDistance addObjectsFromArray:[self getToNextDistance:response]];
-        [mulStartLocations addObjectsFromArray:[self getStartLocation:response]];
-    }
-    if(!succ){
-        map_dic=nil;
-        return;
-    }
-    [map_dic setValue:mulToNextDistance forKey:@"toNextDistance"];
-    [map_dic setValue:mulpoint forKey:@"points"];
-    [map_dic setValue:[NSNumber numberWithInt:distance] forKey:@"distance"];
-    [map_dic setValue:mulStartLocations forKey:@"startLocations"];
+    point=[self getPoints:response];
+    [mulpoint addObject:point];
+    distance+=[self getTotalDistance:response];
+    [mulToNextDistance addObjectsFromArray:[self getToNextDistance:response]];
+    [mulStartLocations addObjectsFromArray:[self getStartLocation:response]];
+  }
+  if(!succ){
+    return;
+  }
+  map.toNextDistance=mulToNextDistance;
+  map.mapPoint=mulpoint;
+  map.distance=distance;
+  map.startLocations=mulStartLocations;
 }
 //通过经纬度返回值得到距离
 -(int)getTotalDistance:(NSDictionary*) dic_data{

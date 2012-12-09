@@ -42,7 +42,7 @@
     
     //添加名牌
     brandView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 63, self.frame.size.width, 21)];
-    if([[StaticInfo getSinglton].user.userId longLongValue]== [self.user.userId longLongValue]){
+    if([StaticInfo getSinglton].user.userId== self.user.userId){
         brandView.image = [UIImage imageNamed:@"userBrand.png"];
     }else if(self.user.status==1){
         brandView.image = [UIImage imageNamed:@"userBrand.png"];
@@ -65,7 +65,7 @@
     [self addSubview:label];
     
     //添加删除按钮，初始隐藏
-    if([StaticInfo getSinglton].user.isLeader&&[self.user.userId longLongValue]!=[[StaticInfo getSinglton].user.userId longLongValue]){
+    if([StaticInfo getSinglton].user.isLeader&&self.user.userId!=[StaticInfo getSinglton].user.userId){
         deleteView=[[UIImageView alloc]initWithFrame:CGRectMake(50, 0, 15, 15)];
         UIImage *deleteImage=[UIImage imageNamed:@"icon-delete.png"];
         deleteView.image=deleteImage;
@@ -80,7 +80,7 @@
 
 -(void)changeStatus:(int)status{
     self.user.status=status;
-    if([[StaticInfo getSinglton].user.userId longLongValue]== [self.user.userId longLongValue]){
+    if([StaticInfo getSinglton].user.userId== self.user.userId){
         brandView.image = [UIImage imageNamed:@"userBrand.png"];
     }else if(status==1){
         brandView.image = [UIImage imageNamed:@"userBrand.png"];

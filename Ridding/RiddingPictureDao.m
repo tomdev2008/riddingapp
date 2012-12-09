@@ -8,7 +8,7 @@
 
 #import "RiddingPictureDao.h"
 #import "RiddingPicture.h"
-#define columCount 6
+#define columCount 11
 static RiddingPictureDao *riddingPictureDao=nil;
 @implementation RiddingPictureDao
 @synthesize sqlUtil=_sqlUtil;
@@ -34,14 +34,24 @@ static RiddingPictureDao *riddingPictureDao=nil;
 
 -(Boolean)addRiddingPicture:(RiddingPicture*)picture {
   [self.sqlUtil readyDatabse];
-    NSArray *paramarray = [[NSArray alloc] initWithObjects:[NSString stringWithFormat:@"%@",picture.riddingId],[NSString stringWithFormat:@"%lf",picture.latitude],[NSString stringWithFormat:@"%lf",picture.longtitude],[NSString stringWithFormat:@"%@",picture.fileName],[NSString stringWithFormat:@"%@",picture.userId],picture.text, picture.location,nil];
-    NSString *sql =@"INSERT INTO riddingpicture (riddingid, latitude,longtitide,filename,userid,text,location) VALUES (?,?,?,?,?,?,?)";
-    return [self.sqlUtil dealData:sql paramArray:paramarray];
+  NSMutableArray *mulArray=[[NSMutableArray alloc]init];
+  [mulArray addObject:LONGLONG2NUM(picture.riddingId)];
+  [mulArray addObject:DOUBLE2STR(picture.latitude)];
+  [mulArray addObject:DOUBLE2STR(picture.longtitude)];
+  [mulArray addObject:SAFESTR(picture.fileName)];
+  [mulArray addObject:LONGLONG2NUM(picture.user.userId)];
+  [mulArray addObject:SAFESTR(picture.pictureDescription)];
+  [mulArray addObject:SAFESTR(picture.location)];
+  [mulArray addObject:LONGLONG2STR(picture.takePicDateL)];
+  [mulArray addObject:INT2STR(picture.width)];
+  [mulArray addObject:INT2STR(picture.height)];
+  NSString *sql =@"INSERT INTO TB_RiddingPicture (riddingid, latitude,longtitude,filename,userid,description,location,takepicdate,width,height) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    return [self.sqlUtil dealData:sql paramArray:mulArray];
 }
 
--(NSArray*)getRiddingPicture:riddingId userId:(NSString*)userId{
+-(NSArray*)getRiddingPicture:(long long)riddingId userId:(long long)userId{
   [self.sqlUtil readyDatabse];
-  NSString *sql = [NSString stringWithFormat:@" select * from riddingpicture where riddingid =%@ and userid=%@ ;",riddingId,userId];
+  NSString *sql = [NSString stringWithFormat:@"select * from TB_RiddingPicture where riddingid =%lld and userid=%lld ;",riddingId,userId];
   NSMutableArray *mulArray=[self.sqlUtil selectData:sql resultColumns:columCount];
   if (!mulArray) {
     return nil;
@@ -49,25 +59,25 @@ static RiddingPictureDao *riddingPictureDao=nil;
   NSMutableArray *riddingPictures=[[NSMutableArray alloc]init];
   for(NSArray *row in mulArray){
     RiddingPicture *picture=[[RiddingPicture alloc]init];
-    picture.dbId=[row objectAtIndex:0];
-    picture.riddingId=[row objectAtIndex:1];
+    picture.dbId=[[row objectAtIndex:0]longLongValue];
+    picture.riddingId=[[row objectAtIndex:1]longLongValue];
     picture.latitude=[[row objectAtIndex:2]doubleValue];
     picture.longtitude=[[row objectAtIndex:3]doubleValue];
     picture.fileName=[row objectAtIndex:4];
-    picture.userId=[row objectAtIndex:5];
-    if([row count]==7){
-      picture.text=[row objectAtIndex:6];
-    }else{
-      picture.text=@"描述";
-    }
+    picture.user.userId=[[row objectAtIndex:5]longLongValue];
+    picture.pictureDescription=[row objectAtIndex:6];
+    picture.location=[row objectAtIndex:7];
+    picture.takePicDateL=[[row objectAtIndex:8]longLongValue];
+    picture.width=[[row objectAtIndex:9]intValue];
+    picture.height=[[row objectAtIndex:10]intValue];
     [riddingPictures addObject:picture];
   }
   return [riddingPictures copy];
 }
 
--(int)getMaxRiddingPictureId:riddingId userId:(NSString*)userId{
+-(long long)getMaxRiddingPictureId:(long long)riddingId userId:(long long)userId{
   [self.sqlUtil readyDatabse];
-  NSString *sql = [NSString stringWithFormat:@" select max(id) from riddingpicture where riddingid = %@ and userid= %@ ",riddingId,userId];
+  NSString *sql = [NSString stringWithFormat:@" select max(id) from TB_RiddingPicture where riddingid = %lld and userid= %lld ",riddingId,userId];
   NSMutableArray *mulArray=[self.sqlUtil selectData:sql resultColumns:1];
   if (!mulArray) {
     return -1;
@@ -78,20 +88,21 @@ static RiddingPictureDao *riddingPictureDao=nil;
   return -1;
 }
 
--(BOOL)deleteRiddingPicture:riddingId userId:(NSString*)userId dbId:(NSString*)dbId{
+-(BOOL)deleteRiddingPicture:(long long)riddingId userId:(long long)userId dbId:(long long)dbId{
   [self.sqlUtil readyDatabse];
-  NSString *sql = [NSString stringWithFormat:@"delete from riddingpicture where riddingid = %@ and userid= %@ and id= %@",riddingId,userId,dbId];
+  NSString *sql = [NSString stringWithFormat:@"delete from TB_RiddingPicture where riddingid = %lld and userid= %lld and id= %lld",riddingId,userId,dbId];
   return [self.sqlUtil dealData:sql paramArray:nil];
 }
 
--(BOOL)updateRiddingPictureText:(NSString*)text dbId:(NSString*)dbId location:(NSString*)location{
+-(BOOL)updateRiddingPictureText:(NSString*)pictureDescription dbId:(long long)dbId{
   [self.sqlUtil readyDatabse];
-  NSString *sql = [NSString stringWithFormat:@"update riddingpicture set text = '%@' and location= '%@' where id= %@",text,location,dbId];
-  return [self.sqlUtil dealData:sql paramArray:nil];
+  NSArray *paramArray=[[NSArray alloc]initWithObjects:SAFESTR(pictureDescription), nil];
+  NSString *sql = [NSString stringWithFormat:@"update TB_RiddingPicture set description = ? where id= %lld",dbId];
+  return [self.sqlUtil dealData:sql paramArray:paramArray];
 }
 
 
--(int)getNextDbId:(NSString*)riddingId userId:(NSString*)userId{
+-(int)getNextDbId:(long long)riddingId userId:(long long)userId{
   int dbId= [[RiddingPictureDao getSinglton] getMaxRiddingPictureId:riddingId userId:userId];
   return dbId+1;
 }

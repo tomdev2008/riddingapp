@@ -27,8 +27,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.barView.titleLabel.text=@"设置";
+  self.hasLeftView=TRUE;
+  [self.barView.leftButton setTitle:@"设置" forState:UIControlStateNormal];
+  [self.barView.leftButton setTitle:@"设置" forState:UIControlStateHighlighted];
+  [self.barView.leftButton setHidden:NO];
     
     [self.uiTableView setBackgroundColor:[UIColor getColor:@"E6E6E6"]];
 }
@@ -68,7 +70,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     if(section == 0){
-        return 4;//推荐、帮助、升级
+        return 3;//推荐、帮助、升级
     }
     if(section == 1){
         return 1;//退出,注销
@@ -77,39 +79,37 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{	
-    static NSString *kCellID = @"CellID";
+  static NSString *kCellID = @"CellID";
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
 	if (cell == nil)
 	{
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID];
 	}
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    if([indexPath section]==0){
-        if([indexPath row]==0){
-            cell.textLabel.text=@"还没有骑行活动?";
-        }else if([indexPath row]==1){
-            cell.textLabel.text=@"喜欢这款应用吗?";
-        }else if([indexPath row]==2){
-            cell.textLabel.text=@"骑行者反馈";
-        }else if([indexPath row]==3){
-            cell.textLabel.text=@"查看新版本!有惊喜!";
-        }
-    }else if([indexPath section]==1){
-        if([indexPath row]==0){
-            cell.textLabel.text = @"退出";
-        }
+  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+  if([indexPath section]==0){
+    if([indexPath row]==0){
+      cell.textLabel.text=@"喜欢这款应用吗?";
+    }else if([indexPath row]==1){
+      cell.textLabel.text=@"骑行者反馈";
+    }else if([indexPath row]==2){
+      cell.textLabel.text=@"查看新版本!有惊喜!";
     }
-    cell.imageView.frame=CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 20, 20);
-    cell.textLabel.textColor = [UIColor getColor:@"303030"];
-    cell.textLabel.font = [UIFont systemFontOfSize:14];
-    return cell;
+  }else if([indexPath section]==1){
+    if([indexPath row]==0){
+      cell.textLabel.text = @"退出";
+    }
+  }
+  cell.imageView.frame=CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 20, 20);
+  cell.textLabel.textColor = [UIColor getColor:@"303030"];
+  cell.textLabel.font = [UIFont systemFontOfSize:14];
+  return cell;
 }
 
 -(void)quitButtonClick{
   SinaApiRequestUtil* requestUtil=[SinaApiRequestUtil getSinglton];
   [requestUtil quit];
-  [SFHFKeychainUtils deleteItemForUsername:staticInfo.user.userId andServiceName:@"riddingapp" error:nil];
-  staticInfo.user.userId=@"";
+  [SFHFKeychainUtils deleteItemForUsername:LONGLONG2STR(staticInfo.user.userId) andServiceName:@"riddingapp" error:nil];
+  staticInfo.user.userId=-1;
   staticInfo.user.accessToken=@"";
   staticInfo.user.authToken=@"";
   staticInfo.logined=false;
@@ -122,8 +122,9 @@
   [prefs removeObjectForKey:@"accessToken"];
   [prefs removeObjectForKey:@"riddingCount"];
   [prefs removeObjectForKey:@"accessUserId"];
+#warning 123
   RiddingViewController *view=[[RiddingViewController alloc]init];
-  RiddingAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+  RiddingAppDelegate *appDelegate = [RiddingAppDelegate shareDelegate];
   appDelegate.rootViewController=view;
   [self.navigationController popToRootViewControllerAnimated:NO];
   // 清空通知中心和badge
@@ -134,28 +135,29 @@
 
 - (void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if([indexPath section]==0){
-        if([indexPath row]==0){
-          MapCreateVCTL *mapCreate=[[MapCreateVCTL alloc]init];
-          mapCreate.delegate=self;
-          [self presentModalViewController:mapCreate animated:YES];
-        }else if([indexPath row]==1){  
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStoreComment]];
-        }else if([indexPath row]==2){
-          NSDictionary  *info=[[NSDictionary alloc]initWithObjectsAndKeys:staticInfo.user.userId,@"userid",staticInfo.user.name,@"nickname", nil];
-            [UMFeedback showFeedback:self withAppkey:@"4fb3ce805270152b53000128" dictionary:info];
-            self.navigationController.navigationBarHidden = NO;
-        }else if([indexPath row]==3){
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
-        }
-    }else if([indexPath section]==1){
-        if([indexPath row]==0){
-            SinaApiRequestUtil* requestUtil=[SinaApiRequestUtil getSinglton];
-            [requestUtil quit];
-            [self quitButtonClick];
-        }
+  if([indexPath section]==0){
+    if([indexPath row]==0){
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStoreComment]];
+      
+    }else if([indexPath row]==1){
+      NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+      SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, LONGLONG2NUM(staticInfo.user.userId), @"userid");
+      SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, staticInfo.user.name, @"nickname");
+      [UMFeedback showFeedback:self withAppkey:@"4fb3ce805270152b53000128" dictionary:dic];
+      self.navigationController.navigationBarHidden = NO;
+      
+    }else if([indexPath row]==2){
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
+      
     }
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+  }else if([indexPath section]==1){
+    if([indexPath row]==0){
+      SinaApiRequestUtil* requestUtil=[SinaApiRequestUtil getSinglton];
+      [requestUtil quit];
+      [self quitButtonClick];
+    }
+  }
+  [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 #pragma mark -
 #pragma mark Table Delegate Methods
@@ -166,10 +168,5 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
            editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath { 
     return UITableViewCellEditingStyleNone; 
-}
-#pragma mark -
-#pragma mark MapCreateVCTL delegate
-- (void)finishCreate:(MapCreateVCTL*)controller info:(MapCreateInfo*)info{
-  [controller dismissModalViewControllerAnimated:YES];
 }
 @end

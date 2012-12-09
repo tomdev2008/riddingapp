@@ -12,17 +12,26 @@
 #import "UP_EGORefreshTableHeaderView.h"
 #import "PublicDetailCell.h"
 #import "PublicDetailHeaderView.h"
-@interface PublicDetailViewController : BasicTableViewController<UP_EGORefreshTableHeaderDelegate,PublicDetailHeaderDelegate,TimeScrollerDelegate,PublicDetailCellDelegate>{
-  ActivityInfo *_info;
-  TimeScroller *_timeScroller;
+#import "Photos.h"
+@interface PublicDetailViewController : BasicTableViewController<UP_EGORefreshTableHeaderDelegate,PublicDetailHeaderDelegate,PublicDetailCellDelegate>{
   UP_EGORefreshTableHeaderView *_ego;
   PublicDetailHeaderView *_headerView;
   BOOL _isEGOUpReloading;
   BOOL _isTheEnd;
   BOOL _isLoading;
   NSMutableArray *_cellArray;
-  NSMutableDictionary *_contentViewCache;
+  Photos *_photos;
+  Ridding *_ridding;
+  NSArray *_localPhotos;
+  NSString *_extDateStr;
+  NSMutableDictionary *_cellPhotoDic;
+  long long _lastUpdateTime;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil info:(ActivityInfo*)info;
+@property (nonatomic) BOOL isMyFeedHome;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil
+               bundle:(NSBundle *)nibBundleOrNil
+                 ridding:(Ridding*)ridding
+             isMyHome:(BOOL)isMyHome;
 @end

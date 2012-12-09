@@ -18,7 +18,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+
     }
     return self;
 }
@@ -29,15 +29,29 @@
 }
 -(void)leftBtnClicked:(id)sender
 {
-  if(self.navigationController&&self){
+  if(self.hasLeftView){
+    [self showLeftView];
+  }else if(self.navigationController){
       [self.navigationController popViewControllerAnimated:YES];
   }
 }
+
+
+- (void)showLeftView{
+  if (_position==POSITION_RIGHT||_position==POSITION_MID) {
+    [RiddingAppDelegate moveLeftNavgation];
+  }else{
+    [RiddingAppDelegate moveMidNavgation];
+  }
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestCallBack:) name:kRequestNotification object:nil];
     self.barView.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"navbg.png"]];
+    self.barView.delegate=self;
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -53,13 +67,13 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)initHUD{
-  if(!_HUD){
-    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:_HUD];
-    _HUD.delegate = self;
-  }
-}
+//- (void)initHUD{
+//  if(!_HUD){
+//    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+//    [self.view addSubview:_HUD];
+//    _HUD.delegate = self;
+//  }
+//}
 - (void)myTask {
 	// Do something usefull in here instead of sleeping ...
 	sleep(3000);

@@ -10,7 +10,7 @@
 #import "StaticInfo.h"
 #import "BasicViewController.h"
 #import "MapCreateVCTL.h"
-@interface UserSettingViewController : BasicViewController<UITableViewDelegate,UITableViewDataSource,MapCreateVCTLDelegate>{
+@interface UserSettingViewController : BasicViewController<UITableViewDelegate,UITableViewDataSource>{
     StaticInfo *staticInfo;
 }
 @property (nonatomic, retain) IBOutlet UITableView *uiTableView;

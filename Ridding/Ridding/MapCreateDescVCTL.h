@@ -9,6 +9,7 @@
 #import "BasicViewController.h"
 #import "MapCreateInfo.h"
 #import "SVSegmentedControl.h"
+#import "Map.h"
 @class MapCreateDescVCTL;
 @protocol MapCreateDescVCTLDelegate <NSObject>
 
@@ -17,7 +18,7 @@
 @end
 
 @interface MapCreateDescVCTL : BasicViewController<UITextFieldDelegate>{
-    MapCreateInfo *_createInfo;
+  Map *_map;
   SVSegmentedControl *_redSC;
   BOOL _sendWeiBo;
 }
@@ -30,5 +31,5 @@
 
 @property(nonatomic,assign) id<MapCreateDescVCTLDelegate> delegate;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil info:(MapCreateInfo*)info;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil info:(Map*)info;
 @end

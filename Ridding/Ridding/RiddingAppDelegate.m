@@ -14,77 +14,81 @@
 #import "MobClick.h"
 #import "RequestUtil.h"
 #import "SqlUtil.h"
+#import "MapFix.h"
+#define moveSpeed 0.5
+
 @implementation RiddingAppDelegate
 @synthesize window = _window;
 @synthesize rootViewController = _rootViewController;
 @synthesize navController=_navController;
+@synthesize myLocationManager=_myLocationManager;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
   });
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+     _myLocationManager = [[CLLocationManager alloc] init];
+    [_myLocationManager setDelegate:self];
+    [_myLocationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    [_myLocationManager startUpdatingLocation];
+    if ([CLLocationManager headingAvailable])
+    {
+      _myLocationManager.headingFilter=5;
+    }
+    [_myLocationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    _myLocation=[[QQNRMyLocation alloc]init];
+    
+  });
   [MobClick startWithAppkey:YouMenAppKey reportPolicy:REALTIME channelId:nil];
   [MobClick checkUpdate];
-  [self initGolbalValue];
   [[ResponseCodeCheck getSinglton] checkConnect];
   //检查网络
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  self.navController = [[UINavigationController alloc]init];
-
+  
   [self setUserInfo];
-  self.rootViewController = [[RiddingViewController alloc]init];
-  [self.navController pushViewController:self.rootViewController animated:NO];
-  if([self canLogin]){
-    [[RequestUtil getSinglton] sendApns];
-    //如果新浪成功，并且authtoken有效
-    QQNRFeedViewController *FVC=[[QQNRFeedViewController alloc]initWithUser:[StaticInfo getSinglton].user exUser:nil];
-    FVC.isMyFeedHome=TRUE;
-    [self.navController pushViewController:FVC animated:NO];
-    [StaticInfo getSinglton].logined=true;
-  }
+  
+  self.rootViewController=[[PublicViewController alloc]init];
+  
+  self.navController = [[UINavigationController alloc]initWithRootViewController:self.rootViewController];
+  
   self.navController.navigationBar.hidden=YES;
   self.window.rootViewController = self.navController;
+  
+  self.leftViewController=[[BasicLeftViewController alloc]init];
+  self.leftViewController.view.frame = CGRectMake(0, 20, self.leftViewController.view.frame.size.width, self.leftViewController.view.frame.size.height);
+  
+  [self.window addSubview:self.leftViewController.view];
+  [self.window addSubview:self.navController.view];
+  
   [self.window makeKeyAndVisible];
   
   return YES;
 }
 
-
-- (void)initGolbalValue{
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  NSString *versionStr = [[[NSBundle mainBundle]infoDictionary ]objectForKey:(NSString*)kCFBundleVersionKey];
-  //1.1版本增加字段
-  if ([versionStr isEqualToString:@"1.1"]&&![defaults objectForKey:@"updated"]) {
-    [[SqlUtil getSinglton]readyDatabse];
-    BOOL succ1= [[SqlUtil getSinglton]dealData:@"ALTER TABLE riddingpicture ADD COLUMN text varchar(512)" paramArray:nil];
-    BOOL succ2= [[SqlUtil getSinglton]dealData:@"ALTER TABLE riddingpicture ADD COLUMN location varchar(127)" paramArray:nil];
-    if(succ1&&succ2){
-      [defaults setValue:@"true" forKey:@"updated"];
-    }
-  }
-}
-
 -(void)setUserInfo{
   StaticInfo *staticInfo=[StaticInfo getSinglton];
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  staticInfo.user.userId = [prefs stringForKey:@"userId"];
+  staticInfo.user.userId = [[prefs stringForKey:@"userId"]longLongValue];
   staticInfo.user.authToken=[prefs stringForKey:@"authToken"];
-  staticInfo.user.accessUserId = [prefs stringForKey:@"accessUserId"];
+  staticInfo.user.sourceUserId = [[prefs stringForKey:@"accessUserId"]longLongValue];
   staticInfo.user.accessToken=[prefs stringForKey:@"accessToken"];
   staticInfo.user.sourceType = [prefs integerForKey:@"sourceType"];
+  
 }
 
 -(bool)canLogin{
     StaticInfo* staticInfo=[StaticInfo getSinglton];
     RequestUtil* requestUtil=[RequestUtil getSinglton];
     NSDictionary *userProfileDic = [requestUtil getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType];
+  User *user=[[User alloc]initWithJSONDic:[userProfileDic objectForKey:@"user"]];
     //如果新浪成功，并且authtoken有效
     if(staticInfo.user.accessToken!=nil&&userProfileDic!=nil){
-        staticInfo.user.name=[userProfileDic objectForKey:@"nickname"];
-        staticInfo.user.bavatorUrl=[userProfileDic objectForKey:@"bavatorurl"];
-        staticInfo.user.savatorUrl=[userProfileDic objectForKey:@"savatorurl"];
-        staticInfo.user.totalDistance=[userProfileDic objectForKey:@"totalDistance"];
-        staticInfo.user.nowRiddingCount=[[userProfileDic objectForKey:@"riddingCount"]intValue];
+        staticInfo.user.name=user.name;
+        staticInfo.user.bavatorUrl=user.bavatorUrl;
+        staticInfo.user.savatorUrl=user.savatorUrl;
+        staticInfo.user.totalDistance=user.totalDistance;
+        staticInfo.user.nowRiddingCount=user.nowRiddingCount;
         return true;
     }
     return false;
@@ -113,6 +117,72 @@
 {
 }
 
+
+#pragma mark locationManager delegate functions
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error{
+  _canGetLocation=FALSE;
+  [[NSNotificationCenter defaultCenter] postNotificationName:kFailUpdateMyLocationNotification object:self userInfo:nil];
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation{
+  _canGetLocation=TRUE;
+  NSDictionary *myLocationDic=[[RequestUtil getSinglton] getMapFix:_myLocationManager.location.coordinate.latitude longtitude:_myLocationManager.location.coordinate.longitude];
+  MapFix *mapFix=[[MapFix alloc]initWithJSONDic:[myLocationDic objectForKey:@"mapfix"]];
+  
+  CLLocation *location;
+  if(mapFix.realLatitude&&mapFix.realLongtitude){
+    location=[[CLLocation alloc]initWithLatitude:mapFix.realLatitude longitude:mapFix.realLongtitude];
+  }else{
+    location=_myLocationManager.location;
+  }
+  CLGeocoder *geoCoder=[[CLGeocoder alloc]init];
+  [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+    if(placemarks){
+      CLPlacemark *mark=[placemarks objectAtIndex:0];
+      _myLocation.name=mark.name;
+      if(mark.locality){
+         _myLocation.city=mark.locality;
+      }else{
+        _myLocation.city=mark.subLocality;
+      }
+     
+      _myLocation.latitude=location.coordinate.latitude;
+      _myLocation.longtitude=location.coordinate.longitude;
+      _myLocation.location=[[CLLocation alloc]initWithLatitude:_myLocation.latitude longitude:_myLocation.longtitude];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFinishUpdateMyLocationNotification object:self userInfo:nil];
+  }];
+}
+- (BOOL)canGetLocation{
+  return _canGetLocation;
+}
+
+- (CLLocationManager*)myLocationManager{
+  return _myLocationManager;
+}
+
+- (QQNRMyLocation*)myLocation{
+  return _myLocation;
+}
+
+- (NSString*)myLocationCity{
+  return _myLocation.city;
+}
+
+- (void)startUpdateMyLocation{
+  [_myLocationManager startUpdatingLocation];
+}
+
+- (void)startUpdateMyLocationHeading{
+  [_myLocationManager startUpdatingHeading];
+}
+
++(RiddingAppDelegate*)shareDelegate{
+  return (RiddingAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -151,6 +221,62 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+}
+
+
++ (void)moveMidNavgation{
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  //往左移动
+  [UIView animateWithDuration:moveSpeed
+                   animations:^{
+                     delegate.navController.view.frame = CGRectMake(LeftBarMoveWidth,
+                                                                    delegate.navController.view.frame.origin.y,
+                                                                    delegate.navController.view.frame.size.width,
+                                                                    delegate.navController.view.frame.size.height);
+                     
+                   }
+                   completion:^(BOOL finish){
+                       ((BasicViewController*)delegate.navController.visibleViewController).position=POSITION_MID;
+                   }];
+  
+}
+
++ (void)moveLeftNavgation{
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  //往左移动
+  [UIView animateWithDuration:moveSpeed
+                   animations:^{
+                     delegate.navController.view.frame = CGRectMake(0,
+                                                                    delegate.navController.view.frame.origin.y,
+                                                                    delegate.navController.view.frame.size.width,
+                                                                    delegate.navController.view.frame.size.height);
+                     
+                   }
+                   completion:^(BOOL finish){
+                     ((BasicViewController*)delegate.navController.visibleViewController).position=POSITION_LEFT;
+                   }];
+}
+
++ (void)moveRightNavgation{
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  //往右移动
+  [UIView animateWithDuration:moveSpeed
+                   animations:^{
+                     delegate.navController.view.frame = CGRectMake(SCREEN_WIDTH,
+                                                                    delegate.navController.view.frame.origin.y,
+                                                                    delegate.navController.view.frame.size.width,
+                                                                    delegate.navController.view.frame.size.height);
+                     
+                   }
+                   completion:^(BOOL finish){
+                      ((BasicViewController*)delegate.navController.visibleViewController).position=POSITION_RIGHT;
+                   }];
+}
+
++ (void)popAllNavgation{
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  [delegate.navController popToRootViewControllerAnimated:NO];
+  [delegate.navController popViewControllerAnimated:NO];
 }
 
 @end

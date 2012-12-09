@@ -75,8 +75,8 @@
 
 - (NSString *)photosPath {
    if (photosPath_==nil) {
-     if(self.riddingId){
-         photosPath_ = [[self documentPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"images%@_%@",[StaticInfo getSinglton].user.userId,self.riddingId]];
+     if(self.riddingId>0){
+         photosPath_ = [[self documentPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"images%lld_%lld",[StaticInfo getSinglton].user.userId,self.riddingId]];
      }else{
        photosPath_ = [[self documentPath] stringByAppendingPathComponent:@"images"];
      }
@@ -97,8 +97,8 @@
 
 - (NSString *)thumbnailsPath {
    if ( ! thumbnailsPath_ ) {
-     if(self.riddingId){
-       thumbnailsPath_ = [[self documentPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"thumbnails%@_%@",[StaticInfo getSinglton].user.userId,self.riddingId]];
+     if(self.riddingId>0){
+       thumbnailsPath_ = [[self documentPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"thumbnails%lld_%lld",[StaticInfo getSinglton].user.userId,self.riddingId]];
      }else{
        thumbnailsPath_ = [[self documentPath] stringByAppendingPathComponent:@"images"];
      }
@@ -301,8 +301,8 @@
    [operation release];
 }
 
-- (NSString*)getFileName:(NSString*)aRiddingId userId:(NSString*)userId nextDbId:(int)nextDbId{
-  return [NSString stringWithFormat:@"%@_%@_%d",aRiddingId,userId,nextDbId];
+- (NSString*)getFileName:(long long)aRiddingId userId:(long long)userId dateStr:(NSString*)dateStr{
+  return [NSString stringWithFormat:@"%lld_%lld_%@",aRiddingId,userId,dateStr];
 }
 
 

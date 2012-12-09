@@ -87,7 +87,7 @@
         CTFrameDraw(frame, context);
         CGContextRestoreGState(context);
         CGPathRelease(pathRef);
-        CFRelease(framesetter);
+    //    CFRelease(framesetter);
         UIGraphicsPushContext(context);
 
     }

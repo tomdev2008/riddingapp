@@ -13,194 +13,120 @@
 #import "DetailTextView.h"
 #import "UIImage+Utilities.h"
 #import "QiNiuUtils.h"
-@interface CompositeSubviewBasedApplicationCellContentView : UIView
-{
-  QQNRFeedTableCell *_cell;
-  CGFloat _height;
-}
-- (CGFloat)getCellHeight;
-@end
-
-@implementation CompositeSubviewBasedApplicationCellContentView
-
-- (id)initWithFrame:(CGRect)frame cell:(QQNRFeedTableCell *)cell
-{
-  if (self = [super initWithFrame:frame])
-  {
-    _cell = cell;
-    _height=0;
-    self.opaque = YES;
-    self.backgroundColor = _cell.backgroundColor;
-    [self initCell];
-    [self inputStackView];
-  }
-  
-  return self;
-}
-
-- (void)drawRect:(CGRect)rect
-{
-  NSString *begin=@"起点:";
-  [begin drawInRect:CGRectMake(65, 315, 35, 20) withFont:[UIFont fontWithName:@"Arial" size:12] lineBreakMode:UILineBreakModeWordWrap alignment:NSTextAlignmentCenter];
-  [_cell.info.beginLocation drawInRect:CGRectMake(105, 315, 200, 20) withFont:[UIFont fontWithName:@"Arial" size:12] lineBreakMode:UILineBreakModeWordWrap alignment:NSTextAlignmentLeft];
-  NSString *end=@"终点:";
-  [end drawInRect:CGRectMake(65, 330, 35, 20) withFont:[UIFont fontWithName:@"Arial" size:12] lineBreakMode:UILineBreakModeWordWrap alignment:NSTextAlignmentCenter];
-  [_cell.info.endLocation drawInRect:CGRectMake(105, 330, 200, 20) withFont:[UIFont fontWithName:@"Arial" size:12] lineBreakMode:UILineBreakModeWordWrap alignment:NSTextAlignmentLeft];
-  [_cell.info.leaderName drawInRect:CGRectMake(5, 60, 50, 20) withFont:[UIFont fontWithName:@"Arial" size:12] lineBreakMode:UILineBreakModeWordWrap alignment:NSTextAlignmentCenter];
-  UIImage *divLineImage = [UIImage imageNamed:@"分割线.png"];
-  [divLineImage drawInRect:CGRectMake(self.frame.origin.x, self.frame.size.height-2 , self.frame.size.width, 2)];
-}
-
-- (void)initCell{
-  if(_cell.info){
-    UIButton *avatorBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    avatorBtn.frame=CGRectMake(10, 20, 38, 38);
-    [avatorBtn addTarget:self action:@selector(leaderViewTap:) forControlEvents:UIControlEventTouchUpInside];
-    avatorBtn.layer.cornerRadius=5;
-    avatorBtn.layer.masksToBounds=YES;
-    avatorBtn.showsTouchWhenHighlighted=YES;
-    [avatorBtn setImage:UIIMAGE_FROMPNG(@"duser") forState:UIControlStateNormal];
-    UIImage *image=[[SDImageCache sharedImageCache]imageFromKey:_cell.info.leaderSAvatorUrl];
-    if(!image){
-      image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:_cell.info.leaderSAvatorUrl]]];
-      [[SDImageCache sharedImageCache] storeImage:image forKey:_cell.info.leaderSAvatorUrl];
-    }
-    [avatorBtn setImage:image forState:UIControlStateNormal];
-    [self addSubview:avatorBtn];
-    [self setTitle];
-  }
-  UILabel *label=[[UILabel alloc]initWithFrame:CGRectMake(55, 185, 240, 20)];
-  label.text=@"图片加载中...";
-  label.textAlignment=UITextAlignmentCenter;
-  label.font=[UIFont fontWithName:@"Arial" size:13];
-  label.textColor=[UIColor blackColor];
-  label.backgroundColor=[UIColor clearColor];
-  [self addSubview:label];
-  
-}
-
-- (void)setStatus{
-  UILabel *label=[[UILabel alloc]initWithFrame:CGRectMake(245, 75, 50, 20)];
-  UITapGestureRecognizer *labelTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(statusTap:)];
-  [label addGestureRecognizer:labelTap];
-  label.userInteractionEnabled=YES;
-  label.layer.cornerRadius=5;
-  label.layer.masksToBounds=YES;
-  label.textAlignment=UITextAlignmentCenter;
-  label.font=[UIFont fontWithName:@"Arial" size:11];
-  label.textColor=[UIColor whiteColor];
-  if (![_cell.info isEnd]) {
-    label.text=@"进行中";
-    label.backgroundColor=[UIColor getColor:ColorOrange];
-  }else{
-    label.text=@"已结束";
-    label.backgroundColor=[UIColor getColor:ColorBlue];
-  }
-  [self addSubview:label];
-}
-
-- (void)setTitle{
-  DetailTextView *detailTextView = [[DetailTextView alloc]initWithFrame:CGRectMake(75, 20, 260, 20)];
-  detailTextView.backgroundColor=[UIColor clearColor];
-  NSString *userCountStr=[NSString stringWithFormat:@" 共%d人 ",_cell.info.userCount];
-  
-  [detailTextView setText:[NSString stringWithFormat:@"活动: %@   骑友:%@",_cell.info.name,userCountStr] WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor blackColor]];
-  if(![_cell.info isEnd]){
-    [detailTextView setKeyWordTextString:_cell.info.name WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorOrange]];
-    [detailTextView setKeyWordTextString:userCountStr WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorOrange]];
-  }else{
-    [detailTextView setKeyWordTextString:_cell.info.name WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorBlue]];
-    [detailTextView setKeyWordTextString:userCountStr WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorBlue]];
-  }
-  [self addSubview:detailTextView];
-  DetailTextView *detailTextView1 = [[DetailTextView alloc]initWithFrame:CGRectMake(75, 40, 260, 20)];
-  detailTextView1.backgroundColor=[UIColor clearColor];
-  NSString *distance=[NSString stringWithFormat:@"%0.2fKM",_cell.info.distance];
-  [detailTextView1 setText:[NSString stringWithFormat:@"行程: %@",distance] WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor blackColor]];
-  if(![_cell.info isEnd]){
-    [detailTextView1 setKeyWordTextString:distance WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorOrange]];
-  }else{
-    [detailTextView1 setKeyWordTextString:distance WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorBlue]];
-  }
-  [self addSubview:detailTextView1];
-  _height+=80;
-}
-
-- (void) inputStackView{
-  SWSnapshotStackView *stackView=[[SWSnapshotStackView alloc]initWithFrame:CGRectMake(55, 55, 260, 260)];
-  stackView.contentMode=UIViewContentModeRedraw;
-  stackView.displayAsStack = YES;
-  stackView.backgroundColor=[UIColor clearColor];
-  
-  NSString *urlString=[QiNiuUtils getUrlBySize:stackView.frame.size url:_cell.info.mapAvatorPicUrl type:DEDEFAULT];
-  UIImage *image=[[SDImageCache sharedImageCache]imageFromKey:urlString];
-  if(!image){
-    image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]]];
-    [[SDImageCache sharedImageCache] storeImage:image forKey:urlString];
-  }
-//  CGFloat width= CGImageGetWidth([image CGImage]);
-//  CGFloat height= CGImageGetHeight([image CGImage]);
-//  CGRect frame=stackView.frame;
-//  frame.size.width=width/height*frame.size.height;
-//  stackView.frame=frame;
-  stackView.image=[image resizedImage:stackView.frame.size imageOrientation:UIImageOrientationUp];
-  [self addSubview:stackView];
-  [self setStatus];
-  _height+=260;
-}
-
-- (void)leaderViewTap:(id)selector{
-  [_cell leaderViewTap:selector];
-}
-
-
-- (CGFloat)getCellHeight{
-  return _height+20;
-}
-
-
-- (void)statusTap:(id)selector{
-  [_cell statusTap:selector];
-}
-
-@end
-
 
 
 @implementation QQNRFeedTableCell
 @synthesize delegate=_delegate;
-@synthesize info=_info;
+@synthesize ridding=_ridding;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-}
-
-- (CGFloat)getCellHeight{
-  return [(CompositeSubviewBasedApplicationCellContentView*)cellContentView getCellHeight];
-}
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier info:(ActivityInfo*)info
 {
   self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
   if (self) {
-    self.backgroundColor=[UIColor clearColor];
-    self.info=info;
+    // Initialization code
   }
   return self;
 }
 
-- (void)leaderViewTap:(id)selector{
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+  [super setSelected:selected animated:animated];
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier ridding:(Ridding*)ridding
+{
+  self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+  if (self) {
+    self.ridding=ridding;
+  }
+  return self;
+}
+
+
+- (void)initContentView{
+  
+  self.avatorBtn.layer.cornerRadius=5;
+  self.avatorBtn.layer.masksToBounds=YES;
+  self.avatorBtn.showsTouchWhenHighlighted=YES;
+  [self.avatorBtn setImage:UIIMAGE_FROMPNG(@"duser") forState:UIControlStateNormal];
+  NSString *url=[QiNiuUtils getUrlBySize:self.avatorBtn.frame.size url:_ridding.leaderUser.savatorUrl type:QINIUMODE_DESHORT];
+  UIImage *image=[[SDImageCache sharedImageCache]imageFromKey:url];
+  if(!image){
+    image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
+    [[SDImageCache sharedImageCache] storeImage:image forKey:url];
+  }
+  [self.avatorBtn setImage:image forState:UIControlStateNormal];
+  
+  
+  [self.nameLabel setText:[NSString stringWithFormat:@"活动: %@",_ridding.riddingName] WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor blackColor]];
+  
+  
+  NSString *distance=[NSString stringWithFormat:@"%0.2fKM",_ridding.map.distance*1.0/1000];
+  [self.distanceLabel setText:[NSString stringWithFormat:@"行程: %@",distance] WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor blackColor]];
+  
+  NSString *userCountStr=[NSString stringWithFormat:@"骑友 : 共%d人 ",_ridding.userCount];
+  [self.teamCountLabel setText:userCountStr WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor blackColor]];
+  
+  NSString *beginLocationStr=[NSString stringWithFormat:@"起点 : %@",_ridding.map.beginLocation];
+  [self.beginLocationLabel setText:beginLocationStr WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor blackColor]];
+  
+  NSString *endLocationStr=[NSString stringWithFormat:@"终点 : %@",_ridding.map.endLocation];
+  [self.endLocationLabel setText:endLocationStr WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor blackColor]];
+  
+  
+  
+  if(![_ridding isEnd]){
+    [self.nameLabel setKeyWordTextString:_ridding.riddingName WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorOrange]];
+    [self.distanceLabel setKeyWordTextString:distance WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorOrange]];
+    [self.teamCountLabel setKeyWordTextString:[NSString stringWithFormat:@"%d",_ridding.userCount] WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorOrange]];
+
+    [self.beginLocationLabel setKeyWordTextString:[NSString stringWithFormat:@"%@",_ridding.map.beginLocation] WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorOrange]];
+
+    [self.endLocationLabel setKeyWordTextString:[NSString stringWithFormat:@"%@",_ridding.map.endLocation] WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorOrange]];
+
+  }else{
+    [self.nameLabel setKeyWordTextString:_ridding.riddingName WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorBlue]];
+    [self.distanceLabel setKeyWordTextString:distance WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorBlue]];
+    [self.teamCountLabel setKeyWordTextString:[NSString stringWithFormat:@"%d",_ridding.userCount] WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorBlue]];
+    [self.beginLocationLabel setKeyWordTextString:[NSString stringWithFormat:@"%@",_ridding.map.beginLocation] WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorBlue]];
+    [self.endLocationLabel setKeyWordTextString:[NSString stringWithFormat:@"%@",_ridding.map.endLocation] WithFont:[UIFont fontWithName:@"Arial" size:12] AndColor:[UIColor getColor:ColorBlue]];
+
+  }
+  
+  self.stackView.contentMode=UIViewContentModeRedraw;
+  self.stackView.displayAsStack = YES;
+  self.stackView.backgroundColor=[UIColor clearColor];
+  NSString *urlString=[QiNiuUtils getUrlBySize:self.stackView.frame.size url:_ridding.map.avatorPicUrl type:QINIUMODE_DEDEFAULT];
+  image=[[SDImageCache sharedImageCache]imageFromKey:urlString];
+  if(!image){
+    image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]]];
+    [[SDImageCache sharedImageCache] storeImage:image forKey:urlString];
+  }
+  [self.stackView setImage:image];
+  
+  
+  UITapGestureRecognizer *labelTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(statusTap:)];
+  [self.statusLabel addGestureRecognizer:labelTap];
+  self.statusLabel.userInteractionEnabled=YES;
+  self.statusLabel.layer.cornerRadius=5;
+  self.statusLabel.layer.masksToBounds=YES;
+  self.statusLabel.textAlignment=UITextAlignmentCenter;
+  self.statusLabel.font=[UIFont fontWithName:@"Arial" size:11];
+  self.statusLabel.textColor=[UIColor whiteColor];
+  if (![_ridding isEnd]) {
+    self.statusLabel.text=@"进行中";
+    self.statusLabel.backgroundColor=[UIColor getColor:ColorOrange];
+  }else{
+    self.statusLabel.text=@"已结束";
+    self.statusLabel.backgroundColor=[UIColor getColor:ColorBlue];
+  }
+  
+ // [self setNeedsDisplay];
+}
+
+- (IBAction)leaderViewTap:(id)selector
+{
   if ([self.delegate respondsToSelector:@selector(leaderTap:)]) {
-    [self.delegate performSelector:@selector(leaderTap:) withObject:_info];
+    [self.delegate performSelector:@selector(leaderTap:) withObject:_ridding];
   }
 }
 
@@ -211,15 +137,10 @@
   }
 }
 
-
--(UIView*)resetContentView:(BOOL)needNew;
+- (void)drawRect:(CGRect)rect
 {
-  if(!cellContentView||needNew){
-    cellContentView = [[CompositeSubviewBasedApplicationCellContentView alloc] initWithFrame:CGRectInset(self.contentView.bounds, 0.0, 1.0) cell:self];
-    cellContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    cellContentView.contentMode = UIViewContentModeRedraw;
-    [cellContentView setNeedsDisplay];
-  }
-  return cellContentView;
+//  UIImage *divLineImage = [UIImage imageNamed:@"分割线.png"];
+//  [divLineImage drawInRect:CGRectMake(self.frame.origin.x, self.frame.size.height-2 , self.frame.size.width, 2)];
 }
+
 @end

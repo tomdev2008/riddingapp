@@ -9,39 +9,37 @@
 #import "User.h"
 
 @implementation User
-@synthesize avator;
-@synthesize accessToken;
-@synthesize statusTitle;
-@synthesize annotation;
-@synthesize name;
-@synthesize userId;
-@synthesize bavatorUrl;
-@synthesize savatorUrl;
-@synthesize accessUserId;
-@synthesize totalDistance;
-@synthesize speed;
-@synthesize status;
-@synthesize userRole;
-@synthesize sourceType;
-@synthesize authToken=_authToken;
-@synthesize isLeader;
-@synthesize nowRiddingCount=_nowRiddingCount;
 - (id)init
 {
-    self = [super init];
-    if (self) {
-        self.name=@"";
-        self.savatorUrl=nil;
-        self.bavatorUrl=nil;
-        speed=0;
-        status=0;
-        sourceType=SOURCE_SINA;
-        self.isLeader=FALSE;
-        self.nowRiddingCount=0;
-        
-    }
-    
+  self = [super init];
+  if (self) {
+  }
+  
     return self;
+}
+
+
+- (id)initWithJSONDic:(NSDictionary *)jsonDic{
+  self=[super init];
+  if(self){
+    self.accessToken=[jsonDic objectForKey:@"accesstoken"];
+    self.name=[jsonDic objectForKey:@"username"];
+    self.userId=[[jsonDic objectForKey:@"userid"]longLongValue];
+    self.sourceUserId=[[jsonDic objectForKey:@"sourceid"]longLongValue];
+    self.totalDistance=[[jsonDic objectForKey:@"totaldistance"]intValue];
+    self.sourceType=[[jsonDic objectForKey:@"sourcetype"]intValue];
+    self.nowRiddingCount=[[jsonDic objectForKey:@"nowriddingcount"]intValue];
+    self.bavatorUrl=[jsonDic objectForKey:@"bavatorurl"];
+    self.savatorUrl=[jsonDic objectForKey:@"savatorurl"];
+    self.authToken=[jsonDic objectForKey:@"authtoken"];
+    self.isLeader=[[jsonDic objectForKey:@"isleader"]boolValue];
+    self.userRole=[[jsonDic objectForKey:@"userrole"]intValue];
+    self.status=[[jsonDic objectForKey:@"status"]intValue];
+    self.timeBefore=[jsonDic objectForKey:@"timebefore"];
+    self.latitude=[[jsonDic objectForKey:@"latitude"]doubleValue];
+    self.longtitude=[[jsonDic objectForKey:@"longtitude"]doubleValue];
+  }
+  return self;
 }
 
 -(UIImage*)getSavator{
@@ -91,20 +89,8 @@
 }
 
 -(NSString*) getTotalDistanceToKm{
-  float distance=[self.totalDistance longLongValue]*1.0/1000;
+  float distance=self.totalDistance*1.0/1000;
   return [NSString stringWithFormat:@"%0.2lf km",distance];
-}
-
--(void)setProperties:(NSDictionary*)dic{
-  SET_PROPERTY([dic objectForKey:@"userid"], self.userId);
-  SET_PROPERTY([dic objectForKey:@"username"], self.name);
-  SET_PROPERTY([dic objectForKey:@"nickname"], self.name);
-  SET_PROPERTY([dic objectForKey:@"bavatorurl"], self.bavatorUrl);
-  SET_PROPERTY([dic objectForKey:@"savatorurl"], self.savatorUrl);
-  SET_PROPERTY([dic objectForKey:@"totalDistance"], self.totalDistance);
-  SET_PROPERTY([dic objectForKey:@"sourceid"], self.accessUserId);
-  SET_PROPERTY([dic objectForKey:@"accessToken"], self.accessToken);
-  self.nowRiddingCount=[[dic objectForKey:@"riddingCount"] intValue];
 }
 
 @end

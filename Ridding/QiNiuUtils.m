@@ -12,7 +12,7 @@
 
 
 + (NSString *) getUrlBySize:(CGSize)size url:(NSString*)url type:(QINIUMODE)type{
-  return [NSString stringWithFormat:@"%@/w/%0.0f/h/%0.0f",[self getUrlByType:url type:type],size.width,size.height];
+  return  [NSString stringWithFormat:@"%@/w/%0.0f/h/%0.0f",[self getUrlByType:url type:type],size.width*[[UIScreen mainScreen] scale],size.height*[[UIScreen mainScreen] scale]];
 }
 
 + (NSURL *) getUrlBySizeToUrl:(CGSize)size url:(NSString*)url type:(QINIUMODE)type{
@@ -22,9 +22,9 @@
 
 + (NSString*) getUrlByType:(NSString*)url type:(QINIUMODE)type{
   switch (type) {
-    case DEDEFAULT:
+    case QINIUMODE_DEDEFAULT:
       return [NSString stringWithFormat:@"%@?imageView/1",url];
-    case DESHORT:
+    case QINIUMODE_DESHORT:
       return [NSString stringWithFormat:@"%@?imageView/2",url];
     default:
       break;

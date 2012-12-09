@@ -14,6 +14,9 @@
 #import "UIColor+XMin.h"
 #import "UIImage+Utilities.h"
 #import "ImageUtil.h"
+#import "QQNRMyLocation.h"
+#import "Map.h"
+#import "SVProgressHUD.h"
 @interface MapCreateVCTL ()
 
 @end
@@ -31,13 +34,6 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  
-  _myLocation = [[CLLocationManager alloc] init];
-  [_myLocation setDelegate:self];
-  [_myLocation setDesiredAccuracy:kCLLocationAccuracyBest];
-  [_myLocation startUpdatingLocation];
-  
-  [self initHUD];
   
   UITapGestureRecognizer *viewTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(mapViewClick:)]; //动态添加点击操作
   [self.mapView addGestureRecognizer:viewTap];
@@ -73,7 +69,7 @@
   self.barView.rightButton.frame=CGRectMake(240,6, 70,31);
   [self.barView.rightButton setHidden:NO];
   self.barView.titleLabel.text=@"画路线";
-  _createInfo=[[MapCreateInfo alloc]init];
+  _map=[[Map alloc]init];
   
   self.myLocationBtn.layer.cornerRadius=10;
   self.myLocationBtn.layer.masksToBounds=YES;
@@ -83,18 +79,25 @@
   self.clearBtn.frame=CGRectMake(self.clearBtn.frame.origin.x, SCREEN_HEIGHT-84, self.clearBtn.frame.size.width, self.clearBtn.frame.size.height);
   self.createBtn.frame=CGRectMake(self.createBtn.frame.origin.x, SCREEN_HEIGHT-84, self.createBtn.frame.size.width, self.createBtn.frame.size.height);
   self.tapView.frame=CGRectMake(self.tapView.frame.origin.x, SCREEN_HEIGHT-104, self.tapView.frame.size.width, self.tapView.frame.size.height);
+  [self checkLocation];
+}
 
+- (void)checkLocation{
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  if(![delegate canGetLocation]){
+    [SVProgressHUD showSuccessWithStatus:@"请开启定位服务以便定位到您的位置" duration:2];
+  }else{
+    MKCoordinateRegion region;
+    region.center=[delegate myLocation].location.coordinate;
+    region.span=MKCoordinateSpanMake(0.1,0.1);
+    [self.mapView setRegion:region animated:YES];
+  }
 }
 
 -(void)rightBtnClicked:(id)sender{
   self.barView.rightButton.enabled=NO;
-  [_HUD show:YES];
-  _HUD.labelText=@"";
   if(!_succCreate){
-    _HUD.mode = MBProgressHUDModeText;
-    _HUD.labelText = @"生成路线以后才能创建活动~";
-    _HUD.margin = 5.f;
-    [_HUD hide:YES afterDelay:2];
+    [SVProgressHUD showSuccessWithStatus:@"生成路线以后才能创建活动~" duration:2];
     return;
   }
   
@@ -107,26 +110,23 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   if(buttonIndex==1){
-    [_HUD show:YES];
-    _createInfo.coverImage=_newCoverImage;
+  
+    _map.coverImage=_newCoverImage;
     dispatch_async(dispatch_queue_create("drawRoutes", NULL), ^{
-      NSString *key= [ImageUtil uploadPhotoToServerByImage:_createInfo.coverImage prefixPath:@"map" type:IMAGETYPE_MAP];
+      NSString *key= [ImageUtil uploadPhotoToServerByImage:_map.coverImage prefixPath:@"map" type:IMAGETYPE_MAP];
       dispatch_async(dispatch_get_main_queue(), ^{
         if(key==nil){
-          _HUD.mode = MBProgressHUDModeText;
-          _HUD.labelText = @"上传截图失败,请重新上传";
-          _HUD.margin = 5.f;
-          [_HUD hide:YES afterDelay:2];
+          [SVProgressHUD showSuccessWithStatus: @"上传截图失败,请重新上传" duration:2];
         }
-        _createInfo.urlKey=key;
+        _map.urlKey=key;
         if(self.delegate){
-          [self.delegate finishCreate:self info:_createInfo];
+          [self.delegate finishCreate:self info:_map];
         }
-        [_HUD setHidden:YES];
+         [SVProgressHUD dismiss];
       });
     });
   }else{
-    [_HUD setHidden:YES];
+   [SVProgressHUD dismiss];
   }
   self.barView.rightButton.enabled=YES;
 }
@@ -149,9 +149,7 @@
 	if([gestureRecognizer isMemberOfClass:[UILongPressGestureRecognizer class]] && (gestureRecognizer.state == UIGestureRecognizerStateEnded)) {
 		[self.mapView removeGestureRecognizer:gestureRecognizer]; //avoid multiple pins to appear when holding on the screen
   }
-   _HUD.mode = MBProgressHUDModeIndeterminate;
-   _HUD.labelText=@"";
-  [_HUD show:YES];
+  [SVProgressHUD showWithStatus:@"加载中"];
   CGPoint touchPoint = [gestureRecognizer locationInView:self.mapView];
   CLLocationCoordinate2D touchMapCoordinate = [self.mapView convertPoint:touchPoint toCoordinateFromView:self.mapView];
   MyAnnotation *annotation = [[MyAnnotation alloc]initWithLocation:touchMapCoordinate];
@@ -173,30 +171,6 @@
   }];
 }
 
-#pragma mark locationManager delegate functions
-- (void)locationManager:(CLLocationManager *)manager
-       didFailWithError:(NSError *)error{
-  [_HUD show:YES];
-  _HUD.mode = MBProgressHUDModeText;
-  _HUD.labelText = @"请开启定位服务以便定位到您的位置";
-  _HUD.margin = 5.f;
-  [_HUD hide:YES afterDelay:2];
-}
-
-- (void)locationManager:(CLLocationManager *)manager
-    didUpdateToLocation:(CLLocation *)newLocation
-           fromLocation:(CLLocation *)oldLocation{
-  MKCoordinateRegion region;
-  region.center=_myLocation.location.coordinate;
-  region.span=MKCoordinateSpanMake(0.1,0.1);
-  [self.mapView setRegion:region animated:YES];
-  [self getMyLocationDic];
-}
--(void)getMyLocationDic{
-  dispatch_async(dispatch_queue_create("getMyLocationDic", NULL), ^{
-    _myLocationDic=[[RequestUtil getSinglton] getMapFix:_myLocation.location.coordinate.latitude longtitude:_myLocation.location.coordinate.longitude];
-  });
-}
 #pragma mark mapView delegate functions
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
 {
@@ -253,7 +227,7 @@
   [self.mapView selectAnnotation:annotation animated:YES];
   _nowAnnotation=annotation;
   [self showTapView];
-  [_HUD hide:YES];
+  [SVProgressHUD dismiss];
 }
 
 
@@ -346,10 +320,7 @@
 #pragma mark textFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
   if(![textField.text isEqualToString:@""]){
-    _HUD.mode = MBProgressHUDModeIndeterminate;
-    _HUD.labelText=@"";
-    [_HUD show:YES];
-    CLGeocoder *geoCoder=[[CLGeocoder alloc]init];
+       CLGeocoder *geoCoder=[[CLGeocoder alloc]init];
     [geoCoder geocodeAddressString:textField.text completionHandler:^(NSArray *placemarks, NSError *error){
       if(placemarks){
         CLPlacemark *mark=[placemarks objectAtIndex:0];
@@ -364,10 +335,7 @@
         }
         [self addNewAnnotation:annotation];
       }else{
-        _HUD.mode = MBProgressHUDModeText;
-        _HUD.labelText = @"悲剧,没找到相关位置";
-        _HUD.margin = 5.f;
-        [_HUD hide:YES afterDelay:2];
+        [SVProgressHUD showWithStatus:@"悲剧,没找到相关位置"];
       }
     }];
   }
@@ -416,34 +384,23 @@
 
 - (IBAction)myLocationBtn:(id)sender{
   self.myLocationBtn.enabled=NO;
-  MKCoordinateRegion region;
+   MKCoordinateRegion region;
   region.center=[self.mapView userLocation].coordinate;
   region.span=self.mapView.region.span;
   [self.mapView setRegion:region animated:YES];
-  [_HUD show:YES];
-  
-  if([_myLocationDic objectForKey:@"realLongtitude"]&&[_myLocationDic objectForKey:@"realLatitude"]){
-    CLLocation *location=[[CLLocation alloc]initWithLatitude:[[_myLocationDic objectForKey:@"realLatitude"]doubleValue] longitude:[[_myLocationDic objectForKey:@"realLongtitude"]doubleValue]];
-    CLGeocoder *geoCoder=[[CLGeocoder alloc]init];
-    [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-      if(placemarks){
-        CLPlacemark *mark=[placemarks objectAtIndex:0];
-        MyAnnotation *annotation = [[MyAnnotation alloc]initWithLocation:mark.location.coordinate];
-        annotation.title=mark.name;
-        if(mark.locality){
-          annotation.city=mark.locality;
-        }else if(annotation.title){
-          annotation.city=annotation.title;
-        }else{
-          annotation.city=@"";
-        }
-        [self addNewAnnotation:annotation];
-      }
-    }];
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  QQNRMyLocation *myLocation=[delegate myLocation];
+  MyAnnotation *annotation = [[MyAnnotation alloc]initWithLocation:myLocation.location.coordinate];
+  annotation.title=myLocation.name;
+  if(myLocation.city){
+    annotation.city=myLocation.city;
+  }else if(annotation.title){
+    annotation.city=annotation.title;
   }else{
-    [self getMyLocationDic];
+    annotation.city=@"";
   }
- [_HUD hide:YES];
+  [self addNewAnnotation:annotation];
+  [SVProgressHUD dismiss];
   self.myLocationBtn.enabled=YES;
 }
 
@@ -460,16 +417,12 @@
       succ=TRUE;
     }
   }
-  [_HUD show:YES];
+  
   if(!succ){
-    _HUD.mode = MBProgressHUDModeText;
-    _HUD.labelText = @"必须要有起点终点噢!^_^";
-    _HUD.margin = 5.f;
-    [_HUD hide:YES afterDelay:2];
+    [SVProgressHUD showErrorWithStatus:@"必须要有起点终点噢!^_^" duration:2];
     self.createBtn.enabled=YES;
     return;
   }
-  NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
   NSMutableArray *locationArray=[[NSMutableArray alloc]initWithCapacity:[_locationViews count]];
   NSMutableArray *nameArray=[[NSMutableArray alloc]init];
   int index=0;
@@ -481,24 +434,20 @@
       [locationArray addObject:[NSString stringWithFormat:@"%f,%f",view.latitude,view.longtitude]];
     }
   }
-  _createInfo=[[MapCreateInfo alloc]init];
-  _createInfo.midLocations=nameArray;
-  _createInfo.beginLocation=((LocationView*)[_locationViews objectAtIndex:0]).totalLocation;
-  _createInfo.endLocation=((LocationView*)[_locationViews lastObject]).totalLocation;
-  _createInfo.mapTaps=locationArray;
-  _createInfo.cityName=((LocationView*)[_locationViews objectAtIndex:0]).annotation.city;
+  _map=[[Map alloc]init];
+  _map.midLocations=nameArray;
+  _map.beginLocation=((LocationView*)[_locationViews objectAtIndex:0]).totalLocation;
+  _map.endLocation=((LocationView*)[_locationViews lastObject]).totalLocation;
+  _map.mapTaps=locationArray;
+  _map.cityName=((LocationView*)[_locationViews objectAtIndex:0]).annotation.city;
   self.route_view.image=nil;
   [_routes removeAllObjects];
   dispatch_async(dispatch_queue_create("drawRoutes", NULL), ^{
     line_color = [UIColor getColor:lineColor];
-    [[MapUtil getSinglton] calculate_routes_from:locationArray map_dic:dic];
-    if(dic){
-      NSArray *array = [dic objectForKey:@"points"];
-      _routes = [[MapUtil getSinglton] decodePolyLineArray:array];
-      _createInfo.points=array;
-      _createInfo.distance=[[dic objectForKey:@"distance"] intValue];
+    [[MapUtil getSinglton] calculate_routes_from:locationArray map:_map];
+    if(_map){
+      _routes = [[MapUtil getSinglton] decodePolyLineArray:_map.mapPoint];
       dispatch_async(dispatch_get_main_queue(), ^{
-        [_HUD hide:YES];
         if(self){
           [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:line_color routes:_routes];
           if([_routes count]>0){
@@ -509,11 +458,7 @@
             _newCoverImage = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
           }else{
-            _HUD.mode = MBProgressHUDModeText;
-            _HUD.labelText = @"生成失败,google的网络不太好,再来一次吧^_^!!";
-            _HUD.labelFont=[UIFont systemFontOfSize:14];
-            _HUD.margin = 5.f;
-            [_HUD hide:YES afterDelay:2];
+            [SVProgressHUD showErrorWithStatus:@"生成失败,google的网络不太好,再来一次吧^_^!!" duration:2];
             [MobClick event:@"2012111907"];
           }
         }

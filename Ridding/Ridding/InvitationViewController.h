@@ -8,40 +8,22 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import "SinaApiRequestUtil.h"
-#import "RequestUtil.h"
-#import "UserMap.h"
+#import "SinaUserProfile.h"
 @interface InvitationViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate>{
-    NSString *riddingId;
-    SinaApiRequestUtil *sinaApiRequestUtil;
-    NSMutableArray *careUsers;
-    NSMutableArray *sinaUsers;
-    NSMutableDictionary *selectedDic;
-    NSMutableDictionary *originalDic;
-    bool isSearchIng;
-    RequestUtil *requestUtil;
-    int _loadCount;
+  long long _riddingId;
+  int _loadCount;
+  NSMutableArray *_nowUser;
+  NSMutableDictionary *_originUser;
+  BOOL _isSearching;
+  NSMutableArray *_sinaUsers;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *atableView;
 @property (nonatomic, retain) IBOutlet UIButton *searchButton;
 @property (nonatomic, retain) IBOutlet UITextField *searchField;
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
-@property (nonatomic, retain) NSString *riddingId;
-@property (nonatomic, retain) SinaApiRequestUtil *sinaApiRequestUtil;
-@property (nonatomic, retain) RequestUtil *requestUtil;
-@property (nonatomic, retain) NSMutableArray *careUsers;
-@property (nonatomic, retain) NSMutableArray *sinaUsers;
-@property (nonatomic, retain) NSMutableDictionary *selectedDic;
-@property (nonatomic, retain) NSMutableDictionary *originalDic;
 
-@property (nonatomic) bool isSearchIng;
 
 - (void) initView;
-- (User*) getTableCellUser:(NSInteger)rowCount;
-
--(IBAction)textFieldDidChange:(id)sender;
--(IBAction)backButtonClicked:(id)sender;
--(IBAction)searchButtonClicked:(id)sender;
-
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingId:(long long)riddingId nowTeamers:(NSArray*)nowTeamers;
 @end

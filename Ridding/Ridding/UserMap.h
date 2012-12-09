@@ -16,14 +16,14 @@
 #import "StaticInfo.h"
 #import "ActivityView.h"
 #import "SVSegmentedControl.h"
-#import "ActivityInfo.h"
+#import "Ridding.h"
 enum SHOWTYPE {
 	SHOWTEAMER = 0,
 	SHOWSELF = 1,
   SHOWPHOTO = 2,
 };
 
-@interface UserMap : BasicViewController <CLLocationManagerDelegate,MKAnnotation,MKMapViewDelegate,UIScrollViewDelegate,UINavigationControllerDelegate,AwesomeMenuDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate>
+@interface UserMap : BasicViewController <CLLocationManagerDelegate,MKAnnotation,MKMapViewDelegate,UIScrollViewDelegate,UINavigationControllerDelegate,AwesomeMenuDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,RequestUtilDelegate>
 {
   RequestUtil *requestUtil;
   StaticInfo *staticInfo;
@@ -34,7 +34,7 @@ enum SHOWTYPE {
   
   CGPoint beginPoint;
   
-  NSString *_riddingId;
+  Ridding *_ridding;
   CLLocation *lastLocation;
   
   bool isShowDelete;
@@ -49,13 +49,12 @@ enum SHOWTYPE {
   bool _userInited;
   MKAnnotationView *myLocationAnnotationView;
   User *_nowUser;
-  NSNumber *_riddingStatus;
+  int _riddingStatus;
   AwesomeMenu *_menu;
   UIImage *_showingImage;
   BOOL _isMyRidding;
   BOOL _isFromCamera;
   SVSegmentedControl *_redSC;
-  ActivityInfo *_info;
 }
 
 @property(nonatomic, retain) IBOutlet MKMapView *mapView;
@@ -66,7 +65,6 @@ enum SHOWTYPE {
 @property(nonatomic, strong) NSMutableArray *userArray;
 @property(nonatomic, retain) StaticInfo *staticInfo;
 @property(nonatomic, retain) CLLocation *lastLocation;
-@property(nonatomic, retain) CLLocationManager *myLocation;
 
 @property(nonatomic, strong) ActivityView *loadingView;
 @property(nonatomic) bool isShowDelete;
@@ -82,7 +80,7 @@ enum SHOWTYPE {
 @property(nonatomic, retain) IBOutlet UIScrollView *userScrollView;
 @property(nonatomic, retain) IBOutlet UILabel *userOnlineLabel;
 
-- (id)initWithUser:(User*)nowUser info:(ActivityInfo*)info riddingStatus:(NSNumber*)riddingStatus;
+- (id)initWithUser:(User*)nowUser ridding:(Ridding*)ridding riddingStatus:(int)riddingStatus;
 
 //Button响应方法
 -(IBAction)showLocationButtonClicked:(id)sender;

@@ -19,6 +19,6 @@
 @property (nonatomic,copy) NSString *title;
 @property (nonatomic,copy) NSString *subtitle;
 @property (nonatomic,copy) UIImage *headImage;
-@property (nonatomic,retain) NSString* userId;
+@property (nonatomic) long long userId;
 
 @end

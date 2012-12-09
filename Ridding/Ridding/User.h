@@ -8,53 +8,46 @@
 
 #import <Foundation/Foundation.h>
 #import "UserAnnotation.h"
-
+#import "BasicObject.h"
 typedef enum _SOURCETYPE {
 	SOURCE_SINA = 1,
 	SOURCE_WEB = 2,
 }SOURCETYPE;
 
-@interface User : NSObject {
-    int status;
-    int sourceType;
-    NSString* statusTitle;
-    UIImage *avator;
-    double speed;
-    NSString *accessToken;
-    UserAnnotation *annotation;
-    NSString *name;
-    NSString *userId;
-    NSString *accessUserId;
-    NSString *bavatorUrl;
-    NSString *savatorUrl;
-    NSString *totalDistance;
-    NSNumber *userRole;
-    bool isLeader;
+@interface User : BasicObject {
 }
+
 @property(nonatomic, retain) NSString* statusTitle;
-@property(nonatomic, retain) UIImage *avator;
+@property(nonatomic, retain) UIImage *avatorImage;
 @property(nonatomic, retain) NSString *accessToken;
 @property(nonatomic, retain) UserAnnotation *annotation;
 @property(nonatomic, retain) NSString *name;
-@property(nonatomic, retain) NSString *userId;
+@property(nonatomic) long long userId;
 @property(nonatomic, retain) NSString *bavatorUrl;
 @property(nonatomic, retain) NSString *savatorUrl;
-@property(nonatomic, retain) NSString *accessUserId;
-@property(nonatomic, retain) NSString *totalDistance;
-@property(nonatomic, retain) NSNumber *userRole;
+@property(nonatomic) long long sourceUserId;
+@property(nonatomic) int totalDistance;
+@property(nonatomic) int userRole;
 @property(nonatomic, retain) NSString *authToken;
 @property(nonatomic) double speed;
-@property(nonatomic) bool isLeader;
-@property(nonatomic) int status;
 @property(nonatomic) int sourceType;
 @property(nonatomic) int nowRiddingCount;
+@property(nonatomic) BOOL isLeader;
+@property(nonatomic) int status;
+@property(nonatomic,copy) NSString *timeBefore;
+@property(nonatomic) double latitude;
+@property(nonatomic) double longtitude;
 
+
+//选好友的时候用到
+@property(nonatomic) BOOL isSelected;
 
 -(UIImage*)getSavator;
 -(UIImage*)getBavator;
 -(UIImage*)OriginImage:(UIImage *)image   scaleToSize:(CGSize)size;
 -(UIImage*) getSSavator;
 -(NSString*) getTotalDistanceToKm;
--(void)setProperties:(NSDictionary*)dic;
+
+
 
 @end

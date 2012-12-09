@@ -8,11 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import "BasicBar.h"
-#import "MBProgressHUD.h"
-@interface BasicViewController : UIViewController<XMBarViewDelegate,MBProgressHUDDelegate>{
-    MBProgressHUD *_HUD;
+typedef enum _POSITION {
+	POSITION_LEFT = 1,
+	POSITION_MID = 2,
+  POSITION_RIGHT =3,
+}POSITION;
+@interface BasicViewController : UIViewController<XMBarViewDelegate>{
+  BOOL _didAppearOnce;
+  
 }
 
 @property (nonatomic,retain) IBOutlet BasicBar *barView;
-- (void)initHUD;
+@property (nonatomic) BOOL hasLeftView;
+@property (nonatomic) POSITION position;
+
+
 @end

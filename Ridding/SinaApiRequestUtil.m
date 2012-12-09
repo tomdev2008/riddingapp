@@ -34,7 +34,7 @@ static SinaApiRequestUtil *sinaApiRequestUtil=nil;
 }
 
 -(NSDictionary*)getUserInfo{
-    NSString* methodName=[NSString stringWithFormat:@"https://%@/2/users/show.json?access_token=%@&uid=%@",apiSinaHost,staticInfo.user.accessToken,staticInfo.user.accessUserId];
+    NSString* methodName=[NSString stringWithFormat:@"https://%@/2/users/show.json?access_token=%@&uid=%lld",apiSinaHost,staticInfo.user.accessToken,staticInfo.user.sourceUserId];
     NSURL *apiUrl=[NSURL URLWithString:methodName];
     ASIHTTPRequest *arequest=[ASIHTTPRequest requestWithURL:apiUrl];
     [arequest setRequestMethod:@"GET"];
@@ -47,9 +47,9 @@ static SinaApiRequestUtil *sinaApiRequestUtil=nil;
     return responseDic;
 }
 
--(NSMutableArray*) getAtUserList:(NSString*)q type:(NSNumber*)type{
+-(NSArray*) getAtUserList:(NSString*)q type:(NSNumber*)type{
     q=[[NSString alloc]initWithUTF8String:[q UTF8String]];
-    NSString* methodName=[NSString stringWithFormat:@"https://%@/2/search/suggestions/at_users.json?access_token=%@&q=%@&count=%@&type=%@&range=%@&uid=%@",apiSinaHost,staticInfo.user.accessToken,q,@"30",type,@"0",staticInfo.user.accessUserId];
+    NSString* methodName=[NSString stringWithFormat:@"https://%@/2/search/suggestions/at_users.json?access_token=%@&q=%@&count=%@&type=%@&range=%@&uid=%lld",apiSinaHost,staticInfo.user.accessToken,q,@"30",type,@"0",staticInfo.user.sourceUserId];
     methodName= [[NSString alloc]initWithUTF8String:[methodName UTF8String]];
     NSURL *apiUrl=[NSURL URLWithString:methodName];
     ASIHTTPRequest *arequest=[ASIHTTPRequest requestWithURL:apiUrl];
@@ -57,12 +57,9 @@ static SinaApiRequestUtil *sinaApiRequestUtil=nil;
     [arequest setDefaultResponseEncoding:NSUTF8StringEncoding];
     [arequest startSynchronous];
     NSString* response= [arequest responseString];
-    id resp=[response JSONValue];
-    if([resp isKindOfClass:[NSArray class]]){
-        return resp;
-    }
+    NSArray *array=[response JSONValue];
    [MobClick event:@"2012112001"];
-    return nil;
+    return array;
 
 }
 
@@ -76,7 +73,7 @@ static SinaApiRequestUtil *sinaApiRequestUtil=nil;
     [arequest startSynchronous];
     NSString* response= [arequest responseString];
     NSDictionary* responseDic=[response JSONValue];
-    if([responseDic objectForKey:@"error_code"]){
+    if([responseDic objectForKey:@"code"]){
         return nil;
     }
     return [NSString stringWithFormat:@"%@",[responseDic objectForKey:@"uid"]];
@@ -116,6 +113,8 @@ static SinaApiRequestUtil *sinaApiRequestUtil=nil;
   [arequest setPostValue:url forKey:@"url"];
   [arequest setDefaultResponseEncoding:NSUTF8StringEncoding];
   [arequest startAsynchronous];
+ 
+
 }
 
 
@@ -129,6 +128,17 @@ static SinaApiRequestUtil *sinaApiRequestUtil=nil;
   [arequest setPostValue:staticInfo.user.accessToken forKey:@"access_token"];
   [arequest setDefaultResponseEncoding:NSUTF8StringEncoding];
   [arequest startAsynchronous];
+}
+
+- (NSArray*)getBilateralUserList{
+  NSString* methodName=[NSString stringWithFormat:@"https://%@/2/friendships/friends/bilateral.json?access_token=%@&uid=%lld",apiSinaHost,staticInfo.user.accessToken,staticInfo.user.sourceUserId];
+  NSURL *apiUrl=[NSURL URLWithString:methodName];
+  ASIHTTPRequest *arequest=[ASIHTTPRequest requestWithURL:apiUrl];
+  [arequest setRequestMethod:@"GET"];
+  [arequest setDefaultResponseEncoding:NSUTF8StringEncoding];
+  [arequest startSynchronous];
+  NSString* response= [arequest responseString];
+  return [[response JSONValue]objectForKey:@"users"];
 }
 
 //异步请求完成

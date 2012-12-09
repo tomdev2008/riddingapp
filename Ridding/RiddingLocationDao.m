@@ -33,19 +33,19 @@ static RiddingLocationDao *riddingLocationDao=nil;
 //   char *sql = "CREATE TABLE IF NOT EXISTS riddinglocation (id INTEGER primary key,riddingid INTEGER, \
 latitude text,longtitide text,nextDistance INTEGER,weight INTEGER);";
 
--(Boolean)addRiddingLocation:riddingId locations:(NSArray*)locations{
+-(Boolean)addRiddingLocation:(long long)riddingId locations:(NSArray*)locations{
     [sqlUtil readyDatabse];
     for(RiddingLocation *location in locations){
-        NSArray *paramarray = [[NSArray alloc] initWithObjects:riddingId,[NSString stringWithFormat:@"%lf",location.latitude],[NSString stringWithFormat:@"%lf",location.longtitude],[NSString stringWithFormat:@"%@",location.toNextDistance],[NSString stringWithFormat:@"%@",location.weight], nil];
-        NSString *sql = [NSString stringWithFormat:@"INSERT INTO riddinglocation (riddingid, latitude,longtitide,nextDistance,weight) VALUES (?,?,?,?,?)"];
+        NSArray *paramarray = [[NSArray alloc] initWithObjects:LONGLONG2NUM(riddingId),DOUBLE2STR(location.latitude),DOUBLE2STR(location.longtitude),INT2STR(location.toNextDistance),INT2STR(location.weight), nil];
+        NSString *sql = [NSString stringWithFormat:@"INSERT INTO TB_RiddingLocation (riddingid, latitude,longtitude,nextDistance,weight) VALUES (?,?,?,?,?)"];
         [sqlUtil dealData:sql paramArray:paramarray];
     }
     return TRUE;
 }
 
--(NSArray*)getRiddingLocations:riddingId beginWeight:(NSNumber*)beginWeight{
+-(NSArray*)getRiddingLocations:(long long)riddingId beginWeight:(int)beginWeight{
     [sqlUtil readyDatabse];
-    NSString *sql = [NSString stringWithFormat:@" select * from riddinglocation where riddingid =%@ and weight>=%@ ;",riddingId,beginWeight];
+    NSString *sql = [NSString stringWithFormat:@" select * from TB_RiddingLocation where riddingid =%lld@ and weight>=%d ;",riddingId,beginWeight];
     NSMutableArray *mulArray=[sqlUtil selectData:sql resultColumns:columCount];
     if (!mulArray) {
         return nil;
@@ -53,21 +53,21 @@ latitude text,longtitide text,nextDistance INTEGER,weight INTEGER);";
     NSMutableArray *riddingLocations=[[NSMutableArray alloc]init];
     for(NSArray *row in mulArray){
         RiddingLocation *location=[[RiddingLocation alloc]init];
-        location.dbId=[row objectAtIndex:0];
-        location.riddingId=[row objectAtIndex:1];
+        location.dbId=[[row objectAtIndex:0]longLongValue];
+        location.riddingId=[[row objectAtIndex:1]longLongValue];
         location.latitude=[[row objectAtIndex:2]floatValue];
         location.longtitude=[[row objectAtIndex:3]floatValue];
-        location.toNextDistance=[row objectAtIndex:4];
-        location.weight=[row objectAtIndex:5];
+        location.toNextDistance=[[row objectAtIndex:4]intValue];
+        location.weight=[[row objectAtIndex:5]intValue];
         [riddingLocations addObject:location];
     }
-    return [riddingLocations copy];
+    return riddingLocations;
 
 }
 
--(int)getRiddingLocationCount:riddingId{
+-(int)getRiddingLocationCount:(long long)riddingId{
     [sqlUtil readyDatabse];
-    NSString *sql = [NSString stringWithFormat:@" select count(*) from riddinglocation where riddingid = %@;",riddingId];
+    NSString *sql = [NSString stringWithFormat:@" select count(*) from TB_RiddingLocation where riddingid = %lld;",riddingId];
     NSMutableArray *mulArray=[sqlUtil selectData:sql resultColumns:1];
     if (!mulArray) {
         return -1;

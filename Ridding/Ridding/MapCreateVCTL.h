@@ -12,26 +12,24 @@
 #import <UIKit/UIKit.h>
 #import "MyAnnotation.h"
 #import "CreateAnnotationView.h"
-#import "MapCreateInfo.h"
+#import "Map.h"
 @class MapCreateVCTL;
 @protocol MapCreateVCTLDelegate <NSObject>
 
-- (void)finishCreate:(MapCreateVCTL*)controller info:(MapCreateInfo*)info;
+- (void)finishCreate:(MapCreateVCTL*)controller info:(Map*)info;
 
 @end
 
 
-@interface MapCreateVCTL : BasicViewController<CLLocationManagerDelegate,MKAnnotation,MKMapViewDelegate,UISearchBarDelegate,UITextFieldDelegate,UIScrollViewDelegate,CreateAnnotationViewDelegate>{
-  CLLocationManager *_myLocation;
+@interface MapCreateVCTL : BasicViewController<MKAnnotation,MKMapViewDelegate,UISearchBarDelegate,UITextFieldDelegate,UIScrollViewDelegate,CreateAnnotationViewDelegate>{
   BOOL _isSearching;
   NSMutableArray *_locationViews;
   MyAnnotation *_nowAnnotation;
   NSMutableArray *_routes;
   UIColor *line_color;
   BOOL _succCreate;
-  MapCreateInfo *_createInfo;
+  Map *_map;
   UIImage *_newCoverImage;
-  NSDictionary *_myLocationDic;
 }
 @property(nonatomic,retain) IBOutlet UIImageView *route_view;
 @property(nonatomic,retain) IBOutlet MKMapView *mapView;

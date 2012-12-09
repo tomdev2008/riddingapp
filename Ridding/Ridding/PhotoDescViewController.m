@@ -31,9 +31,6 @@
   RiddingPicture *picture=(RiddingPicture*)[info objectForKey:@"picture"];
   if(picture){
     _image=picture.image;
-    CLLocationDegrees latitude=picture.latitude;
-    CLLocationDegrees longtitude=picture.longtitude;
-    _location=[[CLLocation alloc]initWithLatitude:latitude longitude:longtitude];
     _dbId=picture.dbId;
   }
   return [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -52,17 +49,10 @@
   [formatter setDateFormat: @"yyyy年MM月dd日HH时mm分"];
   self.timeLabel.text= [formatter stringFromDate:[NSDate date]];
   self.textView.text=[NSString stringWithFormat:@"今天是%@",self.timeLabel.text];
-  CLGeocoder *geoCoder=[[CLGeocoder alloc]init];
-  [geoCoder reverseGeocodeLocation:_location completionHandler:^(NSArray *placemarks, NSError *error) {
-    for(CLPlacemark *mark in placemarks){
-      self.locationLabel.text=[NSString stringWithFormat:@"%@%@",mark.thoroughfare,mark.name] ;
-      break;
-    }
-  }];
-}
-
-- (void)reverseGeocodeLocation:(CLLocation *)location completionHandler:(CLGeocodeCompletionHandler)completionHandler{
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  self.locationLabel.text=[delegate myLocation].name;
   
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -73,7 +63,7 @@
 
 -(void)rightBtnClicked:(id)sender
 {
-  [[RiddingPictureDao getSinglton]updateRiddingPictureText:self.textView.text dbId:[NSString stringWithFormat:@"%d",[_dbId intValue]] location:self.locationLabel.text];
+  [[RiddingPictureDao getSinglton]updateRiddingPictureText:self.textView.text dbId:_dbId];
   [self dismissModalViewControllerAnimated:YES];
 }
 

@@ -9,18 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @interface RiddingLocation : NSObject{
-    NSNumber *dbId;
-    NSString *riddingId;
-    float latitude;
-    float longtitude;
-    NSNumber *toNextDistance;
-    NSNumber *weight;
 }
-@property(nonatomic, retain) NSNumber *dbId;
-@property(nonatomic, retain) NSString *riddingId;
-@property(nonatomic) float latitude;
-@property(nonatomic) float longtitude;
-@property(nonatomic, retain) NSNumber *toNextDistance;
-@property(nonatomic, retain) NSNumber *weight;
+@property(nonatomic) long long dbId;
+@property(nonatomic) long long riddingId;
+@property(nonatomic) double latitude;
+@property(nonatomic) double longtitude;
+@property(nonatomic) int toNextDistance;
+@property(nonatomic) int weight;
 
 @end

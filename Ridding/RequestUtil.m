@@ -1,4 +1,4 @@
-//
+  //
 //  RequestUtil.m
 //  Ridding
 //
@@ -9,12 +9,12 @@
 #import "RequestUtil.h"
 #import "ASIFormDataRequest.h"
 #import "User.h"
-
+#import "NSDate+Addition.h"
+#import "SinaUserProfile.h"
 static RequestUtil *requestUtil=nil;
 @implementation RequestUtil
 @synthesize checker;
 @synthesize staticInfo;
-@synthesize requestUtilDelegate;
 - (id)init
 {
   self = [super init];
@@ -35,8 +35,8 @@ static RequestUtil *requestUtil=nil;
   return requestUtil;
 }
 
--(NSMutableDictionary*) getMapMessage:(NSString*)riddingId{
-  NSURL* url=[[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%@/user/%@/map/",QIQUNARHOME,riddingId,staticInfo.user.userId]];
+-(NSMutableDictionary*) getMapMessage:(long long)riddingId userId:(long long)userId{
+  NSURL* url=[[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/map/",QIQUNARHOME,riddingId,userId]];
   ASIHTTPRequest* asiRequest=[ASIHTTPRequest requestWithURL:url];
   [asiRequest startSynchronous];
   NSString* apiResponse=[asiRequest responseString];
@@ -44,29 +44,33 @@ static RequestUtil *requestUtil=nil;
   if(![checker checkResponseCode:[[responseDic objectForKey:@"code"]intValue] statusCode:[asiRequest responseStatusCode]]){
     return nil;
   }
-  return responseDic;
+  NSLog(@"apiResponse%@",responseDic);
+  return [responseDic objectForKey:@"data"];
 }
 
--(void) sendAndGetAnnotation:(NSString*)riddingId latitude:(NSString*)latitude longtitude:(NSString*)longtitude status:(NSString*)status speend:(long)speed isGetUsers:(int)isGetUsers {
-  NSURL* url=[[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%@/user/%@/all/",QIQUNARHOME,riddingId,staticInfo.user.userId]];
+-(void) sendAndGetAnnotation:(long long)riddingId latitude:(double)latitude longtitude:(double)longtitude status:(int)status speed:(double)speed isGetUsers:(int)isGetUsers {
+  NSURL* url=[[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/all/",QIQUNARHOME,riddingId,staticInfo.user.userId]];
   ASIHTTPRequest* asiRequest=[ASIHTTPRequest requestWithURL:url];
   asiRequest.delegate=self;
   [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
-  NSArray *keys=[[NSArray alloc]initWithObjects:@"longtitude",@"latitude",@"status",@"speed",@"showTeamer",nil];
-  NSArray *values=[[NSArray alloc]initWithObjects:longtitude,latitude,status,[NSString stringWithFormat:@"%ld",speed],[NSString stringWithFormat:@"%d",isGetUsers],nil];
-  NSDictionary *dic=[[NSDictionary alloc]initWithObjects:values forKeys:keys];
+  NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, DOUBLE2NUM(longtitude), @"longtitude");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, DOUBLE2NUM(latitude), @"latitude");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(status), @"status");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, DOUBLE2NUM(speed), @"speed");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(isGetUsers), @"showTeamer");
   NSData *data=[[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
   [asiRequest appendPostData:data];
   [asiRequest startAsynchronous];
 }
--(void) sendMapPoiont:(NSString*)riddingId point:(NSArray*)point mapId:(NSString*)mapId distance:(NSNumber*)distance {
-  NSURL* url=[[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%@/user/%@/map/set/",QIQUNARHOME,riddingId,staticInfo.user.userId]];
+-(void) sendMapPoiont:(long long)riddingId point:(NSArray*)point mapId:(long long)mapId distance:(int)distance {
+  NSURL* url=[[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/map/set/",QIQUNARHOME,riddingId,staticInfo.user.userId]];
   ASIHTTPRequest* asiRequest=[ASIHTTPRequest requestWithURL:url];
   [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
   NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, [point JSONRepresentation], @"points");
-  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, mapId, @"mapid");
-  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, distance, @"distance");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, LONGLONG2NUM(mapId), @"mapid");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(distance), @"distance");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, @"", @"beginlocation");
   
   NSData *data=[[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
@@ -74,8 +78,8 @@ static RequestUtil *requestUtil=nil;
   [asiRequest startAsynchronous];
 }
 
--(NSArray*) getUserList:(NSString*)riddingId{
-  NSURL* url=[[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%@/user/%@/list/",QIQUNARHOME,riddingId,staticInfo.user.userId]];
+-(NSArray*) getUserList:(long long)riddingId{
+  NSURL* url=[[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/list/",QIQUNARHOME,riddingId,staticInfo.user.userId]];
   ASIHTTPRequest* asiRequest=[ASIHTTPRequest requestWithURL:url];
   [asiRequest startSynchronous];
   NSString* apiResponse=[asiRequest responseString];
@@ -83,18 +87,17 @@ static RequestUtil *requestUtil=nil;
   if(![checker checkResponseCode:[[responseDic objectForKey:@"code"]intValue] statusCode:[asiRequest responseStatusCode]]){
     return nil;
   }
-  return [responseDic objectForKey:@"userlist"];
-  
+  return [responseDic objectForKey:@"data"];
 }
 
--(NSArray*) getUserMaps:(NSString *)limit createTime:(NSString *)createTime userId:(NSString*)userId isLarger:(int)isLarger{
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%@/list/", QIQUNARHOME, userId]];
+-(NSArray*) getUserMaps:(int)limit createTime:(long long)createTime userId:(long long)userId isLarger:(int)isLarger{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%lld/list/", QIQUNARHOME, userId]];
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   
   NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
-  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, limit, @"limit");
-  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, createTime, @"createtime");
-  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, [NSNumber numberWithInt:isLarger], @"larger");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(limit), @"limit");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, LONGLONG2NUM(createTime), @"createtime");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(isLarger), @"larger");
 
   NSData *data = [[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
   [asiRequest appendPostData:data];
@@ -105,7 +108,7 @@ static RequestUtil *requestUtil=nil;
   if(![checker checkResponseCode:[[responseDic objectForKey:@"code"]intValue] statusCode:[asiRequest responseStatusCode]]){
     return nil;
   }
-  return [responseDic objectForKey:@"riddinglist"];
+  return [responseDic objectForKey:@"data"];
 }
 
 
@@ -116,8 +119,8 @@ static RequestUtil *requestUtil=nil;
   if([self asySendAndGetAnnotation:request]){
     NSString* apiResponse=[request responseString];
     NSDictionary *responseDic=[apiResponse JSONValue];
-    if ([requestUtilDelegate respondsToSelector:@selector(sendAndGetAnnotationReturn:)]) {
-      [requestUtilDelegate sendAndGetAnnotationReturn:[responseDic objectForKey:@"users"]];
+    if ([self.requestUtilDelegate respondsToSelector:@selector(sendAndGetAnnotationReturn:)]) {
+      [self.requestUtilDelegate sendAndGetAnnotationReturn:responseDic];
     }
   }
 }
@@ -129,36 +132,32 @@ static RequestUtil *requestUtil=nil;
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-  //  NSLog(@"123");
 }
 
-- (NSDictionary*) getAccessUserId:(NSMutableArray *)userIds souceType:(int)sourceType
+- (NSArray*) getAccessUserId:(NSMutableArray *)userIds souceType:(int)sourceType
 {
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%@/sources/list/", QIQUNARHOME, staticInfo.user.userId]];
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%lld/sources/list/", QIQUNARHOME, staticInfo.user.userId]];
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
   NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
-  [dic setValue:[[NSString alloc]initWithFormat:@"%d",sourceType] forKey:@"sourcetype"];
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(sourceType), @"sourcetype");
   if(userIds!=nil&&[userIds count]>0){
-    [dic setValue:[userIds JSONRepresentation] forKey:@"userids"];
+    SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, [userIds JSONRepresentation], @"userids");
   }
+  
   NSData *data = [[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
   [asiRequest appendPostData:data];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
-  DLog(@"apiResponse%@",apiResponse);
+  
   dic=[apiResponse JSONValue];
-  NSArray* array= [dic objectForKey:@"useridaccessuseridlist"];
-  NSMutableDictionary* responseDic=[[NSMutableDictionary alloc]init];
-  for(NSDictionary* insideDic in array){
-    [responseDic setValue:[insideDic objectForKey:@"accessuserid"] forKey:[insideDic objectForKey:@"userid"]];
-  }
-  return responseDic;
+  
+  return [dic objectForKey:@"data"];
 }
 
-- (int)quitActivity:(NSString *)riddingId
+- (int)quitActivity:(long long)riddingId
 {
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%@/user/%@/quit/", QIQUNARHOME, riddingId, staticInfo.user.userId]];
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/quit/", QIQUNARHOME, riddingId, staticInfo.user.userId]];
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
   [asiRequest startSynchronous];
@@ -167,26 +166,49 @@ static RequestUtil *requestUtil=nil;
   return [[[apiResponse JSONValue]objectForKey:@"code"]intValue];
 }
 
-- (void) finishActivity: (NSString *)riddingId
+- (void) finishActivity: (long long)riddingId
 {
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%@/user/%@/action/?type=2", QIQUNARHOME, riddingId, staticInfo.user.userId]];
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/action/?type=%d", QIQUNARHOME, riddingId, staticInfo.user.userId,RIDDINGACTION_FINISH]];
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
   [asiRequest startAsynchronous];
-  
 }
 
--(void) tryAddRiddingUser:(NSString*)riddingId addUsers:(NSArray*)addUser{
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%@/user/%@/addUser/?sourceType=%@", QIQUNARHOME,riddingId,staticInfo.user.userId,[NSString stringWithFormat:@"%d",SOURCE_SINA]]];
+- (void) likeRidding: (long long)riddingId
+{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/action/?type=%d", QIQUNARHOME, riddingId, staticInfo.user.userId,RIDDINGACTION_LIKE]];
+  ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
+  [asiRequest startAsynchronous];
+}
+
+- (void) careRidding: (long long)riddingId
+{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/action/?type=%d", QIQUNARHOME, riddingId, staticInfo.user.userId,RIDDINGACTION_CARE]];
+  ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
+  [asiRequest startAsynchronous];
+}
+
+- (void) useRidding: (long long)riddingId
+{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/action/?type=%d", QIQUNARHOME, riddingId, staticInfo.user.userId,RIDDINGACTION_USE]];
+  ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
+  [asiRequest startAsynchronous];
+}
+
+-(void) tryAddRiddingUser:(long long)riddingId addUsers:(NSArray*)addUser{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/addUser/?sourceType=%@", QIQUNARHOME,riddingId,staticInfo.user.userId,[NSString stringWithFormat:@"%d",SOURCE_SINA]]];
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
   NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
   NSMutableArray *array=[[NSMutableArray alloc]init];
   if(addUser!=nil&&[addUser count]>0){
-    for(User *user in addUser){
+    for(SinaUserProfile *user in addUser){
       NSMutableDictionary *tempDic=[[NSMutableDictionary alloc]init];
-      SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(tempDic, user.accessUserId, @"accessuserid");
-      SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(tempDic, user.name, @"nickname");
+      SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(tempDic, LONGLONG2NUM(user.dbId), @"accessuserid");
+      SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(tempDic, user.screen_name, @"nickname");
       [array addObject:tempDic];
     }
   }
@@ -197,8 +219,8 @@ static RequestUtil *requestUtil=nil;
   return;
 }
 
--(void) deleteRiddingUser:(NSString*)riddingId deleteUserIds:(NSArray*)delteUserIds{
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%@/user/%@/deleteUser/?sourceType=%@", QIQUNARHOME,riddingId,staticInfo.user.userId,[NSString stringWithFormat:@"%d",SOURCE_SINA]]];
+-(void) deleteRiddingUser:(long long)riddingId deleteUserIds:(NSArray*)delteUserIds{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/deleteUser/?sourceType=%@", QIQUNARHOME,riddingId,staticInfo.user.userId,[NSString stringWithFormat:@"%d",SOURCE_SINA]]];
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
   NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
@@ -212,7 +234,7 @@ static RequestUtil *requestUtil=nil;
 }
 
 -(void)uploadPhoto:(NSData*)imageData{
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%@/photoUpload/", QIQUNARHOME,staticInfo.user.userId]];
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%lld/photoUpload/", QIQUNARHOME,staticInfo.user.userId]];
   __block ASIFormDataRequest *asiRequest = [ASIFormDataRequest requestWithURL:url];
   [asiRequest setData:imageData withFileName:@"picture.jpg" andContentType:@"image/png" forKey:@"file"];
   [asiRequest startAsynchronous];
@@ -225,8 +247,13 @@ static RequestUtil *requestUtil=nil;
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
   DLog(@"apiResponse%@",apiResponse);
-  NSDictionary *dic=[apiResponse JSONValue];
-  return dic;
+  if(apiResponse){
+    NSDictionary *dic=[apiResponse JSONValue];
+     DLog(@"apiResponse%@",dic);
+    return [dic objectForKey:@"data"];
+  }
+  return nil;
+
   
 }
 
@@ -235,18 +262,18 @@ static RequestUtil *requestUtil=nil;
   NSString *token= [prefs objectForKey:@"apnsToken"];
   if(token){
     token=[token stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%@/apns/?token=%@", QIQUNARHOME, staticInfo.user.userId,token]];
+    NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%lld/apns/?token=%@", QIQUNARHOME, staticInfo.user.userId,token]];
     ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
     [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
     [asiRequest startAsynchronous];
   }
 }
 
--(NSDictionary*) getUserProfile:(NSString*)userId sourceType:(int)sourceType{
+-(NSDictionary*) getUserProfile:(long long)userId sourceType:(int)sourceType{
   if(!userId){
     return nil;
   }
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%@/profile/?sourceType=%@", QIQUNARHOME,userId,[NSNumber numberWithInt:sourceType]]];
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%lld/profile/?sourceType=%@", QIQUNARHOME,userId,[NSNumber numberWithInt:sourceType]]];
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
@@ -255,42 +282,34 @@ static RequestUtil *requestUtil=nil;
   if(dic&&[[dic objectForKey:@"code"]intValue]==-444){
     return nil;
   }
-  return dic;
+  return [dic objectForKey:@"data"];
   
 }
 
--(NSArray*)getUploadedPhoto:riddingId userId:(NSString*)userId{
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%@/user/%@/uploaded/", QIQUNARHOME,riddingId,userId]];
+-(NSArray*)getUploadedPhoto:(long long)riddingId userId:(long long)userId limit:(int)limit lastUpdateTime:(long long)lastUpdateTime{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/uploaded/?limit=%d&lastupdatetime=%lld", QIQUNARHOME,riddingId,userId,limit,lastUpdateTime]];
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
   NSDictionary *responseDic=[apiResponse JSONValue];
-  NSArray *array=[responseDic objectForKey:@"riddingPictures"];
-  NSMutableArray *mulArray=[[NSMutableArray alloc]init];
-  for(NSDictionary *dic in array){
-    RiddingPicture *picture=[[RiddingPicture alloc]init];
-    picture.fileName=[dic objectForKey:@"fileName"];
-    picture.photoUrl=[dic objectForKey:@"photoUrl"];
-    picture.latitude=[[dic objectForKey:@"latitude"]longValue];
-    picture.longtitude=[[dic objectForKey:@"longtitude"]longValue];
-    picture.riddingId=riddingId;
-    picture.userId=userId;
-    [mulArray addObject:picture];
-  }
-  return mulArray;
+  NSLog(@"apiResponse%@",responseDic);
+  return [responseDic objectForKey:@"data"];
 }
 
 -(BOOL)uploadRiddingPhoto:(RiddingPicture*)riddingPicture{
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%@/user/%@/uploadPhoto/", QIQUNARHOME,riddingPicture.riddingId,riddingPicture.userId]];
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/uploadPhoto/", QIQUNARHOME,riddingPicture.riddingId,[StaticInfo getSinglton].user.userId]];
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
-  
   NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
-  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, riddingPicture.photoUrl, @"photoUrl");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, riddingPicture.photoKey, @"photoKey");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, riddingPicture.fileName, @"localName");
-  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, [NSNumber numberWithDouble:riddingPicture.latitude], @"latitude");
-  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, [NSNumber numberWithDouble:riddingPicture.longtitude], @"longtitude");
-  
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, DOUBLE2NUM(riddingPicture.latitude), @"latitude");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, DOUBLE2NUM(riddingPicture.longtitude), @"longtitude");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, LONGLONG2NUM(riddingPicture.takePicDateL), @"takepicdate");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, riddingPicture.location, @"takepiclocation");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, riddingPicture.pictureDescription, @"description");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(riddingPicture.width), @"width");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(riddingPicture.height), @"height");
   NSData *data = [[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
   [asiRequest appendPostData:data];
   [asiRequest startSynchronous];
@@ -298,46 +317,113 @@ static RequestUtil *requestUtil=nil;
   return TRUE;
 }
 
--(NSDictionary*)addRidding:(MapCreateInfo*)info{
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%@/ridding/api/create/", QIQUNARHOME,staticInfo.user.userId]];
+-(NSDictionary*)addRidding:(Map*)info{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/user/%lld/ridding/api/create/", QIQUNARHOME,staticInfo.user.userId]];
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
   NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
-  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, [info.points JSONRepresentation], @"points");
+
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, [info.mapPoint JSONRepresentation], @"points");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, [info.mapTaps JSONRepresentation], @"mapTaps");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, [info.midLocations JSONRepresentation], @"midlocations");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, info.beginLocation, @"beginlocation");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, info.endLocation, @"endlocation");
-  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, [NSNumber numberWithInt:info.distance], @"distance");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(info.distance), @"distance");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, info.riddingName, @"riddingname");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, info.cityName, @"cityname");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, info.urlKey, @"urlkey");
+  NSLog(@"%@",dic);
+  NSData *data = [[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
+  [asiRequest appendPostData:data];
+  [asiRequest startSynchronous];
+  NSString *apiResponse = [asiRequest responseString];
+  NSDictionary *responseDic=[apiResponse JSONValue];
+  //特殊处理，返回200
+  if(![responseDic objectForKey:@"code1"]||[[responseDic objectForKey:@"code1"]intValue]!=1){
+    [MobClick event:@"2012120101"];
+    return nil;
+  }
+  [MobClick event:@"2012120102"];
+  DLog(@"responseDic%@",responseDic);
+  return [responseDic objectForKey:@"data"];
+}
+
+- (NSArray*)getRiddingPublicList:(long long)lastUpdateTime
+                                limit:(int)limit
+                             isLarger:(int)isLarger
+                                 type:(int)type
+                               weight:(int)weight{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/public/list/", QIQUNARHOME]];
+  ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
+  NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, LONGLONG2NUM(lastUpdateTime), @"lastupdatetime");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(limit), @"limit");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(isLarger), @"larger");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(type), @"type");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(weight), @"weight");
   
   NSData *data = [[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
   [asiRequest appendPostData:data];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
   NSDictionary *responseDic=[apiResponse JSONValue];
-  if(![checker checkResponseCode:[[responseDic objectForKey:@"code"]intValue] statusCode:[asiRequest responseStatusCode]]){
+  DLog(@"%@",responseDic);
+  if(![responseDic objectForKey:@"code"]||[[responseDic objectForKey:@"code"]intValue]!=1){
     return nil;
   }
-  return [apiResponse JSONValue];
+  
+  return [responseDic objectForKey:@"data"];
 }
 
--(NSDictionary*)googleGeoCoder:(NSString *)address{
-  address=[address stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"http://ditu.google.com/maps/api/geocode/json?address=%@&sensor=false&components=country:cn",address]];
+
+-(NSDictionary*)addRiddingComment:(Comment*)comment{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/comment/add/", QIQUNARHOME,comment.riddingId,comment.userId]];
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
+  NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, comment.text, @"text");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, LONGLONG2NUM(comment.replyId), @"replyid");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, LONGLONG2NUM(comment.toUserId), @"touserid");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(comment.commentType), @"commenttype");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, comment.usePicUrl, @"usepicurl");
+  [asiRequest addRequestHeader:@"authToken" value:staticInfo.user.authToken];
+  NSData *data = [[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
+  [asiRequest appendPostData:data];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
-  return [apiResponse JSONValue];
+  NSDictionary *responseDic=[apiResponse JSONValue];
+  DLog(@"%@",responseDic);
+  if(![responseDic objectForKey:@"code"]||[[responseDic objectForKey:@"code"]intValue]!=1){
+    return nil;
+  }
+  
+  return [responseDic objectForKey:@"data"];
 }
 
--(NSDictionary*)antyGoogleGeoCoder:(CGFloat)latitude longtitude:(CGFloat)longtitude{
-  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"http://ditu.google.com/maps/api/geocode/json?latlng=%f,%f&sensor=false",latitude,longtitude]];
+-(NSArray*)getRiddingComment:(long long)lastCreateTime
+                            limit:(int)limit
+                         isLarger:(int)isLarger
+                        riddingId:(long long)riddingId{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/comment/list/", QIQUNARHOME,riddingId]];
+  
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
+  NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, LONGLONG2NUM(lastCreateTime), @"lastcreatetime");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(limit), @"limit");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(isLarger), @"larger");
+  
+  NSData *data = [[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
+  [asiRequest appendPostData:data];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
-  return [apiResponse JSONValue];
+  NSDictionary *responseDic=[apiResponse JSONValue];
+  DLog(@"%@",responseDic);
+  if(![responseDic objectForKey:@"code"]||[[responseDic objectForKey:@"code"]intValue]!=1){
+    return nil;
+  }
+  
+  return [responseDic objectForKey:@"data"];
+
 }
+
+
 @end

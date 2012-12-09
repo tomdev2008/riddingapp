@@ -10,59 +10,19 @@
 #import "NSString+TomAddition.h"
 @implementation ActivityInfo
 
-@synthesize createTime=_createTime;
-@synthesize dbId=_dbId;
-@synthesize distance=_distance;
-@synthesize status=_status;
-@synthesize name=_name;
-@synthesize beginLocation=_beginLocation;
-@synthesize isLeader=_isLeader;
-@synthesize mapAvatorPicUrl=_mapAvatorPicUrl;
-@synthesize leaderSAvatorUrl=_leaderSAvatorUrl;
-@synthesize leaderName=_leaderName;
-@synthesize endLocation=_endLocation;
-@synthesize leaderUserId=_leaderUserId;
-@synthesize serverCreateTime=_serverCreateTime;
-@synthesize userCount=_userCount;
-
-
-- (void) setProperties:(NSDictionary*)dic{
-  SET_PROPERTY([dic objectForKey:@"name"], self.name);
-  SET_PROPERTY([dic objectForKey:@"id"], self.dbId);
-  self.distance=[[dic objectForKey:@"distance"] doubleValue]/1000;
-  SET_PROPERTY([dic objectForKey:@"status"], self.status);
-  SET_PROPERTY([dic objectForKey:@"beginLocation"], self.beginLocation);
-  SET_PROPERTY([dic objectForKey:@"endLocation"], self.endLocation);
-  NSString *time=[[dic objectForKey:@"createtime"]stringValue];
-  SET_PROPERTY(time, self.serverCreateTime);
-  SET_PROPERTY([time changeMMToM], self.createTime);
-
-  SET_PROPERTY([dic objectForKey:@"mapAvatorPicUrl"], self.mapAvatorPicUrl);
-  SET_PROPERTY([dic objectForKey:@"leaderSAvatorUrl"], self.leaderSAvatorUrl);
-  SET_PROPERTY([dic objectForKey:@"leaderName"], self.leaderName);
-  SET_PROPERTY([dic objectForKey:@"leaderUserId"], self.leaderUserId);
-  self.userCount=[[dic objectForKey:@"userCount"] intValue];
-  NSNumber *userRole = [dic objectForKey:@"userRole"];
-  if ([userRole intValue] == 20) {
-    self.isLeader = YES;
-  }else{
-    self.isLeader = NO;
+- (id)initWithJSONDic:(NSDictionary *)jsonDic{
+  self=[super init];
+  if(self){
+    self.ridding=[[Ridding alloc]initWithJSONDic:[jsonDic objectForKey:@"ridding"]];
+    self.weight=[[jsonDic objectForKey:@"weight"]intValue];
+    self.firstPicUrl=[jsonDic objectForKey:@"firstpicurl"];
   }
-  
+  return self;
 
 }
 
 
-- (BOOL)isEnd{
-   if ([self.status intValue] == 10) {
-     return FALSE;
-   }
-  return TRUE;
-}
 
-- (void)setEnd{
-  self.status=[NSNumber numberWithInt:20];
-}
 
 
 

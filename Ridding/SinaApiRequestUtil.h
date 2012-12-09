@@ -23,7 +23,7 @@
 -(NSDictionary*)getUserInfo;
 
 //通过我得搜索内容，得到我关注或者关注我得用户列表
--(NSMutableArray*) getAtUserList:(NSString*)q type:(NSNumber*)type;
+-(NSArray*) getAtUserList:(NSString*)q type:(NSNumber*)type;
 
 -(NSString*)checkTokenIsValid;
 + (SinaApiRequestUtil*)getSinglton;
@@ -36,5 +36,7 @@
 -(void)sendCreateRidding:(NSString*)status url:(NSString*)url;
 
 -(void)sendLoginRidding:(NSString*)status;
+
+- (NSArray*)getBilateralUserList;
 
 @end

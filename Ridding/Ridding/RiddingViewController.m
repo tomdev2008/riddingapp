@@ -16,8 +16,12 @@
 @synthesize loginBtn=_loginBtn;
 //点击新浪微博
 -(IBAction)clickSinaWeibo:(id)sender{
-    QQNRSourceLoginViewController *sourceLoginCv=[[QQNRSourceLoginViewController alloc]init];
-    [self.navigationController pushViewController:sourceLoginCv animated:YES];
+  QQNRSourceLoginViewController *sourceLoginCv=[[QQNRSourceLoginViewController alloc]init];
+  [self dismissModalViewControllerAnimated:NO];
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  [delegate.leftViewController presentModalViewController:sourceLoginCv animated:NO];
+  
+
 }
 
 
@@ -25,8 +29,11 @@
 #pragma mark - View lifecycle
 - (void)viewDidLoad
 {
-  self.view.frame=CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y,self.view.frame.size.width,SCREEN_HEIGHT);
-  self.bgImageView.frame=self.view.frame;
+  [self.barView.leftButton setTitle:@"取消" forState:UIControlStateNormal];
+  [self.barView.leftButton setTitle:@"取消" forState:UIControlStateHighlighted];
+  
+  
+  self.bgImageView.frame=CGRectMake(self.view.frame.origin.x, self.barView.frame.size.height,self.view.frame.size.width,SCREEN_HEIGHT_WITHOUT_STATUS_BAR);
   RiddingAppDelegate *delegate=(RiddingAppDelegate *)[[UIApplication sharedApplication] delegate];
   [delegate setUserInfo];
   self.bgImageView.image=[UIImage retina4ImageNamed:@"loginBg" type:@"png"];
@@ -70,6 +77,13 @@
 
     
 }
+
+-(void)leftBtnClicked:(id)sender
+{
+  [RiddingAppDelegate moveMidNavgation];
+  [self dismissModalViewControllerAnimated:YES];
+}
+
 
 - (void)viewDidAppear:(BOOL)animated
 {

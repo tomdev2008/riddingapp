@@ -9,18 +9,27 @@
 #import "RiddingPicture.h"
 
 @implementation RiddingPicture
-@synthesize latitude=_latitude;
-@synthesize longtitude=_longtitude;
-@synthesize fileName=_fileName;
-@synthesize userId=_userId;
-@synthesize riddingId=_riddingId;
-@synthesize dbId=_dbId;
-@synthesize height=_height;
-@synthesize image=_image;
-@synthesize width=_width;
-@synthesize photoUrl=_photoUrl;
-@synthesize text=_text;
 
-
+- (id)initWithJSONDic:(NSDictionary *)jsonDic{
+  self=[super init];
+  if(self){
+    self.latitude=[[jsonDic objectForKey:@"latitude"]doubleValue];
+    self.longtitude=[[jsonDic objectForKey:@"longtitude"]doubleValue];
+    self.fileName=[jsonDic objectForKey:@"filename"];
+    self.riddingId=[[jsonDic objectForKey:@"riddingid"]longLongValue];
+    self.dbId=[[jsonDic objectForKey:@"dbid"]longLongValue];
+    self.photoUrl=[jsonDic objectForKey:@"photourl"];
+    self.photoKey=[jsonDic objectForKey:@"photokey"];
+    self.height=[[jsonDic objectForKey:@"height"]intValue];
+    self.width=[[jsonDic objectForKey:@"width"]intValue];
+    self.takePicDateL=[[jsonDic objectForKey:@"takepicdatel"]longLongValue];
+    self.takePicDateStr=[jsonDic objectForKey:@"takepicdatestr"];
+    self.pictureDescription=[jsonDic objectForKey:@"description"];
+    self.location=[jsonDic objectForKey:@"location"];
+    self.user=[[User alloc]initWithJSONDic:[jsonDic objectForKey:@"user"]];
+    self.createTime=[[jsonDic objectForKey:@"createtime"]longLongValue];
+  }
+  return self;
+}
 
 @end

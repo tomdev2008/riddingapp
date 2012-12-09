@@ -15,7 +15,8 @@
 #import "NSString+MD5Addition.h"
 #import "sys/utsname.h"
 #include "sys/stat.h"
-@implementation Utilities
+#import "SVProgressHUD.h"
+  @implementation Utilities
 
 
 
@@ -63,5 +64,32 @@
   //get the device model and the system version
   NSString *machine =[NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
   return machine;
+}
++ (UITableViewCell*)cellByClassName:(NSString*)className inNib:(NSString *)nibName forTableView:(UITableView *)tableView {
+  
+  Class cellClass = NSClassFromString(className);
+  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:className];
+  if (cell == nil) {
+    
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed: nibName owner: self options: nil];
+    
+    for (id oneObject in nib)
+      if ([oneObject isMemberOfClass:cellClass])
+        return oneObject;
+  }
+  return cell;
+}
+
++ (void)alertInstant:(NSString*)message isError:(BOOL)isError {
+  
+  //	UIImage *image = UIIMAGE_FROMPNG(@"btn_xiaoxi");
+  //  [[TKAlertCenter defaultCenter] postAlertWithMessage:message image:image];
+  //	[[iToast makeText:[NSString stringWithFormat:@"\n\n    %@    \n\n",message]] show];
+  
+  if (isError) {
+    [SVProgressHUD showErrorWithStatus:message];
+  }else {
+    [SVProgressHUD showSuccessWithStatus:message];
+  }
 }
 @end

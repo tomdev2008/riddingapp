@@ -9,11 +9,9 @@
 #import "BasicViewController.h"
 #import "RiddingPicture.h"
 #import "SWSnapshotStackView.h"
-#import <MapKit/MapKit.h>
 @interface PhotoDescViewController : BasicViewController{
   UIImage *_image;
-  NSNumber *_dbId;
-  CLLocation *_location;
+  long long _dbId;
 }
 
 @property(nonatomic,retain) IBOutlet SWSnapshotStackView *imageView;

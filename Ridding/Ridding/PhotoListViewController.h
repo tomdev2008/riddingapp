@@ -17,5 +17,5 @@
   NSOperationQueue *queue;
 }
 
-@property(nonatomic, retain) NSString *riddingId;
+@property(nonatomic) long long riddingId;
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "NSString+TomAddition.h"
-#import "NSDate+TomAddition.h"
+#import "NSDate+Addition.h"
 
 @implementation NSString (TomAddition)
 

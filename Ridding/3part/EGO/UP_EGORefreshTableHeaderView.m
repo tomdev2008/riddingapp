@@ -25,7 +25,10 @@
 
 
 - (id)initWithFrame:(CGRect)frame withBackgroundColor:(UIColor*)bgColor{
+  
+   
     return [self initWithFrame:frame withBackgroundColor:bgColor normalStatusText:nil];
+	
 }
 
 
@@ -150,7 +153,7 @@
         _statusLabel.text = NSLocalizedString(normalStateText, normalStateText);
       }
       else {
-        _statusLabel.text = NSLocalizedString(@"上拉显示更多内容...", @"上拉显示更多内容...");
+        _statusLabel.text = NSLocalizedString(@"上拉并松开后显示更多内容...", @"上拉并松开后显示更多内容...");
       }
 
 			[_activityView stopAnimating];
@@ -175,9 +178,6 @@
 			[CATransaction commit];*/
 			
 			break;
-    case EGOOPullRefreshEnd:
-      _statusLabel.text = NSLocalizedString(@"全部加载完了...", @"全部加载完了...");
-      [_activityView stopAnimating];
 		default:
 			break;
 	}
@@ -210,7 +210,8 @@
 			[self setState:EGOOPullRefreshNormal];
       
 		} else if (_state == EGOOPullRefreshNormal && scrollView.contentOffset.y + (scrollView.frame.size.height) > scrollView.contentSize.height + RefreshViewHight  && !_loading) {
-      [self setState:EGOOPullRefreshPulling];
+      
+      /*[self setState:EGOOPullRefreshPulling] */
 		}
 		
 		if (scrollView.contentInset.bottom != 0) {
@@ -249,23 +250,13 @@
 //当开发者页面页面刷新完毕调用此方法，[delegate egoRefreshScrollViewDataSourceDidFinishedLoading: scrollView];
 - (void)egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)scrollView {	
 	
-//	[UIView beginAnimations:nil context:NULL];
-//	[UIView setAnimationDuration:.3];
-//	[scrollView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
-//	[UIView commitAnimations];
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:.3];
+	[scrollView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
+	[UIView commitAnimations];
 	
 	[self setState:EGOOPullRefreshNormal];
 
-}
-
-
-//当开发者页面页面刷新完毕调用此方法，[delegate egoRefreshScrollViewDataSourceDidFinishedLoading: scrollView];
-- (void)egoRefreshScrollViewDataSourceDidEnd:(UIScrollView *)scrollView {
-  [self setState:EGOOPullRefreshEnd];
-}
-
-- (UILabel*)getStatusLabel{
-  return _statusLabel;
 }
 
 

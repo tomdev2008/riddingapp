@@ -7,22 +7,29 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@interface RiddingPicture : NSObject
+#import "BasicObject.h"
+#import "User.h"
+@interface RiddingPicture : BasicObject
 
 
 @property(nonatomic) double latitude;
 @property(nonatomic) double longtitude;
-@property(nonatomic,retain) NSString *fileName;
-@property(nonatomic,retain) NSString *userId;
-@property(nonatomic,retain) NSString *riddingId;
-@property(nonatomic,retain) NSNumber *dbId;
+@property(nonatomic,copy) NSString *fileName;
+@property(nonatomic,retain) User *user;
+@property(nonatomic) long long riddingId;
+@property(nonatomic) long long dbId;
 @property(nonatomic,retain) UIImage *image;
-@property(nonatomic,retain) NSString *photoUrl;
-@property(nonatomic) unsigned long height;
-@property(nonatomic) unsigned long width;
+@property(nonatomic,copy) NSString *photoUrl;
+@property(nonatomic,copy) NSString *photoKey;
+@property(nonatomic) int height;
+@property(nonatomic) int width;
+@property(nonatomic) long long takePicDateL;
+@property(nonatomic,copy) NSString *takePicDateStr;
 //相片描述
-@property(nonatomic,retain) NSString *text;
-@property(nonatomic,retain) NSString *location;
+@property(nonatomic,copy) NSString *pictureDescription;
+@property(nonatomic,copy) NSString *location;
+
+@property(nonatomic) BOOL isFirstPic;
+@property(nonatomic) long long createTime;
 
 @end

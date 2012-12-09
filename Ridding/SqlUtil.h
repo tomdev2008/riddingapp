@@ -22,6 +22,5 @@
 - (NSMutableArray *)selectData:(NSString *)sql resultColumns:(int)col;
 - (int)selectCount:(NSString *)sql;
 - (BOOL)dealData:(NSString *)sql paramArray:(NSArray *)param;
-- (BOOL) createRiddingLocationTable;
 
 @end

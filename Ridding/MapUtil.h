@@ -23,7 +23,7 @@
 + (MapUtil*)getSinglton;
 
 //通过服务端得到的地图点array计算出来经纬度array
--(void)calculate_routes_from:(NSArray*)mapLoactions map_dic:(NSMutableDictionary*)map_dic;
+-(void)calculate_routes_from:(NSArray*)mapLoactions map:(Map*)map;
 //将地图在这些点居中显示
 -(MKCoordinateRegion) center_map:(MKMapView *)mapView routes:(NSArray*)routes;
 //更新地图，画线

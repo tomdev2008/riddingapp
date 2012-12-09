@@ -10,7 +10,10 @@
 #import "ActivityInfo.h"
 #import "SWSnapshotStackView.h"
 #import "RiddingPicture.h"
-#import "PublicDetailDescView.h"
+#define PublicDetailCellDefaultSpace 4
+#define PublicDetailCellDefaultDownSpace 10
+#define PublicDetailCellOriginX 15
+#define PublicDetailCellWidth 290
 @class PublicDetailCell;
 @protocol PublicDetailCellDelegate <NSObject>
 @optional
@@ -20,13 +23,14 @@
 
 @interface PublicDetailCell : UITableViewCell{
   UIView *_cellContentView;
+  CGFloat _viewHeight;
 }
-@property(nonatomic,retain) RiddingPicture *info;
+@property (nonatomic,retain) RiddingPicture *info;
+@property (nonatomic) int index;
 @property (nonatomic, assign) id<PublicDetailCellDelegate> delegate;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier info:(RiddingPicture*)info;
--(UIView*)resetContentView;
-- (NSInteger)getCellHeight;
 - (void)imageTap;
+- (void) initContentView;
 @end

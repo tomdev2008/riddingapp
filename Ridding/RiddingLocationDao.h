@@ -18,11 +18,11 @@
 
 + (RiddingLocationDao*)getSinglton;
 
--(Boolean)addRiddingLocation:riddingId locations:(NSArray*)locations;
+-(Boolean)addRiddingLocation:(long long)riddingId locations:(NSArray*)locations;
 
--(int)getRiddingLocationCount:riddingId;
+-(int)getRiddingLocationCount:(long long)riddingId;
 
--(NSArray*)getRiddingLocations:riddingId beginWeight:(NSNumber*)beginWeight;
+-(NSArray*)getRiddingLocations:(long long)riddingId beginWeight:(int)beginWeight;
 
 
 @end

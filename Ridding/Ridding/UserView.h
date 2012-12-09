@@ -30,7 +30,7 @@
 
 //代理协议的实现
 @protocol UserViewDelegate <NSObject>
--(void)avatorViewClick:(UITapGestureRecognizer*) gestureRecognize userId:(NSString*)userId; //声明协议方法
+-(void)avatorViewClick:(UITapGestureRecognizer*) gestureRecognize userId:(long long)userId; //声明协议方法
 -(void)deleteViewClick:(UITapGestureRecognizer*) gestureRecognize userView:(UserView*)userView; //声明协议方法
 @end
 

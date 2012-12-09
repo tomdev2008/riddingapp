@@ -49,9 +49,8 @@
 
 -(void)leftBtnClicked:(id)sender
 {
-  if (self.navigationController) {
-    [self.navigationController popViewControllerAnimated:YES];
-  }
+  [RiddingAppDelegate moveMidNavgation];
+  [self dismissModalViewControllerAnimated:YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -95,21 +94,25 @@
   NSDictionary *dic = [[self explodeString:queryStr ToDictionaryInnerGlue:@"=" outterGlue:@"&"] copy];
   if ([dic objectForKey:@"userId"] != nil) {
     StaticInfo *staticInfo=[StaticInfo getSinglton];
-    staticInfo.user.userId=[dic objectForKey:@"userId"];
+    staticInfo.user.userId=[[dic objectForKey:@"userId"]longLongValue];
     staticInfo.user.authToken=[dic objectForKey:@"authToken"];
     staticInfo.user.sourceType=SOURCE_SINA;//新浪微博
     
     NSDictionary *profileDic=[[RequestUtil getSinglton] getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType];
-    [staticInfo.user setProperties:profileDic];
+    User *user=[[User alloc]initWithJSONDic:[profileDic objectForKey:@"user"]];
+    user.userId=staticInfo.user.userId;
+    user.authToken=staticInfo.user.authToken;
+    user.sourceType=staticInfo.user.sourceType;
+    staticInfo.user=user;
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:staticInfo.user.userId forKey:@"userId"];
+    [prefs setObject:LONGLONG2NUM(staticInfo.user.userId) forKey:@"userId"];
     [prefs setObject:staticInfo.user.name forKey:@"nickname"];
     [prefs setObject:staticInfo.user.name forKey:@"nickname"];
     [prefs setObject:staticInfo.user.authToken forKey:@"authToken"];
     [prefs setInteger:staticInfo.user.sourceType forKey:@"sourceType"];
     [prefs setObject:staticInfo.user.accessToken forKey:@"accessToken"];
-    [prefs setObject:staticInfo.user.accessUserId forKey:@"accessUserId"];
+    [prefs setObject:LONGLONG2NUM(staticInfo.user.sourceUserId) forKey:@"accessUserId"];
     [prefs setInteger:staticInfo.user.nowRiddingCount forKey:@"riddingCount"];
     
     staticInfo.logined=true;
@@ -128,8 +131,13 @@
    [prefs setObject:@"" forKey:@"recomApp"];
     
     CVF.isMyFeedHome=TRUE;
-    [self.navigationController pushViewController:CVF animated:YES];
     [self.activityView removeFromSuperview];
+    
+    [self dismissModalViewControllerAnimated:YES];
+    RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+    [delegate.navController pushViewController:CVF animated:YES];
+    [RiddingAppDelegate moveLeftNavgation];
+
   }
   return  YES;
 }

@@ -7,17 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ActivityInfo.h"
+#import "Ridding.h"
 @protocol PublicDetailHeaderDelegate <NSObject>
 
 @end
 
 @interface PublicDetailHeaderView : UIView{
-  ActivityInfo *_info;
+  Ridding *_ridding;
   
 }
 
 @property (nonatomic, assign) id<PublicDetailHeaderDelegate> delegate;
 
-- (id)initWithFrame:(CGRect)frame info:(ActivityInfo*)info;
+- (id)initWithFrame:(CGRect)frame ridding:(Ridding*)ridding;
 @end

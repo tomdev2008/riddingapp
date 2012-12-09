@@ -7,27 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BasicObject.h"
+#import "Ridding.h"
 
-@interface ActivityInfo : NSObject 
+typedef enum  _ActivityInfoType {
+	ActivityInfoType_Going = 0,
+	ActivityInfoType_Recom = 1,
+}ActivityInfoType;
 
-@property (nonatomic, retain) NSString *createTime;
-@property (nonatomic, retain) NSString *serverCreateTime;
-@property (nonatomic, retain) NSNumber *dbId;
-@property (nonatomic) double distance;
-@property (nonatomic, retain) NSNumber *status;
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *beginLocation;
-@property (nonatomic, retain) NSString *endLocation;
-@property (nonatomic, retain)  NSString *mapAvatorPicUrl;
-@property (nonatomic, retain)  NSString *leaderSAvatorUrl;
-@property (nonatomic, retain)  NSString *leaderName;
-@property (nonatomic, retain)  NSString *leaderUserId;
-@property (nonatomic)  int userCount;
-@property (nonatomic) bool isLeader;
+@interface ActivityInfo : BasicObject{
+  
+}
+
+@property (nonatomic,retain) Ridding *ridding;
+@property (nonatomic) int weight;
+@property (nonatomic,copy) NSString *firstPicUrl;
 
 
-
-- (void) setProperties:(NSDictionary*)dic;
-- (BOOL)isEnd;
-- (void)setEnd;
 @end

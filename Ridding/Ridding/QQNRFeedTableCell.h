@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #include "ActivityInfo.h"
 #import "SWSnapshotStackView.h"
+#import "DetailTextView.h"
 @class QQNRFeedTableCell;
 @protocol QQNRFeedTableCellDelegate <NSObject>
 - (void)leaderTap:(ActivityInfo *)info;
@@ -16,15 +17,23 @@
 @end
 
 @interface QQNRFeedTableCell : UITableViewCell{
-  UIView *cellContentView;
 }
-@property(nonatomic,retain) ActivityInfo *info;
-@property (nonatomic, assign) id<QQNRFeedTableCellDelegate> delegate;
-//@property(nonatomic,retain) SWSnapshotStackView *stackView;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier info:(ActivityInfo*)info;
-- (CGFloat)getCellHeight;
--(UIView*)resetContentView:(BOOL)needNew;
-- (void)leaderViewTap:(id)selector;
-- (void)statusTap:(id)selector;
+
+@property(nonatomic,retain) Ridding *ridding;
+@property (nonatomic, assign) id<QQNRFeedTableCellDelegate> delegate;
+
+
+@property(nonatomic,retain) IBOutlet UIButton *avatorBtn;
+@property(nonatomic,retain) IBOutlet DetailTextView *nameLabel;
+@property(nonatomic,retain) IBOutlet DetailTextView *teamCountLabel;
+@property(nonatomic,retain) IBOutlet DetailTextView *distanceLabel;
+@property(nonatomic,retain) IBOutlet DetailTextView *beginLocationLabel;
+@property(nonatomic,retain) IBOutlet DetailTextView *endLocationLabel;
+@property(nonatomic,retain) IBOutlet UILabel *statusLabel;
+@property(nonatomic,retain) IBOutlet SWSnapshotStackView *stackView;
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier ridding:(Ridding*)ridding;
+- (void)initContentView;
+
 @end
