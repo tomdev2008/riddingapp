@@ -31,9 +31,8 @@
 @property(nonatomic,retain) IBOutlet DetailTextView *beginLocationLabel;
 @property(nonatomic,retain) IBOutlet DetailTextView *endLocationLabel;
 @property(nonatomic,retain) IBOutlet UILabel *statusLabel;
-@property(nonatomic,retain) IBOutlet SWSnapshotStackView *stackView;
+@property(nonatomic,retain) IBOutlet UIImageView *mapImageView;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier ridding:(Ridding*)ridding;
 - (void)initContentView;
 
 @end

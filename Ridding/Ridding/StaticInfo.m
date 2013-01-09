@@ -65,34 +65,11 @@ static StaticInfo *staticInfo=nil;
         return FALSE;
     }
 }
--(void)getUserFromPlist{
-    NSMutableDictionary *dic=[self loadFromFile];
-    long long userId=[[dic objectForKey:@"userId"]longLongValue];
-    if (userId>0) {
-        user.userId=userId;
-        user.sourceUserId=[[dic objectForKey:@"accessUserId"]longLongValue];
-        user.bavatorUrl=[dic objectForKey:@"bavatorUrl"];
-        user.accessToken=[dic objectForKey:@"accessToken"];
-        user.savatorUrl=[dic objectForKey:@"savatorUrl"];
-        user.bavatorUrl=[dic objectForKey:@"bavatorUlr"];
-        user.totalDistance=[[dic objectForKey:@"totalDistance"]intValue];
-        user.name=[dic objectForKey:@"name"];
-    }
-}
--(NSMutableDictionary*)saveUserToDictonary{
-    if (user==nil) {
-        return nil;
-    }
-    NSMutableDictionary *mulDic=[[NSMutableDictionary alloc]init];
-    [mulDic setValue:LONGLONG2NUM(user.userId) forKey:@"userId"];
-    [mulDic setValue:LONGLONG2NUM(user.sourceUserId) forKey:@"accessUserId"];
-    [mulDic setValue:user.savatorUrl forKey:@"savatorUrl"];
-    [mulDic setValue:user.bavatorUrl forKey:@"bavatorUlr"];
-    [mulDic setValue:INT2NUM(user.totalDistance) forKey:@"totalDistance"];
-    [mulDic setValue:user.statusTitle forKey:@"statusTitle"];
-    [mulDic setValue:user.accessToken forKey:@"accessToken"];
-    [mulDic setValue:user.name forKey:@"name"];
-    return mulDic;
+
+
+- (void)saveDistanceToUserDefault:(int)distance{
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  [prefs setObject:INT2NUM(user.totalDistance) forKey:kStaticInfo_totalDistance];
 }
 
 

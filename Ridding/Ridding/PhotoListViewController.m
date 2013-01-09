@@ -7,11 +7,8 @@
 //
 
 #import "PhotoListViewController.h"
-#import "RiddingPictureDao.h"
 #import "KTPhotoScrollViewController.h"
 #import "StaticInfo.h"
-#import "RequestUtil.h"
-#import "ImageUtil.h"
 #import "ResponseCodeCheck.h"
 #import "RNBlurModalView.h"
 #import "PhotoUploadBlurView.h"
@@ -70,13 +67,13 @@
 #pragma mark photo
 - (void)deleteImageAtName:(NSString*)name
 {
-  dispatch_queue_t q;
-  q=dispatch_queue_create("deleteImageAtName", NULL);
-  dispatch_async(q, ^{
-    NSRange range = [name rangeOfString:@".jpg"];
-    long long dbId= [[name substringToIndex:range.location]longLongValue];
-    [[RiddingPictureDao getSinglton] deleteRiddingPicture:self.riddingId userId:[StaticInfo getSinglton].user.userId dbId:dbId];
-  });
+//  dispatch_queue_t q;
+//  q=dispatch_queue_create("deleteImageAtName", NULL);
+//  dispatch_async(q, ^{
+//    NSRange range = [name rangeOfString:@".jpg"];
+//    long long dbId= [[name substringToIndex:range.location]longLongValue];
+//    [[RiddingPictureDao getSinglton] deleteRiddingPicture:self.riddingId userId:[StaticInfo getSinglton].user.userId dbId:dbId];
+//  });
 }
 
 

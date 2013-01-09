@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BasicObject.h"
-@interface Map : BasicObject
+#import "File.h"
+@interface Map : File
 
 
 @property(nonatomic) long long mapId;
@@ -28,11 +28,12 @@
 @property(nonatomic) long long cityId;
 @property(nonatomic,copy) NSString *avatorPicUrl;
 @property(nonatomic,copy) NSString *cityName;
-@property(nonatomic,copy) NSString *urlKey;
 @property(nonatomic,retain) UIImage *coverImage;
 
 
-@property(nonatomic,copy) NSString *riddingName;
+
+@property(nonatomic,retain) NSArray *routes;
+
 
 
 @property (nonatomic,retain) NSArray *toNextDistance;

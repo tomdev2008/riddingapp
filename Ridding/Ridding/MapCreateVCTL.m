@@ -13,10 +13,13 @@
 #import "MapUtil.h"
 #import "UIColor+XMin.h"
 #import "UIImage+Utilities.h"
-#import "ImageUtil.h"
+
 #import "QQNRMyLocation.h"
 #import "Map.h"
 #import "SVProgressHUD.h"
+#import "QQNRServerTask.h"
+#import "QQNRServerTaskQueue.h"
+#import "MapCreateDescVCTL.h"
 @interface MapCreateVCTL ()
 
 @end
@@ -47,6 +50,7 @@
   self.searchField.textColor=[UIColor whiteColor];
   self.searchField.layer.cornerRadius=10;
   self.searchField.layer.masksToBounds=YES;
+  self.searchField.returnKeyType=UIReturnKeyGo;
   
   self.tapView.backgroundColor=[UIColor blackColor];
   self.tapView.alpha=0.7;
@@ -64,16 +68,19 @@
   
   _locationViews=[[NSMutableArray alloc]init];
   
+  
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"navbar_left") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"navbar_left") forState:UIControlStateHighlighted];
   [self.barView.rightButton setTitle:@"创建活动" forState:UIControlStateNormal];
   [self.barView.rightButton setTitle:@"创建活动" forState:UIControlStateHighlighted];
   self.barView.rightButton.frame=CGRectMake(240,6, 70,31);
   [self.barView.rightButton setHidden:NO];
   self.barView.titleLabel.text=@"画路线";
-  _map=[[Map alloc]init];
+  _ridding=[[Ridding alloc]init];
   
   self.myLocationBtn.layer.cornerRadius=10;
   self.myLocationBtn.layer.masksToBounds=YES;
-  
+  self.hasLeftView=TRUE;
   
   self.mapView.frame=CGRectMake(0, 0, SCREEN_WIDTH ,SCREEN_HEIGHT_WITHOUT_STATUS_BAR);
   self.clearBtn.frame=CGRectMake(self.clearBtn.frame.origin.x, SCREEN_HEIGHT-84, self.clearBtn.frame.size.width, self.clearBtn.frame.size.height);
@@ -84,6 +91,7 @@
 
 - (void)checkLocation{
   RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  [delegate myLocation];
   if(![delegate canGetLocation]){
     [SVProgressHUD showSuccessWithStatus:@"请开启定位服务以便定位到您的位置" duration:2];
   }else{
@@ -98,43 +106,39 @@
   self.barView.rightButton.enabled=NO;
   if(!_succCreate){
     [SVProgressHUD showSuccessWithStatus:@"生成路线以后才能创建活动~" duration:2];
+    self.barView.rightButton.enabled=YES;
     return;
   }
-  
   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
                                                   message:@"请先确认您的地图已经加载完成,否则骑行图片会不清晰"
                                                  delegate:self cancelButtonTitle:@"取消"
                                         otherButtonTitles:@"确定", nil];
   [alert show];
+  
+ 
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   if(buttonIndex==1){
-  
-    _map.coverImage=_newCoverImage;
-    dispatch_async(dispatch_queue_create("drawRoutes", NULL), ^{
-      NSString *key= [ImageUtil uploadPhotoToServerByImage:_map.coverImage prefixPath:@"map" type:IMAGETYPE_MAP];
-      dispatch_async(dispatch_get_main_queue(), ^{
-        if(key==nil){
-          [SVProgressHUD showSuccessWithStatus: @"上传截图失败,请重新上传" duration:2];
-        }
-        _map.urlKey=key;
-        if(self.delegate){
-          [self.delegate finishCreate:self info:_map];
-        }
-         [SVProgressHUD dismiss];
-      });
-    });
+    
+    _ridding.map.coverImage=_newCoverImage;
+    
+    QQNRServerTask *task=[[QQNRServerTask alloc]init];
+    task.step=STEP_UPLOADRIDDINGMAP;
+    NSMutableDictionary *dic=[[NSMutableDictionary alloc]initWithObjectsAndKeys:_ridding,kFileClientServerUpload_Ridding, nil];
+    task.paramDic=dic;
+    
+    QQNRServerTaskQueue *queue=[QQNRServerTaskQueue sharedQueue];
+    [queue addTask:task withDependency:NO];
+    
+    MapCreateDescVCTL *descVCTL=[[MapCreateDescVCTL alloc]initWithNibName:@"MapCreateDescVCTL" bundle:nil ridding:_ridding];
+    [self.navigationController pushViewController:descVCTL animated:YES];
+    [SVProgressHUD dismiss];
+ 
   }else{
-   [SVProgressHUD dismiss];
+    [SVProgressHUD dismiss];
   }
   self.barView.rightButton.enabled=YES;
-}
-
-
--(void)leftBtnClicked:(id)sender
-{
-  [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -147,7 +151,7 @@
   if (gestureRecognizer.state != UIGestureRecognizerStateBegan)
     return;
 	if([gestureRecognizer isMemberOfClass:[UILongPressGestureRecognizer class]] && (gestureRecognizer.state == UIGestureRecognizerStateEnded)) {
-		[self.mapView removeGestureRecognizer:gestureRecognizer]; //avoid multiple pins to appear when holding on the screen
+		[self.mapView removeGestureRecognizer:gestureRecognizer];
   }
   [SVProgressHUD showWithStatus:@"加载中"];
   CGPoint touchPoint = [gestureRecognizer locationInView:self.mapView];
@@ -320,23 +324,13 @@
 #pragma mark textFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
   if(![textField.text isEqualToString:@""]){
-       CLGeocoder *geoCoder=[[CLGeocoder alloc]init];
+    [SVProgressHUD show];
+    CLGeocoder *geoCoder=[[CLGeocoder alloc]init];
     [geoCoder geocodeAddressString:textField.text completionHandler:^(NSArray *placemarks, NSError *error){
-      if(placemarks){
-        CLPlacemark *mark=[placemarks objectAtIndex:0];
-        MyAnnotation *annotation = [[MyAnnotation alloc]initWithLocation:mark.location.coordinate];
-        annotation.title=mark.name;
-        if(mark.locality){
-          annotation.city=mark.locality;
-        }else if(annotation.title){
-          annotation.city=annotation.title;
-        }else{
-          annotation.city=@"";
-        }
-        [self addNewAnnotation:annotation];
-      }else{
-        [SVProgressHUD showWithStatus:@"悲剧,没找到相关位置"];
-      }
+      MapSearchVCTL *searchVCTL=[[MapSearchVCTL alloc]initWithNibName:@"MapSearchVCTL" bundle:nil placemarks:placemarks];
+      searchVCTL.delegate=self;
+      [self.navigationController pushViewController:searchVCTL animated:YES];
+      [SVProgressHUD dismiss];
     }];
   }
   [textField resignFirstResponder];
@@ -384,12 +378,19 @@
 
 - (IBAction)myLocationBtn:(id)sender{
   self.myLocationBtn.enabled=NO;
-   MKCoordinateRegion region;
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  if(![delegate canGetLocation]){
+    [SVProgressHUD showErrorWithStatus:@"请开启定位服务" duration:2.0];
+    self.myLocationBtn.enabled=YES;
+    return;
+  }
+  MKCoordinateRegion region;
   region.center=[self.mapView userLocation].coordinate;
   region.span=self.mapView.region.span;
   [self.mapView setRegion:region animated:YES];
-  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  
   QQNRMyLocation *myLocation=[delegate myLocation];
+  [delegate.myLocationManager startUpdatingLocation];
   MyAnnotation *annotation = [[MyAnnotation alloc]initWithLocation:myLocation.location.coordinate];
   annotation.title=myLocation.name;
   if(myLocation.city){
@@ -434,19 +435,18 @@
       [locationArray addObject:[NSString stringWithFormat:@"%f,%f",view.latitude,view.longtitude]];
     }
   }
-  _map=[[Map alloc]init];
-  _map.midLocations=nameArray;
-  _map.beginLocation=((LocationView*)[_locationViews objectAtIndex:0]).totalLocation;
-  _map.endLocation=((LocationView*)[_locationViews lastObject]).totalLocation;
-  _map.mapTaps=locationArray;
-  _map.cityName=((LocationView*)[_locationViews objectAtIndex:0]).annotation.city;
+  _ridding.map.midLocations=nameArray;
+  _ridding.map.beginLocation=((LocationView*)[_locationViews objectAtIndex:0]).totalLocation;
+  _ridding.map.endLocation=((LocationView*)[_locationViews lastObject]).totalLocation;
+  _ridding.map.mapTaps=locationArray;
+  _ridding.map.cityName=((LocationView*)[_locationViews objectAtIndex:0]).annotation.city;
   self.route_view.image=nil;
   [_routes removeAllObjects];
   dispatch_async(dispatch_queue_create("drawRoutes", NULL), ^{
     line_color = [UIColor getColor:lineColor];
-    [[MapUtil getSinglton] calculate_routes_from:locationArray map:_map];
-    if(_map){
-      _routes = [[MapUtil getSinglton] decodePolyLineArray:_map.mapPoint];
+    [[MapUtil getSinglton] calculate_routes_from:locationArray map:_ridding.map];
+    if(_ridding.map){
+      _routes = [[MapUtil getSinglton] decodePolyLineArray:_ridding.map.mapPoint];
       dispatch_async(dispatch_get_main_queue(), ^{
         if(self){
           [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:line_color routes:_routes];
@@ -495,11 +495,11 @@
   _succCreate=FALSE;
   MyAnnotation *annotation=view.annotation;
   [self.mapView removeAnnotation:annotation];
-  BOOL findView=FALSE;  
+  BOOL findView=FALSE;
   for(LocationView *locationView in _scrollView.subviews){
     if(locationView.annotation == annotation){
       [locationView removeFromSuperview];
-       [_locationViews removeObject:locationView];
+      [_locationViews removeObject:locationView];
       findView=TRUE;
     }
     if(findView){
@@ -508,7 +508,13 @@
       locationView.frame=frame;
     }
   }
- 
+}
+
+- (void)didSelectPlaceMarks:(MapSearchVCTL*)mapSearchVCTL placemark:(CLPlacemark*)placemark{
+  MyAnnotation *annotation = [[MyAnnotation alloc]initWithLocation:placemark.location.coordinate];
+  annotation.title=placemark.name;
+  annotation.city=placemark.locality;
+  [self addNewAnnotation:annotation];
 }
 
 @end

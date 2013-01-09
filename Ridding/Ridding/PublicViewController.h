@@ -10,6 +10,7 @@
 #import "UP_EGORefreshTableHeaderView.h"
 #import "ActivityInfo.h"
 #import "EGORefreshTableHeaderView.h"
+#import "TouchEnabledTableView.h"
 @interface PublicViewController : BasicViewController<UP_EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource,EGORefreshTableHeaderDelegate,UIScrollViewDelegate>{
   UP_EGORefreshTableHeaderView *_ego;
   EGORefreshTableHeaderView *_top_Ego;
@@ -23,5 +24,5 @@
 }
 
 
-@property(nonatomic, retain) IBOutlet UITableView *tv;
+@property(nonatomic, retain) IBOutlet TouchEnabledTableView *tv;
 @end

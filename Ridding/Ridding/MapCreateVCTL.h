@@ -13,22 +13,16 @@
 #import "MyAnnotation.h"
 #import "CreateAnnotationView.h"
 #import "Map.h"
-@class MapCreateVCTL;
-@protocol MapCreateVCTLDelegate <NSObject>
+#import "MapSearchVCTL.h"
 
-- (void)finishCreate:(MapCreateVCTL*)controller info:(Map*)info;
-
-@end
-
-
-@interface MapCreateVCTL : BasicViewController<MKAnnotation,MKMapViewDelegate,UISearchBarDelegate,UITextFieldDelegate,UIScrollViewDelegate,CreateAnnotationViewDelegate>{
+@interface MapCreateVCTL : BasicViewController<MKAnnotation,MKMapViewDelegate,UISearchBarDelegate,UITextFieldDelegate,UIScrollViewDelegate,CreateAnnotationViewDelegate,MapSearchVCTLDelegate>{
   BOOL _isSearching;
   NSMutableArray *_locationViews;
   MyAnnotation *_nowAnnotation;
   NSMutableArray *_routes;
   UIColor *line_color;
   BOOL _succCreate;
-  Map *_map;
+  Ridding *_ridding;
   UIImage *_newCoverImage;
 }
 @property(nonatomic,retain) IBOutlet UIImageView *route_view;
@@ -44,7 +38,5 @@
 @property(nonatomic,retain) IBOutlet UIButton *clearBtn;
 @property(nonatomic,retain) IBOutlet UILabel *tipsLabel;
 @property(nonatomic,retain) IBOutlet UIButton *myLocationBtn;
-
-@property(nonatomic,assign) id<MapCreateVCTLDelegate> delegate;
 
 @end

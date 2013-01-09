@@ -11,6 +11,7 @@
 #import "TutorialViewController.h"
 #import "UIColor+XMin.h"
 #import "SinaApiRequestUtil.h"
+#import "PublicViewController.h"
 
 @implementation UserSettingViewController
 @synthesize uiTableView=_uiTableView;
@@ -96,7 +97,12 @@
     }
   }else if([indexPath section]==1){
     if([indexPath row]==0){
-      cell.textLabel.text = @"退出";
+      if([[RiddingAppDelegate shareDelegate]canLogin]){
+        cell.textLabel.text = @"退出";
+      }else{
+        cell.textLabel.text = @"登录";
+      }
+      
     }
   }
   cell.imageView.frame=CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 20, 20);
@@ -122,15 +128,23 @@
   [prefs removeObjectForKey:@"accessToken"];
   [prefs removeObjectForKey:@"riddingCount"];
   [prefs removeObjectForKey:@"accessUserId"];
-#warning 123
-  RiddingViewController *view=[[RiddingViewController alloc]init];
-  RiddingAppDelegate *appDelegate = [RiddingAppDelegate shareDelegate];
-  appDelegate.rootViewController=view;
-  [self.navigationController popToRootViewControllerAnimated:NO];
+  
+  [RiddingAppDelegate popAllNavgation];
+
+  PublicViewController *publicViewController=[[PublicViewController alloc]init];
+  [[RiddingAppDelegate shareDelegate].navController pushViewController:publicViewController animated:NO];
   // 清空通知中心和badge
   
   // 清除badge
   [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+}
+
+
+
+#pragma mark - RiddingViewController delegate
+- (void)didFinishLogined:(QQNRSourceLoginViewController*)controller{
+  [super didFinishLogined:controller];
+  [self.uiTableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView
@@ -152,9 +166,13 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     }
   }else if([indexPath section]==1){
     if([indexPath row]==0){
-      SinaApiRequestUtil* requestUtil=[SinaApiRequestUtil getSinglton];
-      [requestUtil quit];
-      [self quitButtonClick];
+      if([[RiddingAppDelegate shareDelegate]canLogin]){
+        [self quitButtonClick];
+      }else{
+        [self showLoginAlertView];
+      }
+
+      
     }
   }
   [tableView deselectRowAtIndexPath:indexPath animated:NO];

@@ -14,6 +14,8 @@
 #import "RiddingViewController.h"
 #import "BasicViewController.h"
 #import "UserSettingViewController.h"
+#import "MapCreateVCTL.h"
+#import "SVProgressHUD.h"
 @interface BasicLeftViewController (){
   
 }
@@ -76,24 +78,23 @@
   switch (indexPath.row) {
     case 0:
     {
-      [cell.textLabel setText:@"个人"];
-      
+      [cell.textLabel setText:@"个人中心"];
     }
       break;
     case 1:
     {
-      [cell.textLabel setText:@"广场"];
+      [cell.textLabel setText:@"创建活动"];
     }
       break;
     case 2:
     {
-      [cell.textLabel setText:@"设置"];
-      cell.imageView.image=UIIMAGE_FROMPNG(@"setting");
+      [cell.textLabel setText:@"广场"];
     }
       break;
     case 3:
     {
-      [cell.textLabel setText:@"点点点"];
+      [cell.textLabel setText:@"设置"];
+      cell.imageView.image=UIIMAGE_FROMPNG(@"setting");
     }
       break;
     default:
@@ -110,18 +111,20 @@
 #pragma mark -
 #pragma mark Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  _selectedIndex=indexPath;
   switch ([indexPath row]) {
     case 0:
       [self showUserFeed];
       break;
     case 1:
-      [self showPublic];
+      [self showCreateMap];
       break;
     case 2:
-      [self showSetting];
+      [self showPublic];
+      
       break;
     case 3:
-     
+     [self showSetting];
       break;
       
     default:
@@ -145,38 +148,62 @@
 - (void)showUserFeed{
   RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
   if([delegate canLogin]){
-    [[RequestUtil getSinglton] sendApns];
     if(![self isShowingViewController:[QQNRFeedViewController class]]){
       [RiddingAppDelegate moveRightNavgation];
       //如果新浪成功，并且authtoken有效
-      QQNRFeedViewController *FVC=[[QQNRFeedViewController alloc]initWithUser:[StaticInfo getSinglton].user exUser:nil];
-      FVC.isMyFeedHome=TRUE;
+      QQNRFeedViewController *FVC=[[QQNRFeedViewController alloc]initWithUser:[StaticInfo getSinglton].user isFromLeft:TRUE];
+
       [RiddingAppDelegate popAllNavgation];
       [delegate.navController pushViewController:FVC animated:NO];
-      [StaticInfo getSinglton].logined=true;
     }
     
     [RiddingAppDelegate moveLeftNavgation];
   }else{
     [RiddingAppDelegate moveRightNavgation];
     RiddingViewController *riddingViewController=[[RiddingViewController alloc]init];
+    riddingViewController.delegate=self;
     [self presentModalViewController:riddingViewController animated:YES];
   }
   _nowIndexView=1;
 }
 
 
-
-- (void)showPublic{
+- (void)showCreateMap{
   RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
   
-  if(![self isShowingViewController:[PublicViewController class]]){
+  if(![self isShowingViewController:[MapCreateVCTL class]]){
     [RiddingAppDelegate moveRightNavgation];
-    PublicViewController *publicVCTL=[[PublicViewController alloc]init];
-    [delegate.navController pushViewController:publicVCTL animated:NO];
+    MapCreateVCTL *mapCreateVCTL=[[MapCreateVCTL alloc]init];
+    [delegate.navController pushViewController:mapCreateVCTL animated:NO];
   }
   [RiddingAppDelegate moveLeftNavgation];
 }
+
+- (void)showPublic{
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+    if(![self isShowingViewController:[PublicViewController class]]){
+      [RiddingAppDelegate moveRightNavgation];
+      PublicViewController *publicVCTL=[[PublicViewController alloc]init];
+      [delegate.navController pushViewController:publicVCTL animated:NO];
+    }
+  [SVProgressHUD dismiss];
+  [RiddingAppDelegate moveLeftNavgation];
+}
+
+- (void)didClickLogin:(RiddingViewController*)controller{
+  [controller dismissModalViewControllerAnimated:NO];
+  QQNRSourceLoginViewController *loginController=[[QQNRSourceLoginViewController alloc]init];
+  loginController.delegate=self;
+  [self presentModalViewController:loginController animated:YES];
+}
+
+#pragma mark - RiddingViewController delegate
+- (void)didFinishLogined:(QQNRSourceLoginViewController*)controller{
+  [controller dismissModalViewControllerAnimated:NO];
+  [self tableView:self.uiTableView didSelectRowAtIndexPath:_selectedIndex];
+}
+
+
 
 - (BOOL)isShowingViewController:(Class)class{
   RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];

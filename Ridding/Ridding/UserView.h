@@ -8,29 +8,27 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import "User.h"
-@protocol UserViewDelegate; //代理协议的声明
+@class UserView;
+@protocol UserViewDelegate <NSObject>
+-(void)avatorBtnClick:(UserView*)userView; //声明协议方法
+-(void)deleteBtnClick:(UserView*)userView; //声明协议方法
+@end
 
 @interface UserView : UIView {
-    id<UserViewDelegate> userViewDelegate;
-    UIImageView *avatorView;
-    UILabel *label;
-    UIImageView *deleteView;
-    UIImageView *brandView;
+  UIButton *_avatorBtn;
+  UIButton *_deleteBtn;
+  UILabel  *_label;
+  UIImageView *_brandView;
+  
 }
-@property(nonatomic, assign) id userViewDelegate; 
+@property(nonatomic, assign) id<UserViewDelegate> delegate;
 @property(nonatomic, retain) User *user;
-@property(nonatomic, retain) UIImageView *avatorView;
-@property(nonatomic, retain) UILabel *label;
-@property(nonatomic, retain) UIImageView *deleteView;
-@property(nonatomic, retain) UIImageView *brandView;
 
 -(UserView*)init;
 -(void)changeStatus:(int)status;
+-(void)showDeleteBtn;
+-(void)hideDeleteBtn;
 @end
 
-//代理协议的实现
-@protocol UserViewDelegate <NSObject>
--(void)avatorViewClick:(UITapGestureRecognizer*) gestureRecognize userId:(long long)userId; //声明协议方法
--(void)deleteViewClick:(UITapGestureRecognizer*) gestureRecognize userView:(UserView*)userView; //声明协议方法
-@end
+
 

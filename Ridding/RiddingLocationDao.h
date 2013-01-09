@@ -24,6 +24,6 @@
 
 -(NSArray*)getRiddingLocations:(long long)riddingId beginWeight:(int)beginWeight;
 
-
+-(void)setRiddingLocationToDB:(Map*)map riddingId:(long long)riddingId;
 @end
 

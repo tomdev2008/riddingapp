@@ -1,0 +1,34 @@
+//
+//  UserRelation.m
+//  Ridding
+//
+//  Created by zys on 13-1-4.
+//
+//
+
+#import "UserRelation.h"
+
+@implementation UserRelation
+
+-(id)init{
+  self=[super init];
+  if(self){
+    self.user=[[User alloc]init];
+    self.toUser=[[User alloc]init];
+  }
+  return self;
+}
+
+
+- (id)initWithJSONDic:(NSDictionary *)jsonDic{
+  self=[super init];
+  if(self){
+    self.user=[[User alloc]initWithJSONDic:[jsonDic objectForKey:@"user"]];
+    self.toUser=[[User alloc]initWithJSONDic:[jsonDic objectForKey:@"touser"]];
+    self.createTime=[[jsonDic objectForKey:@"createtime"]longLongValue];
+    self.dbId=[[jsonDic objectForKey:@"id"]longLongValue];
+    self.status=[[jsonDic objectForKey:@"status"]intValue];
+  }
+  return self;
+}
+@end

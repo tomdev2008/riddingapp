@@ -48,4 +48,6 @@
 + (NSDictionary *)pd_parseURLQueryString:(NSString *)queryString;
 
 - (NSString*)changeMMToM;
+
+- (NSString*)urlEncode;
 @end

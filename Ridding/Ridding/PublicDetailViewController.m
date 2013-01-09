@@ -8,14 +8,19 @@
 
 #import "PublicDetailViewController.h"
 #import "UIColor+XMin.h"
-#import "RiddingPictureDao.h"
-#import "Photos.h"
 #import "RequestUtil.h"
 #import "PhotoUploadBlurView.h"
 #import "RNBlurModalView.h"
-#import "ImageUtil.h"
 #import "PublicCommentVCTL.h"
-#define pageSize 2
+#import "QiNiuUtils.h"
+#import "SDWebImageManager.h"
+#import "UIImageView+WebCache.h"
+#import "UserMap.h"
+#import "User.h"
+#import "QQNRImagesScrollVCTL.h"
+#import "SVProgressHUD.h"
+#import "QQNRFeedViewController.h"
+#define pageSize 10
 @interface PublicDetailViewController ()
 
 @end
@@ -26,12 +31,16 @@
                bundle:(NSBundle *)nibBundleOrNil
                  ridding:(Ridding*)ridding
              isMyHome:(BOOL)isMyHome
+             toUser:(User*)toUser
 {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
     _ridding=ridding;
     _isMyFeedHome=isMyHome;
-    // Custom initialization
+    _toUser=toUser;
+    if([RiddingAppDelegate isMyFeedHome:_toUser]){
+      self.isMyFeedHome=TRUE;
+    }
   }
   return self;
 }
@@ -39,123 +48,118 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  self.tv.backgroundColor=[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")];
+  UIImageView *bgImageView=[[UIImageView alloc]initWithImage:[UIIMAGE_FROMPNG(@"PublicDetail_BG") stretchableImageWithLeftCapWidth:0 topCapHeight:55]];
+  [self.tv setBackgroundView:bgImageView];
+  
+  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateNormal];
+  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateHighlighted];
+  
+  if(!self.isMyFeedHome){
+    _likeBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    _likeBtn.frame=CGRectMake(90, 6, 31, 31);
+    [_likeBtn addTarget:self action:@selector(likeClick:) forControlEvents:UIControlEventTouchUpInside];
+    _likeBtn.showsTouchWhenHighlighted=YES;
+    [self.barView addSubview:_likeBtn];
+    
+    _careBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    [_careBtn addTarget:self action:@selector(careClick:) forControlEvents:UIControlEventTouchUpInside];
+    _careBtn.frame=CGRectMake(150, 6, 31, 31);
+    _careBtn.showsTouchWhenHighlighted=YES;
+    [self.barView addSubview:_careBtn];
+    
+    _commentBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    _commentBtn.frame=CGRectMake(210, 6, 31, 31);
+    [_commentBtn addTarget:self action:@selector(commentAdd:) forControlEvents:UIControlEventTouchUpInside];
+    _commentBtn.showsTouchWhenHighlighted=YES;
+    [self.barView addSubview:_commentBtn];
+    [self.barView.titleLabel removeFromSuperview];
+  }else{
+    [self.barView.titleLabel setText:_ridding.riddingName];
+    [self.barView.rightButton setTitle:@"设置" forState:UIControlStateNormal];
+    [self.barView.rightButton setTitle:@"设置" forState:UIControlStateHighlighted];
+    [self.barView.rightButton setHidden:NO];
+  }
+  
   [self addTableHeader];
   [self addTableFooter];
   _cellArray=[[NSMutableArray alloc]init];
-  _cellPhotoDic=[[NSMutableDictionary alloc]init];
-  if(self.isMyFeedHome){
-    _photos= [[Photos alloc] init];
-    _photos.riddingId=_ridding.riddingId;
-    //显示同步按钮，更新按钮等
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(succUploadPicture:)
+                                               name:kSuccUploadPictureNotification
+                                             object:nil];
+  
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+  [super viewDidAppear:animated];
+  if(!self.didAppearOnce){
+    [_cellArray removeAllObjects];
+    _isTheEnd=FALSE;
+    _lastUpdateTime=-1;
+    _extDateStr=nil;
+    [self downLoad];
+    if([[RiddingAppDelegate shareDelegate]canLogin]){
+      [self downLoadRiddingAction];
+    }else{
+      [self resetActionBtn];
+    }
+    self.didAppearOnce=TRUE;
   }
-  _extDateStr=nil;
-  _lastUpdateTime=-1;
-  [self downLoad];
+}
+
+- (void)downLoadRiddingAction{
+  dispatch_async(dispatch_queue_create("downLoad", NULL), ^{
+    NSDictionary *dic=[self.requestUtil getUserRiddingAction:_ridding.riddingId ];
+    if(dic){
+      Ridding *ridding=[[Ridding alloc]initWithJSONDic:[dic objectForKey:@"ridding"]];
+      if(ridding){
+        _ridding.nowUserCared=ridding.nowUserCared;
+        _ridding.nowUserLiked=ridding.nowUserLiked;
+        _ridding.nowUserUsed=ridding.nowUserUsed;
+        _ridding.useCount=ridding.useCount;
+        _ridding.careCount=ridding.careCount;
+        _ridding.likeCount=ridding.likeCount;
+        _ridding.commentCount=ridding.commentCount;
+      }
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self resetActionBtn];
+    });
+  });
 }
 
 - (void)downLoad{
+  [SVProgressHUD showWithStatus:@"加载中"];
   dispatch_async(dispatch_queue_create("downLoad", NULL), ^{
-    NSArray *serverArray=[[RequestUtil getSinglton]getUploadedPhoto:_ridding.riddingId userId:[StaticInfo getSinglton].user.userId limit:pageSize lastUpdateTime:_lastUpdateTime];
+    NSArray *serverArray=[self.requestUtil getUploadedPhoto:_ridding.riddingId limit:pageSize lastUpdateTime:_lastUpdateTime];
     if([serverArray count]>0){
       NSMutableArray *mulArray=[[NSMutableArray alloc]init];
       for(NSDictionary *dic in serverArray){
         RiddingPicture *picture=[[RiddingPicture alloc]initWithJSONDic:[dic objectForKey:@"picture"]];
-#warning 增加extdate
-//        if(!_extDateStr||![_extDateStr isEqualToString:picture.takePicDate]){
-//          picture.isFirstPic=TRUE;
-//          _extDateStr=picture.take;
-//        }else{
-//          picture.isFirstPic=FALSE;
-//        }
-//        _extDateStr=picture.takePicDate;
+        if(!_extDateStr||![_extDateStr isEqualToString:picture.takePicDateStr]){
+          picture.isFirstPic=TRUE;
+          _extDateStr=picture.takePicDateStr;
+        }else{
+          picture.isFirstPic=FALSE;
+        }
         [mulArray addObject:picture];
       }
-      if([mulArray count]<pageSize){
+      [_cellArray addObjectsFromArray:mulArray];
+    }
+    RiddingPicture *picture=(RiddingPicture*)[_cellArray lastObject];
+    _lastUpdateTime=picture.createTime;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if([serverArray count]<pageSize){
         _isTheEnd=TRUE;
         [_ego setHidden:YES];
       }else{
         [_ego setHidden:NO];
       }
-      [_cellArray addObjectsFromArray:mulArray];
-      RiddingPicture *picture=(RiddingPicture*)[_cellArray lastObject];
-      _lastUpdateTime=picture.createTime;
-    }
-    [self checkMyPhotosToSync];
-    dispatch_async(dispatch_get_main_queue(), ^{
       [self.tv reloadData];
       [self doneLoadingTableViewData];
+      [SVProgressHUD dismiss];
     });
-  });
-}
-
-
-- (void)checkMyPhotosToSync{
-  if(self.isMyFeedHome){
-    _localPhotos= [[RiddingPictureDao getSinglton]getRiddingPicture:_ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
-    if(_localPhotos){
-      for(RiddingPicture *picture in _cellArray){
-        [_cellPhotoDic setObject:picture forKey:picture.fileName];
-      }
-      int needUpdateCount=0;
-      for(RiddingPicture *picture in _localPhotos){
-        if(!_cellPhotoDic||![_cellPhotoDic objectForKey:picture.fileName]){
-          needUpdateCount++;
-        }
-      }
-      if(needUpdateCount>0){
-        dispatch_async(dispatch_get_main_queue(), ^{
-          if(self){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"小提示"
-                                                            message:[NSString stringWithFormat:@"您还有%d张照片没有同步，是否现在同步，让更多骑友看到您的骑行轨迹。",needUpdateCount]
-                                                           delegate:self cancelButtonTitle:@"取消"
-                                                  otherButtonTitles:@"同步", nil];
-            [alert show];
-          }
-        });
-      }
-    }
-  }
-}
-
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  if(buttonIndex==1){
-    [self uploadPhoto];
-  }else{
-  }
-}
-
-- (void)uploadPhoto{
-  PhotoUploadBlurView *view=[[PhotoUploadBlurView alloc]initWithFrame:CGRectMake(0, 0, 260, 260)];
-  RNBlurModalView *modal=[[RNBlurModalView alloc] initWithViewController:self view:view];
-  [modal show];
-  [view setValue:nil text:@"请稍候。。" value:0];
-  dispatch_queue_t q;
-  q=dispatch_queue_create("uploadPhoto", NULL);
-  dispatch_async(q, ^{
-    NSString *prefixPath=[NSString stringWithFormat:@"ridding/%lld/userId/%lld",_ridding.riddingId,[StaticInfo getSinglton].user.userId];
-    [NSThread sleepForTimeInterval:1];
-    int index=0;
-    for(RiddingPicture *picture in _localPhotos){
-      UIImage *image=[_photos getPhoto:picture.fileName];
-      if(![_cellPhotoDic objectForKey:picture.fileName]){
-        NSString *photoKey=[ImageUtil uploadPhotoToServer:[_photos getPhotoPath:picture.fileName] prefixPath:prefixPath type:IMAGETYPE_PICTURE];
-        if(photoKey){
-          picture.photoKey=[NSString stringWithFormat:@"%@",photoKey];
-          [[RequestUtil getSinglton]uploadRiddingPhoto:picture];
-        }
-      }
-      index++;
-      dispatch_async(dispatch_get_main_queue(), ^{
-        if(modal.isVisible){
-          [view setValue:image text:[NSString stringWithFormat:@"第%d张(共%d张)",index,[_localPhotos count]] value:index*1.0/[_localPhotos count]];
-          if(index==[_localPhotos count]){
-            [view setValue:image text:@"已完成" value:index*1.0/[_localPhotos count]];
-          }
-        }
-      });
-    }
   });
 }
 
@@ -164,19 +168,23 @@
   [super didReceiveMemoryWarning];
 }
 
-
+-(void)rightBtnClicked:(id)sender{
+  
+}
 
 
 #pragma mark - QQNRFeedHeaderViewDelegate
 - (void)addTableHeader{
-  _headerView=[[PublicDetailHeaderView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 280) ridding:_ridding];
+  _headerView=[[PublicDetailHeaderView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 280) ridding:_ridding isMyHome:_isMyFeedHome];
   _headerView.delegate=self;
   [self.tv setTableHeaderView:_headerView];
+
 }
 
 - (void)addTableFooter{
-  _ego = [[UP_EGORefreshTableHeaderView alloc] initWithFrame: CGRectMake(0.0f, 10, SCREEN_WIDTH, 45) withBackgroundColor:[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")]];
+  _ego = [[UP_EGORefreshTableHeaderView alloc] initWithFrame: CGRectMake(0.0f, 10, SCREEN_WIDTH, 45) withBackgroundColor:[UIColor whiteColor]];
   _ego.delegate = self;
+  [_ego setHidden:YES];
   [self.tv setTableFooterView:_ego];
 }
 
@@ -190,10 +198,10 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
   RiddingPicture *picture=[_cellArray objectAtIndex:indexPath.row];
   CGFloat viewHeight=PublicDetailCellDefaultSpace;
-//  if(picture.isFirstPic){
-//    viewHeight+=20;
-//    viewHeight+=5;
-//  }
+  if(picture.isFirstPic){
+    viewHeight+=20;  // datelabel
+    viewHeight+=5;//间距
+  }
   CGFloat width=PublicDetailCellWidth;
   CGFloat height;
   if(picture.width==0||picture.height==0){
@@ -204,13 +212,6 @@
     height=picture.height*1.0/picture.width*width;
   }
   viewHeight+=height;
-  viewHeight+=16;
-  CGSize size=[picture.pictureDescription sizeWithFont:[UIFont fontWithName:@"Arial" size:14] constrainedToSize:CGSizeMake(215, 999) lineBreakMode:UILineBreakModeWordWrap];
-  viewHeight+=size.height;
-  viewHeight+=5; //间距
-  size=[@"20123123" sizeWithFont:[UIFont fontWithName:@"Arial" size:14] constrainedToSize:CGSizeMake(215, 999) lineBreakMode:UILineBreakModeWordWrap];
-  viewHeight+=size.height;
-  viewHeight+=5; //间距
   viewHeight+=PublicDetailCellDefaultDownSpace;
   return viewHeight;
 }
@@ -230,10 +231,10 @@
 		cell = [[PublicDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID info:picture];
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     cell.delegate=self;
-  }else{
-    cell.info=picture;
-    cell.index=indexPath.row;
   }
+  cell.info=picture;
+  cell.index=indexPath.row;
+
   [cell initContentView];
   
   return cell;
@@ -241,7 +242,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  [tableView deselectRowAtIndexPath:indexPath animated:NO];
+  
 }
 
 #pragma mark UIScrollView Delegate
@@ -273,14 +274,14 @@
 
 - (void)reloadTableViewDataSource {
   if(!_isTheEnd){
-    _isEGOUpReloading = YES;
+    _isLoading = YES;
     [self downLoad];
   }
 }
 
 - (void)doneLoadingTableViewData{
 	//  model should call this when its done loading
-	_isEGOUpReloading = NO;
+	_isLoading = NO;
   if(!_isTheEnd){
     [_ego egoRefreshScrollViewDataSourceDidFinishedLoading:self.tv];
   }
@@ -295,40 +296,125 @@
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(UP_EGORefreshTableHeaderView*)view{
 	
-	return _isEGOUpReloading; // should return if data source model is reloading
+	return _isLoading; // should return if data source model is reloading
 }
 
-#pragma mark - topbar UI
--(void)leftBtnClicked:(id)sender{
-  [super leftBtnClicked:sender];
-  
+- (void)likeClick:(id)sender{
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  if(![delegate canLogin]){
+    [self showLoginAlertView];
+    return;
+  }
+  NSDictionary *dic=[self.requestUtil likeRidding:_ridding.riddingId];
+  [self updateRidding:dic];
+}
+- (void)careClick:(id)sender{
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  if(![delegate canLogin]){
+     [self showLoginAlertView];
+    return;
+  }
+  NSDictionary *dic=[self.requestUtil careRidding:_ridding.riddingId];
+  [self updateRidding:dic];
+}
+- (void)useClick:(id)sender{
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  if(![delegate canLogin]){
+    [self showLoginAlertView];
+    return;
+  }
+  NSDictionary *dic=[self.requestUtil useRidding:_ridding.riddingId];
+  [self updateRidding:dic];
 }
 
--(void)rightBtnClicked:(id)sender{
+- (void)updateRidding:(NSDictionary*)dic{
+  if(!dic){
+    return;
+  }
+  Ridding *returnRidding=[[Ridding alloc]initWithJSONDic:[dic objectForKey:@"ridding"]];
+  if(returnRidding){
+    NSLog(@"%d",returnRidding.likeCount);
+    _ridding.useCount=returnRidding.useCount;
+    _ridding.likeCount=returnRidding.likeCount;
+    _ridding.careCount=returnRidding.careCount;
+    _ridding.commentCount=returnRidding.commentCount;
+    _ridding.nowUserCared=returnRidding.nowUserCared;
+    _ridding.nowUserLiked=returnRidding.nowUserLiked;
+    _ridding.nowUserUsed=returnRidding.nowUserUsed;
+    [self resetActionBtn];
+  }
 }
 
-- (IBAction)likeClick:(id)sender{
-  [[RequestUtil getSinglton]likeRidding:_ridding.riddingId];
-}
-- (IBAction)careClick:(id)sender{
-  [[RequestUtil getSinglton]careRidding:_ridding.riddingId];
-}
-- (IBAction)useClick:(id)sender{
-  [[RequestUtil getSinglton]useRidding:_ridding.riddingId];
-}
-- (IBAction)commentAdd:(id)sender{
-  Comment *comment=[[Comment alloc]init];
-  comment.replyId=1;
-  comment.commentType=1;
-  comment.text=@"123";
-  comment.usePicUrl=@"133";
-  comment.userId=[StaticInfo getSinglton].user.userId;
-  comment.toUserId=2;
-  [[RequestUtil getSinglton]addRiddingComment:comment];
+- (void)commentAdd:(id)sender{
+  self.didAppearOnce=NO;
   PublicCommentVCTL *commentVCTL=[[PublicCommentVCTL alloc]initWithNibName:@"PublicCommentVCTL" bundle:nil ridding:_ridding];
   [self.navigationController pushViewController:commentVCTL animated:YES];
+}
+
+- (void)resetActionBtn{
   
-  
+  [_careBtn setTitle:[NSString stringWithFormat:@"%d",_ridding.careCount] forState:UIControlStateNormal];
+  [_careBtn setTitle:[NSString stringWithFormat:@"%d",_ridding.careCount] forState:UIControlStateHighlighted];
+  [_commentBtn setTitle:[NSString stringWithFormat:@"%d",_ridding.commentCount] forState:UIControlStateNormal];
+  [_commentBtn setTitle:[NSString stringWithFormat:@"%d",_ridding.commentCount] forState:UIControlStateHighlighted];
+  [_likeBtn setTitle:[NSString stringWithFormat:@"%d",_ridding.likeCount] forState:UIControlStateNormal];
+  [_likeBtn setTitle:[NSString stringWithFormat:@"%d",_ridding.likeCount] forState:UIControlStateHighlighted];
+
+  if(_ridding.nowUserUsed){
+    
+  }else{
+    
+  }
+  if(_ridding.nowUserLiked){
+    [_likeBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_like_xz") forState:UIControlStateNormal];
+    [_likeBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_like_xz") forState:UIControlStateHighlighted];
+  }else{
+    [_likeBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_like") forState:UIControlStateNormal];
+    [_likeBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_like") forState:UIControlStateHighlighted];
+  }
+  if(_ridding.nowUserCared){
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_care_xz") forState:UIControlStateNormal];
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_care_xz") forState:UIControlStateHighlighted];
+  }else{
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_care") forState:UIControlStateNormal];
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_care") forState:UIControlStateHighlighted];
+  }
+  [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_comment") forState:UIControlStateNormal];
+  [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_comment") forState:UIControlStateHighlighted];
+
+}
+#pragma mark - RiddingViewController delegate
+- (void)didFinishLogined:(QQNRSourceLoginViewController*)controller{
+  [super didFinishLogined:controller];
+  [self downLoadRiddingAction];
+}
+
+#pragma mark - PublicDetailCell delegate
+- (void) imageViewClick:(PublicDetailCell*)view picture:(RiddingPicture*)picture imageView:(UIView *)imageView{
+  QQNRImagesScrollVCTL *vctl = [[QQNRImagesScrollVCTL alloc] initWithNibName:@"QQNRImagesScrollVCTL" bundle:nil startPageIndex:view.index];
+	vctl.photoArray = _cellArray;
+	[self.navigationController pushViewController:vctl animated:YES];
+}
+
+#pragma mark - PublicDetailHeaderView delegate
+- (void)mapViewTap:(PublicDetailHeaderView*)view{
+  if(self.isMyFeedHome){
+    UserMap *map=[[UserMap alloc]initWithUser:_toUser ridding:_ridding];
+    [self.navigationController pushViewController:map animated:YES];
+  }
+}
+
+- (void)avatorClick:(PublicDetailHeaderView*)view{
+  QQNRFeedViewController *qqnrFeedVCTL=[[QQNRFeedViewController alloc]initWithUser:_toUser isFromLeft:FALSE];
+  [self.navigationController pushViewController:qqnrFeedVCTL animated:YES];
+}
+
+
+#pragma mark - MapCreateDescVCTL delegate
+- (void)succUploadPicture:(NSNotification *)note{
+  [_cellArray removeAllObjects];
+  _lastUpdateTime=-1;
+  [self downLoad];
 }
 
 @end

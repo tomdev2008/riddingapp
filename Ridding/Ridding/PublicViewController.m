@@ -6,17 +6,13 @@
 //
 //
 
-#import "PublicViewController.h"
 #import "PublicViewCell.h"
-#import "RequestUtil.h"
 #import "Utilities.h"
 #import "QiNiuUtils.h"
 #import "UIImageView+WebCache.h"
 #import "PublicDetailViewController.h"
-#import "UIColor+XMin.h"
-#import "ActivityInfo.h"
-#import "RequestUtil.h"
-#define dataLimit 10
+#import "SVProgressHUD.h"
+#define dataLimit 2
 @interface PublicViewController ()
 
 @end
@@ -25,18 +21,22 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+  if (self) {
+    // Custom initialization
+  }
+  return self;
 }
 
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  self.tv.backgroundColor=[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")];
-
+  self.tv.backgroundColor=[UIColor whiteColor];
+  
+  [self.barView.titleLabel setText:@"推荐骑记"];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"navbar_left") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"navbar_left") forState:UIControlStateHighlighted];
+  
   _dataSource=[[NSMutableArray alloc]init];
   _endUpdateTime=-1;
   _endWeight=-1;
@@ -44,58 +44,55 @@
   _isLoadOld=FALSE;
   _isLoading=FALSE;
   _type=ActivityInfoType_Recom;
-  
+  self.tv.touchDelegate=self;
   self.hasLeftView=TRUE;
-  [self.barView.leftButton setTitle:@"主页" forState:UIControlStateNormal];
-  [self.barView.leftButton setTitle:@"主页" forState:UIControlStateHighlighted];
+  
   [self.barView.leftButton setHidden:NO];
-
+  
   [self addTableHeader];
   [self addTableFooter];
-  [self download];
+  
 }
 
 - (void)viewDidAppear:(BOOL)animated{
   [super viewDidAppear:animated];
+  if(!self.didAppearOnce){
+    [self download];
+    self.didAppearOnce=TRUE;
+  }
 }
 
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
+
 //时间是用在进行中的列表，weight是用在推荐列表
 - (void)download{
   if(_isLoading){
     return;
   }
   _isLoading=TRUE;
+  [SVProgressHUD showWithStatus:@"加载中"];
   dispatch_async(dispatch_queue_create("download", NULL), ^{
-    NSArray *serverArray=nil;
-    if(_isLoadOld){
-      serverArray= [[RequestUtil getSinglton] getRiddingPublicList:_endUpdateTime limit:dataLimit isLarger:0 type:_type weight:_endWeight];
-    }else{
-      serverArray= [[RequestUtil getSinglton] getRiddingPublicList:-1 limit:dataLimit isLarger:0 type:_type weight:-1];
+    NSArray *serverArray=[self.requestUtil getRiddingPublicList:_endUpdateTime limit:dataLimit isLarger:0 type:_type weight:_endWeight];
+    if(!_isLoadOld){
+      [_dataSource removeAllObjects];
     }
+    [self doUpdate:serverArray];
     dispatch_async(dispatch_get_main_queue(), ^{
-      if(!_isLoadOld){
-        [_dataSource removeAllObjects];
-        _isTheEnd=FALSE;
-      }
-      [self doUpdate:serverArray];
-      if(_isLoadOld){
-        [self doneLoadingTableViewData];
-        if([serverArray count]<dataLimit){
-          _isTheEnd=TRUE;
-          [_ego setHidden:YES];
-        }else {
-          [_ego setHidden:NO];
-        }
-      }else{
-        [self doneDOWNLoadingTableViewData];
-      }
-      _isLoading=FALSE;
       [self.tv reloadData];
+      if([serverArray count]<dataLimit){
+        _isTheEnd=TRUE;
+        [_ego setHidden:YES];
+      }else {
+        [_ego setHidden:NO];
+      }
+      [self doneLoadingTableViewData];
+      [self doneDOWNLoadingTableViewData];
+      _isLoading=FALSE;
+      [SVProgressHUD dismiss];
     });
   });
 }
@@ -103,10 +100,8 @@
 - (void)doUpdate:(NSArray*)array{
   if(array&&[array count]>0){
     for (NSDictionary *dic in array) {
-      if([dic objectForKey:@"activity"]){
-        ActivityInfo *actInfo = [[ActivityInfo alloc] initWithJSONDic:[dic objectForKey:@"activity"]];
-        [_dataSource addObject:actInfo];
-      }
+      ActivityInfo *actInfo = [[ActivityInfo alloc] initWithJSONDic:[dic objectForKey:@"activity"]];
+      [_dataSource addObject:actInfo];
     }
     if(_type==ActivityInfoType_Recom){
       ActivityInfo *info=(ActivityInfo*)[_dataSource lastObject];
@@ -116,7 +111,7 @@
       _endUpdateTime=info.ridding.createTime;
     }
   }
-
+  
 }
 - (void)addTableHeader{
   _top_Ego=[[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, -45, SCREEN_WIDTH, 45)];
@@ -125,7 +120,7 @@
 }
 
 - (void)addTableFooter{
-  _ego = [[UP_EGORefreshTableHeaderView alloc] initWithFrame: CGRectMake(0.0f, 10, SCREEN_WIDTH, 45) withBackgroundColor:[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")]];
+  _ego = [[UP_EGORefreshTableHeaderView alloc] initWithFrame: CGRectMake(0.0f, 10, SCREEN_WIDTH, 45) withBackgroundColor:[UIColor whiteColor]];
   _ego.delegate = self;
   [self.tv setTableFooterView:_ego];
 }
@@ -148,8 +143,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   PublicViewCell *cell = (PublicViewCell*)[Utilities cellByClassName:@"PublicViewCell" inNib:@"PublicViewCell" forTableView:self.tv];
-  
+  PublicViewCell *cell = (PublicViewCell*)[Utilities cellByClassName:@"PublicViewCell" inNib:@"PublicViewCell" forTableView:self.tv];
   ActivityInfo *info=[_dataSource objectAtIndex:indexPath.row];
   NSURL *url=[QiNiuUtils getUrlBySizeToUrl:cell.firstPicImageView.frame.size url:info.firstPicUrl type:QINIUMODE_DEDEFAULT];
   [cell.firstPicImageView setImageWithURL:url placeholderImage:nil];
@@ -164,7 +158,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   ActivityInfo *actInfo = [_dataSource objectAtIndex:indexPath.row];
-  PublicDetailViewController *pdVCTL=[[PublicDetailViewController alloc]initWithNibName:@"PublicDetailViewController" bundle:nil ridding:actInfo.ridding isMyHome:FALSE];
+  PublicDetailViewController *pdVCTL=[[PublicDetailViewController alloc]initWithNibName:@"PublicDetailViewController" bundle:nil ridding:actInfo.ridding isMyHome:FALSE toUser:actInfo.ridding.leaderUser];
   [self.navigationController pushViewController:pdVCTL animated:YES];
 }
 
@@ -176,7 +170,7 @@
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-
+  
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -190,7 +184,7 @@
   if (!decelerate) {
     //在滚动停止是加载图片
   }
-
+  
 }
 
 #pragma mark - EGO delegate
@@ -208,10 +202,6 @@
   }
 }
 
-- (void)downLoadEnd{
-  [_ego egoRefreshScrollViewDataSourceDidFinishedLoading:self.tv];
-}
-
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(UP_EGORefreshTableHeaderView*)view{
 	
 	[self reloadTableViewDataSource];
@@ -224,13 +214,17 @@
 
 #pragma mark - DownEGO
 - (void)doneDOWNLoadingTableViewData{
-	//  model should call this when its done loading
-	[_top_Ego egoRefreshScrollViewDataSourceDidFinishedLoading:self.tv];
+    //  model should call this when its done loading
+    [_top_Ego egoRefreshScrollViewDataSourceDidFinishedLoading:self.tv];
+
 }
 
 - (void)downEGOReload {
   if(!_isLoading){
     _isLoadOld=FALSE;
+    _isTheEnd=FALSE;
+    _endWeight=-1;
+    _endUpdateTime=-1;
     [self download];
   }
 }

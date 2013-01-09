@@ -16,15 +16,10 @@
 @synthesize loginBtn=_loginBtn;
 //点击新浪微博
 -(IBAction)clickSinaWeibo:(id)sender{
-  QQNRSourceLoginViewController *sourceLoginCv=[[QQNRSourceLoginViewController alloc]init];
-  [self dismissModalViewControllerAnimated:NO];
-  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
-  [delegate.leftViewController presentModalViewController:sourceLoginCv animated:NO];
-  
-
+  if(self.delegate){
+    [self.delegate didClickLogin:self];
+  }
 }
-
-
 
 #pragma mark - View lifecycle
 - (void)viewDidLoad
@@ -51,14 +46,6 @@
   label.font=[UIFont systemFontOfSize:15];
   [self.loginBtn addSubview:label];
   [super viewDidLoad];
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  //第一次登陆
-  BOOL isSecondTimeLaunched = [prefs boolForKey:@"isSecondTimeLaunched"];
-  if (!isSecondTimeLaunched) {
-    LandingViewController *landingViewController = [[LandingViewController alloc] init];
-    [self presentModalViewController:landingViewController animated:NO];
-    [prefs setBool:YES forKey:@"isSecondTimeLaunched"];
-  }
 }
 
 

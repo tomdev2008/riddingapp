@@ -16,7 +16,6 @@
 
 + (ResponseCodeCheck*)getSinglton;
 
-- (BOOL)checkResponseCode:(int)code statusCode:(int)statusCode;
 //检查网络状态
 - (BOOL) checkConnect;
 - (BOOL) isWifi;

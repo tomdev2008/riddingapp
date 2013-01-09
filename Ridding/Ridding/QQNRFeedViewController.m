@@ -8,7 +8,6 @@
 
 #import "QQNRFeedViewController.h"
 #import "StaticInfo.h"
-#import "RequestUtil.h"
 #import "ActivityInfo.h"
 #import "QQNRFeedTableCell.h"
 #import "UserMap.h"
@@ -22,6 +21,11 @@
 #import "NSString+TomAddition.h"
 #import "SVProgressHUD.h"
 #import "Utilities.h"
+#import "QQNRServerTask.h"
+#import "QQNRServerTaskQueue.h"
+#import "PublicDetailViewController.h"
+#import "QiNiuUtils.h"
+#import "UIImageView+WebCache.h"
 #define dataLimit 10
 
 @interface QQNRFeedViewController ()
@@ -30,85 +34,96 @@
 
 @implementation QQNRFeedViewController
 @synthesize isMyFeedHome=_isMyFeedHome;
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-      
+- (id)initWithUser:(User*)toUser isFromLeft:(BOOL)isFromLeft{
+  self=[super init];
+  if(self){
+    _toUser=toUser;
+    if([RiddingAppDelegate isMyFeedHome:_toUser]){
+      self.isMyFeedHome=TRUE;
     }
-    return self;
+    _isFromLeft=isFromLeft;
+  }
+  return self;
 }
 
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  self.barView.titleLabel.text=_toUser.name;
+  self.view.backgroundColor=[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")];
+  self.tv.backgroundColor=[UIColor clearColor];
   
-  self.tv.backgroundColor=[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")];
-  self.barView.titleLabel.text=_nowUser.name;
-  [self.barView.leftButton setTitle:@"主页" forState:UIControlStateNormal];
-  [self.barView.leftButton setTitle:@"主页" forState:UIControlStateHighlighted];
-  [self.barView.leftButton setHidden:NO];
-  self.hasLeftView=TRUE;
-  _timeScroller=[[TimeScroller alloc]initWithDelegate:self];
+  if(_isFromLeft){
+    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"navbar_left") forState:UIControlStateNormal];
+    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"navbar_left") forState:UIControlStateHighlighted];
+    [self.barView.leftButton setHidden:NO];
+    self.hasLeftView=TRUE;
+  }
+  
+  _backgroundImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0, self.barView.frame.size.height, SCREEN_WIDTH, QQNRFeedHeaderView_Default_Height)];
+  NSURL *url=[QiNiuUtils getUrlByWidthToUrl:_backgroundImageView.frame.size.width url:_toUser.backGroundUrl type:QINIUMODE_DEDEFAULT];
+  [_backgroundImageView setImageWithURL:url placeholderImage:nil];
+  _backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+  _backgroundImageView.clipsToBounds = YES;
+  [self.view addSubview:_backgroundImageView];
+  
+  
+ // _timeScroller=[[TimeScroller alloc]initWithDelegate:self];
   [self addTableHeader];
   [self addTableFooter];
+  
+  [self.view bringSubviewToFront:self.tv];
+  
    _endCreateTime=-1;
   _isTheEnd=FALSE;
   _isLoadOld=FALSE;
   _dataSource = [[NSMutableArray alloc] init];
-  if(self.isMyFeedHome){
-    [self initAwesomeView];
-  }
-  [self download];
-  if([[ResponseCodeCheck getSinglton] isWifi]){
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-   
-    if([StaticInfo getSinglton].user.nowRiddingCount>=3&&![prefs objectForKey:@"recomComment"]){
-      UIAlertView *alert=nil;
-      if([StaticInfo getSinglton].user.nowRiddingCount>=10){
-        alert= [[UIAlertView alloc] initWithTitle:@"喜欢这款骑行应用吗?"
-                                          message:@"你已经是老玩家咯,希望得到您的好评"
-                                         delegate:self cancelButtonTitle:@"我再玩玩看"
-                                otherButtonTitles:@"这就去", nil];
-        
-      }else{
-        alert = [[UIAlertView alloc] initWithTitle:@"喜欢这款骑行应用吗?"
-                                           message:@"玩了这么久，觉得这款应用如何?"
-                                          delegate:self cancelButtonTitle:@"我再玩玩看"
-                                 otherButtonTitles:@"还不错噢", nil];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(succAddRidding:)
+                                               name:kSuccAddRiddingNotification
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(succUpdateBackground:)
+                                               name:kSuccUploadBackgroundNotification
+                                             object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+  [super viewDidAppear:animated];
+  if(!self.didAppearOnce){
+    self.didAppearOnce=TRUE;
+    [self download];
+    if([[ResponseCodeCheck getSinglton] isWifi]){
+      NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+      
+      if([StaticInfo getSinglton].user.nowRiddingCount>=3&&![prefs objectForKey:@"recomComment"]){
+        UIAlertView *alert=nil;
+        if([StaticInfo getSinglton].user.nowRiddingCount>=10){
+          alert= [[UIAlertView alloc] initWithTitle:@"喜欢这款骑行应用吗?"
+                                            message:@"你已经是老玩家咯,希望得到您的好评"
+                                           delegate:self cancelButtonTitle:@"我再玩玩看"
+                                  otherButtonTitles:@"这就去", nil];
+          
+        }else{
+          alert = [[UIAlertView alloc] initWithTitle:@"喜欢这款骑行应用吗?"
+                                             message:@"玩了这么久，觉得这款应用如何?"
+                                            delegate:self cancelButtonTitle:@"我再玩玩看"
+                                   otherButtonTitles:@"还不错噢", nil];
+        }
+        [alert show];
+        [prefs setObject:@"" forKey:@"recomComment"];
       }
-      [alert show];
-      [prefs setObject:@"" forKey:@"recomComment"];
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-  _FHV.delegate=self;
-  _timeScroller.delegate=self;
-  _ego.delegate=self;
-}
-
-- (void)viewWillDisappear:(BOOL)animated{
-  _FHV.delegate=nil;
-  _timeScroller.delegate=nil;
-  _ego.delegate=nil;
-
-}
 - (void)didReceiveMemoryWarning
 {
   [super didReceiveMemoryWarning];
 }
 
-- (id)initWithUser:(User*)nowUser exUser:(User*)exUser{
-  self=[super init];
-  if(self){
-    
-    _nowUser=nowUser;
-    _exUser=exUser;
-  }
-  return self;
-}
+
 
 - (void)download{
   if(_isLoading){
@@ -119,9 +134,9 @@
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSArray *array;
     if(_isLoadOld){
-      array=[[RequestUtil getSinglton] getUserMaps:dataLimit createTime:_endCreateTime userId:_nowUser.userId isLarger:0];
+      array=[self.requestUtil getUserMaps:dataLimit createTime:_endCreateTime userId:[StaticInfo getSinglton].user.userId isLarger:0];
     }else{
-      array=[[RequestUtil getSinglton] getUserMaps:dataLimit createTime:-1 userId:_nowUser.userId isLarger:0];
+      array=[self.requestUtil getUserMaps:dataLimit createTime:-1 userId:[StaticInfo getSinglton].user.userId isLarger:0];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
       if(!_isLoadOld){
@@ -153,7 +168,6 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   if([[alertView buttonTitleAtIndex:buttonIndex]  isEqualToString:@"去创建一个"]){
     MapCreateVCTL *mapCreate=[[MapCreateVCTL alloc]init];
-    mapCreate.delegate=self;
     [self presentModalViewController:mapCreate animated:YES];
   }else if([[alertView buttonTitleAtIndex:buttonIndex]  isEqualToString:@"还不错噢"]){
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
@@ -180,15 +194,20 @@
 
 #pragma mark - QQNRFeedHeaderViewDelegate
 - (void)addTableHeader{
-  _FHV=[[QQNRFeedHeaderView alloc]initWithFrame:CGRectMake(0, 0, 320, 180) user:_nowUser];
+  _FHV=[[QQNRFeedHeaderView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, QQNRFeedHeaderView_Default_Height) user:_toUser];
+  _FHV.backgroundColor=[UIColor clearColor];
   _FHV.delegate=self;
   [self.tv setTableHeaderView:_FHV];
 }
 
 - (void)addTableFooter{
-  _ego = [[UP_EGORefreshTableHeaderView alloc] initWithFrame: CGRectMake(0.0f, 10, 320, 45) withBackgroundColor:[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")]];
+  
+  _ego = [[UP_EGORefreshTableHeaderView alloc] initWithFrame: CGRectMake(0.0f, 10, SCREEN_WIDTH, 45) withBackgroundColor:[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")]];
   _ego.delegate = self;
+  _ego.backgroundColor=[UIColor clearColor];
   [self.tv setTableFooterView:_ego];
+  
+  
 }
 
 
@@ -210,7 +229,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  
   QQNRFeedTableCell *cell = (QQNRFeedTableCell*)[Utilities cellByClassName:@"QQNRFeedTableCell" inNib:@"QQNRFeedTableCell" forTableView:self.tv];
+  cell.backgroundColor=[UIColor clearColor];
   cell.delegate=self;
   cell.userInteractionEnabled=YES;
   UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnCell:)];
@@ -224,32 +245,39 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Ridding *ridding = [_dataSource objectAtIndex:indexPath.row];
-    UserMap *userMap = [[UserMap alloc]initWithUser:_nowUser ridding:ridding riddingStatus:ridding.riddingStatus];
-    [self.navigationController pushViewController:userMap animated:YES];
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+  Ridding *ridding = [_dataSource objectAtIndex:indexPath.row];
+  PublicDetailViewController *pdVCTL=[[PublicDetailViewController alloc]initWithNibName:@"PublicDetailViewController" bundle:nil ridding:ridding isMyHome:_isMyFeedHome toUser:_toUser];
+  [self.navigationController pushViewController:pdVCTL animated:YES];
+  [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-  
-  [_timeScroller scrollViewDidScroll];
+  CGRect frame = _backgroundImageView.frame;
+  if(scrollView.contentOffset.y < 0){
+    frame.size.height = QQNRFeedHeaderView_Default_Height - scrollView.contentOffset.y;
+  }else if(scrollView.contentOffset.y >0&&scrollView.contentOffset.y <QQNRFeedHeaderView_Default_Height){
+    frame.size.height = QQNRFeedHeaderView_Default_Height - scrollView.contentOffset.y;
+  }else if(scrollView.contentOffset.y >QQNRFeedHeaderView_Default_Height){
+     frame.size.height = 0;
+  }
+  [_backgroundImageView setFrame:frame];
   if(!_isTheEnd){
     [_ego egoRefreshScrollViewDidScroll:scrollView];
   }
+  
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-  [_timeScroller scrollViewDidEndDecelerating];
-  //[self loadImagesForOnscreenRows];
+ // [_timeScroller scrollViewDidEndDecelerating];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-  [_timeScroller scrollViewWillBeginDragging];
+//  [_timeScroller scrollViewWillBeginDragging];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
   if (!decelerate) {
-    [_timeScroller scrollViewDidEndDecelerating];
+ //   [_timeScroller scrollViewDidEndDecelerating];
   }
   if(!_isTheEnd){
      [_ego egoRefreshScrollViewDidEndDragging:scrollView];
@@ -275,27 +303,42 @@
   Ridding *ridding=_selectedCell.ridding;
   if ([str isEqualToString:@"完成活动"]) {
     [MobClick event:@"2012070206"];
-    [[RequestUtil getSinglton] finishActivity:ridding.riddingId];
-    int distance=(ridding.riddingId+[StaticInfo getSinglton].user.totalDistance)*1.0/1000;
-    NSDictionary *dic=[[NSDictionary alloc]initWithObjectsAndKeys:[NSString stringWithFormat:@"%0.2d KM",distance],@"distance", nil];
-    [ridding setEnd];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kFinishNotification object:self userInfo:dic];
-    [self.tv reloadData];
-    //tag 修改状态
-    //info.status
+    [SVProgressHUD show];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+      [self.requestUtil finishActivity:ridding.riddingId];
+      [ridding setEnd];
+      [StaticInfo getSinglton].user.totalDistance+=ridding.map.distance;
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [_FHV finishRidding];
+        [self.tv reloadData];
+        [SVProgressHUD dismiss];
+      });
+    });
   }else if([str isEqualToString:@"退出"]){
     [MobClick event:@"2012070207"];
-    int statusCode = [[RequestUtil getSinglton] quitActivity:ridding.riddingId];
-    if (statusCode ==-300) {
-      [SVProgressHUD showErrorWithStatus:@"请确认其他队员已退出" duration:2];
-      
-    }else if(statusCode<0){
-      [SVProgressHUD showErrorWithStatus:@"退出失败" duration:2];
-    }else{
-      [SVProgressHUD showSuccessWithStatus:@"操作成功" duration:2];
-      [_dataSource removeObject:ridding];
-      [self.tv reloadData];
-    }
+    [SVProgressHUD show];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+      int returnCode=[self.requestUtil quitActivity:ridding.riddingId];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        if(returnCode==kServerSuccessCode){
+          [_dataSource removeObject:ridding];
+          [self.tv reloadData];
+          [SVProgressHUD showSuccessWithStatus:@"退出成功" duration:1.0];
+        }
+        [SVProgressHUD dismiss];
+      });
+    });
+  }else if([str isEqualToString:@"相机"]){
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    [imagePicker setDelegate:self];
+    imagePicker.videoQuality=UIImagePickerControllerQualityTypeLow;
+    [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+    [self presentModalViewController:imagePicker animated:YES];
+  }else if([str isEqualToString:@"本地相册"]){
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    [imagePicker setDelegate:self];
+    [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    [self presentModalViewController:imagePicker animated:YES];
   }
   _isShowingSheet=FALSE;
   return;
@@ -325,33 +368,14 @@
 }
 
 #pragma mark -
-#pragma mark Deferred image loading (UIScrollViewDelegate)
-- (void)loadImagesForOnscreenRows
-{
-  if ([_dataSource count] > 0)
-  {
-    NSArray *visiblePaths = [self.tv indexPathsForVisibleRows];
-    for (NSIndexPath *indexPath in visiblePaths)
-    {
-//      QQNRFeedTableCell *cell =(QQNRFeedTableCell*) [self.tv cellForRowAtIndexPath:indexPath];
-//      if(![_stackViewCache objectForKey:cell.info.mapAvatorPicUrl]){
-//        [cell inputStackView];
-//        [_stackViewCache setObject:cell.stackView forKey:cell.info.mapAvatorPicUrl];
-//      }
-    }
-  }
-}
-
-#pragma mark -
 #pragma mark (QQNRFeedTableCellDelegate)
 - (void)leaderTap:(ActivityInfo *)info{
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    NSDictionary *dic= [[RequestUtil getSinglton]getUserProfile:info.ridding.leaderUser.userId sourceType:SOURCE_SINA];
+    NSDictionary *dic= [self.requestUtil getUserProfile:info.ridding.leaderUser.userId sourceType:SOURCE_SINA];
     User *_user=[[User alloc]initWithJSONDic:[dic objectForKey:@"user"]];
     dispatch_async(dispatch_get_main_queue(), ^{
       if(self){
-        QQNRFeedViewController *QQNRFVC=[[QQNRFeedViewController alloc]initWithUser:_user exUser:_nowUser];
-        QQNRFVC.isMyFeedHome=FALSE;
+        QQNRFeedViewController *QQNRFVC=[[QQNRFeedViewController alloc]initWithUser:_user isFromLeft:FALSE];
         [self.navigationController pushViewController:QQNRFVC animated:YES];
       }
     });
@@ -404,100 +428,64 @@
 	return _isLoading; // should return if data source model is reloading
 }
 
-
-
-
-
 -(IBAction)initBtnPress:(id)sender{
   TutorialViewController *tutorialViewController = [[TutorialViewController alloc]initWithNibName:@"TutorialViewController" bundle:nil];
   [self presentModalViewController:tutorialViewController animated:YES];
 }
 
-#pragma mark - AwesomeView init and delegate
-- (void)initAwesomeView{
-  UIImage *storyMenuItemImage =UIIMAGE_FROMPNG(@"bg-menuitem");
-  UIImage *storyMenuItemImagePressed = UIIMAGE_FROMPNG(@"bg-menuitem-highlighted");
-  
-  UIImage *mapCreateImg = UIIMAGE_FROMPNG(@"mapCreate_pen");
-  
-  UIImage *settingImg=UIIMAGE_FROMPNG(@"setting");
-  UIImage *refreshImg=UIIMAGE_FROMPNG(@"feed_shuaxin");
-  AwesomeMenuItem *starMenuItem1 = [[AwesomeMenuItem alloc] initWithImage:storyMenuItemImage
-                                                         highlightedImage:storyMenuItemImagePressed
-                                                             ContentImage:mapCreateImg
-                                                  highlightedContentImage:nil];
-  AwesomeMenuItem *starMenuItem2 = [[AwesomeMenuItem alloc] initWithImage:storyMenuItemImage
-                                                         highlightedImage:storyMenuItemImagePressed
-                                                             ContentImage:settingImg
-                                                  highlightedContentImage:nil];
-  AwesomeMenuItem *starMenuItem3 = [[AwesomeMenuItem alloc] initWithImage:storyMenuItemImage
-                                                         highlightedImage:storyMenuItemImagePressed
-                                                             ContentImage:refreshImg
-                                                  highlightedContentImage:nil];
-  
-  
-  NSArray *menus = [NSArray arrayWithObjects:starMenuItem1, starMenuItem2,starMenuItem3, nil];
-  
-  
-  _menu = [[AwesomeMenu alloc] initWithFrame:CGRectMake(-130, 170, 38, 38) menus:menus];
-  _menu.frame=CGRectMake(_menu.frame.origin.x, SCREEN_HEIGHT-(460-_menu.frame.origin.y), _menu.frame.size.width, _menu.frame.size.height);
-	// customize menu
-	_menu.rotateAngle = M_PI/5;
-	_menu.menuWholeAngle = M_PI/2.5;
-	_menu.timeOffset = 0.1f;
-	_menu.farRadius = 200.0f;
-	_menu.endRadius = 150.0f;
-	_menu.nearRadius = 50.0f;
-  _menu.delegate = self;
-  [self.view addSubview:_menu];
-  
-}
-
-- (void)AwesomeMenu:(AwesomeMenu *)menu didSelectIndex:(NSInteger)idx
-{
-  switch (idx) {
-    case 0:
-    {
-      [MobClick event:@"2012111901"];
-      MapCreateVCTL *mapCreate=[[MapCreateVCTL alloc]init];
-      mapCreate.delegate=self;
-      [self presentModalViewController:mapCreate animated:YES];
-    }
-      break;
-    case 1:
-    {
-      UserSettingViewController *settingController=[[UserSettingViewController alloc]init];
-      [self.navigationController pushViewController:settingController animated:YES];
-    }
-      break;
-    case 2:
-    {
-      _isLoadOld=FALSE;
-      [self download];
-    }
-      break;
-    default:
-      DLog(@"error!");
-      break;
-  }
-}
 
 #pragma mark - MapCreateVCTL delegate
-- (void)finishCreate:(MapCreateVCTL*)controller info:(Map*)info{
+- (void)finishCreate:(MapCreateVCTL*)controller ridding:(Ridding*)ridding{
   [controller dismissModalViewControllerAnimated:NO];
-  MapCreateDescVCTL *descVCTL=[[MapCreateDescVCTL alloc]initWithNibName:@"MapCreateDescVCTL" bundle:nil info:info];
-  descVCTL.delegate=self;
+  MapCreateDescVCTL *descVCTL=[[MapCreateDescVCTL alloc]initWithNibName:@"MapCreateDescVCTL" bundle:nil ridding:ridding];
+
   [self presentModalViewController:descVCTL animated:YES];
 }
 #pragma mark - MapCreateDescVCTL delegate
-- (void)finishCreate:(MapCreateDescVCTL*)controller{
-  [controller dismissModalViewControllerAnimated:YES];
+- (void)succAddRidding:(NSNotification *)note{
   _isLoadOld=FALSE;
   [self download];
-
 }
 
+#pragma mark - QQNRFeedHeaderView delegate
+- (void)backGroupViewClick:(QQNRFeedHeaderView*)view{
+  UIActionSheet *actionSheet= [[UIActionSheet alloc] initWithTitle:@"选择照片来源" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"相机" otherButtonTitles:@"本地相册",nil];
+  actionSheet.delegate=self;
+  [actionSheet showInView:self.view];
+}
 
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+  UIImage *newImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+  CGFloat width;
+  CGFloat height;
+  if(newImage.imageOrientation==UIImageOrientationLeft||newImage.imageOrientation==UIImageOrientationRight){
+    width=CGImageGetHeight([newImage CGImage]);
+    height=CGImageGetWidth([newImage CGImage]);
+  }else{
+    width=CGImageGetWidth([newImage CGImage]);
+    height=CGImageGetHeight([newImage CGImage]);
+  }
+  QQNRServerTask *task=[[QQNRServerTask alloc]init];
+  task.step=STEP_UPLOADBACKGROUNDPHOTO;
+  File *file=[[File alloc]init];
+  file.fileImage=newImage;
+  file.width=width;
+  file.height=height;
+  NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, file, kFileClientServerUpload_File);
+  task.paramDic=dic;
+  
+  QQNRServerTaskQueue *queue=[QQNRServerTaskQueue sharedQueue];
+  [queue addTask:task withDependency:NO];
+  [picker dismissModalViewControllerAnimated:YES];
+}
+
+- (void)succUpdateBackground:(NSNotification*)noti{
+  NSString *urlStr=[StaticInfo getSinglton].user.backGroundUrl;
+  NSLog(@"%@",urlStr);
+  NSURL *url=[QiNiuUtils getUrlBySizeToUrl:_backgroundImageView.frame.size url:urlStr type:QINIUMODE_DEDEFAULT];
+  [_backgroundImageView setImageWithURL:url];
+}
 
 
 @end

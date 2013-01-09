@@ -17,7 +17,7 @@
 }
 
 - (BOOL)pd_isNotEmptyString {
-
+  
 	return ![self isEqualToString:@""];
 }
 
@@ -68,40 +68,40 @@
 - (NSString*)pd_substringWithRangeOfStartString:(NSString *)start nextString:(NSString*)nextStr {
 	
 	NSRange left, next;
+  
+  if ([start length]==0) {
     
-    if ([start length]==0) {
-        
-        if([nextStr length]==0) {
-            return self;
-        }
-        
-        next = [self rangeOfString:nextStr];
-        if (next.length == 0) {
-            // 右边没有找到
-            return @"";
-        }else
-            return [self substringToIndex:next.location];
+    if([nextStr length]==0) {
+      return self;
     }
     
+    next = [self rangeOfString:nextStr];
+    if (next.length == 0) {
+      // 右边没有找到
+      return @"";
+    }else
+      return [self substringToIndex:next.location];
+  }
+  
 	left = [self rangeOfString:start];
 	
 	NSString *sub;
 	if (left.length==0) {
-        
-        // 左边字符串没有找到
-        return @"";
+    
+    // 左边字符串没有找到
+    return @"";
 	}else {
-        // 找到了左边
-        
-        if ([nextStr length]==0) {
-            // 右边为空
-            return [self substringFromIndex:left.location + left.length];
-        }
-        
+    // 找到了左边
+    
+    if ([nextStr length]==0) {
+      // 右边为空
+      return [self substringFromIndex:left.location + left.length];
+    }
+    
 		sub = [self substringFromIndex:left.location + left.length];
 		next = [sub rangeOfString:nextStr];
 		if (next.length==0) {
-            // 右边没有找到
+      // 右边没有找到
 			return @"";
 		}else {
 			return [sub substringToIndex:next.location];
@@ -113,39 +113,39 @@
 - (NSString*)pd_substringWithRangeOfStartString:(NSString *)start nextString:(NSString*)next1 orNextString:(NSString*)next2 {
 	
 	NSRange left, nextRange1, nextRange2;
+  
+  if ([start length]==0) {
     
-    if ([start length]==0) {
-        
-        if([next1 length]==0 && [next2 length]==0) {
-            return self;
-        }
-        
-        nextRange1 = [self rangeOfString:next1];
-        nextRange2 = [self rangeOfString:next2];
-		
-        if (nextRange1.length == 0 && nextRange2.length == 0) {
-            // 右边2个都没有找到
-            return @"";
-        }else if(nextRange1.length != 0 && nextRange2.length != 0) {
-            return [self substringToIndex:MIN(nextRange1.location,nextRange2.location)];
-		}else
-			return [self substringToIndex:nextRange1.length==0?nextRange2.location:nextRange1.location];
+    if([next1 length]==0 && [next2 length]==0) {
+      return self;
     }
     
+    nextRange1 = [self rangeOfString:next1];
+    nextRange2 = [self rangeOfString:next2];
+		
+    if (nextRange1.length == 0 && nextRange2.length == 0) {
+      // 右边2个都没有找到
+      return @"";
+    }else if(nextRange1.length != 0 && nextRange2.length != 0) {
+      return [self substringToIndex:MIN(nextRange1.location,nextRange2.location)];
+		}else
+			return [self substringToIndex:nextRange1.length==0?nextRange2.location:nextRange1.location];
+  }
+  
 	left = [self rangeOfString:start];
 	
 	NSString *sub;
 	if (left.length==0) {
-        
-        // 左边字符串没有找到
-        return @"";
+    
+    // 左边字符串没有找到
+    return @"";
 	}else {
-        // 找到了左边
-        
-        if ([next1 length]==0 && [next2 length]==0) {
-            // 右边都为空
-            return [self substringFromIndex:left.location + left.length];
-        }
+    // 找到了左边
+    
+    if ([next1 length]==0 && [next2 length]==0) {
+      // 右边都为空
+      return [self substringFromIndex:left.location + left.length];
+    }
 		
 		sub = [self substringFromIndex:left.location + left.length];
 		nextRange1 = [sub rangeOfString:next1];
@@ -156,18 +156,18 @@
 			// 右边有空串
 			if (nextRange1.length == 0) {
 				// 第一个字符串没有找到
-				return [self substringFromIndex:left.location + left.length];				
+				return [self substringFromIndex:left.location + left.length];
 			}
 		}
 		
 		if (nextRange1.length==0  && nextRange2.length == 0) {
-            // 右边没有找到
+      // 右边没有找到
 			return @"";
 		}else if(nextRange1.length != 0 && nextRange2.length != 0) {
-            return [sub substringToIndex:MIN(nextRange1.location,nextRange2.location)];
+      return [sub substringToIndex:MIN(nextRange1.location,nextRange2.location)];
 		}else
 			return [sub substringToIndex:nextRange1.length==0?nextRange2.location:nextRange1.location];
-	}	
+	}
 }
 
 - (NSDate*)pd_yyyyMMddDate {
@@ -203,11 +203,11 @@
 	aDate = [formatter dateFromString:self];
 	[formatter release];
 	
-	return aDate;	
+	return aDate;
 }
 
 - (NSDate*)pd_yyyyMMddEEDate {
-
+  
 	NSDateFormatter	*formatter =[[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyy-MM-dd EE"];
 	
@@ -236,7 +236,7 @@
 }
 
 - (char)pd_asciiAtIndexOf:(NSUInteger)index {
-
+  
 	const char* ut8string = [self cStringUsingEncoding:NSUTF8StringEncoding];
 	if (index > [self length]-1) {
 		return 0;
@@ -273,4 +273,10 @@
   return [self substringToIndex:([self length]-3)];
 }
 
+
+- (NSString*)urlEncode {
+  
+  return (NSString*) CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8 );
+  
+}
 @end

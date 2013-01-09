@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "StaticInfo.h"
-#import "BasicViewController.h"
+#import "BasicNeedLoginViewController.h"
 #import "MapCreateVCTL.h"
-@interface UserSettingViewController : BasicViewController<UITableViewDelegate,UITableViewDataSource>{
+@interface UserSettingViewController : BasicNeedLoginViewController<UITableViewDelegate,UITableViewDataSource,QQNRSourceLoginViewControllerDelegate,RiddingViewControllerDelegate>{
     StaticInfo *staticInfo;
 }
 @property (nonatomic, retain) IBOutlet UITableView *uiTableView;

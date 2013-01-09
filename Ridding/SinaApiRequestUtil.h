@@ -23,7 +23,7 @@
 -(NSDictionary*)getUserInfo;
 
 //通过我得搜索内容，得到我关注或者关注我得用户列表
--(NSArray*) getAtUserList:(NSString*)q type:(NSNumber*)type;
+-(NSArray*) getAtUserList:(NSString*)q type:(int)type;
 
 -(NSString*)checkTokenIsValid;
 + (SinaApiRequestUtil*)getSinglton;

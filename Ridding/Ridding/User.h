@@ -37,15 +37,12 @@ typedef enum _SOURCETYPE {
 @property(nonatomic,copy) NSString *timeBefore;
 @property(nonatomic) double latitude;
 @property(nonatomic) double longtitude;
+@property(nonatomic,copy) NSString *backGroundUrl;
 
 
 //选好友的时候用到
 @property(nonatomic) BOOL isSelected;
 
--(UIImage*)getSavator;
--(UIImage*)getBavator;
--(UIImage*)OriginImage:(UIImage *)image   scaleToSize:(CGSize)size;
--(UIImage*) getSSavator;
 -(NSString*) getTotalDistanceToKm;
 
 

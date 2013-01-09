@@ -10,6 +10,16 @@
 
 @implementation Comment
 
+-(id)init{
+  self=[super init];
+  if(self){
+    self.user=[[User alloc]init];
+    self.toUser=[[User alloc]init];
+  }
+  return self;
+}
+
+
 - (id)initWithJSONDic:(NSDictionary *)jsonDic{
   self=[super init];
   if(self){

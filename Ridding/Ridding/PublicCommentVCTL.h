@@ -6,10 +6,11 @@
 //
 //
 
-#import "BasicViewController.h"
 #import "Ridding.h"
 #import "HPGrowingTextView.h"
-@interface PublicCommentVCTL : BasicViewController<HPGrowingTextViewDelegate,UP_EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource,EGORefreshTableHeaderDelegate,UIScrollViewDelegate>{
+#import "PublicCommentCell.h"
+#import "BasicNeedLoginViewController.h"
+@interface PublicCommentVCTL : BasicNeedLoginViewController<HPGrowingTextViewDelegate,UP_EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource,EGORefreshTableHeaderDelegate,UIScrollViewDelegate,PublicCommentCellDelegate>{
   UP_EGORefreshTableHeaderView *_ego;
   EGORefreshTableHeaderView *_top_Ego;
   NSMutableArray *_dataSource;

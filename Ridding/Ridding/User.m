@@ -7,7 +7,7 @@
 //
 
 #import "User.h"
-
+#import "QiNiuUtils.h"
 @implementation User
 - (id)init
 {
@@ -38,55 +38,11 @@
     self.timeBefore=[jsonDic objectForKey:@"timebefore"];
     self.latitude=[[jsonDic objectForKey:@"latitude"]doubleValue];
     self.longtitude=[[jsonDic objectForKey:@"longtitude"]doubleValue];
+    self.backGroundUrl=[jsonDic objectForKey:@"backgroundurl"];
   }
   return self;
 }
 
--(UIImage*)getSavator{
-    if(self.savatorUrl!=nil){
-         NSURL *url = [NSURL URLWithString:self.savatorUrl];
-        return [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-    }
-    return [UIImage imageNamed:@"duser.png"];
-}
-
--(UIImage*)getBavator{
-    
-    
-    if(self.bavatorUrl!=nil){
-        NSURL *url = [NSURL URLWithString:self.bavatorUrl];
-        return [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-    }
-    return [UIImage imageNamed:@"duser.png"];
-}
-
--(UIImage*) getSSavator {
-    CGSize size = CGSizeMake(32, 32);
-    if(self.savatorUrl!=nil){
-        NSURL *url = [NSURL URLWithString:self.savatorUrl];
-        return [self OriginImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:url]] scaleToSize:size] ;
-    }
-    return [self OriginImage:[UIImage imageNamed:@"duser.png"] scaleToSize:size];
-}
-
--(UIImage*)  OriginImage:(UIImage *)image   scaleToSize:(CGSize)size    
-{    
-    // 创建一个bitmap的context    
-    // 并把它设置成为当前正在使用的context    
-    UIGraphicsBeginImageContext(size);    
-    
-    // 绘制改变大小的图片    
-    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];    
-    
-    // 从当前context中创建一个改变大小后的图片    
-    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();    
-    
-    // 使当前的context出堆栈    
-    UIGraphicsEndImageContext();    
-    
-    // 返回新的改变大小后的图片    
-    return scaledImage;    
-}
 
 -(NSString*) getTotalDistanceToKm{
   float distance=self.totalDistance*1.0/1000;

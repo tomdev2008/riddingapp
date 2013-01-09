@@ -105,6 +105,17 @@
 	return str;
 }
 
+- (NSString*)pd_fileNameyyyyMMddHHmmss1String {
+	
+	NSDateFormatter		*formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat:@"yyyyMMddHHmmss"];
+	
+	NSString *str;
+	str = [formatter stringFromDate:self];
+	[formatter release];
+	return str;
+}
+
 - (NSString*)pd_HHmmString {
     
 	NSDateFormatter		*formatter = [[NSDateFormatter alloc] init];

@@ -23,4 +23,8 @@ typedef enum QINIUMODE {
 + (NSString *) getUrlBySize:(CGSize)size url:(NSString*)url type:(QINIUMODE)type;
 
 + (NSURL *) getUrlBySizeToUrl:(CGSize)size url:(NSString*)url type:(QINIUMODE)type;
+
++ (NSURL *) getUrlByWidthToUrl:(CGFloat)width url:(NSString*)url type:(QINIUMODE)type;
+
++ (NSURL *) getUrlByHeightToUrl:(CGFloat)height url:(NSString*)url type:(QINIUMODE)type;
 @end

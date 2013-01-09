@@ -7,11 +7,11 @@
 //
 
 #import "PublicCommentVCTL.h"
-#import "RequestUtil.h"
 #import "Comment.h"
 #import "PublicCommentCell.h"
 #import "NSString+TomAddition.h"
 #import "Utilities.h"
+#import "SVProgressHUD.h"
 #define pageSize 10
 @interface PublicCommentVCTL ()
 
@@ -33,6 +33,10 @@
   [super viewDidLoad];
   self.tv.backgroundColor=[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")];
   
+  [self.barView.titleLabel setText:@"评论"];
+  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateNormal];
+  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateHighlighted];
+  
   _dataSource=[[NSMutableArray alloc]init];
   _endCreateTime=-1;
   _isTheEnd=FALSE;
@@ -42,7 +46,7 @@
   [self addTableHeader];
   [self addTableFooter];
   [self setupGrowingTextField];
-  [self download];
+  
   
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(keyboardWillShow:)
@@ -56,6 +60,14 @@
 
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+  [super viewDidAppear:animated];
+  if(!self.didAppearOnce){
+    self.didAppearOnce=TRUE;
+    [self download];
+  }
+}
+
 - (void)addCommentToServer:(NSString*)text {
   Comment *comment=[[Comment alloc]init];
   comment.replyId=_replyId;
@@ -66,9 +78,16 @@
   }
   comment.text=text;
   comment.usePicUrl=@"";
+  comment.riddingId=_ridding.riddingId;
   comment.userId=[StaticInfo getSinglton].user.userId;
   comment.toUserId=_toUserId;
-  [[RequestUtil getSinglton]addRiddingComment:comment];
+  NSDictionary *dic= [self.requestUtil addRiddingComment:comment];
+  if(dic){
+    _textView.text=@"";
+    _isTheEnd=FALSE;
+    _endCreateTime=-1;
+    [self download];
+  }
 }
 
 //时间是用在进行中的列表，weight是用在推荐列表
@@ -77,32 +96,28 @@
     return;
   }
   _isLoading=TRUE;
+  [SVProgressHUD showWithStatus:@"加载中"];
   dispatch_async(dispatch_queue_create("download", NULL), ^{
-    NSArray *serverArray=nil;
-    if(_isLoadOld){
-      serverArray= [[RequestUtil getSinglton] getRiddingComment:_endCreateTime limit:pageSize isLarger:0 riddingId:_ridding.riddingId];
-    }else{
-      serverArray= [[RequestUtil getSinglton] getRiddingComment:-1 limit:pageSize isLarger:0 riddingId:_ridding.riddingId];
+    NSArray *serverArray= [self.requestUtil getRiddingComment:_endCreateTime limit:pageSize isLarger:0 riddingId:_ridding.riddingId];
+    if(!_isLoadOld){
+      [_dataSource removeAllObjects];
     }
+    [self doUpdate:serverArray];
     dispatch_async(dispatch_get_main_queue(), ^{
-      if(!_isLoadOld){
-        [_dataSource removeAllObjects];
-        _isTheEnd=FALSE;
+      [self.tv reloadData];
+      if([serverArray count]<pageSize){
+        _isTheEnd=TRUE;
+        [_ego setHidden:YES];
+      }else {
+        [_ego setHidden:NO];
       }
-      [self doUpdate:serverArray];
       if(_isLoadOld){
         [self doneLoadingTableViewData];
-        if([serverArray count]<pageSize){
-          _isTheEnd=TRUE;
-          [_ego setHidden:YES];
-        }else {
-          [_ego setHidden:NO];
-        }
       }else{
         [self doneDOWNLoadingTableViewData];
       }
       _isLoading=FALSE;
-      [self.tv reloadData];
+      [SVProgressHUD dismiss];
     });
   });
 }
@@ -139,6 +154,16 @@
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
 }
+#pragma mark - PublicCommentCell delegate
+- (void)callBackBtnClick:(PublicCommentCell*)cell{
+  Comment *comment=[_dataSource objectAtIndex:cell.index];
+  _toUserId=comment.user.userId;
+  _replyId=comment.replyId;
+  _beginStr=[NSString stringWithFormat:@"回复%@:",comment.user.name];
+  [_textView setText:_beginStr];
+  [_textView becomeFirstResponder];
+}
+
 
 
 #pragma mark - Table view data source
@@ -167,9 +192,10 @@
 	{
 		cell = [[PublicCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID comment:comment];
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
-  }else{
-    cell.comment=comment;
+    cell.delegate=self;
   }
+  cell.comment=comment;
+  cell.index=indexPath.row;
   [cell initContentView];
   
   return cell;
@@ -177,12 +203,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  Comment *comment=[_dataSource objectAtIndex:indexPath.row];
-  _toUserId=comment.user.userId;
-  _replyId=comment.replyId;
-  _beginStr=[NSString stringWithFormat:@"回复%@:",comment.user.name];
-  [_textView setText:_beginStr];
-  [_textView becomeFirstResponder];
+  [_textView resignFirstResponder];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -250,6 +271,8 @@
 - (void)downEGOReload {
   if(!_isLoading){
     _isLoadOld=FALSE;
+    _isTheEnd=FALSE;
+    _endCreateTime=-1;
     [self download];
   }
 }
@@ -324,6 +347,14 @@
 
 }
 
+- (BOOL)growingTextViewShouldBeginEditing:(HPGrowingTextView *)growingTextView{
+  RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
+  if(![delegate canLogin]){
+    [self showLoginAlertView];
+    return FALSE;
+  }
+  return TRUE;
+}
 
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
@@ -356,7 +387,7 @@
     return;
   }
   
-  if ([commnetText length] > 50 ) {
+  if ([commnetText length] > 100 ) {
     [Utilities alertInstant:@"评论字数太多了，50字以内吧" isError:YES];
     return;
   }
@@ -366,13 +397,15 @@
     [Utilities alertInstant:@"评论字数太少了，至少3个字吧" isError:YES];
     return;
   }
-  
+  [SVProgressHUD show];
   [_textView resignFirstResponder];
-  if(![_textView.text hasPrefix:_beginStr]){
+ 
+  if(!_beginStr||![_textView.text hasPrefix:_beginStr]){
     _toUserId=0;
     _replyId=0;
   }
   [self addCommentToServer:_textView.text];
+  [SVProgressHUD dismiss];
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{
@@ -428,5 +461,6 @@
 	[UIView commitAnimations];
   
 }
+
 
 @end

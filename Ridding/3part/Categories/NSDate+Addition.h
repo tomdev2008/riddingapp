@@ -20,6 +20,7 @@
 - (NSString*)pd_yyyyMMddHHmmssString;
 - (NSString*)pd_yyyyMMddHHmmString;
 - (NSString*)pd_fileNameyyyyMMddHHmmssString;
+- (NSString*)pd_fileNameyyyyMMddHHmmss1String;
 - (NSString*)pd_yyyyMMddEEString;
 - (NSString*)pd_HHmmString;
 - (NSString*)pd_nianYueRiString;		// 2012年8月5日

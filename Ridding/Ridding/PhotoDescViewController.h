@@ -9,9 +9,11 @@
 #import "BasicViewController.h"
 #import "RiddingPicture.h"
 #import "SWSnapshotStackView.h"
-@interface PhotoDescViewController : BasicViewController{
+#import "QQNRDatePicker.h"
+@interface PhotoDescViewController : BasicViewController<QQNRDatePickerDelegate>{
   UIImage *_image;
   long long _dbId;
+  QQNRDatePicker *_datePicker;
 }
 
 @property(nonatomic,retain) IBOutlet SWSnapshotStackView *imageView;

@@ -7,6 +7,7 @@
 //
 
 #import "BasicBar.h"
+#import "UIColor+XMin.h"
 #import <QuartzCore/QuartzCore.h>
 @implementation BasicBar
 @synthesize titleLabel = _titleLabel;
@@ -43,7 +44,7 @@
   if(self){
     // Initialization code
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(85,8,  142, 27)];
-    _titleLabel.textColor =[UIColor whiteColor];
+    _titleLabel.textColor =[UIColor getColor:barTextColor];
     _titleLabel.font =[UIFont boldSystemFontOfSize:17];
     _titleLabel.backgroundColor =[UIColor clearColor];
     _titleLabel.textAlignment =UITextAlignmentCenter;
@@ -54,9 +55,8 @@
     _leftButton.frame = CGRectMake(6,6, 64,31);
     _leftButton.layer.cornerRadius=5;
     _leftButton.layer.masksToBounds=YES;
-    [_leftButton setBackgroundImage:UIIMAGE_FROMPNG(@"nav_back1") forState:UIControlStateNormal];
-    [_leftButton setTitle:@"返回" forState:UIControlStateNormal];
-    [_leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_leftButton setTitleColor:[UIColor getColor:barTextColor] forState:UIControlStateNormal];
+    [_leftButton setTitleColor:[UIColor getColor:barTextColor] forState:UIControlStateHighlighted];
     _leftButton.titleLabel.font = [UIFont systemFontOfSize: 15.0];
     _leftButton.showsTouchWhenHighlighted = YES;
     [_leftButton addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -68,9 +68,10 @@
     _rightButton.layer.masksToBounds=YES;
     _rightButton.titleLabel.font = [UIFont systemFontOfSize: 15.0];
     _rightButton.showsTouchWhenHighlighted = YES;
-    [_rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_rightButton setBackgroundImage:UIIMAGE_FROMPNG(@"nav_back1") forState:UIControlStateNormal];
-    [_rightButton setTitle:@"主页" forState:UIControlStateNormal];
+    [_rightButton setTitleColor:[UIColor getColor:barTextColor] forState:UIControlStateNormal];
+    [_rightButton setTitleColor:[UIColor getColor:barTextColor] forState:UIControlStateHighlighted];
+    [_rightButton setTitle:@"确定" forState:UIControlStateNormal];
+    [_rightButton setTitle:@"确定" forState:UIControlStateHighlighted];
     [_rightButton addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [_rightButton setHidden:YES];
     [self addSubview:_rightButton];

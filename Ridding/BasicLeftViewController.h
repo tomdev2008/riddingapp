@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface BasicLeftViewController : UIViewController <UITableViewDelegate,UITableViewDataSource>{
+#import "BasicViewController.h"
+#import "RiddingViewController.h"
+#import "QQNRSourceLoginViewController.h"
+@interface BasicLeftViewController : BasicViewController <UITableViewDelegate,UITableViewDataSource,RiddingViewControllerDelegate,QQNRSourceLoginViewControllerDelegate>{
   int _nowIndexView;
+  NSIndexPath *_selectedIndex;
 }
 
 @property(nonatomic,retain) IBOutlet UITableView *uiTableView;

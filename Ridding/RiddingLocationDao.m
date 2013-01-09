@@ -45,7 +45,7 @@ latitude text,longtitide text,nextDistance INTEGER,weight INTEGER);";
 
 -(NSArray*)getRiddingLocations:(long long)riddingId beginWeight:(int)beginWeight{
     [sqlUtil readyDatabse];
-    NSString *sql = [NSString stringWithFormat:@" select * from TB_RiddingLocation where riddingid =%lld@ and weight>=%d ;",riddingId,beginWeight];
+    NSString *sql = [NSString stringWithFormat:@" select * from TB_RiddingLocation where riddingid =%lld and weight>=%d ;",riddingId,beginWeight];
     NSMutableArray *mulArray=[sqlUtil selectData:sql resultColumns:columCount];
     if (!mulArray) {
         return nil;
@@ -76,6 +76,32 @@ latitude text,longtitide text,nextDistance INTEGER,weight INTEGER);";
         return [[row objectAtIndex:0]intValue];
     }
     return -1;
+}
+
+//插入骑行的经纬度等信息到数据库
+-(void)setRiddingLocationToDB:(Map*)map riddingId:(long long)riddingId{
+  dispatch_queue_t q;
+  q=dispatch_queue_create("setRiddingLocationToDB", NULL);
+  dispatch_async(q, ^{
+    if([[RiddingLocationDao getSinglton] getRiddingLocationCount:riddingId]>0){
+      return;
+    }
+    if([map.startLocations count]!=[map.toNextDistance count]){
+      return;
+    }
+    NSMutableArray *locations=[[NSMutableArray alloc]init];
+    int index=0;
+    for(CLLocation *location in map.startLocations){
+      RiddingLocation *riddingLocation=[[RiddingLocation alloc]init];
+      riddingLocation.latitude=location.coordinate.latitude;
+      riddingLocation.longtitude=location.coordinate.longitude;
+      riddingLocation.riddingId=riddingId;
+      riddingLocation.toNextDistance=[[map.toNextDistance objectAtIndex:index]intValue];
+      riddingLocation.weight=index++;
+      [locations addObject:riddingLocation];
+    }
+    [[RiddingLocationDao getSinglton] addRiddingLocation:riddingId locations:locations];
+  });
 }
 
 @end

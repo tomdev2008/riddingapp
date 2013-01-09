@@ -14,10 +14,18 @@
 #import "MobClick.h"
 #import "RiddingAppDelegate.h"
 #endif
+
+#define kFileClientServerUpload_RiddingPicture       @"FileClientServerUpload_riddingPicture"
+#define kFileClientServerUpload_Ridding              @"FileClientServerUpload_ridding"
+#define kFileClientServerUpload_File                 @"FileClientServerUpload_file"
+
+
 #define kFinishUpdateMyLocationNotification @"FinishUpdateMyLocationNotification"
 #define kFailUpdateMyLocationNotification @"FailUpdateMyLocationNotification"
+#define kSuccAddRiddingNotification @"SuccAddRiddingNotification"
+#define kSuccUploadPictureNotification @"SuccUploadPictureNotification"
+#define kSuccUploadBackgroundNotification @"SuccUploadBackgroundNotification"
 #define kFinishNotification @"FinishNotification"
-#define kRequestNotification @"RequestNotification"
 #define kInitNotification @"InitNotification"
 #define apiSinaHost @"api.weibo.com"
 #define downLoadPath @"https://itunes.apple.com/cn/app/qi-xing-zhe/id557123754?ls=1&mt=8"
@@ -27,7 +35,8 @@
 #define imageHost @"images.qiqunar.com.cn"
 
 #define QIQUNARHOME @"http://qiqunar.com.cn"
-#define sendMyLocationTime @"5"
+
+#define sendMyLocationTime @"10"
 #define getToDestinationTime @"15"
 #define YouMenAppKey @"4fb3ce805270152b53000128"
 
@@ -61,6 +70,8 @@
 #define COLOR_BLACK   [UIColor colorWithRed:(15/255.0) green:(15/255.0) blue:(15/255.0) alpha:1]
 #define COLOR_LOWGRAY [UIColor colorWithRed:(197/255.0) green:(197/255.0) blue:(197/255.0) alpha:1]
 #define lineColor @"0048ff"
+#define barTextColor @"6f6f6f"
+#define kColor_pickerViewBarTint    [UIColor colorWithWhite:128/255.0 alpha:1.0]
 #define LeftBarMoveWidth 260
 
 

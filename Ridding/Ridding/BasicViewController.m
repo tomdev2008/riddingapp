@@ -7,7 +7,12 @@
 //
 
 #import "BasicViewController.h"
-
+#import "UIColor+XMin.h"
+#import "RiddingViewController.h"
+#import "SVProgressHUD.h"
+#define kTriggerOffSet      50.0f
+#define kSensitiveTrigger   5.0f
+#define kTagOverView        10098
 @interface BasicViewController ()
 
 @end
@@ -16,133 +21,263 @@
 @synthesize barView=_barView;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-
-    }
-    return self;
+  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+  if (self) {
+    
+  }
+  return self;
 }
 
 -(void)rightBtnClicked:(id)sender
 {
-   // [self dismissModalViewControllerAnimated:YES];
+  // [self dismissModalViewControllerAnimated:YES];
 }
 -(void)leftBtnClicked:(id)sender
 {
   if(self.hasLeftView){
     [self showLeftView];
   }else if(self.navigationController){
-      [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
   }
 }
 
 
 - (void)showLeftView{
   if (_position==POSITION_RIGHT||_position==POSITION_MID) {
-    [RiddingAppDelegate moveLeftNavgation];
+    [self restoreViewLocation];
   }else{
     [RiddingAppDelegate moveMidNavgation];
+    [self createHideView];
   }
 }
 
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestCallBack:) name:kRequestNotification object:nil];
-    self.barView.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"navbg.png"]];
-    self.barView.delegate=self;
-    // Do any additional setup after loading the view from its nib.
+  self.requestUtil=[[RequestUtil alloc]init];
+  self.requestUtil.delegate=self;
+  [super viewDidLoad];
+  self.barView.backgroundColor=[UIColor getColor:@"f8f7f2"];
+  self.barView.delegate=self;
+  // Do any additional setup after loading the view from its nib.
 }
 
 - (void)viewDidUnload
 {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+  [super viewDidUnload];
+  // Release any retained subviews of the main view.
+  // e.g. self.myOutlet = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+  return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-//- (void)initHUD{
-//  if(!_HUD){
-//    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
-//    [self.view addSubview:_HUD];
-//    _HUD.delegate = self;
-//  }
-//}
 - (void)myTask {
-	// Do something usefull in here instead of sleeping ...
 	sleep(3000);
 }
 
-- (void)requestCallBack:(NSNotification*)noti{
-  NSDictionary *category=[noti userInfo];
-  int statusCode=[[category objectForKey:@"statusCode"]intValue];
-  int code=[[category objectForKey:@"code"]intValue];
-  if(code==1){
-    return ;
+
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+  
+	if (leftViewControllerDisabled && rightViewControllerDisabled) {
+		return;
+	}
+  if(!self.hasLeftView){
+    return;
   }
-  else if(code == -300) {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"退出活动失败"
-                                                    message:@"请确实所有队员退出之后，队长才能退出"
-                                                   delegate:self cancelButtonTitle:@"确定"
-                                          otherButtonTitles:nil];
-    [alert show];
+  UITouch *touch=[touches anyObject];
+  
+  touchBeganPoint = [touch locationInView:[[UIApplication sharedApplication] keyWindow]];
+  
+}
+
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+  if(!self.hasLeftView){
+    return;
+  }
+  UITouch *touch = [touches anyObject];
+  
+  CGPoint touchPoint = [touch locationInView:[[UIApplication sharedApplication] keyWindow]];
+  
+  
+  
+  CGFloat xOffSet = touchPoint.x - touchBeganPoint.x;
+  
+  
+  
+  
+  if (xOffSet < 0) {
+    if (rightViewControllerDisabled) {
+      [self touchesCancelled:touches withEvent:event];
+      return;
+      
+    }else{
+      [RiddingAppDelegate moveLeftNavgation];
+    }
     
   }
-  else if(code == -310) {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"退出活动失败"
-                                                    message:@"活动不存在"
-                                                   delegate:self cancelButtonTitle:@"确定"
-                                          otherButtonTitles:nil];
-    [alert show];
+  
+  else if (xOffSet > 0) {
+    if (leftViewControllerDisabled) {
+      [self touchesCancelled:touches withEvent:event];
+      return;
+    }else {
+      [RiddingAppDelegate moveMidNavgation];
+    }
     
   }
-  else if(code == -302) {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"退出活动失败"
-                                                    message:@"用户不在该骑行活动中"
-                                                   delegate:self cancelButtonTitle:@"确定"
-                                          otherButtonTitles:nil];
-    [alert show];
+  
+  
+  if(xOffSet<0){
+    //不移动到右边
+    return;
+  }
+  
+  self.navigationController.view.frame = CGRectMake(xOffSet,
+                                                    
+                                                    self.navigationController.view.frame.origin.y,
+                                                    
+                                                    self.navigationController.view.frame.size.width,
+                                                    
+                                                    self.navigationController.view.frame.size.height);
+  
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+  if(!self.hasLeftView){
+    return;
+  }
+  if (leftViewControllerDisabled && rightViewControllerDisabled) {
+		return;
+	}
+  
+  UITouch *endPoint = [touches anyObject];
+	CGPoint touchPoint = [endPoint locationInView:[[UIApplication sharedApplication] keyWindow]];
+  
+  CGFloat xOffSet = touchPoint.x - touchBeganPoint.x;
+  
+  if (abs(xOffSet) < kSensitiveTrigger) {
+    return;
+  }
+  
+  if (self.navigationController.view.frame.origin.x < kTriggerOffSet){
+    [RiddingAppDelegate moveLeftNavgation];
     
   }
-  else if(code == -202) {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"用户没有权限"
-                                                    message:@"只有队长才有该权限"
-                                                   delegate:self cancelButtonTitle:@"确定"
-                                          otherButtonTitles:nil];
-    [alert show];
+  
+  // animate to right side
+  
+  else if (self.navigationController.view.frame.origin.x >= kTriggerOffSet){
+    [RiddingAppDelegate moveMidNavgation];
+    [self createHideView];
+  }
+  
+  // reset
+  
+  else
+  {
     
   }
-  else if(code == -100) {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"解析失败"
-                                                    message:@"数据解析失败，请重新发送请求"
-                                                   delegate:self cancelButtonTitle:@"确定"
-                                          otherButtonTitles:nil];
-    [alert show];
-    
+  
+}
+
+- (void)createHideView{
+  UIControl *overView = [[UIControl alloc] init];
+  overView.tag = kTagOverView;
+  overView.backgroundColor = [UIColor clearColor];
+  //overView.frame = self.navigationController.view.frame;
+  overView.frame = self.navigationController.view.bounds;
+  [overView addTarget:self action:@selector(restoreViewLocation) forControlEvents:UIControlEventTouchDown];
+  [self.view addSubview:overView];
+  
+}
+
+
+- (void)restoreViewLocation {
+    UINavigationController *navController=[RiddingAppDelegate shareDelegate].navController;
+    UIControl *overView = (UIControl *)[[navController view] viewWithTag:kTagOverView];
+    if (overView) {
+      [overView removeFromSuperview];
+    }
+    NSLog(@"1234");
+    [RiddingAppDelegate moveLeftNavgation];
+}
+
+#pragma mark - TouchEnabledTableViewDelegate
+- (void)onTableView:(TouchEnabledTableView *)tableView touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	
+	[tableView setScrollEnabled:NO];
+	[self touchesBegan:touches withEvent:event];
+}
+
+- (void)onTableView:(TouchEnabledTableView *)tableView touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+	
+	[self touchesMoved:touches withEvent:event];
+}
+
+- (void)onTableView:(TouchEnabledTableView *)tableView touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event {
+  
+	[self touchesEnded:touches withEvent:event];
+	[tableView setScrollEnabled:YES];
+}
+
+- (void)onTableView:(TouchEnabledTableView *)tableView touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event {
+	
+	// do nothing
+	[tableView setScrollEnabled:YES];
+}
+#pragma mark requestUtil delegate
+-(void)asyncReturnDic:(NSDictionary*)dic{
+  //delegate实现
+}
+-(void)asyncReturnArray:(NSArray*)array{
+  //delegate实现
+}
+
+-(void)checkServerError:(RequestUtil *)request code:(int)code asiRequest:(ASIHTTPRequest*)asiRequest{
+  if([asiRequest responseStatusCode]!=200){
+    [SVProgressHUD showErrorWithStatus:@"服务器请求失败"];
+    return;
   }
-  else if(statusCode!=200){
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"连接服务器失败"
-                                                    message:@"连接服务器失败，请检查当前网络"
-                                                   delegate:self cancelButtonTitle:@"确定"
-                                          otherButtonTitles:nil];
-    [alert show];
-  }else if(statusCode==200){
-    
+  
+  NSString *message=[self returnErrorMessage:code];
+  if(message){
+    [SVProgressHUD showErrorWithStatus:message];
   }
-  else{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"未知错误"
-                                                    message:@"未知错误"
-                                                   delegate:self cancelButtonTitle:@"确定"
-                                          otherButtonTitles:nil];
-    [alert show];
+}
+
+- (NSString*)returnErrorMessage:(int)code{
+  if(code==kServerSuccessCode){
+    return nil;
+  }else if(code == -300) {
+    return @"请确实所有队员退出之后，队长才能退出";
+  }else if(code == -301) {
+    return @"活动不存在";
+  }else if(code == -302) {
+    return @"用户不在该骑行活动中";
+  }else if(code == -202) {
+    return @"只有队长才有该权限";
+  }else if(code == -100) {
+    return @"数据解析失败，请重新发送请求";
+  }else if(code==-310){
+    return @"每个人只有一次机会噢";
+  }else if(code==-311){
+    return @"对于自己的活动无法执行";
+  }else if(code==-444){
+    return @"登陆信息失效，请重新登陆";
   }
   [MobClick event:@"2012112002"];
-  return;
+  return @"操作失败";
 }
+
+- (void)viewWillDisappear:(BOOL)animated{
+  [super viewWillDisappear:animated];
+  [SVProgressHUD dismiss];
+}
+
+
 @end

@@ -13,6 +13,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "PublicViewController.h"
 #import "BasicLeftViewController.h"
+#import "User.h"
 @interface RiddingAppDelegate : UIResponder <UIApplicationDelegate,CLLocationManagerDelegate>{
   BOOL _canGetLocation;
   QQNRMyLocation *_myLocation;
@@ -31,17 +32,20 @@
 
 +(RiddingAppDelegate*)shareDelegate;
 
--(bool)canLogin;
--(void)setUserInfo;
+- (void)setUserInfo;
 - (NSString*)getPlist:(NSString*)key;
+- (BOOL)canLogin;
 - (BOOL)canGetLocation;
++ (BOOL)isMyFeedHome:(User*)user;
 - (QQNRMyLocation*)myLocation;
 - (CLLocationManager*)myLocationManager;
 - (NSString*)myLocationCity;
 - (void)startUpdateMyLocation;
 - (void)startUpdateMyLocationHeading;
+
 + (void)moveLeftNavgation;
 + (void)moveRightNavgation;
 + (void)popAllNavgation;
 + (void)moveMidNavgation;
+
 @end

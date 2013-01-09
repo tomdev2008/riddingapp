@@ -7,22 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BasicObject.h"
+#import "File.h"
 #import "User.h"
-@interface RiddingPicture : BasicObject
+@interface RiddingPicture : File
 
 
 @property(nonatomic) double latitude;
 @property(nonatomic) double longtitude;
-@property(nonatomic,copy) NSString *fileName;
 @property(nonatomic,retain) User *user;
 @property(nonatomic) long long riddingId;
 @property(nonatomic) long long dbId;
 @property(nonatomic,retain) UIImage *image;
 @property(nonatomic,copy) NSString *photoUrl;
-@property(nonatomic,copy) NSString *photoKey;
-@property(nonatomic) int height;
-@property(nonatomic) int width;
 @property(nonatomic) long long takePicDateL;
 @property(nonatomic,copy) NSString *takePicDateStr;
 //相片描述
@@ -31,5 +27,6 @@
 
 @property(nonatomic) BOOL isFirstPic;
 @property(nonatomic) long long createTime;
+
 
 @end

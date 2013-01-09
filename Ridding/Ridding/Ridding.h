@@ -23,7 +23,6 @@ typedef enum _RIDDINGACTION{
   
 }
 
-
 @property(nonatomic) long long riddingId;
 @property(nonatomic) int riddingStatus;
 @property(nonatomic) int userCount;
@@ -38,6 +37,19 @@ typedef enum _RIDDINGACTION{
 @property(nonatomic,copy) NSString *lastUpdateTimeStr;
 @property(nonatomic,retain) Map *map;
 @property(nonatomic,retain) NSMutableArray *riddingPictures;
+@property(nonatomic) int isPublic;
+@property(nonatomic) int isRecom;
+@property(nonatomic) int isSyncSina;
+
+
+@property(nonatomic) int likeCount;
+@property(nonatomic) int useCount;
+@property(nonatomic) int careCount;
+@property(nonatomic) int commentCount;
+
+@property(nonatomic) BOOL nowUserLiked;
+@property(nonatomic) BOOL nowUserCared;
+@property(nonatomic) BOOL nowUserUsed;
 
 - (BOOL)isEnd;
 - (void)setEnd;

@@ -246,7 +246,6 @@
 								<string key="NSFrame">{{70, 345}, {235, 20}}</string>
 								<reference key="NSSuperview" ref="1073382621"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="469666350"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -285,7 +284,10 @@
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="1073382621"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
-				<reference key="IBUIBackgroundColor" ref="469666350"/>
+				<object class="NSColor" key="IBUIBackgroundColor">
+					<int key="NSColorSpace">3</int>
+					<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
+				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBUISelectionStyle">0</int>
 				<reference key="IBUIContentView" ref="1073382621"/>
@@ -327,14 +329,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">stackView</string>
-						<reference key="source" ref="365147236"/>
-						<reference key="destination" ref="799610043"/>
-					</object>
-					<int key="connectionID">15</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">beginLocationLabel</string>
 						<reference key="source" ref="365147236"/>
 						<reference key="destination" ref="308173382"/>
@@ -356,6 +350,14 @@
 						<reference key="destination" ref="773516912"/>
 					</object>
 					<int key="connectionID">21</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">mapImageView</string>
+						<reference key="source" ref="365147236"/>
+						<reference key="destination" ref="799610043"/>
+					</object>
+					<int key="connectionID">22</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -439,7 +441,7 @@
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="14.CustomClassName">SWSnapshotStackView</string>
+				<string key="14.CustomClassName">UIImageView</string>
 				<string key="14.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="16.CustomClassName">DetailTextView</string>
 				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -460,7 +462,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">21</int>
+			<int key="maxID">22</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -480,8 +482,8 @@
 						<string key="beginLocationLabel">DetailTextView</string>
 						<string key="distanceLabel">DetailTextView</string>
 						<string key="endLocationLabel">DetailTextView</string>
+						<string key="mapImageView">UIImageView</string>
 						<string key="nameLabel">DetailTextView</string>
-						<string key="stackView">SWSnapshotStackView</string>
 						<string key="statusLabel">UILabel</string>
 						<string key="teamCountLabel">DetailTextView</string>
 					</dictionary>
@@ -502,13 +504,13 @@
 							<string key="name">endLocationLabel</string>
 							<string key="candidateClassName">DetailTextView</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="mapImageView">
+							<string key="name">mapImageView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="nameLabel">
 							<string key="name">nameLabel</string>
 							<string key="candidateClassName">DetailTextView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="stackView">
-							<string key="name">stackView</string>
-							<string key="candidateClassName">SWSnapshotStackView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="statusLabel">
 							<string key="name">statusLabel</string>
@@ -522,14 +524,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/QQNRFeedTableCell.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SWSnapshotStackView</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/SWSnapshotStackView.h</string>
 					</object>
 				</object>
 			</array>

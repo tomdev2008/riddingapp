@@ -10,16 +10,23 @@
 
 @implementation RiddingPicture
 
+-(id)init{
+  self=[super init];
+  if(self){
+    self.user=[[User alloc]init];
+  }
+  return self;
+}
+
+
 - (id)initWithJSONDic:(NSDictionary *)jsonDic{
   self=[super init];
   if(self){
     self.latitude=[[jsonDic objectForKey:@"latitude"]doubleValue];
     self.longtitude=[[jsonDic objectForKey:@"longtitude"]doubleValue];
-    self.fileName=[jsonDic objectForKey:@"filename"];
     self.riddingId=[[jsonDic objectForKey:@"riddingid"]longLongValue];
     self.dbId=[[jsonDic objectForKey:@"dbid"]longLongValue];
     self.photoUrl=[jsonDic objectForKey:@"photourl"];
-    self.photoKey=[jsonDic objectForKey:@"photokey"];
     self.height=[[jsonDic objectForKey:@"height"]intValue];
     self.width=[[jsonDic objectForKey:@"width"]intValue];
     self.takePicDateL=[[jsonDic objectForKey:@"takepicdatel"]longLongValue];

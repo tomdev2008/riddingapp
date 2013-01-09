@@ -92,4 +92,9 @@
     [SVProgressHUD showSuccessWithStatus:message];
   }
 }
+
++ (NSString *)appVersion {
+  
+  return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+}
 @end

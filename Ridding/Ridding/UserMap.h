@@ -12,32 +12,31 @@
 #import <CoreLocation/CoreLocation.h>
 #import "BasicViewController.h"
 #import "AwesomeMenu.h"
-#import "RequestUtil.h"
 #import "StaticInfo.h"
 #import "ActivityView.h"
 #import "SVSegmentedControl.h"
 #import "Ridding.h"
+#import "UserView.h"
 enum SHOWTYPE {
 	SHOWTEAMER = 0,
 	SHOWSELF = 1,
   SHOWPHOTO = 2,
 };
 
-@interface UserMap : BasicViewController <CLLocationManagerDelegate,MKAnnotation,MKMapViewDelegate,UIScrollViewDelegate,UINavigationControllerDelegate,AwesomeMenuDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,RequestUtilDelegate>
+@interface UserMap : BasicViewController <CLLocationManagerDelegate,MKAnnotation,MKMapViewDelegate,UIScrollViewDelegate,UINavigationControllerDelegate,AwesomeMenuDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UserViewDelegate>
 {
-  RequestUtil *requestUtil;
-  StaticInfo *staticInfo;
-  UIColor *line_color;
-  bool _isShowTeamers;
-  bool _isUserTapViewOut;
-  bool _isAnimationing;
+  StaticInfo *_staticInfo;
+  UIColor *_line_color;
+  BOOL _isShowTeamers;
+  BOOL _isUserTapViewOut;
+  BOOL _isAnimationing;
   
   CGPoint beginPoint;
   
   Ridding *_ridding;
-  CLLocation *lastLocation;
+  CLLocation *_lastLocation;
   
-  bool isShowDelete;
+  BOOL isShowDelete;
   MKAnnotationView *_showingAnnotationView;
   ActivityView *loadingView;
   
@@ -45,31 +44,24 @@ enum SHOWTYPE {
   NSTimer *_getToDestinationTimer;
   
   BOOL _routesInited;
-  bool _zooming;
-  bool _userInited;
+  BOOL _zooming;
+  BOOL _userInited;
   MKAnnotationView *myLocationAnnotationView;
-  User *_nowUser;
-  int _riddingStatus;
-  AwesomeMenu *_menu;
+  User *_toUser;
   UIImage *_showingImage;
   BOOL _isMyRidding;
   BOOL _isFromCamera;
+  NSMutableArray *_photoArray;
+  AwesomeMenu *_menu;
   SVSegmentedControl *_redSC;
+  int _onlineUserCount;
 }
 
 @property(nonatomic, retain) IBOutlet MKMapView *mapView;
 @property(nonatomic, retain) IBOutlet UIImageView *route_view;
-@property(nonatomic, retain) UIColor *line_color;
 @property(nonatomic, retain) NSMutableArray *routes;
-@property(nonatomic, retain) RequestUtil *requestUtil;
 @property(nonatomic, strong) NSMutableArray *userArray;
-@property(nonatomic, retain) StaticInfo *staticInfo;
-@property(nonatomic, retain) CLLocation *lastLocation;
 
-@property(nonatomic, strong) ActivityView *loadingView;
-@property(nonatomic) bool isShowDelete;
-
-@property(nonatomic, retain) IBOutlet UIButton *backBtn;
 @property(nonatomic, retain) IBOutlet UILabel *distanceLabel;
 @property(nonatomic, retain) IBOutlet UILabel *toDistanceLabel;
 @property(nonatomic, strong) IBOutlet UIView *distanceSpeedView;
@@ -80,11 +72,11 @@ enum SHOWTYPE {
 @property(nonatomic, retain) IBOutlet UIScrollView *userScrollView;
 @property(nonatomic, retain) IBOutlet UILabel *userOnlineLabel;
 
-- (id)initWithUser:(User*)nowUser ridding:(Ridding*)ridding riddingStatus:(int)riddingStatus;
+- (id)initWithUser:(User*)toUser ridding:(Ridding*)ridding;
 
 //Button响应方法
--(IBAction)showLocationButtonClicked:(id)sender;
--(IBAction)zoomInButtonClicked:(id)sender;
--(IBAction)zoomOutButtonClicked:(id)sender;
--(IBAction)backBtnClick:(id)sender;
+//-(IBAction)showLocationButtonClicked:(id)sender;
+//-(IBAction)zoomInButtonClicked:(id)sender;
+//-(IBAction)zoomOutButtonClicked:(id)sender;
+//-(IBAction)backBtnClick:(id)sender;
 @end

@@ -32,14 +32,6 @@ static ResponseCodeCheck *responseCodeCheck=nil;
     return responseCodeCheck;
 }
 
--(BOOL)checkResponseCode:(int)code statusCode:(int)statusCode{
-  NSDictionary *category=[[NSDictionary alloc]initWithObjectsAndKeys:[NSNumber numberWithInt:statusCode],@"statusCode", [NSNumber numberWithInt:code],@"code",nil];
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kRequestNotification object:self userInfo:category];
-  });
-  
-  return TRUE;
-}
 
 -(BOOL) checkConnect{
     NetworkStatus networkStatus = [Reachability reachabilityForInternetConnection].currentReachabilityStatus;

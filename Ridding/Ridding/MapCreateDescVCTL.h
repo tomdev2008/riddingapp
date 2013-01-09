@@ -10,26 +10,23 @@
 #import "MapCreateInfo.h"
 #import "SVSegmentedControl.h"
 #import "Map.h"
-@class MapCreateDescVCTL;
-@protocol MapCreateDescVCTLDelegate <NSObject>
+#import "QQNRServerTask.h"
 
-- (void)finishCreate:(MapCreateDescVCTL*)controller ;
-
-@end
-
-@interface MapCreateDescVCTL : BasicViewController<UITextFieldDelegate>{
-  Map *_map;
+@interface MapCreateDescVCTL : BasicViewController<UITextFieldDelegate,UITextViewDelegate,QQNRServerTaskDelegate>{
+  Ridding *_ridding;
   SVSegmentedControl *_redSC;
+  SVSegmentedControl *_publicSC;
   BOOL _sendWeiBo;
+  BOOL _isPublic;
+  BOOL _showingKeyBoard;
 }
 
 @property(nonatomic,retain) IBOutlet UITextField *nameField;
-@property(nonatomic,retain) IBOutlet UILabel *beginLocationLB;
-@property(nonatomic,retain) IBOutlet UILabel *endLocationLB;
+@property(nonatomic,retain) IBOutlet UITextView *beginLocationTV;
+@property(nonatomic,retain) IBOutlet UITextView *endLocationTV;
 @property(nonatomic,retain) IBOutlet UILabel *totalDistanceLB;
 @property(nonatomic,retain) IBOutlet UIImageView *mapImageView;
 
-@property(nonatomic,assign) id<MapCreateDescVCTLDelegate> delegate;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil info:(Map*)info;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil ridding:(Ridding*)ridding;
 @end

@@ -9,107 +9,107 @@
 #import "UserView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "StaticInfo.h"
+#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
+#import "QiNiuUtils.h"
 @implementation UserView
-@synthesize userViewDelegate=_userViewDelegate;
-@synthesize user=_user;
-@synthesize avatorView;
-@synthesize label;
-@synthesize deleteView;
-@synthesize brandView;
 
 - (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
+  self = [super initWithFrame:frame];
 	if (self) {
-      
+    
 	}
 	return self;
 }
 -(UserView*)init{
-    //添加长按操作
-    self.userInteractionEnabled=YES;
-    //添加头像
-    avatorView = [[UIImageView alloc]initWithFrame:CGRectMake(5,0,60,60)];
-    CALayer *l = [avatorView layer];
-    [l setMasksToBounds:YES];
-    [l setCornerRadius:6.0];
-    UIImage *aimage=[self.user getBavator];
-    avatorView.image=aimage;
-    avatorView.userInteractionEnabled=YES;
-    UITapGestureRecognizer *viewTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(avatorViewClick:)];
-    [avatorView addGestureRecognizer:viewTap]; 
-    [self addSubview:avatorView];
-    
-    //添加名牌
-    brandView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 63, self.frame.size.width, 21)];
-    if([StaticInfo getSinglton].user.userId== self.user.userId){
-        brandView.image = [UIImage imageNamed:@"userBrand.png"];
-    }else if(self.user.status==1){
-        brandView.image = [UIImage imageNamed:@"userBrand.png"];
-    }else{
-        brandView.image = [UIImage imageNamed:@"userBrandOffline.png"];
-    }
-    l = [brandView layer];
-    [l setMasksToBounds:YES];
-    [l setCornerRadius:3.0];
-    [self addSubview:brandView];
-
-    //添加标签
-    label=[[UILabel alloc]initWithFrame:CGRectMake(1, 66, self.frame.size.width-1, 15)];
-    label.text=self.user.name;
-    label.textAlignment=UITextAlignmentCenter;
-    [label setBackgroundColor:[UIColor clearColor]];
-    label.textColor=[UIColor whiteColor];
-    label.font = [UIFont fontWithName:@"Arial" size:12];
-
-    [self addSubview:label];
-    
-    //添加删除按钮，初始隐藏
-    if([StaticInfo getSinglton].user.isLeader&&self.user.userId!=[StaticInfo getSinglton].user.userId){
-        deleteView=[[UIImageView alloc]initWithFrame:CGRectMake(50, 0, 15, 15)];
-        UIImage *deleteImage=[UIImage imageNamed:@"icon-delete.png"];
-        deleteView.image=deleteImage;
-        deleteView.userInteractionEnabled=YES;
-        UITapGestureRecognizer *deleteTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(deleteViewClick:)];
-        [deleteView addGestureRecognizer:deleteTap]; 
-        deleteView.hidden=YES;
-        [self addSubview:deleteView];
-    }
-    return self;
+  //添加头像
+  
+  _avatorBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+  _avatorBtn.frame=CGRectMake(10,8,60,60);
+  _avatorBtn.layer.cornerRadius=6.0;
+  _avatorBtn.clipsToBounds = YES;
+  
+  NSURL *url=[QiNiuUtils getUrlBySizeToUrl:_avatorBtn.frame.size url:self.user.bavatorUrl type:QINIUMODE_DESHORT];
+  [_avatorBtn setImageWithURL:url placeholderImage:UIIMAGE_FROMPNG(@"duser")];
+  [_avatorBtn addTarget:self action:@selector(avatorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+  [self addSubview:_avatorBtn];
+  
+  //添加名牌
+  _brandView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 70, 70, 18)];
+  if([StaticInfo getSinglton].user.userId== self.user.userId){
+    _brandView.image = [UIImage imageNamed:@"userBrand.png"];
+  }else if(self.user.status==1){
+    _brandView.image = [UIImage imageNamed:@"userBrand.png"];
+  }else{
+    _brandView.image = [UIImage imageNamed:@"userBrandOffline.png"];
+  }
+  
+  [self addSubview:_brandView];
+  
+  //添加标签
+  _label=[[UILabel alloc]initWithFrame:CGRectMake(5, 70, 70, 18)];
+  _label.text=self.user.name;
+  _label.textAlignment=UITextAlignmentCenter;
+  [_label setBackgroundColor:[UIColor clearColor]];
+  _label.textColor=[UIColor whiteColor];
+  _label.font = [UIFont fontWithName:@"Arial" size:12];
+  
+  [self addSubview:_label];
+  
+  //添加删除按钮，初始隐藏
+  if([StaticInfo getSinglton].user.isLeader&&self.user.userId!=[StaticInfo getSinglton].user.userId){
+    _deleteBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    _deleteBtn.frame=CGRectMake(0, 0, 24, 24);
+    [_deleteBtn setImage:UIIMAGE_FROMPNG(@"close") forState:UIControlStateNormal];
+    [_deleteBtn setImage:UIIMAGE_FROMPNG(@"close") forState:UIControlStateHighlighted];
+    [_deleteBtn addTarget:self action:@selector(deleteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    _deleteBtn.hidden=YES;
+    [self addSubview:_deleteBtn];
+  }
+  return self;
 }
 
 -(void)changeStatus:(int)status{
-    self.user.status=status;
-    if([StaticInfo getSinglton].user.userId== self.user.userId){
-        brandView.image = [UIImage imageNamed:@"userBrand.png"];
-    }else if(status==1){
-        brandView.image = [UIImage imageNamed:@"userBrand.png"];
-    }else{
-        brandView.image = [UIImage imageNamed:@"userBrandOffline.png"];
-    }
+  self.user.status=status;
+  if([StaticInfo getSinglton].user.userId== self.user.userId){
+    _brandView.image = [UIImage imageNamed:@"userBrand.png"];
+  }else if(status==1){
+    _brandView.image = [UIImage imageNamed:@"userBrand.png"];
+  }else{
+    _brandView.image = [UIImage imageNamed:@"userBrandOffline.png"];
+  }
 }
 
 
 
 //点击头像view
--(void)avatorViewClick:(UITapGestureRecognizer*)gestureRecognize{
-    if(self.user.status==1){
-        if ([_userViewDelegate respondsToSelector:@selector(avatorViewClick:userId:)]) {
-            [_userViewDelegate avatorViewClick:gestureRecognize userId:self.user.userId];
-        }
+-(void)avatorBtnClick:(id)sender{
+  if(self.user.status==1){
+    if ([self.delegate respondsToSelector:@selector(avatorBtnClick:)]) {
+      [self.delegate avatorBtnClick:self];
     }
+  }
 }
 //点击删除
--(void)deleteViewClick:(UITapGestureRecognizer*)gestureRecognize{
-    if(deleteView.hidden==TRUE){
-        return;
-    }
-    if ([_userViewDelegate respondsToSelector:@selector(deleteViewClick:userView:)]) {
-        [_userViewDelegate deleteViewClick:gestureRecognize userView:self];
-    }
-    
+-(void)deleteBtnClick:(id)sender{
+  if(_brandView.hidden==TRUE){
+    return;
+  }
+  if ([self.delegate respondsToSelector:@selector(deleteBtnClick:)]) {
+    [self.delegate deleteBtnClick:self];
+  }
+  
 }
 
+
+-(void)showDeleteBtn{
+  _deleteBtn.hidden=NO;
+}
+
+-(void)hideDeleteBtn{
+  _deleteBtn.hidden=YES;
+}
 
 
 @end

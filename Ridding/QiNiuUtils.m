@@ -16,7 +16,18 @@
 }
 
 + (NSURL *) getUrlBySizeToUrl:(CGSize)size url:(NSString*)url type:(QINIUMODE)type{
-  NSString *returnUrl=[NSString stringWithFormat:@"%@/w/%0.0f/h/%0.0f",[self getUrlByType:url type:type],size.width,size.height];
+  NSString *returnUrl=[NSString stringWithFormat:@"%@/w/%0.0f/h/%0.0f",[self getUrlByType:url type:type],size.width*[[UIScreen mainScreen] scale],size.height*[[UIScreen mainScreen] scale]];
+  return [NSURL URLWithString:returnUrl];
+}
+
+
++ (NSURL *) getUrlByHeightToUrl:(CGFloat)height url:(NSString*)url type:(QINIUMODE)type{
+  NSString *returnUrl=[NSString stringWithFormat:@"%@/h/%0.0f",[self getUrlByType:url type:type],height*[[UIScreen mainScreen] scale]];
+  return [NSURL URLWithString:returnUrl];
+}
+
++ (NSURL *) getUrlByWidthToUrl:(CGFloat)width url:(NSString*)url type:(QINIUMODE)type{
+  NSString *returnUrl=[NSString stringWithFormat:@"%@/w/%0.0f",[self getUrlByType:url type:type],width*[[UIScreen mainScreen] scale]];
   return [NSURL URLWithString:returnUrl];
 }
 

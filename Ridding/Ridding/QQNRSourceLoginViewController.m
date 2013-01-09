@@ -92,13 +92,14 @@
 {
   NSString  *queryStr=[[request URL] query];
   NSDictionary *dic = [[self explodeString:queryStr ToDictionaryInnerGlue:@"=" outterGlue:@"&"] copy];
-  if ([dic objectForKey:@"userId"] != nil) {
+  if ([dic objectForKey:kStaticInfo_userId] != nil) {
     StaticInfo *staticInfo=[StaticInfo getSinglton];
-    staticInfo.user.userId=[[dic objectForKey:@"userId"]longLongValue];
-    staticInfo.user.authToken=[dic objectForKey:@"authToken"];
+    staticInfo.user.userId=[[dic objectForKey:kStaticInfo_userId]longLongValue];
+    staticInfo.user.authToken=[dic objectForKey:kStaticInfo_authToken];
     staticInfo.user.sourceType=SOURCE_SINA;//新浪微博
     
-    NSDictionary *profileDic=[[RequestUtil getSinglton] getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType];
+    NSDictionary *profileDic=[self.requestUtil getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType];
+    
     User *user=[[User alloc]initWithJSONDic:[profileDic objectForKey:@"user"]];
     user.userId=staticInfo.user.userId;
     user.authToken=staticInfo.user.authToken;
@@ -106,38 +107,34 @@
     staticInfo.user=user;
     
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:LONGLONG2NUM(staticInfo.user.userId) forKey:@"userId"];
-    [prefs setObject:staticInfo.user.name forKey:@"nickname"];
-    [prefs setObject:staticInfo.user.name forKey:@"nickname"];
-    [prefs setObject:staticInfo.user.authToken forKey:@"authToken"];
-    [prefs setInteger:staticInfo.user.sourceType forKey:@"sourceType"];
-    [prefs setObject:staticInfo.user.accessToken forKey:@"accessToken"];
-    [prefs setObject:LONGLONG2NUM(staticInfo.user.sourceUserId) forKey:@"accessUserId"];
-    [prefs setInteger:staticInfo.user.nowRiddingCount forKey:@"riddingCount"];
-    
+    [prefs setObject:LONGLONG2NUM(staticInfo.user.userId) forKey:kStaticInfo_userId];
+    [prefs setObject:staticInfo.user.name forKey:kStaticInfo_username];
+    [prefs setObject:staticInfo.user.authToken forKey:kStaticInfo_authToken];
+    [prefs setInteger:staticInfo.user.sourceType forKey:kStaticInfo_sourceType];
+    [prefs setObject:staticInfo.user.accessToken forKey:kStaticInfo_accessToken];
+    [prefs setObject:staticInfo.user.backGroundUrl forKey:kStaticInfo_backgroundUrl];
+    [prefs setObject:LONGLONG2NUM(staticInfo.user.sourceUserId) forKey:kStaticInfo_accessUserId];
+    [prefs setInteger:staticInfo.user.nowRiddingCount forKey:kStaticInfo_riddingCount];
+    [prefs setObject:INT2NUM(staticInfo.user.totalDistance) forKey:kStaticInfo_totalDistance];
+    [prefs synchronize];
     staticInfo.logined=true;
     [[SinaApiRequestUtil getSinglton] friendShip:@"骑去哪儿网" accessUserId:riddingappuid];
     
-    [[RequestUtil getSinglton] sendApns];
+    [self.requestUtil sendApns];
     
-    QQNRFeedViewController *CVF=[[QQNRFeedViewController alloc]initWithUser:staticInfo.user exUser:nil];
-     
     if(_sendWeiBo){
-      [[SinaApiRequestUtil getSinglton]sendLoginRidding:[NSString stringWithFormat:@"我刚刚下载了#骑行者#,在这里推荐给热爱骑行的好友们。@骑去哪儿网 下载地址:%@ %@",downLoadPath,QIQUNARHOME]];
+      [[SinaApiRequestUtil getSinglton]sendLoginRidding:[NSString stringWithFormat:@"我刚刚下载了#骑行者#,在这里推荐给热爱骑行的好友们。@骑去哪儿网 下载地址:%@",downLoadPath]];
       
     }else{
       [MobClick event:@"2012111906"];
     }
    [prefs setObject:@"" forKey:@"recomApp"];
     
-    CVF.isMyFeedHome=TRUE;
-    [self.activityView removeFromSuperview];
+   [self.activityView removeFromSuperview];
     
-    [self dismissModalViewControllerAnimated:YES];
-    RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
-    [delegate.navController pushViewController:CVF animated:YES];
-    [RiddingAppDelegate moveLeftNavgation];
-
+    if(self.delegate){
+      [self.delegate didFinishLogined:self];
+    }
   }
   return  YES;
 }
@@ -205,5 +202,11 @@
     _sendWeiBo=TRUE;
   }
 }
+
+- (void)dealloc
+{
+  self.delegate=nil;
+}
+
 
 @end

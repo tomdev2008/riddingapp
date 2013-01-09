@@ -10,6 +10,15 @@
 #import "NSString+TomAddition.h"
 @implementation ActivityInfo
 
+-(id)init{
+  self=[super init];
+  if(self){
+    self.ridding=[[Ridding alloc]init];
+  }
+  return self;
+}
+
+
 - (id)initWithJSONDic:(NSDictionary *)jsonDic{
   self=[super init];
   if(self){

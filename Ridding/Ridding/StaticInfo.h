@@ -9,6 +9,17 @@
 #import <Foundation/Foundation.h>
 #import "User.h"
 
+#define kStaticInfo_userId @"userId"
+#define kStaticInfo_authToken @"authToken"
+#define kStaticInfo_accessUserId @"accessUserId"
+#define kStaticInfo_accessToken @"accessToken"
+#define kStaticInfo_sourceType @"sourceType"
+#define kStaticInfo_backgroundUrl @"backgroundUrl"
+#define kStaticInfo_totalDistance @"totalDistance"
+#define kStaticInfo_username @"username"
+#define kStaticInfo_nickname @"nickname"
+#define kStaticInfo_riddingCount @"riddingCount"
+#define kStaticInfo_apnsToken @"apnsToken"
 
 @interface StaticInfo : NSObject{
     User *user;
@@ -26,7 +37,6 @@
 + (StaticInfo*)getSinglton;
 -(NSMutableDictionary *)loadFromFile;
 -(BOOL)saveToFile:(NSMutableDictionary *)withData;
--(void)getUserFromPlist;
--(NSMutableDictionary*)saveUserToDictonary;
+- (void)saveDistanceToUserDefault:(int)distance;
 
 @end

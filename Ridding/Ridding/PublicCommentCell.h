@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "Comment.h"
+@class PublicCommentCell;
+@protocol PublicCommentCellDelegate <NSObject>
+
+@optional
+- (void)callBackBtnClick:(PublicCommentCell*)cell;
+
+@end
+
+
 @interface PublicCommentCell : UITableViewCell{
   
   CGFloat _viewHeight;
@@ -16,8 +25,12 @@
   UILabel *_descLabel;
   UILabel *_dateLabel;
   UIImageView *_headLineView;
+  UIButton *_callBackBtn;
 }
 @property(nonatomic,retain) Comment *comment;
+@property(nonatomic) int index;
+
+@property(nonatomic,assign) id<PublicCommentCellDelegate> delegate;
 
 - (id)initWithStyle:(UITableViewCellStyle)style
     reuseIdentifier:(NSString *)reuseIdentifier

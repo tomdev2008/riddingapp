@@ -13,7 +13,6 @@
 @end
 
 @implementation BasicTableViewController
-@synthesize tv=_tv;
 
 
 - (void)viewDidLoad
