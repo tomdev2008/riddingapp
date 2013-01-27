@@ -10,17 +10,18 @@
 #import "RiddingPicture.h"
 #import "SWSnapshotStackView.h"
 #import "QQNRDatePicker.h"
-@interface PhotoDescViewController : BasicViewController<QQNRDatePickerDelegate>{
+
+@interface PhotoDescViewController : BasicViewController <QQNRDatePickerDelegate> {
   UIImage *_image;
   long long _dbId;
   QQNRDatePicker *_datePicker;
 }
 
-@property(nonatomic,retain) IBOutlet SWSnapshotStackView *imageView;
-@property(nonatomic,retain) IBOutlet UITextView *textView;
-@property(nonatomic,retain) IBOutlet UILabel *locationLabel;
-@property(nonatomic,retain) IBOutlet UILabel *timeLabel;
+@property (nonatomic, retain) IBOutlet SWSnapshotStackView *imageView;
+@property (nonatomic, retain) IBOutlet UITextView *textView;
+@property (nonatomic, retain) IBOutlet UILabel *locationLabel;
+@property (nonatomic, retain) IBOutlet UILabel *timeLabel;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil info:(NSDictionary*)info;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil info:(NSDictionary *)info;
 
 @end

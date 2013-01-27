@@ -7,18 +7,17 @@
 //
 
 #import "QiNiuErrorConstants.h"
-#import "MobClick.h"
+
 @implementation QiNiuErrorConstants
 
 
-+ (NSString*)messageByCode:(NSNumber*)code{
-  
++ (NSString *)messageByCode:(NSNumber *)code {
+
   switch ([code intValue]) {
     case 400:
-     
+
       return @"请求参数错误";
-    case 401:
-    {
+    case 401: {
       return @"认证授权失败，可能是密钥信息不对或者数字签名错误";
     }
     case 405:

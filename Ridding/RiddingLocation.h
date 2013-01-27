@@ -14,7 +14,6 @@
 @property(nonatomic) long long riddingId;
 @property(nonatomic) double latitude;
 @property(nonatomic) double longtitude;
-@property(nonatomic) int toNextDistance;
 @property(nonatomic) int weight;
 
 @end

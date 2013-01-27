@@ -16,6 +16,11 @@
 #import "UserSettingViewController.h"
 #import "MapCreateVCTL.h"
 #import "SVProgressHUD.h"
+#import "BasicLeftHeadView.h"
+#import "BasicLeftViewCell.h"
+#import "Utilities.h"
+#import "UIColor+XMin.h"
+#import "BasicLeftFootView.h"
 @interface BasicLeftViewController (){
   
 }
@@ -35,9 +40,14 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    self.uiTableView.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"leftbar_dt")];
-  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"leftbar_dt")];
+  [super viewDidLoad];
+  self.uiTableView.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"QQNR_LN_bg")];
+  self.uiTableView.tableHeaderView=[[BasicLeftHeadView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 60)];
+  _footView=[[BasicLeftFootView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-60, SCREEN_WIDTH, 60)];
+  _footView.delegate=self;
+  [self.view addSubview:_footView];
+  
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleSuccLoginNotif:) name:kSuccLoginNotification object:nil];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -58,59 +68,53 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   // Return the number of rows in the section.
-  return 4;
+  return 3;
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  static NSString *kCellID = @"CellID";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
-  if(!cell){
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID];
-    cell.selectionStyle=UITableViewCellSelectionStyleNone;
-    cell.selectedBackgroundView =  [[UIView alloc] initWithFrame:cell.frame];
-    cell.selectedBackgroundView.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"leftbar_dt_xz")];
-    
-  }
-  cell.textLabel.textColor=[UIColor whiteColor];
-  cell.textLabel.backgroundColor=[UIColor clearColor];
-  cell.textLabel.font=[UIFont systemFontOfSize:12];
+	 BasicLeftViewCell *cell = (BasicLeftViewCell*)[Utilities cellByClassName:@"BasicLeftViewCell" inNib:@"BasicLeftViewCell" forTableView:tableView];
+  [cell disSelected];
+  
   switch (indexPath.row) {
     case 0:
     {
-      [cell.textLabel setText:@"个人中心"];
+       cell.titleLabel.text=@"我的骑记";
+       cell.iconView.image=UIIMAGE_FROMPNG(@"QQNR_LN_myRidding");
     }
       break;
     case 1:
     {
-      [cell.textLabel setText:@"创建活动"];
+       cell.titleLabel.text=@"新建骑记";
+       cell.iconView.image=UIIMAGE_FROMPNG(@"QQNR_LN_create");
     }
       break;
     case 2:
     {
-      [cell.textLabel setText:@"广场"];
-    }
-      break;
-    case 3:
-    {
-      [cell.textLabel setText:@"设置"];
-      cell.imageView.image=UIIMAGE_FROMPNG(@"setting");
+       cell.titleLabel.text=@"骑行广场";
+       cell.iconView.image=UIIMAGE_FROMPNG(@"QQNR_LN_myRidding");
     }
       break;
     default:
       break;
   }
+  
   return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 44;
+  return 60;
 }
 
 
 #pragma mark -
 #pragma mark Table view delegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+  BasicLeftViewCell *selectedCell=(BasicLeftViewCell*)[tableView cellForRowAtIndexPath:_selectedIndex];
+  [selectedCell disSelected];
+  
+  BasicLeftViewCell *cell=(BasicLeftViewCell*)[tableView cellForRowAtIndexPath:indexPath];;
+  [cell selected];
   _selectedIndex=indexPath;
   switch ([indexPath row]) {
     case 0:
@@ -121,27 +125,26 @@
       break;
     case 2:
       [self showPublic];
-      
       break;
     case 3:
      [self showSetting];
       break;
-      
     default:
       break;
   }
+  
 }
 
 - (void)showSetting{
   RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
   
   if(![self isShowingViewController:[UserSettingViewController class]]){
-    [RiddingAppDelegate moveRightNavgation];
+    [self moveRight];
     UserSettingViewController *settingVCTL=[[UserSettingViewController alloc]init];
     [RiddingAppDelegate popAllNavgation];
     [delegate.navController pushViewController:settingVCTL animated:NO];
   }
-  [RiddingAppDelegate moveLeftNavgation];
+  [self restoreViewLocation];
   
 }
 
@@ -149,47 +152,53 @@
   RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
   if([delegate canLogin]){
     if(![self isShowingViewController:[QQNRFeedViewController class]]){
-      [RiddingAppDelegate moveRightNavgation];
+      [self moveRight];
       //如果新浪成功，并且authtoken有效
       QQNRFeedViewController *FVC=[[QQNRFeedViewController alloc]initWithUser:[StaticInfo getSinglton].user isFromLeft:TRUE];
 
       [RiddingAppDelegate popAllNavgation];
       [delegate.navController pushViewController:FVC animated:NO];
     }
-    
-    [RiddingAppDelegate moveLeftNavgation];
+    [self restoreViewLocation];
   }else{
-    [RiddingAppDelegate moveRightNavgation];
+    [self moveRight];
     RiddingViewController *riddingViewController=[[RiddingViewController alloc]init];
     riddingViewController.delegate=self;
     [self presentModalViewController:riddingViewController animated:YES];
   }
-  _nowIndexView=1;
 }
 
 
 - (void)showCreateMap{
   RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
-  
-  if(![self isShowingViewController:[MapCreateVCTL class]]){
-    [RiddingAppDelegate moveRightNavgation];
-    MapCreateVCTL *mapCreateVCTL=[[MapCreateVCTL alloc]init];
-    [delegate.navController pushViewController:mapCreateVCTL animated:NO];
+  if([delegate canLogin]){
+    if(![self isShowingViewController:[MapCreateVCTL class]]){
+      self.shadowImageView.hidden=YES;
+      [self moveRight];
+      MapCreateVCTL *mapCreateVCTL=[[MapCreateVCTL alloc]init];
+      [delegate.navController pushViewController:mapCreateVCTL animated:NO];
+    }
+    [self restoreViewLocation];
+  }else{
+    [self moveRight];
+    RiddingViewController *riddingViewController=[[RiddingViewController alloc]init];
+    riddingViewController.delegate=self;
+    [self presentModalViewController:riddingViewController animated:YES];
   }
-  [RiddingAppDelegate moveLeftNavgation];
 }
 
 - (void)showPublic{
   RiddingAppDelegate *delegate=[RiddingAppDelegate shareDelegate];
-    if(![self isShowingViewController:[PublicViewController class]]){
-      [RiddingAppDelegate moveRightNavgation];
-      PublicViewController *publicVCTL=[[PublicViewController alloc]init];
-      [delegate.navController pushViewController:publicVCTL animated:NO];
-    }
+  if(![self isShowingViewController:[PublicViewController class]]){
+    [self moveRight];
+    PublicViewController *publicVCTL=[[PublicViewController alloc]init];
+    [delegate.navController pushViewController:publicVCTL animated:NO];
+  }
   [SVProgressHUD dismiss];
-  [RiddingAppDelegate moveLeftNavgation];
+  [self restoreViewLocation];
 }
 
+#pragma mark - RiddingViewController delegate
 - (void)didClickLogin:(RiddingViewController*)controller{
   [controller dismissModalViewControllerAnimated:NO];
   QQNRSourceLoginViewController *loginController=[[QQNRSourceLoginViewController alloc]init];
@@ -197,7 +206,7 @@
   [self presentModalViewController:loginController animated:YES];
 }
 
-#pragma mark - RiddingViewController delegate
+
 - (void)didFinishLogined:(QQNRSourceLoginViewController*)controller{
   [controller dismissModalViewControllerAnimated:NO];
   [self tableView:self.uiTableView didSelectRowAtIndexPath:_selectedIndex];
@@ -219,6 +228,31 @@
   [delegate.navController popViewControllerAnimated:NO];
 }
 
+- (void)moveRight
+{
+  self.shadowImageView.hidden=YES;
+  [RiddingAppDelegate moveRightNavgation];
+}
+
+- (void)showShadow
+{
+  self.shadowImageView.hidden=NO;
+}
+
+#pragma mark BasicLeftViewDelegate 
+- (void)settingBtnClick{
+  [self showSetting];
+}
+
+- (void)avatorBtnClick{
+  [self tableView:self.uiTableView didSelectRowAtIndexPath:0];
+}
+
+
+- (void)handleSuccLoginNotif:(NSNotification *)notif
+{
+  [_footView setUser];
+}
 
 
 @end

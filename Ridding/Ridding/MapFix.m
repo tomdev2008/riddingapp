@@ -11,13 +11,14 @@
 @implementation MapFix
 
 
-- (id)initWithJSONDic:(NSDictionary *)jsonDic{
-  self=[super init];
-  if(self){
-    self.latitude=[[jsonDic objectForKey:@"latitude"]doubleValue];
-    self.longtitude=[[jsonDic objectForKey:@"longtitude"]doubleValue];
-    self.realLatitude=[[jsonDic objectForKey:@"reallatitude"]doubleValue];
-    self.realLongtitude=[[jsonDic objectForKey:@"reallongtitude"]doubleValue];
+- (id)initWithJSONDic:(NSDictionary *)jsonDic {
+
+  self = [super init];
+  if (self) {
+    self.latitude = [[jsonDic objectForKey:@"latitude"] doubleValue];
+    self.longtitude = [[jsonDic objectForKey:@"longtitude"] doubleValue];
+    self.realLatitude = [[jsonDic objectForKey:@"reallatitude"] doubleValue];
+    self.realLongtitude = [[jsonDic objectForKey:@"reallongtitude"] doubleValue];
   }
   return self;
 }

@@ -10,15 +10,18 @@
 #import <UIKit/UIKit.h>
 #import "MPToolbarViewController.h"
 #import "MPPhotosBarView.h"
+
 @class MPImagePickerVCTL;
+
 @protocol MPImagePickerDelegate <NSObject>
 
-- (void)saveBtnClick:(UIViewController*)view imagePickerInfos:(NSDictionary*)imagePickerInfos;
+- (void)saveBtnClick:(UIViewController *)view imagePickerInfos:(NSDictionary *)imagePickerInfos;
 
 @optional
 
 @end
-@interface MPImagePickerVCTL : MPToolbarViewController<MPPhotosBarViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
+
+@interface MPImagePickerVCTL : MPToolbarViewController <MPPhotosBarViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
   MPPhotosBarView *_photoScrollView;
   UINavigationController *_pickerNavController;
   UIImagePickerController *_pickerController;
@@ -26,6 +29,6 @@
   BOOL _isBackAction;
 }
 
-@property(nonatomic,assign) id<MPImagePickerDelegate> delegate;
+@property (nonatomic, assign) id <MPImagePickerDelegate> delegate;
 
 @end

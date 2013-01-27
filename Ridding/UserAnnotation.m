@@ -17,7 +17,7 @@
 {
     self = [super init];
     if (self) {
-        self.headImage=[UIImage imageNamed:@"duser.png"];
+        self.headImage=UIIMAGE_DEFAULT_USER_AVATOR;
     }
     
     return self;

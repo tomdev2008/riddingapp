@@ -13,6 +13,5 @@
 @synthesize riddingId;
 @synthesize latitude;
 @synthesize longtitude;
-@synthesize toNextDistance;
 @synthesize weight;
 @end

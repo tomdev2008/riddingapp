@@ -11,19 +11,21 @@
 
 #define QQNRFeedHeaderView_Default_Height 180
 @class QQNRFeedHeaderView;
+
 @protocol QQNRFeedHeaderViewDelegate <NSObject>
 
-- (void)backGroupViewClick:(QQNRFeedHeaderView*)view;
+- (void)backGroupViewClick:(QQNRFeedHeaderView *)view;
 
 @end
 
-@interface QQNRFeedHeaderView : UIView{
+@interface QQNRFeedHeaderView : UIView {
   UILabel *_mileStone;
   UIButton *_relationBtn;
 }
 
-@property (nonatomic, assign) id<QQNRFeedHeaderViewDelegate> delegate;
+@property (nonatomic, assign) id <QQNRFeedHeaderViewDelegate> delegate;
 
-- (id)initWithFrame:(CGRect)frame user:(User*)user;
+- (id)initWithFrame:(CGRect)frame user:(User *)user;
+
 - (void)finishRidding;
 @end

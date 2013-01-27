@@ -9,19 +9,21 @@
 #import <MapKit/MapKit.h>
 
 @class CreateAnnotationView;
+
 @protocol CreateAnnotationViewDelegate <NSObject>
 
--(void)imageViewDelete:(CreateAnnotationView*)view;
+- (void)imageViewDelete:(CreateAnnotationView *)view;
 
 @end
 
 
 @interface CreateAnnotationView : MKPinAnnotationView
 
-@property (nonatomic,strong) UIView *calloutView;
-@property (nonatomic,assign) id<CreateAnnotationViewDelegate> delegate;
+@property (nonatomic, strong) UIView *calloutView;
+@property (nonatomic, assign) id <CreateAnnotationViewDelegate> delegate;
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+
 - (void)animateCalloutAppearance;
 
 @end

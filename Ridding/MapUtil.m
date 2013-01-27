@@ -10,14 +10,10 @@
 #import "Map.h"
 static MapUtil *mapUtil=nil;
 @implementation MapUtil
-@synthesize request;
-@synthesize locationDao;
 - (id)init
 {
   self = [super init];
   if (self) {
-    request=[[ASIHTTPRequest alloc]init];
-    locationDao=[RiddingLocationDao getSinglton];
   }
   
   return self;
@@ -58,6 +54,7 @@ static MapUtil *mapUtil=nil;
     point=[self getPoints:response];
     [mulpoint addObject:point];
     distance+=[self getTotalDistance:response];
+#warning 这两个可能不要了
     [mulToNextDistance addObjectsFromArray:[self getToNextDistance:response]];
     [mulStartLocations addObjectsFromArray:[self getStartLocation:response]];
   }
@@ -143,7 +140,7 @@ static MapUtil *mapUtil=nil;
   daddr=[daddr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
   NSString* apiUrlStr=[NSString stringWithFormat:@"http://ditu.google.com/maps/api/directions/json?origin=%@&destination=%@&sensor=true&mode=walking",saddr,daddr];
   NSURL *apiUrl=[NSURL URLWithString:apiUrlStr];
-  request=[ASIHTTPRequest requestWithURL:apiUrl];
+  ASIHTTPRequest *request=[[ASIHTTPRequest alloc]initWithURL:apiUrl];
   [request startSynchronous];
   if([request responseStatusCode]!=200){
     return nil;
@@ -190,12 +187,15 @@ static MapUtil *mapUtil=nil;
   return array;
 }
 //显示地图的中心位置，这样可以显示所有路线在中间
--(MKCoordinateRegion) center_map:(MKMapView *)mapView routes:(NSArray*)routes{
+-(void) center_map:(MKMapView *)mapView routes:(NSArray*)routes{
   MKCoordinateRegion region;
   CLLocationDegrees maxLat=-90;
   CLLocationDegrees maxLon=-180;
   CLLocationDegrees minLat=90;
   CLLocationDegrees minLon=180;
+  if([routes count]==0){
+    return ;
+  }
   for (int idx=0; idx<routes.count; idx++) {
     CLLocation* currentLocation=[routes objectAtIndex:idx];
     if (currentLocation.coordinate.latitude>maxLat) {
@@ -216,7 +216,6 @@ static MapUtil *mapUtil=nil;
   region.span.latitudeDelta=maxLat-minLat;
   region.span.longitudeDelta=maxLon-minLon;
   [mapView setRegion:region];
-  return region;
 }
 
 

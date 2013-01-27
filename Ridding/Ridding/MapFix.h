@@ -10,8 +10,8 @@
 
 @interface MapFix : BasicObject
 
-@property(nonatomic) double latitude;
-@property(nonatomic) double longtitude;
-@property(nonatomic) double realLatitude;
-@property(nonatomic) double realLongtitude;
+@property (nonatomic) double latitude;
+@property (nonatomic) double longtitude;
+@property (nonatomic) double realLatitude;
+@property (nonatomic) double realLongtitude;
 @end

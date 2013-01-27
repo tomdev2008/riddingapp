@@ -11,21 +11,17 @@
 #import <MapKit/MapKit.h> 
 #import <CoreLocation/CoreLocation.h> 
 #import "ASIHTTPRequest.h"
-#import "RiddingLocationDao.h"
 #import "SBJSON.h"
 @interface MapUtil : NSObject{
-    ASIHTTPRequest *request;
-    RiddingLocationDao *locationDao;
+ 
 }
-@property(nonatomic, retain) ASIHTTPRequest *request; 
-@property(nonatomic, retain) RiddingLocationDao *locationDao;
 
 + (MapUtil*)getSinglton;
 
 //通过服务端得到的地图点array计算出来经纬度array
 -(void)calculate_routes_from:(NSArray*)mapLoactions map:(Map*)map;
 //将地图在这些点居中显示
--(MKCoordinateRegion) center_map:(MKMapView *)mapView routes:(NSArray*)routes;
+-(void) center_map:(MKMapView *)mapView routes:(NSArray*)routes;
 //更新地图，画线
 -(void)update_route_view:(MKMapView *)mapView to:(UIImageView *)route_view line_color:(UIColor*)line_color routes:(NSArray*)routes;
 //对google得到的内容做反编译，声称经纬度的点

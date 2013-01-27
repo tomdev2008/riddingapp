@@ -11,10 +11,11 @@
 @implementation MyAnnotation
 
 - (id)initWithLocation:(CLLocationCoordinate2D)coord {
+
   self = [super init];
   if (self) {
     self.coordinate = coord;
-    self.checked=FALSE;
+    self.checked = FALSE;
   }
   return self;
 }

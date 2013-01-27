@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ImageSwipeViewController.h"
+
 @protocol ImageSwipeViewDelegate <NSObject>
 - (void)startApp;
 @end
@@ -15,13 +16,13 @@
 
 @interface ImageSwipeViewController : UIViewController <UIScrollViewDelegate> {
   CGRect viewSize;
-	UIScrollView *scrollView;
-	UIPageControl *pageControl;
-	NSArray *imageArray;
+  UIScrollView *scrollView;
+  UIPageControl *pageControl;
+  NSArray *imageArray;
 }
 
--(id)initWithFrameRect:(CGRect)rect ImageArray:(NSArray *)array;
+- (id)initWithFrameRect:(CGRect)rect ImageArray:(NSArray *)array;
 
 @property (strong, nonatomic) UIScrollView *scrollView;
-@property (nonatomic, assign) id<ImageSwipeViewDelegate> delegate;
+@property (nonatomic, assign) id <ImageSwipeViewDelegate> delegate;
 @end

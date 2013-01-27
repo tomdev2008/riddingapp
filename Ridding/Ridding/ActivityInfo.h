@@ -10,18 +10,18 @@
 #import "BasicObject.h"
 #import "Ridding.h"
 
-typedef enum  _ActivityInfoType {
-	ActivityInfoType_Going = 0,
-	ActivityInfoType_Recom = 1,
-}ActivityInfoType;
+typedef enum _ActivityInfoType {
+  ActivityInfoType_Going = 0,
+  ActivityInfoType_Recom = 1,
+} ActivityInfoType;
 
-@interface ActivityInfo : BasicObject{
-  
+@interface ActivityInfo : BasicObject {
+
 }
 
-@property (nonatomic,retain) Ridding *ridding;
+@property (nonatomic, retain) Ridding *ridding;
 @property (nonatomic) int weight;
-@property (nonatomic,copy) NSString *firstPicUrl;
+@property (nonatomic, copy) NSString *firstPicUrl;
 
 
 @end

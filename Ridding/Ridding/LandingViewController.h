@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "ImageSwipeViewController.h"
 
-@interface LandingViewController : UIViewController<ImageSwipeViewDelegate>{
-    NSArray *imageList;
-    ImageSwipeViewController *imageSwipeViewController;
+@interface LandingViewController : UIViewController <ImageSwipeViewDelegate> {
+  NSArray *imageList;
+  ImageSwipeViewController *imageSwipeViewController;
 }
 
 @property (strong, nonatomic) NSArray *imageList;

@@ -7,23 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SqlUtil.h"
 #import "RiddingLocation.h"
-#define columCount 6
-@interface RiddingLocationDao : NSObject{
-    SqlUtil *sqlUtil;
-}
+#define columCount 5
+@interface RiddingLocationDao : NSObject{}
 
-@property(nonatomic, retain) SqlUtil *sqlUtil;
 
-+ (RiddingLocationDao*)getSinglton;
++(Boolean)addRiddingLocation:(long long)riddingId locations:(NSArray*)locations;
 
--(Boolean)addRiddingLocation:(long long)riddingId locations:(NSArray*)locations;
++(int)getRiddingLocationCount:(long long)riddingId;
 
--(int)getRiddingLocationCount:(long long)riddingId;
++(NSArray*)getRiddingLocations:(long long)riddingId beginWeight:(int)beginWeight;
 
--(NSArray*)getRiddingLocations:(long long)riddingId beginWeight:(int)beginWeight;
++(void)setRiddingLocationToDB:(NSArray*)routes riddingId:(long long)riddingId;
 
--(void)setRiddingLocationToDB:(Map*)map riddingId:(long long)riddingId;
+
 @end
 

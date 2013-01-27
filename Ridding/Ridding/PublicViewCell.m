@@ -10,24 +10,13 @@
 
 @implementation PublicViewCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style
-    reuseIdentifier:(NSString *)reuseIdentifier
-               info:(ActivityInfo*)info{
-  
-  self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-  if (self) {
-    _info=info;
-  }
-  return self;
+- (void)awakeFromNib {
+
+  [super awakeFromNib];
+//  self.firstPicImageView.layer.shadowColor=[[UIColor blackColor]CGColor];
+//  self.firstPicImageView.layer.shadowOpacity=0.5;
+//  self.firstPicImageView.layer.shadowOffset=CGSizeMake(1.0f, 1.0f);
 }
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
 
 
 @end

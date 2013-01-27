@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchBlurView : UIView{
+@interface SearchBlurView : UIView {
   UISearchBar *_SearchBar;
 }
 

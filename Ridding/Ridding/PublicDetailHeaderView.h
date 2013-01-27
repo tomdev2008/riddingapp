@@ -9,15 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "Ridding.h"
 #import <MapKit/MapKit.h>
+
 @class PublicDetailHeaderView;
+
 @protocol PublicDetailHeaderDelegate <NSObject>
 
-- (void)mapViewTap:(PublicDetailHeaderView*)view;
+- (void)mapViewTap:(PublicDetailHeaderView *)view;
 
-- (void)avatorClick:(PublicDetailHeaderView*)view;
+- (void)avatorClick:(PublicDetailHeaderView *)view;
 @end
 
-@interface PublicDetailHeaderView : UIView<MKMapViewDelegate>{
+@interface PublicDetailHeaderView : UIView <MKMapViewDelegate> {
   Ridding *_ridding;
   MKMapView *_mapView;
   NSMutableArray *_routes;
@@ -25,7 +27,7 @@
   BOOL _isMyHome;
 }
 
-@property (nonatomic, assign) id<PublicDetailHeaderDelegate> delegate;
+@property (nonatomic, assign) id <PublicDetailHeaderDelegate> delegate;
 
-- (id)initWithFrame:(CGRect)frame ridding:(Ridding*)ridding isMyHome:(BOOL)isMyHome;
+- (id)initWithFrame:(CGRect)frame ridding:(Ridding *)ridding isMyHome:(BOOL)isMyHome;
 @end

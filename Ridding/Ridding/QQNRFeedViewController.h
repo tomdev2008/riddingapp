@@ -9,17 +9,17 @@
 #import "BasicTableViewController.h"
 #import "QQNRFeedTableCell.h"
 #import "User.h"
-#import "TimeScroller.h"
 #import "EGORefreshTableHeaderView.h"
 #import "QQNRFeedHeaderView.h"
 #import "MapCreateVCTL.h"
 #import "MapCreateDescVCTL.h"
 #import "EGORefreshTableHeaderView.h"
-@interface QQNRFeedViewController : BasicTableViewController<QQNRFeedTableCellDelegate,TimeScrollerDelegate,UP_EGORefreshTableHeaderDelegate,QQNRFeedHeaderViewDelegate,UIActionSheetDelegate,
-UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
+
+@interface QQNRFeedViewController : BasicTableViewController <QQNRFeedTableCellDelegate, UP_EGORefreshTableHeaderDelegate, QQNRFeedHeaderViewDelegate, UIActionSheetDelegate,
+    UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
   long long _endCreateTime;
   NSMutableArray *_dataSource;
- // TimeScroller *_timeScroller;
+  // TimeScroller *_timeScroller;
   UP_EGORefreshTableHeaderView *_ego;
   User *_toUser;
   QQNRFeedHeaderView *_FHV;
@@ -36,7 +36,8 @@ UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
 @property (nonatomic) BOOL isMyFeedHome;
 
 
-- (id)initWithUser:(User*)toUser isFromLeft:(BOOL)isFromLeft;
--(IBAction)initBtnPress:(id)sender;
+- (id)initWithUser:(User *)toUser isFromLeft:(BOOL)isFromLeft;
+
+- (IBAction)initBtnPress:(id)sender;
 
 @end

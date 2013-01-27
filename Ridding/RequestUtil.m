@@ -364,7 +364,7 @@
   NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/action/get/", QIQUNARHOME,riddingId,self.staticInfo.user.userId]];
   
   ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
-  
+  [asiRequest addRequestHeader:@"authToken" value:self.staticInfo.user.authToken];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
   NSDictionary *responseDic=[self returnJsonFromResponse:apiResponse asiRequest:asiRequest];

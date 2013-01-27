@@ -9,10 +9,12 @@
 #endif
 
 #ifdef __OBJC__
-    #import <UIKit/UIKit.h>
-    #import <Foundation/Foundation.h>
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 #import "MobClick.h"
 #import "RiddingAppDelegate.h"
+
 #endif
 
 #define kFileClientServerUpload_RiddingPicture       @"FileClientServerUpload_riddingPicture"
@@ -25,6 +27,7 @@
 #define kSuccAddRiddingNotification @"SuccAddRiddingNotification"
 #define kSuccUploadPictureNotification @"SuccUploadPictureNotification"
 #define kSuccUploadBackgroundNotification @"SuccUploadBackgroundNotification"
+#define kSuccLoginNotification @"succLoginNotification"
 #define kFinishNotification @"FinishNotification"
 #define kInitNotification @"InitNotification"
 #define apiSinaHost @"api.weibo.com"
@@ -47,8 +50,9 @@
 #endif
 #define UIIMAGE_FROMFILE(filename,type) [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:type]]
 
-#define SET_PROPERTY(value,opt) if((value)!=nil){opt=(value);} 
+#define SET_PROPERTY(value,opt) if((value)!=nil){opt=(value);}
 #define UIIMAGE_FROMPNG(filename) UIIMAGE_FROMFILE(filename, @"png")
+#define UIIMAGE_DEFAULT_USER_AVATOR UIIMAGE_FROMPNG(@"duser")
 #define SAFECHECK_RELEASE(x) if(x != nil) {[x release]; x = nil; }
 ///// 屏幕大小
 #define SCREEN_HEIGHT  [[UIScreen mainScreen] bounds].size.height-20
@@ -58,11 +62,11 @@
 
 #define SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(A,B,C) if((B)!=nil){ [A setObject:(B) forKey:(C)];}
 
-#define STRING_SET_A_WITH_B_ONLYIF_B_IS_NOT_NIL(A,B)	if((B)!=nil) { A = (B);}
+#define STRING_SET_A_WITH_B_ONLYIF_B_IS_NOT_NIL(A,B)  if((B)!=nil) { A = (B);}
 
-#define NUMBER_SET_A_WITH_B_ONLYIF_B_IS_NOT_NIL(A,B)	if((B)!=nil) { A= ([B intValue]);}
+#define NUMBER_SET_A_WITH_B_ONLYIF_B_IS_NOT_NIL(A,B)  if((B)!=nil) { A= ([B intValue]);}
 
-#define ColorGreen @"9fed4a"
+#define ColorGreen @"1fb1a6"
 #define ColorOrange @"f15e1d"
 #define ColorBlue @"5cc1de"
 #define ColorOrangeMore @"f26f31"

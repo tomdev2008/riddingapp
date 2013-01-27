@@ -6,8 +6,6 @@
 //
 //
 
-#import "MapCreateInfo.h"
-
 @implementation MapCreateInfo
 
 

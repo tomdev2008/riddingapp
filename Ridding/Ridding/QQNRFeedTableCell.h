@@ -9,30 +9,32 @@
 #import <UIKit/UIKit.h>
 #include "ActivityInfo.h"
 #import "SWSnapshotStackView.h"
-#import "DetailTextView.h"
+#import "RequestUtil.h"
+
 @class QQNRFeedTableCell;
+
 @protocol QQNRFeedTableCellDelegate <NSObject>
-- (void)leaderTap:(ActivityInfo *)info;
+- (void)leaderTap:(QQNRFeedTableCell *)cell;
+
 - (void)statusTap:(QQNRFeedTableCell *)cell;
 @end
 
-@interface QQNRFeedTableCell : UITableViewCell{
+@interface QQNRFeedTableCell : UITableViewCell {
 }
 
+@property (nonatomic, assign) id <QQNRFeedTableCellDelegate> delegate;
+@property (nonatomic) int index;
 
-@property(nonatomic,retain) Ridding *ridding;
-@property (nonatomic, assign) id<QQNRFeedTableCellDelegate> delegate;
+@property (nonatomic, retain) IBOutlet UIButton *avatorBtn;
+@property (nonatomic, retain) IBOutlet UILabel *nameLabel;
+@property (nonatomic, retain) IBOutlet UILabel *teamCountLabel;
+@property (nonatomic, retain) IBOutlet UILabel *distanceLabel;
+@property (nonatomic, retain) IBOutlet UIImageView *mapLineView;
+@property (nonatomic, retain) IBOutlet MKMapView *mapView;
 
 
-@property(nonatomic,retain) IBOutlet UIButton *avatorBtn;
-@property(nonatomic,retain) IBOutlet DetailTextView *nameLabel;
-@property(nonatomic,retain) IBOutlet DetailTextView *teamCountLabel;
-@property(nonatomic,retain) IBOutlet DetailTextView *distanceLabel;
-@property(nonatomic,retain) IBOutlet DetailTextView *beginLocationLabel;
-@property(nonatomic,retain) IBOutlet DetailTextView *endLocationLabel;
-@property(nonatomic,retain) IBOutlet UILabel *statusLabel;
-@property(nonatomic,retain) IBOutlet UIImageView *mapImageView;
+- (void)initContentView:(Ridding *)ridding;
 
-- (void)initContentView;
+- (void)drawRoutes:(NSArray *)routes;
 
 @end

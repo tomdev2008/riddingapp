@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "YLProgressBar.h"
 #import "SWSnapshotStackView.h"
-@interface PhotoUploadBlurView : UIView{
+
+@interface PhotoUploadBlurView : UIView {
   SWSnapshotStackView *_imageView;
   YLProgressBar *_progressBar;
   UILabel *_label;
 }
-- (void)setValue:(UIImage*)image text:(NSString*)text value:(float)value;
+- (void)setValue:(UIImage *)image text:(NSString *)text value:(float)value;
 @end

@@ -14,7 +14,8 @@
 #import "PublicViewController.h"
 #import "BasicLeftViewController.h"
 #import "User.h"
-@interface RiddingAppDelegate : UIResponder <UIApplicationDelegate,CLLocationManagerDelegate>{
+
+@interface RiddingAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate> {
   BOOL _canGetLocation;
   QQNRMyLocation *_myLocation;
 }
@@ -23,29 +24,41 @@
 
 @property (retain, nonatomic) PublicViewController *rootViewController;
 
-@property (nonatomic,retain)  BasicLeftViewController *leftViewController;
+@property (nonatomic, retain) BasicLeftViewController *leftViewController;
 
 @property (retain, nonatomic) UINavigationController *navController;
 
-@property (nonatomic,retain)  CLLocationManager *myLocationManager;
+@property (nonatomic, retain) CLLocationManager *myLocationManager;
 
 
-+(RiddingAppDelegate*)shareDelegate;
++ (RiddingAppDelegate *)shareDelegate;
 
 - (void)setUserInfo;
-- (NSString*)getPlist:(NSString*)key;
+
+- (NSString *)getPlist:(NSString *)key;
+
 - (BOOL)canLogin;
+
 - (BOOL)canGetLocation;
-+ (BOOL)isMyFeedHome:(User*)user;
-- (QQNRMyLocation*)myLocation;
-- (CLLocationManager*)myLocationManager;
-- (NSString*)myLocationCity;
+
++ (BOOL)isMyFeedHome:(User *)user;
+
+- (QQNRMyLocation *)myLocation;
+
+- (CLLocationManager *)myLocationManager;
+
+- (NSString *)myLocationCity;
+
 - (void)startUpdateMyLocation;
+
 - (void)startUpdateMyLocationHeading;
 
 + (void)moveLeftNavgation;
+
 + (void)moveRightNavgation;
+
 + (void)popAllNavgation;
+
 + (void)moveMidNavgation;
 
 @end

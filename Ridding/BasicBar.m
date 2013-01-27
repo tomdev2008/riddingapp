@@ -52,7 +52,7 @@
     [self addSubview:_titleLabel];
     
     _leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _leftButton.frame = CGRectMake(6,6, 64,31);
+    _leftButton.frame = CGRectMake(6,8, 64,31);
     _leftButton.layer.cornerRadius=5;
     _leftButton.layer.masksToBounds=YES;
     [_leftButton setTitleColor:[UIColor getColor:barTextColor] forState:UIControlStateNormal];
@@ -63,7 +63,7 @@
     [self addSubview:_leftButton];
     
     _rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _rightButton.frame = CGRectMake(245,6, 64,31);
+    _rightButton.frame = CGRectMake(245,8, 64,31);
     _rightButton.layer.cornerRadius=5;
     _rightButton.layer.masksToBounds=YES;
     _rightButton.titleLabel.font = [UIFont systemFontOfSize: 15.0];

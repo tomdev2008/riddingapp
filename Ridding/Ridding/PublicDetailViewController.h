@@ -8,19 +8,17 @@
 
 #import "BasicNeedLoginViewController.h"
 #import "ActivityInfo.h"
-#import "TimeScroller.h"
 #import "UP_EGORefreshTableHeaderView.h"
 #import "PublicDetailCell.h"
 #import "PublicDetailHeaderView.h"
-#import "Photos.h"
 #import "QQNRSourceLoginViewController.h"
-@interface PublicDetailViewController : BasicNeedLoginViewController<UP_EGORefreshTableHeaderDelegate,PublicDetailHeaderDelegate,PublicDetailCellDelegate,RiddingViewControllerDelegate,QQNRSourceLoginViewControllerDelegate>{
+
+@interface PublicDetailViewController : BasicNeedLoginViewController <UP_EGORefreshTableHeaderDelegate, PublicDetailHeaderDelegate, PublicDetailCellDelegate, RiddingViewControllerDelegate, QQNRSourceLoginViewControllerDelegate> {
   UP_EGORefreshTableHeaderView *_ego;
   PublicDetailHeaderView *_headerView;
   BOOL _isTheEnd;
   BOOL _isLoading;
   NSMutableArray *_cellArray;
-  Photos *_photos;
   Ridding *_ridding;
   NSArray *_localPhotos;
   NSString *_extDateStr;
@@ -34,12 +32,12 @@
 }
 
 @property (nonatomic) BOOL isMyFeedHome;
-@property (nonatomic,retain) IBOutlet UITableView *tv;
+@property (nonatomic, retain) IBOutlet UITableView *tv;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil
                bundle:(NSBundle *)nibBundleOrNil
-                 ridding:(Ridding*)ridding
+              ridding:(Ridding *)ridding
              isMyHome:(BOOL)isMyHome
-              toUser:(User*)toUser;
+               toUser:(User *)toUser;
 @end

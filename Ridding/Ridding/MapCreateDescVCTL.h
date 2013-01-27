@@ -12,7 +12,7 @@
 #import "Map.h"
 #import "QQNRServerTask.h"
 
-@interface MapCreateDescVCTL : BasicViewController<UITextFieldDelegate,UITextViewDelegate,QQNRServerTaskDelegate>{
+@interface MapCreateDescVCTL : BasicViewController <UITextFieldDelegate, UITextViewDelegate, QQNRServerTaskDelegate> {
   Ridding *_ridding;
   SVSegmentedControl *_redSC;
   SVSegmentedControl *_publicSC;
@@ -21,12 +21,12 @@
   BOOL _showingKeyBoard;
 }
 
-@property(nonatomic,retain) IBOutlet UITextField *nameField;
-@property(nonatomic,retain) IBOutlet UITextView *beginLocationTV;
-@property(nonatomic,retain) IBOutlet UITextView *endLocationTV;
-@property(nonatomic,retain) IBOutlet UILabel *totalDistanceLB;
-@property(nonatomic,retain) IBOutlet UIImageView *mapImageView;
+@property (nonatomic, retain) IBOutlet UITextField *nameField;
+@property (nonatomic, retain) IBOutlet UITextView *beginLocationTV;
+@property (nonatomic, retain) IBOutlet UITextView *endLocationTV;
+@property (nonatomic, retain) IBOutlet UILabel *totalDistanceLB;
+@property (nonatomic, retain) IBOutlet UIImageView *mapImageView;
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil ridding:(Ridding*)ridding;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil ridding:(Ridding *)ridding;
 @end

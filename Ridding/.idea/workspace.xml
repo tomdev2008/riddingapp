@@ -56,8 +56,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapListCell.m" afterPath="$PROJECT_DIR$/MapListCell.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapUtil.h" afterPath="$PROJECT_DIR$/MapUtil.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapUtil.m" afterPath="$PROJECT_DIR$/MapUtil.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Photos.h" afterPath="$PROJECT_DIR$/Photos.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Photos.m" afterPath="$PROJECT_DIR$/Photos.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RequestUtil.h" afterPath="$PROJECT_DIR$/RequestUtil.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RequestUtil.m" afterPath="$PROJECT_DIR$/RequestUtil.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ResponseCodeCheck.h" afterPath="$PROJECT_DIR$/ResponseCodeCheck.h" />
@@ -69,14 +67,18 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/ActivityInfo.m" afterPath="$PROJECT_DIR$/Ridding/ActivityInfo.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/BasicViewController.h" afterPath="$PROJECT_DIR$/Ridding/BasicViewController.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/BasicViewController.m" afterPath="$PROJECT_DIR$/Ridding/BasicViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/Entitlements.plist" afterPath="$PROJECT_DIR$/Ridding/Entitlements.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/ImageSwipeViewController.h" afterPath="$PROJECT_DIR$/Ridding/ImageSwipeViewController.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/ImageSwipeViewController.m" afterPath="$PROJECT_DIR$/Ridding/ImageSwipeViewController.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/InvitationViewController.h" afterPath="$PROJECT_DIR$/Ridding/InvitationViewController.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/InvitationViewController.m" afterPath="$PROJECT_DIR$/Ridding/InvitationViewController.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/InvitationViewController.xib" afterPath="$PROJECT_DIR$/Ridding/InvitationViewController.xib" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/LandingViewController.h" afterPath="$PROJECT_DIR$/Ridding/LandingViewController.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/LandingViewController.m" afterPath="$PROJECT_DIR$/Ridding/LandingViewController.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/PhotoDescViewController.h" afterPath="$PROJECT_DIR$/Ridding/PhotoDescViewController.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/PhotoDescViewController.m" afterPath="$PROJECT_DIR$/Ridding/PhotoDescViewController.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/PhotoListViewController.h" afterPath="$PROJECT_DIR$/Ridding/PhotoListViewController.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/PhotoListViewController.m" afterPath="$PROJECT_DIR$/Ridding/PhotoListViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/PhotoUploadBlurView.h" afterPath="$PROJECT_DIR$/Ridding/PhotoUploadBlurView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/PhotoUploadBlurView.m" afterPath="$PROJECT_DIR$/Ridding/PhotoUploadBlurView.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/QQNRFeedHeaderView.h" afterPath="$PROJECT_DIR$/Ridding/QQNRFeedHeaderView.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/QQNRFeedHeaderView.m" afterPath="$PROJECT_DIR$/Ridding/QQNRFeedHeaderView.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/QQNRFeedTableCell.h" afterPath="$PROJECT_DIR$/Ridding/QQNRFeedTableCell.h" />
@@ -96,8 +98,12 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/RiddingViewController.xib" afterPath="$PROJECT_DIR$/Ridding/RiddingViewController.xib" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/StaticInfo.h" afterPath="$PROJECT_DIR$/Ridding/StaticInfo.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/StaticInfo.m" afterPath="$PROJECT_DIR$/Ridding/StaticInfo.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/TutorialViewController.h" afterPath="$PROJECT_DIR$/Ridding/TutorialViewController.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/TutorialViewController.m" afterPath="$PROJECT_DIR$/Ridding/TutorialViewController.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/User.h" afterPath="$PROJECT_DIR$/Ridding/User.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/User.m" afterPath="$PROJECT_DIR$/Ridding/User.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserInfoViewController.h" afterPath="$PROJECT_DIR$/Ridding/UserInfoViewController.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserInfoViewController.m" afterPath="$PROJECT_DIR$/Ridding/UserInfoViewController.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserMap.h" afterPath="$PROJECT_DIR$/Ridding/UserMap.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserMap.m" afterPath="$PROJECT_DIR$/Ridding/UserMap.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserMap.xib" afterPath="$PROJECT_DIR$/Ridding/UserMap.xib" />
@@ -105,18 +111,20 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserSettingViewController.m" afterPath="$PROJECT_DIR$/Ridding/UserSettingViewController.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserView.h" afterPath="$PROJECT_DIR$/Ridding/UserView.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserView.m" afterPath="$PROJECT_DIR$/Ridding/UserView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/main.m" afterPath="$PROJECT_DIR$/Ridding/main.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/staticInfo.plist" afterPath="$PROJECT_DIR$/Ridding/staticInfo.plist" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RiddingLocation.h" afterPath="$PROJECT_DIR$/RiddingLocation.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RiddingLocation.m" afterPath="$PROJECT_DIR$/RiddingLocation.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RiddingLocationDao.h" afterPath="$PROJECT_DIR$/RiddingLocationDao.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RiddingLocationDao.m" afterPath="$PROJECT_DIR$/RiddingLocationDao.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RiddingPicture.h" afterPath="$PROJECT_DIR$/RiddingPicture.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RiddingPicture.m" afterPath="$PROJECT_DIR$/RiddingPicture.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SinaApiRequestUtil.h" afterPath="$PROJECT_DIR$/SinaApiRequestUtil.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SinaApiRequestUtil.m" afterPath="$PROJECT_DIR$/SinaApiRequestUtil.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SqlUtil.h" afterPath="$PROJECT_DIR$/SqlUtil.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SqlUtil.m" afterPath="$PROJECT_DIR$/SqlUtil.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UIImage+UIImage_Retina4.h" afterPath="$PROJECT_DIR$/UIImage+UIImage_Retina4.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UIImage+UIImage_Retina4.m" afterPath="$PROJECT_DIR$/UIImage+UIImage_Retina4.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UserAnnotation.h" afterPath="$PROJECT_DIR$/UserAnnotation.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UserAnnotation.m" afterPath="$PROJECT_DIR$/UserAnnotation.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Utilities.h" afterPath="$PROJECT_DIR$/Utilities.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Utilities.m" afterPath="$PROJECT_DIR$/Utilities.m" />
     </list>
@@ -135,16 +143,23 @@
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_IPAD_DYTJ6PKUDKPH" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_IPHONE_85036VTSA4S" />
   <component name="FileEditorManager">
     <leaf>
       <file leaf-file-name="UserMap.m" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ridding/UserMap.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="114" column="12" selection-start="3675" selection-end="3675" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#127#146#0" expanded="true" />
-              </folding>
+            <state line="118" column="12" selection-start="3614" selection-end="3614" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="QQNRFeedViewController.m" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Ridding/QQNRFeedViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="8" column="34" selection-start="119" selection-end="119" vertical-scroll-proportion="-10.809524">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -152,10 +167,8 @@
       <file leaf-file-name="PublicViewController.m" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ridding/PublicViewController.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="202" column="1" selection-start="5813" selection-end="5813" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#83#109#0" expanded="true" />
-              </folding>
+            <state line="8" column="24" selection-start="107" selection-end="107" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -163,7 +176,7 @@
       <file leaf-file-name="InvitationViewController.m" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ridding/InvitationViewController.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="202" column="61" selection-start="6177" selection-end="6177" vertical-scroll-proportion="0.0">
+            <state line="211" column="63" selection-start="6296" selection-end="6296" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -172,16 +185,16 @@
       <file leaf-file-name="UserMap.h" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ridding/UserMap.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="2" selection-start="475" selection-end="475" vertical-scroll-proportion="0.0">
+            <state line="23" column="2" selection-start="470" selection-end="470" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PublicDetailViewController.m" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="PublicDetailViewController.m" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="319" column="0" selection-start="9475" selection-end="9745" vertical-scroll-proportion="-1.2581756">
+            <state line="339" column="11" selection-start="9871" selection-end="9871" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -229,13 +242,15 @@
         <option value="$PROJECT_DIR$/Ridding/UserMap.h" />
         <option value="$PROJECT_DIR$/Ridding/UserMap.m" />
         <option value="$PROJECT_DIR$/Ridding/PublicViewController.m" />
+        <option value="$PROJECT_DIR$/Ridding/PublicDetailViewController.m" />
+        <option value="$PROJECT_DIR$/Ridding/QQNRFeedViewController.m" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
     <option name="width" value="1280" />
-    <option name="height" value="715" />
+    <option name="height" value="722" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -335,6 +350,24 @@
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Feed" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="HttpUtil" />
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
             </PATH_ELEMENT>
@@ -411,13 +444,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1280" height="715" extended-state="0" />
+    <frame x="0" y="22" width="1280" height="722" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23468576" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20922832" sideWeight="0.88535035" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -485,13 +518,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/QQNRServerTaskQueue.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QQNRServerTask.m">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="0" selection-start="105" selection-end="105" vertical-scroll-proportion="0.0">
@@ -562,41 +588,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/UserMap.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="114" column="12" selection-start="3675" selection-end="3675" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#127#146#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Ridding/UserMap.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="2" selection-start="475" selection-end="475" vertical-scroll-proportion="0.0">
+        <state line="23" column="2" selection-start="470" selection-end="470" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Ridding/InvitationViewController.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="202" column="61" selection-start="6177" selection-end="6177" vertical-scroll-proportion="0.0">
+        <state line="211" column="63" selection-start="6296" selection-end="6296" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/UserMap.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="118" column="12" selection-start="3614" selection-end="3614" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="339" column="11" selection-start="9871" selection-end="9871" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Ridding/PublicViewController.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="202" column="1" selection-start="5813" selection-end="5813" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#83#109#0" expanded="true" />
-          </folding>
+        <state line="8" column="24" selection-start="107" selection-end="107" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.m">
+    <entry file="file://$PROJECT_DIR$/Ridding/QQNRFeedViewController.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="319" column="0" selection-start="9475" selection-end="9745" vertical-scroll-proportion="-1.2581756">
+        <state line="8" column="34" selection-start="119" selection-end="119" vertical-scroll-proportion="-10.809524">
           <folding />
         </state>
       </provider>

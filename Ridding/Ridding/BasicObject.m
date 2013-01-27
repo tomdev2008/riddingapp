@@ -6,15 +6,14 @@
 //
 //
 
-#import "BasicObject.h"
-
 @implementation BasicObject
 
 
-- (id)initWithJSONDic:(NSDictionary *)jsonDic{
-  self=[super init];
-  if(self){
-    
+- (id)initWithJSONDic:(NSDictionary *)jsonDic {
+
+  self = [super init];
+  if (self) {
+
   }
   return self;
 }

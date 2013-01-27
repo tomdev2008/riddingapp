@@ -8,22 +8,22 @@
 
 #import <UIKit/UIKit.h>
 #import "BasicViewController.h"
-#import "ActivityView.h"
 #import "SVSegmentedControl.h"
+
 @class QQNRSourceLoginViewController;
+
 @protocol QQNRSourceLoginViewControllerDelegate <NSObject>
 
 @optional
-- (void)didFinishLogined:(QQNRSourceLoginViewController*)controller;
+- (void)didFinishLogined:(QQNRSourceLoginViewController *)controller;
 
 @end
 
-@interface QQNRSourceLoginViewController : BasicViewController<UIWebViewDelegate>{
+@interface QQNRSourceLoginViewController : BasicViewController <UIWebViewDelegate> {
   SVSegmentedControl *_redSC;
   BOOL _sendWeiBo;
 }
 
-@property(nonatomic, retain) IBOutlet UIWebView *web; 
-@property(nonatomic, retain) ActivityView *activityView;
-@property(nonatomic, assign) id<QQNRSourceLoginViewControllerDelegate> delegate;
+@property (nonatomic, retain) IBOutlet UIWebView *web;
+@property (nonatomic, assign) id <QQNRSourceLoginViewControllerDelegate> delegate;
 @end

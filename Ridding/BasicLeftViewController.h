@@ -10,11 +10,15 @@
 #import "BasicViewController.h"
 #import "RiddingViewController.h"
 #import "QQNRSourceLoginViewController.h"
-@interface BasicLeftViewController : BasicViewController <UITableViewDelegate,UITableViewDataSource,RiddingViewControllerDelegate,QQNRSourceLoginViewControllerDelegate>{
-  int _nowIndexView;
+#import "BasicLeftFootView.h"
+@interface BasicLeftViewController : BasicViewController <UITableViewDelegate,UITableViewDataSource,RiddingViewControllerDelegate,QQNRSourceLoginViewControllerDelegate,BasicLeftFootViewDelegate>{
   NSIndexPath *_selectedIndex;
+  BasicLeftFootView *_footView;
 }
 
-@property(nonatomic,retain) IBOutlet UITableView *uiTableView;
+@property (nonatomic,retain) IBOutlet UITableView *uiTableView;
+@property (nonatomic,retain) IBOutlet UIImageView *shadowImageView;
 
+
+- (void)showShadow;
 @end

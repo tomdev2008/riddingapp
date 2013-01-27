@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "ImageSwipeViewController.h"
 
-@interface TutorialViewController : UIViewController <ImageSwipeViewDelegate>{
-    NSArray *imageList;
-    ImageSwipeViewController *imageSwipeViewController;
+@interface TutorialViewController : UIViewController <ImageSwipeViewDelegate> {
+  NSArray *imageList;
+  ImageSwipeViewController *imageSwipeViewController;
 }
 
 @property (strong, nonatomic) IBOutlet UIImageView *tutorialImage;
