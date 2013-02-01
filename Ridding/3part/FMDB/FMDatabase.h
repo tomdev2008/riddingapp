@@ -4,7 +4,7 @@
 #import "FMDatabasePool.h"
 
 
-#if ! __has_feature(objc_arc)
+#if !__has_feature(objc_arc)
     #define FMDBAutorelease(__v) ([__v autorelease]);
     #define FMDBReturnAutoreleased FMDBAutorelease
 
@@ -15,25 +15,25 @@
 
 	#define FMDBDispatchQueueRelease(__v) (dispatch_release(__v));
 #else
-    // -fobjc-arc
-    #define FMDBAutorelease(__v)
-    #define FMDBReturnAutoreleased(__v) (__v)
+// -fobjc-arc
+#define FMDBAutorelease(__v)
+#define FMDBReturnAutoreleased(__v) (__v)
 
-    #define FMDBRetain(__v)
-    #define FMDBReturnRetained(__v) (__v)
+#define FMDBRetain(__v)
+#define FMDBReturnRetained(__v) (__v)
 
-    #define FMDBRelease(__v)
+#define FMDBRelease(__v)
 
-	#if TARGET_OS_IPHONE
-		// Compiling for iOS
-		#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+#if TARGET_OS_IPHONE
+// Compiling for iOS
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
 			// iOS 6.0 or later
 			#define FMDBDispatchQueueRelease(__v)
 		#else
-			// iOS 5.X or earlier
-			#define FMDBDispatchQueueRelease(__v) (dispatch_release(__v));
-		#endif
-	#else
+// iOS 5.X or earlier
+#define FMDBDispatchQueueRelease(__v) (dispatch_release(__v));
+#endif
+#else
 		// Compiling for Mac OS X
 		#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1080     
 			// Mac OS X 10.8 or later
@@ -46,22 +46,22 @@
 #endif
 
 
-@interface FMDatabase : NSObject  {
-    
-    sqlite3*            _db;
-    NSString*           _databasePath;
-    BOOL                _logsErrors;
-    BOOL                _crashOnErrors;
-    BOOL                _traceExecution;
-    BOOL                _checkedOut;
-    BOOL                _shouldCacheStatements;
-    BOOL                _isExecutingStatement;
-    BOOL                _inTransaction;
-    int                 _busyRetryTimeout;
-    
-    NSMutableDictionary *_cachedStatements;
-    NSMutableSet        *_openResultSets;
-    NSMutableSet        *_openFunctions;
+@interface FMDatabase : NSObject {
+
+  sqlite3 *_db;
+  NSString *_databasePath;
+  BOOL _logsErrors;
+  BOOL _crashOnErrors;
+  BOOL _traceExecution;
+  BOOL _checkedOut;
+  BOOL _shouldCacheStatements;
+  BOOL _isExecutingStatement;
+  BOOL _inTransaction;
+  int _busyRetryTimeout;
+
+  NSMutableDictionary *_cachedStatements;
+  NSMutableSet *_openResultSets;
+  NSMutableSet *_openFunctions;
 
 }
 
@@ -74,74 +74,99 @@
 @property (atomic, retain) NSMutableDictionary *cachedStatements;
 
 
-+ (id)databaseWithPath:(NSString*)inPath;
-- (id)initWithPath:(NSString*)inPath;
++ (id)databaseWithPath:(NSString *)inPath;
+
+- (id)initWithPath:(NSString *)inPath;
 
 - (BOOL)open;
 #if SQLITE_VERSION_NUMBER >= 3005000
 - (BOOL)openWithFlags:(int)flags;
 #endif
 - (BOOL)close;
+
 - (BOOL)goodConnection;
+
 - (void)clearCachedStatements;
+
 - (void)closeOpenResultSets;
+
 - (BOOL)hasOpenResultSets;
 
 // encryption methods.  You need to have purchased the sqlite encryption extensions for these to work.
-- (BOOL)setKey:(NSString*)key;
-- (BOOL)rekey:(NSString*)key;
+- (BOOL)setKey:(NSString *)key;
+
+- (BOOL)rekey:(NSString *)key;
 
 - (NSString *)databasePath;
 
-- (NSString*)lastErrorMessage;
+- (NSString *)lastErrorMessage;
 
 - (int)lastErrorCode;
+
 - (BOOL)hadError;
-- (NSError*)lastError;
+
+- (NSError *)lastError;
 
 - (sqlite_int64)lastInsertRowId;
 
-- (sqlite3*)sqliteHandle;
+- (sqlite3 *)sqliteHandle;
 
-- (BOOL)update:(NSString*)sql withErrorAndBindings:(NSError**)outErr, ...;
-- (BOOL)executeUpdate:(NSString*)sql, ...;
+- (BOOL)update:(NSString *)sql withErrorAndBindings:(NSError **)outErr, ...;
+
+- (BOOL)executeUpdate:(NSString *)sql, ...;
+
 - (BOOL)executeUpdateWithFormat:(NSString *)format, ...;
-- (BOOL)executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments;
-- (BOOL)executeUpdate:(NSString*)sql withParameterDictionary:(NSDictionary *)arguments;
 
-- (FMResultSet *)executeQuery:(NSString*)sql, ...;
-- (FMResultSet *)executeQueryWithFormat:(NSString*)format, ...;
+- (BOOL)executeUpdate:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
+
+- (BOOL)executeUpdate:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments;
+
+- (FMResultSet *)executeQuery:(NSString *)sql, ...;
+
+- (FMResultSet *)executeQueryWithFormat:(NSString *)format, ...;
+
 - (FMResultSet *)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
+
 - (FMResultSet *)executeQuery:(NSString *)sql withParameterDictionary:(NSDictionary *)arguments;
 
 - (BOOL)rollback;
+
 - (BOOL)commit;
+
 - (BOOL)beginTransaction;
+
 - (BOOL)beginDeferredTransaction;
+
 - (BOOL)inTransaction;
+
 - (BOOL)shouldCacheStatements;
+
 - (void)setShouldCacheStatements:(BOOL)value;
 
 #if SQLITE_VERSION_NUMBER >= 3007000
-- (BOOL)startSavePointWithName:(NSString*)name error:(NSError**)outErr;
-- (BOOL)releaseSavePointWithName:(NSString*)name error:(NSError**)outErr;
-- (BOOL)rollbackToSavePointWithName:(NSString*)name error:(NSError**)outErr;
-- (NSError*)inSavePoint:(void (^)(BOOL *rollback))block;
+- (BOOL)startSavePointWithName:(NSString *)name error:(NSError **)outErr;
+
+- (BOOL)releaseSavePointWithName:(NSString *)name error:(NSError **)outErr;
+
+- (BOOL)rollbackToSavePointWithName:(NSString *)name error:(NSError **)outErr;
+
+- (NSError *)inSavePoint:(void (^)(BOOL *rollback))block;
 #endif
 
 + (BOOL)isSQLiteThreadSafe;
-+ (NSString*)sqliteLibVersion;
+
++ (NSString *)sqliteLibVersion;
 
 - (int)changes;
 
-- (void)makeFunctionNamed:(NSString*)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block;
+- (void)makeFunctionNamed:(NSString *)name maximumArguments:(int)count withBlock:(void (^)(sqlite3_context *context, int argc, sqlite3_value **argv))block;
 
 @end
 
 @interface FMStatement : NSObject {
-    sqlite3_stmt *_statement;
-    NSString *_query;
-    long _useCount;
+  sqlite3_stmt *_statement;
+  NSString *_query;
+  long _useCount;
 }
 
 @property (atomic, assign) long useCount;
@@ -149,6 +174,7 @@
 @property (atomic, assign) sqlite3_stmt *statement;
 
 - (void)close;
+
 - (void)reset;
 
 @end

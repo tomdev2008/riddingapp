@@ -12,32 +12,34 @@
 #import "SBJson.h"
 #import "ResponseCodeCheck.h"
 #import "SFHFKeychainUtils.h"
-//单例
-@interface SinaApiRequestUtil : NSObject <ASIHTTPRequestDelegate>{
-    StaticInfo *staticInfo;
-    ResponseCodeCheck *checker;
-}
-@property(nonatomic,retain) StaticInfo *staticInfo;
-@property(nonatomic,retain) ResponseCodeCheck *checker;
 
--(NSDictionary*)getUserInfo;
+//单例
+@interface SinaApiRequestUtil : NSObject <ASIHTTPRequestDelegate> {
+  StaticInfo *staticInfo;
+  ResponseCodeCheck *checker;
+}
+@property (nonatomic, retain) StaticInfo *staticInfo;
+@property (nonatomic, retain) ResponseCodeCheck *checker;
+
+- (NSDictionary *)getUserInfo;
 
 //通过我得搜索内容，得到我关注或者关注我得用户列表
--(NSArray*) getAtUserList:(NSString*)q type:(int)type;
+- (NSArray *)getAtUserList:(NSString *)q type:(int)type;
 
--(NSString*)checkTokenIsValid;
-+ (SinaApiRequestUtil*)getSinglton;
+- (NSString *)checkTokenIsValid;
 
--(void)quit;
++ (SinaApiRequestUtil *)getSinglton;
 
--(void)friendShip:(NSString*)nickName accessUserId:(NSString*)accessUserId;
+- (void)quit;
 
--(void)sendCreateRidding:(NSString*)status url:(NSString*)url;
+- (void)friendShip:(NSString *)nickName accessUserId:(NSString *)accessUserId;
 
--(void)sendLoginRidding:(NSString*)status;
+- (void)sendCreateRidding:(NSString *)status url:(NSString *)url;
 
-- (NSArray*)getBilateralUserList;
+- (void)sendLoginRidding:(NSString *)status;
 
--(void)sendWeiBo:(NSString*)text url:(NSString*)url latitude:(double)latitude longtitude:(double)longtitude;
+- (NSArray *)getBilateralUserList;
+
+- (void)sendWeiBo:(NSString *)text url:(NSString *)url latitude:(double)latitude longtitude:(double)longtitude;
 
 @end

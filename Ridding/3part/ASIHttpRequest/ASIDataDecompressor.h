@@ -14,8 +14,8 @@
 #import <zlib.h>
 
 @interface ASIDataDecompressor : NSObject {
-	BOOL streamReady;
-	z_stream zStream;
+  BOOL streamReady;
+  z_stream zStream;
 }
 
 // Convenience constructor will call setupStream for you
@@ -25,7 +25,7 @@
 - (NSData *)uncompressBytes:(Bytef *)bytes length:(NSUInteger)length error:(NSError **)err;
 
 // Convenience method - pass it some deflated data, and you'll get inflated data back
-+ (NSData *)uncompressData:(NSData*)compressedData error:(NSError **)err;
++ (NSData *)uncompressData:(NSData *)compressedData error:(NSError **)err;
 
 // Convenience method - pass it a file containing deflated data in sourcePath, and it will write inflated data to destinationPath
 + (BOOL)uncompressDataFromFile:(NSString *)sourcePath toFile:(NSString *)destinationPath error:(NSError **)err;

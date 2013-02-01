@@ -26,8 +26,8 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
-extern NSString * const kRNBlurDidShowNotification;
-extern NSString * const kRNBlurDidHidewNotification;
+extern NSString *const kRNBlurDidShowNotification;
+extern NSString *const kRNBlurDidHidewNotification;
 
 @interface RNBlurModalView : UIView
 
@@ -37,13 +37,16 @@ extern NSString * const kRNBlurDidHidewNotification;
 @property (assign) CGFloat animationDelay;
 @property (assign) UIViewAnimationOptions animationOptions;
 
-- (id)initWithViewController:(UIViewController*)viewController view:(UIView*)view;
-- (id)initWithViewController:(UIViewController*)viewController title:(NSString*)title message:(NSString*)message;
+- (id)initWithViewController:(UIViewController *)viewController view:(UIView *)view;
+
+- (id)initWithViewController:(UIViewController *)viewController title:(NSString *)title message:(NSString *)message;
 
 - (void)show;
+
 - (void)showWithDuration:(CGFloat)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options completion:(void (^)(void))completion;
 
 - (void)hide;
+
 - (void)hideWithDuration:(CGFloat)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options completion:(void (^)(void))completion;
 
 @end

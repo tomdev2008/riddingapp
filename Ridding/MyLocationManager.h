@@ -9,19 +9,19 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 #import "QQNRMyLocation.h"
-typedef void (^MyLocationBlock)(QQNRMyLocation*);
+
+typedef void (^MyLocationBlock)(QQNRMyLocation *);
 
 
-
-@interface MyLocationManager : NSObject<CLLocationManagerDelegate>
+@interface MyLocationManager : NSObject <CLLocationManagerDelegate>
 
 @property (nonatomic, retain) CLLocationManager *myLocationManager;
 @property (nonatomic, copy) MyLocationBlock block;
 
 
 + (id)getSingleton;
-  
-  
-- (void)startUpdateMyLocation:(MyLocationBlock)block ;
+
+
+- (void)startUpdateMyLocation:(MyLocationBlock)block;
 
 @end

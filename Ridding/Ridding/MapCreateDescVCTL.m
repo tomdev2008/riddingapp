@@ -10,7 +10,6 @@
 #import "UIColor+XMin.h"
 #import "SinaApiRequestUtil.h"
 #import "SVProgressHUD.h"
-#import "QQNRServerTaskQueue.h"
 #import "QQNRFeedViewController.h"
 
 @interface MapCreateDescVCTL ()
@@ -46,17 +45,17 @@
   self.totalDistanceLB.text = [NSString stringWithFormat:@"总行程:%0.2fKM", _ridding.map.distance * 1.0 / 1000];
 
   self.nameField.returnKeyType = UIReturnKeyGo;
-  
+
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"bg_dt")];
 
-  _redSC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"不分享", @"分享", nil]];
-  [_redSC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
-  _redSC.crossFadeLabelsOnDrag = YES;
-  _redSC.thumb.tintColor = [UIColor getColor:ColorBlue];
-  _redSC.selectedIndex = 0;
-  [self.view addSubview:_redSC];
-  _redSC.center = CGPointMake(280, 405);
-  _sendWeiBo = FALSE;
+//  _redSC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"不分享", @"分享", nil]];
+//  [_redSC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
+//  _redSC.crossFadeLabelsOnDrag = YES;
+//  _redSC.thumb.tintColor = [UIColor getColor:ColorBlue];
+//  _redSC.selectedIndex = 0;
+//  [self.view addSubview:_redSC];
+//  _redSC.center = CGPointMake(280, 405);
+//  _sendWeiBo = FALSE;
 
 
   _publicSC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"不公开", @"公开", nil]];
@@ -67,10 +66,10 @@
   [self.view addSubview:_publicSC];
   _publicSC.center = CGPointMake(240, 355);
   _isPublic = TRUE;
-  
-  
-  _syncSinaBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-  _syncSinaBtn.frame=CGRectMake(150, 370, 20, 20);
+
+
+  _syncSinaBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+  _syncSinaBtn.frame = CGRectMake(150, 370, 20, 20);
   [_syncSinaBtn setTitle:@"同步" forState:UIControlStateNormal];
   [_syncSinaBtn setTitle:@"同步" forState:UIControlStateHighlighted];
   [_syncSinaBtn addTarget:self action:@selector(sinaSyncChangedValue:) forControlEvents:UIControlEventTouchUpInside];
@@ -111,23 +110,15 @@
   _ridding.isPublic = _isPublic ? 1 : 0;
 #warning issync
   _ridding.isSyncSina = _isSyncSina ? 1 : 0;
-  
+
   dispatch_queue_t q;
   q = dispatch_queue_create("riddingCreate", NULL);
   dispatch_async(q, ^{
-    RequestUtil *requestUtil=[[RequestUtil alloc]init];
-    NSDictionary *dic= [requestUtil addRidding:_ridding];
-    if(dic){
-      _ridding=[[Ridding alloc]initWithJSONDic:[dic objectForKey:keyRidding]];
+    RequestUtil *requestUtil = [[RequestUtil alloc] init];
+    NSDictionary *dic = [requestUtil addRidding:_ridding];
+    if (dic) {
+      _ridding = [[Ridding alloc] initWithJSONDic:[dic objectForKey:keyRidding]];
       dispatch_async(dispatch_get_main_queue(), ^{
-        if(_ridding.riddingId>0){
-          if (_sendWeiBo) {
-            NSString *status = [NSString stringWithFormat:@"我刚刚用#骑行者#创建了一个骑行活动:%@,推荐给大家。 @骑去哪儿网 下载地址:%@", _ridding.riddingName, downLoadPath];
-            [[SinaApiRequestUtil getSinglton] sendCreateRidding:status url:[NSString stringWithFormat:@"%@/%@", imageHost, _ridding.map.fileKey]];
-          } else {
-            [MobClick event:@"2012111905"];
-          }
-        }
         [SVProgressHUD dismiss];
       });
     }
@@ -222,11 +213,7 @@
 #pragma mark SPSegmentedControl
 - (void)segmentedControlChangedValue:(SVSegmentedControl *)segmentedControl {
 
-  if (segmentedControl.selectedIndex == 0) {
-    _sendWeiBo = FALSE;
-  } else if (segmentedControl.selectedIndex == 1) {
-    _sendWeiBo = TRUE;
-  }
+
 }
 
 - (void)publicChangedValue:(SVSegmentedControl *)segmentedControl {
@@ -238,8 +225,8 @@
   }
 }
 
-- (void)sinaSyncChangedValue:(id)selector{
-  
+- (void)sinaSyncChangedValue:(id)selector {
+
 }
 
 #pragma mark -

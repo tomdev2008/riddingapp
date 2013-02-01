@@ -32,7 +32,7 @@
 // Optional delegate object that receives state change notifications from this
 // GADInterstitalAd.  Remember to nil the delegate before deallocating this
 // object.
-@property (nonatomic, assign) NSObject<GADInterstitialDelegate> *delegate;
+@property (nonatomic, assign) NSObject <GADInterstitialDelegate> *delegate;
 
 #pragma mark Making an Ad Request
 

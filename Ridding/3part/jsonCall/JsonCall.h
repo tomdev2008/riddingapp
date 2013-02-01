@@ -10,8 +10,11 @@
 
 @interface JsonCall : NSObject
 
-+ (id)down:(NSString*)urlString withString:(NSString *)postString isForm:(BOOL)isForm;
-+ (id)call:(NSString*)urlString withData:(id)data;
-+ (id)uploadImageWithURL:(NSString*)urlString withDictinary:(NSDictionary*)dict;
-+ (id)downloadImageWithURL:(NSString*)urlString withData:(id)data;
++ (id)down:(NSString *)urlString withString:(NSString *)postString isForm:(BOOL)isForm;
+
++ (id)call:(NSString *)urlString withData:(id)data;
+
++ (id)uploadImageWithURL:(NSString *)urlString withDictinary:(NSDictionary *)dict;
+
++ (id)downloadImageWithURL:(NSString *)urlString withData:(id)data;
 @end

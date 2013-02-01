@@ -22,18 +22,18 @@
 typedef void (^BWStatusBarBasicBlock)(void);
 
 typedef enum {
-    BWStatusBarOverlayAnimationTypeNone, /* No animation */
-    BWStatusBarOverlayAnimationTypeFromTop, /* Element appear from top */
-    BWStatusBarOverlayAnimationTypeFade /* Element appear with alpha transition */
+  BWStatusBarOverlayAnimationTypeNone, /* No animation */
+      BWStatusBarOverlayAnimationTypeFromTop, /* Element appear from top */
+      BWStatusBarOverlayAnimationTypeFade /* Element appear with alpha transition */
 } BWStatusBarOverlayAnimationType;
 
 typedef enum {
-    BWStatusBarOverlayStatusSuccess, /* Show success overlay */
-    BWStatusBarOverlayStatusError /* Show error overlay */
+  BWStatusBarOverlayStatusSuccess, /* Show success overlay */
+      BWStatusBarOverlayStatusError /* Show error overlay */
 } BWStatusBarOverlayStatus;
 
 @interface BWStatusBarOverlay : UIWindow {
-    UIView *_progressView;
+  UIView *_progressView;
 }
 
 @property (nonatomic, assign) float progress;
@@ -43,7 +43,7 @@ typedef enum {
 /**
  TextLabel readonly property
  */
-@property (nonatomic, readonly) UILabel *textLabel; 
+@property (nonatomic, readonly) UILabel *textLabel;
 
 /**
  StatusLabel used to show status

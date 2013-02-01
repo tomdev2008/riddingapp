@@ -1,4 +1,4 @@
-html{
+html {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -52,7 +52,7 @@ background-image:-o-linear-gradient(top, #999, #666 2%, #222);*/
     /*background: url('../img/bar.png') no-repeat left top;*/
 
     background-color: #f1f1f1;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(241, 241, 241)),to(rgb(194, 198, 207)));
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(241, 241, 241)), to(rgb(194, 198, 207)));
     background-image: -webkit-linear-gradient(top, rgb(241, 241, 241), rgb(194, 198, 207));
 
     background-size: 100% 44px;
@@ -88,7 +88,8 @@ background-image:-o-linear-gradient(top, #999, #666 2%, #222);*/
     margin-bottom: 0px;
     margin-right: 0px;
 }
-#footer select:active,#footer select.active {
+
+#footer select:active, #footer select.active {
     background: rgba(255, 255, 255, 0.0) url('../img/star_pressed.png') no-repeat 0 0;
 }
 
@@ -117,15 +118,16 @@ background-image:-o-linear-gradient(top, #999, #666 2%, #222);*/
     background: rgb(219, 226, 237);
     overflow: auto;
 }
+
 /*#wrapper:focus {*/
-    /*background: red;*/
+/*background: red;*/
 /*}*/
 /*#wrapper:hover {*/
-    /*background: green;*/
+/*background: green;*/
 /*}*/
 
 /*#wrapper:active {*/
-    /*background: blue;*/
+/*background: blue;*/
 /*}*/
 
 #scroller {
@@ -163,6 +165,7 @@ background-image:-o-linear-gradient(top, #999, #666 2%, #222);*/
     background-clip: padding-box;
     background-origin: padding-box, border-box, border-box;
 }
+
 .messageSend .messageContent {
     margin: -13px -11px -8px -5px;
     line-height: 20px;
@@ -181,10 +184,9 @@ background-image:-o-linear-gradient(top, #999, #666 2%, #222);*/
 }
 
 .messageReceive .messageContent {
-margin: -7px -7px -8px -10px;
-line-height: 20px;
-    }
-
+    margin: -7px -7px -8px -10px;
+    line-height: 20px;
+}
 
 .createDate {
     float: center;

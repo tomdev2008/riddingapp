@@ -106,8 +106,8 @@
       } else {
         cell.textLabel.text = @"登录";
       }
-    }else{
-      cell.textLabel.text =@"升级成为会员";
+    } else {
+      cell.textLabel.text = @"升级成为会员";
     }
   }
   cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 20, 20);
@@ -118,21 +118,21 @@
 
 - (void)      tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  
+
   if ([indexPath section] == 0) {
     if ([indexPath row] == 0) {
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStoreComment]];
-      
+
     } else if ([indexPath row] == 1) {
       NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
       SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, LONGLONG2NUM(staticInfo.user.userId), @"userid");
       SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, staticInfo.user.name, @"nickname");
       [UMFeedback showFeedback:self withAppkey:@"4fb3ce805270152b53000128" dictionary:dic];
       self.navigationController.navigationBarHidden = NO;
-      
+
     } else if ([indexPath row] == 2) {
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
-      
+
     }
   } else if ([indexPath section] == 1) {
     if ([indexPath row] == 0) {
@@ -141,7 +141,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
       } else {
         [self presentLoginView];
       }
-    }else{
+    } else {
       [self updateToVIP];
     }
   }
@@ -180,16 +180,18 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [[RiddingAppDelegate shareDelegate].navController pushViewController:publicViewController animated:NO];
   // 清空通知中心和badge
 
+  [[NSNotificationCenter defaultCenter] postNotificationName:kSuccLogoutNotification object:nil];
+
   // 清除badge
   [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
 
-- (void)updateToVIP{
-  
-  NSURL *url=[NSURL URLWithString:@"taobao://item.taobao.com/item.htm?id=12688928896"];
+- (void)updateToVIP {
+
+  NSURL *url = [NSURL URLWithString:@"taobao://item.taobao.com/item.htm?id=12688928896"];
   if ([[UIApplication sharedApplication] canOpenURL:url]) {
     [[UIApplication sharedApplication] openURL:url];
-  }else{
+  } else {
     url = [NSURL URLWithString:[NSString stringWithFormat:@"http://item.taobao.com/item.htm?id=12688928896"]];
     [[UIApplication sharedApplication] openURL:url];
   }

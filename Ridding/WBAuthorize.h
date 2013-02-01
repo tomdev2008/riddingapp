@@ -32,19 +32,18 @@
 
 @end
 
-@interface WBAuthorize : NSObject <WBAuthorizeWebViewDelegate, WBRequestDelegate> 
-{
-    
-    NSString    *appKey;
-    NSString    *appSecret;
-    
-    NSString    *redirectURI;
-    
-    WBRequest   *request;
-    
-    UIViewController *rootViewController;
-    
-    id<WBAuthorizeDelegate> delegate;
+@interface WBAuthorize : NSObject <WBAuthorizeWebViewDelegate, WBRequestDelegate> {
+
+  NSString *appKey;
+  NSString *appSecret;
+
+  NSString *redirectURI;
+
+  WBRequest *request;
+
+  UIViewController *rootViewController;
+
+  id <WBAuthorizeDelegate> delegate;
 }
 
 @property (nonatomic, retain) NSString *appKey;
@@ -52,11 +51,12 @@
 @property (nonatomic, retain) NSString *redirectURI;
 @property (nonatomic, retain) WBRequest *request;
 @property (nonatomic, assign) UIViewController *rootViewController;
-@property (nonatomic, assign) id<WBAuthorizeDelegate> delegate;
+@property (nonatomic, assign) id <WBAuthorizeDelegate> delegate;
 
 - (id)initWithAppKey:(NSString *)theAppKey appSecret:(NSString *)theAppSecret;
 
 - (void)startAuthorize;
+
 - (void)startAuthorizeUsingUserID:(NSString *)userID password:(NSString *)password;
 
 @end

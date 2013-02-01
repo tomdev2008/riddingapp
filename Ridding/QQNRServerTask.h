@@ -8,19 +8,22 @@
 
 #import <Foundation/Foundation.h>
 #import "QQNRFileServerComm.h"
+
 @class QQNRServerTask;
 
-typedef NSDictionary* (^BlockProcessLastTaskData)(NSDictionary *);
-typedef enum TASKSTEP_{
+typedef NSDictionary *(^BlockProcessLastTaskData)(NSDictionary *);
+
+typedef enum TASKSTEP_ {
   STEP_UPLOADPHOTO,
   STEP_UPLOADDESC,
   STEP_UPLOADBACKGROUNDPHOTO,
-}TASKSTEP;
+} TASKSTEP;
 
 
 @protocol QQNRServerTaskDelegate <NSObject>
 
 - (void)serverTask:(QQNRServerTask *)task finishedWithServerJSON:(NSDictionary *)jsonData;
+
 - (void)serverTask:(QQNRServerTask *)task errorWithServerJSON:(NSDictionary *)jsonData;
 
 @end
@@ -28,7 +31,9 @@ typedef enum TASKSTEP_{
 @protocol QQNRServerTaskQueueDelegate <NSObject>
 
 - (void)setServerResponseJSON:(NSDictionary *)serverJSON;
+
 - (NSInteger)countOfTasksRemainsInQueue;
+
 - (NSDictionary *)lastTaskServerResponseJSON;
 
 @optional
@@ -37,16 +42,16 @@ typedef enum TASKSTEP_{
 
 @end
 
-@interface QQNRServerTask : NSOperation<QQNRFileClientServerUploadProtocol>
+@interface QQNRServerTask : NSOperation <QQNRFileClientServerUploadProtocol>
 
-@property (nonatomic, copy) NSString                  *taskBeginMessage;
-@property (nonatomic, copy) NSString                  *taskFinishMessage;
-@property (nonatomic, retain) NSMutableDictionary     *paramDic;
+@property (nonatomic, copy) NSString *taskBeginMessage;
+@property (nonatomic, copy) NSString *taskFinishMessage;
+@property (nonatomic, retain) NSMutableDictionary *paramDic;
 @property (nonatomic) TASKSTEP step;
 
-@property (nonatomic, assign)id<QQNRServerTaskQueueDelegate> queueDelegate;
-@property (nonatomic, assign)id<QQNRServerTaskDelegate> taskDelegate;
+@property (nonatomic, assign) id <QQNRServerTaskQueueDelegate> queueDelegate;
+@property (nonatomic, assign) id <QQNRServerTaskDelegate> taskDelegate;
 
-@property (nonatomic, copy)BlockProcessLastTaskData   dataProcessBlock;
+@property (nonatomic, copy) BlockProcessLastTaskData dataProcessBlock;
 
 @end

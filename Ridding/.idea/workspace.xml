@@ -149,25 +149,86 @@
       <file leaf-file-name="UserMap.m" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ridding/UserMap.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="118" column="12" selection-start="3614" selection-end="3614" vertical-scroll-proportion="0.0">
+            <state line="119" column="12" selection-start="3644" selection-end="3644" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="QQNRFeedViewController.m" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CreateAnnotationView.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/CreateAnnotationView.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="65" column="80" selection-start="1987" selection-end="1987" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MapSearchVCTL.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/MapSearchVCTL.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="75" column="51" selection-start="1963" selection-end="1963" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MapCreateDescVCTL.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/MapCreateDescVCTL.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="QQNRFeedViewController.m" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ridding/QQNRFeedViewController.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="34" selection-start="119" selection-end="119" vertical-scroll-proportion="-10.809524">
-              <folding />
+            <state line="27" column="19" selection-start="544" selection-end="544" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#85#119#0" expanded="true" />
+                <marker date="1359732485000" expanded="true" signature="524:18644" placeholder="..." />
+                <marker date="1359732485000" expanded="true" signature="7628:8232" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="8326:8712" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="8769:9375" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="9441:9473" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="9538:9542" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="9636:9777" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="9806:11284" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="10089:11269" placeholder="^{...}" />
+                <marker date="1359732485000" expanded="true" signature="11386:11676" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="11771:13708" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="12092:12412" placeholder="^{...}" />
+                <marker date="1359732485000" expanded="true" signature="12301:12404" placeholder="^{...}" />
+                <marker date="1359732485000" expanded="true" signature="12603:12985" placeholder="^{...}" />
+                <marker date="1359732485000" expanded="true" signature="12728:12977" placeholder="^{...}" />
+                <marker date="1359732485000" expanded="true" signature="13765:13864" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="13916:14601" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="14703:15316" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="14786:15312" placeholder="^{...}" />
+                <marker date="1359732485000" expanded="true" signature="15083:15306" placeholder="^{...}" />
+                <marker date="1359732485000" expanded="true" signature="15362:15431" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="15487:15559" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="15594:15741" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="15827:15867" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="15955:16031" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="16069:16284" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="16401:16644" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="16733:16778" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="16877:17128" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="17245:18250" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="18304:18559" placeholder="{...}" />
+                <marker date="1359732485000" expanded="true" signature="18608:18642" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PublicViewController.m" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/PublicViewController.m">
+      <file leaf-file-name="JSONKit.m" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/3part/qiniu/JSONKit/JSONKit.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="24" selection-start="107" selection-end="107" vertical-scroll-proportion="0.0">
+            <state line="732" column="4" selection-start="26472" selection-end="26472" vertical-scroll-proportion="0.3622449">
               <folding />
             </state>
           </provider>
@@ -176,7 +237,7 @@
       <file leaf-file-name="InvitationViewController.m" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ridding/InvitationViewController.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="211" column="63" selection-start="6296" selection-end="6296" vertical-scroll-proportion="0.0">
+            <state line="198" column="72" selection-start="6073" selection-end="6073" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -194,25 +255,7 @@
       <file leaf-file-name="PublicDetailViewController.m" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="339" column="11" selection-start="9871" selection-end="9871" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="QQNRServerTask.m" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QQNRServerTask.m">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="0" selection-start="105" selection-end="105" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="QQNRServerTaskQueue.m" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QQNRServerTaskQueue.m">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="336" column="11" selection-start="10046" selection-end="10046" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -221,7 +264,7 @@
       <file leaf-file-name="RequestUtil.m" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RequestUtil.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="198" column="9" selection-start="10054" selection-end="10054" vertical-scroll-proportion="0.0">
+            <state line="203" column="10" selection-start="10223" selection-end="10223" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -244,6 +287,11 @@
         <option value="$PROJECT_DIR$/Ridding/PublicViewController.m" />
         <option value="$PROJECT_DIR$/Ridding/PublicDetailViewController.m" />
         <option value="$PROJECT_DIR$/Ridding/QQNRFeedViewController.m" />
+        <option value="$PROJECT_DIR$/Ridding/MapCreateDescVCTL.m" />
+        <option value="$PROJECT_DIR$/Ridding/MapSearchVCTL.m" />
+        <option value="$PROJECT_DIR$/Ridding/CreateAnnotationView.m" />
+        <option value="$PROJECT_DIR$/Ridding/InvitationViewController.m" />
+        <option value="$PROJECT_DIR$/3part/qiniu/JSONKit/JSONKit.m" />
       </list>
     </option>
   </component>
@@ -336,7 +384,7 @@
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Public" />
+              <option name="myItemId" value="mapCreate" />
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -354,7 +402,39 @@
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Feed" />
+              <option name="myItemId" value="mapCreate" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Products" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MapUtil" />
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -372,6 +452,60 @@
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="3part" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="3part" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="qiniu" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="3part" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="qiniu" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="JSONKit" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="DirectoryView.Xcode" />
@@ -380,6 +514,7 @@
   <component name="PropertiesComponent">
     <property name="recentsLimit" value="5" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Ridding.xcodeproj" />
+    <property name="FullScreen" value="false" />
   </component>
   <component name="RunManager" selected="Application.Ridding">
     <configuration default="true" type="AppleRunConfiguration" factoryName="Application" PROJECT_NAME="Ridding" TARGET_NAME="Ridding" CONFIG_NAME="Debug" PASS_PARENT_ENVS="FALSE" RUN_TARGET_PROJECT_NAME="Ridding" RUN_TARGET_NAME="Ridding" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
@@ -444,11 +579,12 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1280" height="722" extended-state="6" />
+    <frame x="0" y="22" width="1280" height="722" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20922832" sideWeight="0.88535035" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -459,7 +595,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -518,34 +653,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/QQNRServerTask.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="105" selection-end="105" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RequestUtil.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="198" column="9" selection-start="10054" selection-end="10054" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QQNRServerTaskQueue.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QQNRServerTask.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="105" selection-end="105" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/RequestUtil.m">
       <provider selected="true" editor-type-id="text-editor">
         <state line="32" column="38" selection-start="933" selection-end="933" vertical-scroll-proportion="0.0">
@@ -569,7 +676,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RequestUtil.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="198" column="9" selection-start="10054" selection-end="10054" vertical-scroll-proportion="0.0">
+        <state line="203" column="10" selection-start="10223" selection-end="10223" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -595,23 +702,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/InvitationViewController.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="211" column="63" selection-start="6296" selection-end="6296" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Ridding/UserMap.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="118" column="12" selection-start="3614" selection-end="3614" vertical-scroll-proportion="0.0">
+        <state line="119" column="12" selection-start="3644" selection-end="3644" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="339" column="11" selection-start="9871" selection-end="9871" vertical-scroll-proportion="0.0">
+        <state line="336" column="11" selection-start="10046" selection-end="10046" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -625,7 +725,76 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Ridding/QQNRFeedViewController.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="34" selection-start="119" selection-end="119" vertical-scroll-proportion="-10.809524">
+        <state line="27" column="19" selection-start="544" selection-end="544" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#85#119#0" expanded="true" />
+            <marker date="1359732485000" expanded="true" signature="524:18644" placeholder="..." />
+            <marker date="1359732485000" expanded="true" signature="7628:8232" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="8326:8712" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="8769:9375" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="9441:9473" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="9538:9542" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="9636:9777" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="9806:11284" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="10089:11269" placeholder="^{...}" />
+            <marker date="1359732485000" expanded="true" signature="11386:11676" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="11771:13708" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="12092:12412" placeholder="^{...}" />
+            <marker date="1359732485000" expanded="true" signature="12301:12404" placeholder="^{...}" />
+            <marker date="1359732485000" expanded="true" signature="12603:12985" placeholder="^{...}" />
+            <marker date="1359732485000" expanded="true" signature="12728:12977" placeholder="^{...}" />
+            <marker date="1359732485000" expanded="true" signature="13765:13864" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="13916:14601" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="14703:15316" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="14786:15312" placeholder="^{...}" />
+            <marker date="1359732485000" expanded="true" signature="15083:15306" placeholder="^{...}" />
+            <marker date="1359732485000" expanded="true" signature="15362:15431" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="15487:15559" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="15594:15741" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="15827:15867" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="15955:16031" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="16069:16284" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="16401:16644" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="16733:16778" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="16877:17128" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="17245:18250" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="18304:18559" placeholder="{...}" />
+            <marker date="1359732485000" expanded="true" signature="18608:18642" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/MapCreateDescVCTL.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/MapSearchVCTL.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="75" column="51" selection-start="1963" selection-end="1963" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/CreateAnnotationView.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="80" selection-start="1987" selection-end="1987" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/InvitationViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="198" column="72" selection-start="6073" selection-end="6073" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/3part/qiniu/JSONKit/JSONKit.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="732" column="4" selection-start="26472" selection-end="26472" vertical-scroll-proportion="0.3622449">
           <folding />
         </state>
       </provider>

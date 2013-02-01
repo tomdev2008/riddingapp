@@ -8,12 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UIImage(Utilities)
+@interface UIImage (Utilities)
 
 - (CGRect)convertCropRect:(CGRect)cropRect;
+
 - (UIImage *)croppedImage:(CGRect)cropRect;
+
 - (UIImage *)resizedImage:(CGSize)size imageOrientation:(UIImageOrientation)imageOrientation;
-- (CGFloat) getHeightByWidth:(UIImage*)image toWidth:(CGFloat)toWidth;
-- (CGFloat) getWidthByHeight:(UIImage*)image toHeight:(CGFloat)toHeight;
--(UIImage *)rotateImage;
+
+- (CGFloat)getHeightByWidth:(UIImage *)image toWidth:(CGFloat)toWidth;
+
+- (CGFloat)getWidthByHeight:(UIImage *)image toHeight:(CGFloat)toHeight;
+
+- (UIImage *)rotateImage;
 @end

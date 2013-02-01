@@ -13,10 +13,10 @@
 #define UMOnlineConfigDidFinishedNotification @"OnlineConfigDidFinishedNotification"
 
 typedef enum {
-    REALTIME = 0,       //实时发送
-    BATCH = 1,          //启动发送
-    SENDDAILY = 4,      //每日发送
-    SENDWIFIONLY = 5    //仅在WIFI下启动时发送
+  REALTIME = 0,       //实时发送
+  BATCH = 1,          //启动发送
+  SENDDAILY = 4,      //每日发送
+  SENDWIFIONLY = 5    //仅在WIFI下启动时发送
 } ReportPolicy;
 
 @protocol MobClickDelegate;
@@ -24,11 +24,12 @@ typedef enum {
 
 @interface MobClick : NSObject <UIAlertViewDelegate> {
 @private
-    id _internal;
+  id _internal;
 }
 #pragma mark basics
 //开启友盟统计,以BATCH方式发送log.
 + (void)startWithAppkey:(NSString *)appKey;
+
 // channelId 为nil或@""时,默认会被被当作@"App Store"渠道
 + (void)startWithAppkey:(NSString *)appKey reportPolicy:(ReportPolicy)rp channelId:(NSString *)cid;
 
@@ -39,6 +40,7 @@ typedef enum {
     [MobClick setAppVersion:version];
  */
 + (void)setAppVersion:(NSString *)appVersion;
+
 + (NSString *)getAgentVersion;  //获取友盟sdk 版本号
 
 /*方法名:
@@ -50,6 +52,7 @@ typedef enum {
  *	    设置为NO,umeng SDK 不再捕捉和记录您的crash log,需要在setDelegate方法之前调用
  */
 + (void)setCrashReportEnabled:(BOOL)value;
+
 /*方法名:
  *		setLogEnabled:(BOOL)value
  *介绍:
@@ -77,7 +80,9 @@ typedef enum {
  *文档地址: http://dev.umeng.com/doc/document_ana_ios.html#8
  */
 + (void)logPageView:(NSString *)pageName seconds:(int)seconds;
+
 + (void)beginLogPageView:(NSString *)pageName;
+
 + (void)endLogPageView:(NSString *)pageName;
 
 #pragma mark event logs
@@ -104,12 +109,17 @@ typedef enum {
 + (void)event:(NSString *)eventId; //等同于 event:eventId label:eventId;
 + (void)event:(NSString *)eventId label:(NSString *)label; // label为nil或@""时，等同于 event:eventId label:eventId;
 + (void)event:(NSString *)eventId acc:(NSInteger)accumulation;
+
 + (void)event:(NSString *)eventId label:(NSString *)label acc:(NSInteger)accumulation;
+
 + (void)event:(NSString *)eventId attributes:(NSDictionary *)attributes;
 
 + (void)beginEvent:(NSString *)eventId;
+
 + (void)endEvent:(NSString *)eventId;
+
 + (void)beginEvent:(NSString *)eventId label:(NSString *)label;
+
 + (void)endEvent:(NSString *)eventId label:(NSString *)label;
 
 //primarykey这个参数用于和event_id一起标示一个唯一事件，并不会被统计；
@@ -118,11 +128,14 @@ typedef enum {
 //eventId、attributes中key和value都不能使用空格和特殊字符，且长度不能超过255个字符（否则将截取前255个字符）
 //id， ts， du是保留字段，不能作为eventId及key的名称
 + (void)beginEvent:(NSString *)eventId primarykey :(NSString *)keyName attributes:(NSDictionary *)attributes;
+
 + (void)endEvent:(NSString *)eventId primarykey:(NSString *)keyName;
 
 //时间单位为毫秒 microseconds
 + (void)event:(NSString *)eventId durations:(int)microseconds;
+
 + (void)event:(NSString *)eventId label:(NSString *)label durations:(int)microseconds;
+
 + (void)event:(NSString *)eventId attributes:(NSDictionary *)attributes durations:(int)microseconds;
 
 
@@ -193,7 +206,9 @@ typedef enum {
  *文档地址: http://dev.umeng.com/doc/document_ana_ios.html#5
  */
 + (void)checkUpdate;
+
 + (void)checkUpdate:(NSString *)title cancelButtonTitle:(NSString *)cancelTitle otherButtonTitles:(NSString *)otherTitle;
+
 + (void)checkUpdateWithDelegate:(id)delegate selector:(SEL)callBackSelectorWithDictionary;
 
 
@@ -237,11 +252,13 @@ typedef enum {
  *文档地址: http://dev.umeng.com/doc/document_ana_ios.html#6
  */
 + (NSString *)getConfigParams:(NSString *)key;
+
 + (NSDictionary *)getConfigParams;
 
 // 为了更精确的统计用户地理位置，可以调用此方法传入经纬度信息
 // 需要链接 CoreLocation.framework 并且 #import <CoreLocation/CoreLocation.h>
 + (void)setLatitude:(double)latitude longitude:(double)longitude;
+
 + (void)setLocation:(CLLocation *)location;
 
 
@@ -259,6 +276,7 @@ typedef enum {
 #pragma mark utils api
 // 类方法，判断当前设备是否已经越狱
 + (BOOL)isJailbroken;
+
 // 类方法，判断你的App是否被破解
 + (BOOL)isPirated;
 
@@ -278,6 +296,7 @@ typedef enum {
  *
  */
 + (void)setDelegate:(id)delegate;
+
 + (void)setDelegate:(id)delegate reportPolicy:(ReportPolicy)rp;
 
 /*方法名:
@@ -290,6 +309,7 @@ typedef enum {
  * 此方法在1.6.7及以后的版本中废弃，不再需要手动调用.
  */
 + (void)appLaunched;
+
 /*方法名:
  *		appTerminated
  *介绍:
@@ -324,6 +344,7 @@ typedef enum {
  *
  */
 - (NSString *)appKey;
+
 /*方法名:
  *		- (NSString *)channelId;
  *介绍:
@@ -334,6 +355,7 @@ typedef enum {
  *
  */
 - (NSString *)channelId;
+
 /*方法名:
  *		- (void)appUpdate:(NSMutableDictionary *)updateInfo;
  *介绍:

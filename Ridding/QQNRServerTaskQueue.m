@@ -9,23 +9,24 @@
 #import "QQNRServerTaskQueue.h"
 
 static QQNRServerTaskQueue *sharedQueue = nil;
+
 @implementation QQNRServerTaskQueue
 
 
 - (id)init {
-  
+
   self = [super init];
   if (self) {
     _queue = [[NSOperationQueue alloc] init];
     [_queue setMaxConcurrentOperationCount:1];
   }
-  
+
   return self;
 }
 
 + (QQNRServerTaskQueue *)sharedQueue {
-  
-  @synchronized(self) {
+
+  @synchronized (self) {
     if (sharedQueue == nil) {
       sharedQueue = [[self alloc] init];
     }
@@ -33,26 +34,27 @@ static QQNRServerTaskQueue *sharedQueue = nil;
   return sharedQueue;
 }
 
-- (void)addTask:(QQNRServerTask *)task withDependency:(BOOL)dependsOnLastOperation{
-  
-  if (dependsOnLastOperation && [_queue  operationCount]>0 ){
-    
+- (void)addTask:(QQNRServerTask *)task withDependency:(BOOL)dependsOnLastOperation {
+
+  if (dependsOnLastOperation && [_queue operationCount] > 0) {
+
     [task addDependency:[[_queue operations] lastObject]];
   }
   task.queueDelegate = self;
-  
+
   [_queue addOperation:task];
-  
+
 }
 
 
 #pragma mark - MPServerTaskQueueDelegate
 - (void)setServerResponseJSON:(NSDictionary *)serverJSON {
-  self.lastTaskServerResponseJSON =serverJSON;
+
+  self.lastTaskServerResponseJSON = serverJSON;
 }
 
 - (NSInteger)countOfTasksRemainsInQueue {
-  
+
   return [_queue operationCount];
 }
 

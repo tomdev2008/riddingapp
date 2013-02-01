@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "QQNRServerTask.h"
-@interface QQNRServerTaskQueue : NSObject<QQNRServerTaskQueueDelegate>{
-  NSOperationQueue    *_queue;
+
+@interface QQNRServerTaskQueue : NSObject <QQNRServerTaskQueueDelegate> {
+  NSOperationQueue *_queue;
 }
 
 @property (nonatomic, retain) NSDictionary *lastTaskServerResponseJSON;

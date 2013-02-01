@@ -36,14 +36,14 @@ typedef enum {
 // (gender, birthday, testing mode, etc.). If you register an extras object
 // that is the same class as one you have registered before, the previous
 // extras will be overwritten.
-- (void)registerAdNetworkExtras:(id<GADAdNetworkExtras>)extras;
+- (void)registerAdNetworkExtras:(id <GADAdNetworkExtras>)extras;
 
 // Get the network extras defined for an ad network.
-- (id<GADAdNetworkExtras>)adNetworkExtrasFor:(Class<GADAdNetworkExtras>)clazz;
+- (id <GADAdNetworkExtras>)adNetworkExtrasFor:(Class <GADAdNetworkExtras>)clazz;
 
 // Unsets the extras for an ad network. |clazz| is the class which represents
 // that network's extras type.
-- (void)removeAdNetworkExtrasFor:(Class<GADAdNetworkExtras>)clazz;
+- (void)removeAdNetworkExtrasFor:(Class <GADAdNetworkExtras>)clazz;
 
 // Extras sent to the mediation server (if using Mediation). For future use.
 @property (nonatomic, retain) NSDictionary *mediationExtras;
@@ -65,6 +65,7 @@ typedef enum {
 
 // The user's birthday may be used to deliver more relevant ads.
 @property (nonatomic, retain) NSDate *birthday;
+
 - (void)setBirthdayWithMonth:(NSInteger)m day:(NSInteger)d year:(NSInteger)y;
 
 // The user's current location may be used to deliver more relevant ads.

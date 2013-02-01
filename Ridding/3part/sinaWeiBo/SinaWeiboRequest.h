@@ -27,46 +27,50 @@
 @protocol SinaWeiboRequestDelegate <NSObject>
 @optional
 - (void)request:(SinaWeiboRequest *)request didReceiveResponse:(NSURLResponse *)response;
+
 - (void)request:(SinaWeiboRequest *)request didReceiveRawData:(NSData *)data;
+
 - (void)request:(SinaWeiboRequest *)request didFailWithError:(NSError *)error;
+
 - (void)request:(SinaWeiboRequest *)request didFinishLoadingWithResult:(id)result;
 @end
 
-@interface SinaWeiboRequest : NSObject
-{
-    SinaWeibo                       *sinaweibo;//weak reference
-    
-    NSString                        *url;
-    NSString                        *httpMethod;
-    NSDictionary                    *params;
-    
-    NSURLConnection                 *connection;
-    NSMutableData                   *responseData;
-    
-    id<SinaWeiboRequestDelegate>    delegate;
+@interface SinaWeiboRequest : NSObject {
+  SinaWeibo *sinaweibo;//weak reference
+
+  NSString *url;
+  NSString *httpMethod;
+  NSDictionary *params;
+
+  NSURLConnection *connection;
+  NSMutableData *responseData;
+
+  id <SinaWeiboRequestDelegate> delegate;
 }
 
 @property (nonatomic, assign) SinaWeibo *sinaweibo;
 @property (nonatomic, retain) NSString *url;
 @property (nonatomic, retain) NSString *httpMethod;
 @property (nonatomic, retain) NSDictionary *params;
-@property (nonatomic, assign) id<SinaWeiboRequestDelegate> delegate;
+@property (nonatomic, assign) id <SinaWeiboRequestDelegate> delegate;
 
-+ (SinaWeiboRequest *)requestWithURL:(NSString *)url 
-                          httpMethod:(NSString *)httpMethod 
++ (SinaWeiboRequest *)requestWithURL:(NSString *)url
+                          httpMethod:(NSString *)httpMethod
                               params:(NSDictionary *)params
-                            delegate:(id<SinaWeiboRequestDelegate>)delegate;
+                            delegate:(id <SinaWeiboRequestDelegate>)delegate;
 
 + (SinaWeiboRequest *)requestWithAccessToken:(NSString *)accessToken
                                          url:(NSString *)url
-                                  httpMethod:(NSString *)httpMethod 
+                                  httpMethod:(NSString *)httpMethod
                                       params:(NSDictionary *)params
-                                    delegate:(id<SinaWeiboRequestDelegate>)delegate;
+                                    delegate:(id <SinaWeiboRequestDelegate>)delegate;
 
-+ (NSString *)getParamValueFromUrl:(NSString*)url paramName:(NSString *)paramName;
++ (NSString *)getParamValueFromUrl:(NSString *)url paramName:(NSString *)paramName;
+
 + (NSString *)serializeURL:(NSString *)baseURL params:(NSDictionary *)params httpMethod:(NSString *)httpMethod;
 
 - (void)connect;
+
 - (void)disconnect;
 
 @end

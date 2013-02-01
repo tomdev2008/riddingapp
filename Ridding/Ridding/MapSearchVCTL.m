@@ -60,7 +60,7 @@
 
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MapSearchVCTL"];
   if (cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewStylePlain reuseIdentifier:@"MapSearchVCTL"];
+    cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyle) UITableViewStylePlain reuseIdentifier:@"MapSearchVCTL"];
     cell.accessoryType = UITableViewCellAccessoryNone;
   }
   CLPlacemark *mark = [_placemarks objectAtIndex:indexPath.row];

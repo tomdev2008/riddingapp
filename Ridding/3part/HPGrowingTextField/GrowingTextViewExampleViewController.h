@@ -28,12 +28,12 @@
 #import <UIKit/UIKit.h>
 #import "HPGrowingTextView.h"
 
-@interface GrowingTextViewExampleViewController : UIViewController <HPGrowingTextViewDelegate>{
-	UIView *containerView;
-    HPGrowingTextView *textView;
+@interface GrowingTextViewExampleViewController : UIViewController <HPGrowingTextViewDelegate> {
+  UIView *containerView;
+  HPGrowingTextView *textView;
 }
 
--(void)resignTextView;
+- (void)resignTextView;
 
 @end
 

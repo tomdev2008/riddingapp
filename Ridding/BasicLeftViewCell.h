@@ -11,12 +11,13 @@
 @interface BasicLeftViewCell : UITableViewCell
 
 
-@property (nonatomic,retain) IBOutlet UIImageView *backgroundColorView;
-@property (nonatomic,retain) IBOutlet UIView *leftColorView;
-@property (nonatomic,retain) IBOutlet UIImageView *iconView;
-@property (nonatomic,retain) IBOutlet UILabel *titleLabel;
+@property (nonatomic, retain) IBOutlet UIImageView *backgroundColorView;
+@property (nonatomic, retain) IBOutlet UIView *leftColorView;
+@property (nonatomic, retain) IBOutlet UIImageView *iconView;
+@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 
 
 - (void)selected;
+
 - (void)disSelected;
 @end

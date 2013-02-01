@@ -7,29 +7,23 @@
 //
 
 #import "Utilities.h"
-#import <AudioToolbox/AudioToolbox.h>
-#import <sys/socket.h> // Per msqr
-#import <sys/sysctl.h>
-#import <net/if.h>
-#import <net/if_dl.h>
-#import "NSString+MD5Addition.h"
 #import "sys/utsname.h"
-#include "sys/stat.h"
 #import "SVProgressHUD.h"
-  @implementation Utilities
 
+@implementation Utilities
 
 
 /** 判断当前设备是否ipad */
-+ (BOOL)isIpad
-{
++ (BOOL)isIpad {
+
   return [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad;
 }
 
 + (BOOL)isIphone4S {
-  
+
   return [[Utilities getDeviceVersion] isEqualToString:@"iPhone4,1"];
 }
+
 /*
  *功能：获取设备类型
  *
@@ -57,22 +51,23 @@
  *  @return null
  */
 
-+ (NSString *)getDeviceVersion
-{
++ (NSString *)getDeviceVersion {
+
   struct utsname systemInfo;
   uname(&systemInfo);
   //get the device model and the system version
-  NSString *machine =[NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+  NSString *machine = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
   return machine;
 }
-+ (UITableViewCell*)cellByClassName:(NSString*)className inNib:(NSString *)nibName forTableView:(UITableView *)tableView {
-  
+
++ (UITableViewCell *)cellByClassName:(NSString *)className inNib:(NSString *)nibName forTableView:(UITableView *)tableView {
+
   Class cellClass = NSClassFromString(className);
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:className];
   if (cell == nil) {
-    
-    NSArray *nib = [[NSBundle mainBundle] loadNibNamed: nibName owner: self options: nil];
-    
+
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
+
     for (id oneObject in nib)
       if ([oneObject isMemberOfClass:cellClass])
         return oneObject;
@@ -80,21 +75,21 @@
   return cell;
 }
 
-+ (void)alertInstant:(NSString*)message isError:(BOOL)isError {
-  
++ (void)alertInstant:(NSString *)message isError:(BOOL)isError {
+
   //	UIImage *image = UIIMAGE_FROMPNG(@"btn_xiaoxi");
   //  [[TKAlertCenter defaultCenter] postAlertWithMessage:message image:image];
   //	[[iToast makeText:[NSString stringWithFormat:@"\n\n    %@    \n\n",message]] show];
-  
+
   if (isError) {
     [SVProgressHUD showErrorWithStatus:message];
-  }else {
+  } else {
     [SVProgressHUD showSuccessWithStatus:message];
   }
 }
 
 + (NSString *)appVersion {
-  
+
   return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 }
 @end

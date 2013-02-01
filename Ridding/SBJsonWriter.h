@@ -90,7 +90,7 @@
  
  @param value any instance that can be represented as JSON text.
  */
-- (NSString*)stringWithObject:(id)value;
+- (NSString *)stringWithObject:(id)value;
 
 /**
  @brief Return JSON representation for the given object.
@@ -99,7 +99,7 @@
  
  @param value any instance that can be represented as JSON text.
  */
-- (NSData*)dataWithObject:(id)value;
+- (NSData *)dataWithObject:(id)value;
 
 /**
  @brief Return JSON representation (or fragment) for the given object.
@@ -110,8 +110,8 @@
  @param value any instance that can be represented as a JSON fragment
  @param error pointer to object to be populated with NSError on failure
  
- */- (NSString*)stringWithObject:(id)value
-                           error:(NSError**)error;
+ */- (NSString *)stringWithObject:(id)value
+                            error:(NSError **)error;
 
 
 @end

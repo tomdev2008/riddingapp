@@ -26,10 +26,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface YLBackgroundView : UIView
-{
+@interface YLBackgroundView : UIView {
 @protected
-    UIImage *noizeImage;
+  UIImage *noizeImage;
 }
 
 #pragma mark Contructors - Initializers

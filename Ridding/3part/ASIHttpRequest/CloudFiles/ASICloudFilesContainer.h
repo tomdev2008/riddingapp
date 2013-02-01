@@ -8,19 +8,19 @@
 
 
 @interface ASICloudFilesContainer : NSObject {
-	
-	// regular container attributes
-	NSString *name;
-	NSUInteger count;
-	NSUInteger bytes;
-	
-	// CDN container attributes
-	BOOL cdnEnabled;
-	NSUInteger ttl;
-	NSString *cdnURL;
-	BOOL logRetention;
-	NSString *referrerACL;
-	NSString *useragentACL;
+
+  // regular container attributes
+  NSString *name;
+  NSUInteger count;
+  NSUInteger bytes;
+
+  // CDN container attributes
+  BOOL cdnEnabled;
+  NSUInteger ttl;
+  NSString *cdnURL;
+  BOOL logRetention;
+  NSString *referrerACL;
+  NSString *useragentACL;
 }
 
 + (id)container;

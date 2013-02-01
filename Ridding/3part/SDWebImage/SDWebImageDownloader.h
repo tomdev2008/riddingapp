@@ -13,29 +13,32 @@
 extern NSString *const SDWebImageDownloadStartNotification;
 extern NSString *const SDWebImageDownloadStopNotification;
 
-@interface SDWebImageDownloader : NSObject
-{
-    @private
-    NSURL *url;
-    SDWIWeak id<SDWebImageDownloaderDelegate> delegate;
-    NSURLConnection *connection;
-    NSMutableData *imageData;
-    id userInfo;
-    BOOL lowPriority;
-  
-    NSOperationQueue  *_oQueue;
+@interface SDWebImageDownloader : NSObject {
+@private
+  NSURL *url;
+  SDWIWeak id <SDWebImageDownloaderDelegate> delegate;
+  NSURLConnection *connection;
+  NSMutableData *imageData;
+  id userInfo;
+  BOOL lowPriority;
+
+  NSOperationQueue *_oQueue;
 }
 
 @property (nonatomic, retain) NSURL *url;
-@property (nonatomic, assign) id<SDWebImageDownloaderDelegate> delegate;
+@property (nonatomic, assign) id <SDWebImageDownloaderDelegate> delegate;
 @property (nonatomic, retain) NSMutableData *imageData;
 @property (nonatomic, retain) id userInfo;
 @property (nonatomic, readwrite) BOOL lowPriority;
 
-+ (id)downloaderWithURL:(NSURL *)url delegate:(id<SDWebImageDownloaderDelegate>)delegate userInfo:(id)userInfo lowPriority:(BOOL)lowPriority;
-+ (id)downloaderWithURL:(NSURL *)url delegate:(id<SDWebImageDownloaderDelegate>)delegate userInfo:(id)userInfo;
-+ (id)downloaderWithURL:(NSURL *)url delegate:(id<SDWebImageDownloaderDelegate>)delegate;
++ (id)downloaderWithURL:(NSURL *)url delegate:(id <SDWebImageDownloaderDelegate>)delegate userInfo:(id)userInfo lowPriority:(BOOL)lowPriority;
+
++ (id)downloaderWithURL:(NSURL *)url delegate:(id <SDWebImageDownloaderDelegate>)delegate userInfo:(id)userInfo;
+
++ (id)downloaderWithURL:(NSURL *)url delegate:(id <SDWebImageDownloaderDelegate>)delegate;
+
 - (void)start;
+
 - (void)cancel;
 
 // This method is now no-op and is deprecated

@@ -25,14 +25,13 @@
 
 @end
 
-@interface WBLogInAlertView : UIAlertView 
-{
-    UITextField *userIDTextField;
-    UITextField *passwordTextField;
-    
-    id<UIAlertViewDelegate, WBLogInAlertViewDelegate> delegate;
+@interface WBLogInAlertView : UIAlertView {
+  UITextField *userIDTextField;
+  UITextField *passwordTextField;
+
+  id <UIAlertViewDelegate, WBLogInAlertViewDelegate> delegate;
 }
 
-@property (nonatomic, assign) id<UIAlertViewDelegate, WBLogInAlertViewDelegate> delegate;
+@property (nonatomic, assign) id <UIAlertViewDelegate, WBLogInAlertViewDelegate> delegate;
 
 @end

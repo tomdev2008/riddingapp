@@ -17,12 +17,11 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum
-{
-    kWBRequestPostDataTypeNone,
-	kWBRequestPostDataTypeNormal,			// for normal data post, such as "user=name&password=psd"
-	kWBRequestPostDataTypeMultipart,        // for uploading images and files.
-}WBRequestPostDataType;
+typedef enum {
+  kWBRequestPostDataTypeNone,
+  kWBRequestPostDataTypeNormal,      // for normal data post, such as "user=name&password=psd"
+  kWBRequestPostDataTypeMultipart,        // for uploading images and files.
+} WBRequestPostDataType;
 
 
 @class WBRequest;
@@ -41,18 +40,17 @@ typedef enum
 
 @end
 
-@interface WBRequest : NSObject
-{
-    NSString                *url;
-    NSString                *httpMethod;
-    NSDictionary            *params;
-    WBRequestPostDataType   postDataType;
-    NSDictionary            *httpHeaderFields;
-    
-    NSURLConnection         *connection;
-    NSMutableData           *responseData;
-    
-    id<WBRequestDelegate>   delegate;
+@interface WBRequest : NSObject {
+  NSString *url;
+  NSString *httpMethod;
+  NSDictionary *params;
+  WBRequestPostDataType postDataType;
+  NSDictionary *httpHeaderFields;
+
+  NSURLConnection *connection;
+  NSMutableData *responseData;
+
+  id <WBRequestDelegate> delegate;
 }
 
 @property (nonatomic, retain) NSString *url;
@@ -60,26 +58,27 @@ typedef enum
 @property (nonatomic, retain) NSDictionary *params;
 @property WBRequestPostDataType postDataType;
 @property (nonatomic, retain) NSDictionary *httpHeaderFields;
-@property (nonatomic, assign) id<WBRequestDelegate> delegate;
+@property (nonatomic, assign) id <WBRequestDelegate> delegate;
 
-+ (WBRequest *)requestWithURL:(NSString *)url 
-                   httpMethod:(NSString *)httpMethod 
++ (WBRequest *)requestWithURL:(NSString *)url
+                   httpMethod:(NSString *)httpMethod
                        params:(NSDictionary *)params
                  postDataType:(WBRequestPostDataType)postDataType
              httpHeaderFields:(NSDictionary *)httpHeaderFields
-                     delegate:(id<WBRequestDelegate>)delegate;
+                     delegate:(id <WBRequestDelegate>)delegate;
 
 + (WBRequest *)requestWithAccessToken:(NSString *)accessToken
                                   url:(NSString *)url
-                           httpMethod:(NSString *)httpMethod 
+                           httpMethod:(NSString *)httpMethod
                                params:(NSDictionary *)params
                          postDataType:(WBRequestPostDataType)postDataType
                      httpHeaderFields:(NSDictionary *)httpHeaderFields
-                             delegate:(id<WBRequestDelegate>)delegate;
+                             delegate:(id <WBRequestDelegate>)delegate;
 
 + (NSString *)serializeURL:(NSString *)baseURL params:(NSDictionary *)params httpMethod:(NSString *)httpMethod;
 
 - (void)connect;
+
 - (void)disconnect;
 
 @end

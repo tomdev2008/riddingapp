@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "BasicViewController.h"
-@interface BasicTableViewController : BasicViewController<UITableViewDataSource,UITableViewDelegate>{
+
+@interface BasicTableViewController : BasicViewController <UITableViewDataSource, UITableViewDelegate> {
 
 }
 
-@property(nonatomic,retain) IBOutlet UITableView *tv;
+@property (nonatomic, retain) IBOutlet UITableView *tv;
 
 @end

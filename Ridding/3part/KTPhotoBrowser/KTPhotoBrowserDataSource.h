@@ -19,17 +19,22 @@
 
 // Implement either these, for synchronous images…
 - (UIImage *)imageAtIndex:(NSInteger)index;
+
 - (UIImage *)thumbImageAtIndex:(NSInteger)index;
 
 // …or these, for asynchronous images.
 - (void)imageAtIndex:(NSInteger)index photoView:(KTPhotoView *)photoView;
+
 - (void)thumbImageAtIndex:(NSInteger)index thumbView:(KTThumbView *)thumbView;
 
 - (void)deleteImageAtIndex:(NSInteger)index;
 
 - (CGSize)thumbSize;
+
 - (NSInteger)thumbsPerRow;
+
 - (BOOL)thumbsHaveBorder;
+
 - (UIColor *)imageBackgroundColor;
 
 @end

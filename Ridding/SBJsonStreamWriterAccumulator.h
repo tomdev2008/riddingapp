@@ -31,6 +31,6 @@
 
 @interface SBJsonStreamWriterAccumulator : NSObject <SBJsonStreamWriterDelegate>
 
-@property (readonly, copy) NSMutableData* data;
+@property (readonly, copy) NSMutableData *data;
 
 @end

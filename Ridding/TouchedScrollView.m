@@ -11,32 +11,34 @@
 @implementation TouchedScrollView
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	
-	if(self.touchDelegate)
-		[self.touchDelegate performSelector:@selector(scrollViewTouchesBegan:withEvent:) withObject:touches withObject:event];
-	
-    [[self nextResponder] touchesBegan:touches withEvent:event];
-    [super touchesBegan:touches withEvent:event];
+
+  if (self.touchDelegate)
+    [self.touchDelegate performSelector:@selector(scrollViewTouchesBegan:withEvent:) withObject:touches withObject:event];
+
+  [[self nextResponder] touchesBegan:touches withEvent:event];
+  [super touchesBegan:touches withEvent:event];
 
 }
 
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-	if (self.touchDelegate) {
-		[self.touchDelegate performSelector:@selector(scrollViewTouchesMoved:withEvent:) withObject:touches withObject:event];		
-	}
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 
-    [[self nextResponder] touchesMoved:touches withEvent:event];
-    [super touchesMoved:touches withEvent:event];
-	
+  if (self.touchDelegate) {
+    [self.touchDelegate performSelector:@selector(scrollViewTouchesMoved:withEvent:) withObject:touches withObject:event];
+  }
+
+  [[self nextResponder] touchesMoved:touches withEvent:event];
+  [super touchesMoved:touches withEvent:event];
+
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	if (self.touchDelegate) {
-		[self.touchDelegate performSelector:@selector(scrollViewTouchesEnded:withEvent:) withObject:touches withObject:event];		
-	}
-	
-    [[self nextResponder] touchesEnded:touches withEvent:event];
-    [super touchesEnded:touches withEvent:event];
+
+  if (self.touchDelegate) {
+    [self.touchDelegate performSelector:@selector(scrollViewTouchesEnded:withEvent:) withObject:touches withObject:event];
+  }
+
+  [[self nextResponder] touchesEnded:touches withEvent:event];
+  [super touchesEnded:touches withEvent:event];
 }
 
 @end

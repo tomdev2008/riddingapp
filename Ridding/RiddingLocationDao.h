@@ -8,17 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import "RiddingLocation.h"
+
 #define columCount 5
-@interface RiddingLocationDao : NSObject{}
+
+@interface RiddingLocationDao : NSObject {
+}
 
 
-+(Boolean)addRiddingLocation:(long long)riddingId locations:(NSArray*)locations;
++ (Boolean)addRiddingLocation:(long long)riddingId locations:(NSArray *)locations;
 
-+(int)getRiddingLocationCount:(long long)riddingId;
++ (int)getRiddingLocationCount:(long long)riddingId;
 
-+(NSArray*)getRiddingLocations:(long long)riddingId beginWeight:(int)beginWeight;
++ (NSArray *)getRiddingLocations:(long long)riddingId beginWeight:(int)beginWeight;
 
-+(void)setRiddingLocationToDB:(NSArray*)routes riddingId:(long long)riddingId;
++ (void)setRiddingLocationToDB:(NSArray *)routes riddingId:(long long)riddingId;
 
 
 @end

@@ -6,21 +6,21 @@
 //  Copyright 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "UserAnnotation.h"
 @implementation UserAnnotation
 @synthesize coordinate;
 @synthesize headImage;
 @synthesize title;
 @synthesize subtitle;
-@synthesize userId=_userId;
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        self.headImage=UIIMAGE_DEFAULT_USER_AVATOR;
-    }
-    
-    return self;
+@synthesize userId = _userId;
+
+- (id)init {
+
+  self = [super init];
+  if (self) {
+    self.headImage = UIIMAGE_DEFAULT_USER_AVATOR;
+  }
+
+  return self;
 }
-  
+
 @end

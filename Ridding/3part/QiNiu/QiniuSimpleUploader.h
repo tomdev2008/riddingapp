@@ -20,11 +20,11 @@
 //
 // This class is proper for uploading medium to small files (< 4MB)。
 // 
-@interface QiniuSimpleUploader : NSObject<ASIHTTPRequestDelegate, ASIProgressDelegate> {
+@interface QiniuSimpleUploader : NSObject <ASIHTTPRequestDelegate, ASIProgressDelegate> {
 @private
-    NSString *_token;
-    long long _sentBytes;
-    ASIFormDataRequest *_request;
+  NSString *_token;
+  long long _sentBytes;
+  ASIFormDataRequest *_request;
 }
 
 // @brief Token.
@@ -34,13 +34,13 @@
 @property (copy, nonatomic) NSString *token;
 
 // Delegates to receive events for upload progress info.
-@property (assign, nonatomic) id<QiniuUploadDelegate> delegate;
+@property (assign, nonatomic) id <QiniuUploadDelegate> delegate;
 
 // Returns a QiniuSimpleUploader instance. Auto-released.
 //
 // If you want to keep the instance for more than one message cycle, please use retain.
 //
-+ (id) uploaderWithToken:(NSString *)token;
++ (id)uploaderWithToken:(NSString *)token;
 
 // @brief Upload a local file.
 //
@@ -55,9 +55,9 @@
 //      Key:callbackParams Value:NSDictionary *<Callback Params>
 //          Please refer to http://docs.qiniutek.com/v3/api/io/#callback-after-uploaded
 //          To use this feature, you also need to retrieve a corresponding token with appropriate authpolicy.
-- (int) upload:(NSString *)filePath
-         bucket:(NSString *)bucket
-            key:(NSString *)key
-    extraParams:(NSDictionary *)extraParams;
+- (int)upload:(NSString *)filePath
+       bucket:(NSString *)bucket
+          key:(NSString *)key
+  extraParams:(NSDictionary *)extraParams;
 
 @end

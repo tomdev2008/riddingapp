@@ -8,55 +8,54 @@
 
 #import "KTThumbView.h"
 #import "KTThumbsViewController.h"
-#import <QuartzCore/QuartzCore.h>
 
 
 @implementation KTThumbView
 
 @synthesize controller = controller_;
 
-- (void)dealloc 
-{
-   [super dealloc];
+- (void)dealloc {
+
+  [super dealloc];
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
-   if (self = [super initWithFrame:frame]) {
+- (id)initWithFrame:(CGRect)frame {
 
-      [self addTarget:self
-               action:@selector(didTouch:)
-     forControlEvents:UIControlEventTouchUpInside];
-      
-      [self setClipsToBounds:YES];
+  if (self = [super initWithFrame:frame]) {
 
-      // If the thumbnail needs to be scaled, it should mantain its aspect
-      // ratio.
-      [[self imageView] setContentMode:UIViewContentModeScaleAspectFill];
-   }
-   return self;
+    [self addTarget:self
+             action:@selector(didTouch:)
+   forControlEvents:UIControlEventTouchUpInside];
+
+    [self setClipsToBounds:YES];
+
+    // If the thumbnail needs to be scaled, it should mantain its aspect
+    // ratio.
+    [[self imageView] setContentMode:UIViewContentModeScaleAspectFill];
+  }
+  return self;
 }
 
-- (void)didTouch:(id)sender 
-{
-   if (controller_) {
-      [controller_ didSelectThumbAtIndex:[self tag]];
-   }
+- (void)didTouch:(id)sender {
+
+  if (controller_) {
+    [controller_ didSelectThumbAtIndex:[self tag]];
+  }
 }
 
-- (void)setThumbImage:(UIImage *)newImage 
-{
+- (void)setThumbImage:(UIImage *)newImage {
+
   [self setImage:newImage forState:UIControlStateNormal];
 }
 
-- (void)setHasBorder:(BOOL)hasBorder
-{
-   if (hasBorder) {
-      self.layer.borderColor = [UIColor colorWithWhite:0.85 alpha:1.0].CGColor;
-      self.layer.borderWidth = 1;
-   } else {
-      self.layer.borderColor = nil;
-   }
+- (void)setHasBorder:(BOOL)hasBorder {
+
+  if (hasBorder) {
+    self.layer.borderColor = [UIColor colorWithWhite:0.85 alpha:1.0].CGColor;
+    self.layer.borderWidth = 1;
+  } else {
+    self.layer.borderColor = nil;
+  }
 }
 
 

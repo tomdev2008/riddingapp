@@ -22,10 +22,9 @@
 #define kSinaWeiboAppAuthURL_iPhone        @"sinaweibosso://login"
 #define kSinaWeiboAppAuthURL_iPad          @"sinaweibohdsso://login"
 
-typedef enum
-{
-	kSinaWeiboSDKErrorCodeParseError       = 200,
-	kSinaWeiboSDKErrorCodeSSOParamsError   = 202,
+typedef enum {
+  kSinaWeiboSDKErrorCodeParseError = 200,
+  kSinaWeiboSDKErrorCodeSSOParamsError = 202,
 } SinaWeiboSDKErrorCode;
 
 #endif

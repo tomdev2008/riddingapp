@@ -12,7 +12,10 @@
 #import "MyLocationManager.h"
 #import "SVProgressHUD.h"
 #import "SinaApiRequestUtil.h"
-@interface PhotoDescViewController ()
+
+@interface PhotoDescViewController () {
+  NSString *_riddingName;
+}
 
 @end
 
@@ -20,9 +23,11 @@
 @synthesize imageView = _imageView;
 @synthesize textView = _textView;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingPicture:(RiddingPicture *)riddingPicture isSyncSina:(BOOL)isSyncSina{
-  _syncSina=isSyncSina;
-  _riddingPicture=riddingPicture;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingPicture:(RiddingPicture *)riddingPicture isSyncSina:(BOOL)isSyncSina riddingName:(NSString *)riddingName {
+
+  _syncSina = isSyncSina;
+  _riddingPicture = riddingPicture;
+  _riddingName = riddingName;
   return [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 }
 
@@ -36,10 +41,10 @@
   [self.barView.leftButton setTitle:@"取消" forState:UIControlStateHighlighted];
   [self.barView.rightButton setTitle:@"确定" forState:UIControlStateNormal];
   self.barView.titleLabel.text = @"添加描述";
-  
+
   self.imageView.image = [_riddingPicture imageFromLocal];
   self.imageView.displayAsStack = NO;
-  
+
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   [formatter setDateFormat:@"yyyy年MM月dd日HH时mm分"];
   self.timeLabel.text = [formatter stringFromDate:[NSDate date]];
@@ -49,16 +54,16 @@
   self.timeLabel.userInteractionEnabled = YES;
   [self.timeLabel addGestureRecognizer:tapGesture];
 
-  MyLocationManager *manager=[MyLocationManager getSingleton];
+  MyLocationManager *manager = [MyLocationManager getSingleton];
   [manager startUpdateMyLocation:^(QQNRMyLocation *location) {
-    if(location==nil){
+    if (location == nil) {
       [SVProgressHUD showSuccessWithStatus:@"请开启定位服务以定位到您的位置" duration:2.0];
       return;
     }
-    self.locationLabel.text=location.city;
-    _riddingPicture.location=location.city;
-    _riddingPicture.latitude=location.latitude;
-    _riddingPicture.longtitude=location.longtitude;
+    self.locationLabel.text = location.city;
+    _riddingPicture.location = location.city;
+    _riddingPicture.latitude = location.latitude;
+    _riddingPicture.longtitude = location.longtitude;
   }];
 
   if (!_datePicker) {
@@ -97,30 +102,21 @@
   [queue addTask:task withDependency:YES];
 
   __block NSString *desc = self.textView.text;
+  __block NSString *weiboDesc = [NSString stringWithFormat:@"分享我的骑行旅程:%@。同步更新中,%@ @骑去哪儿", _riddingName, desc];
+  __block BOOL isSyncSina = _syncSina;
   [task setDataProcessBlock:(BlockProcessLastTaskData) ^(NSDictionary *dic) {
     RiddingPicture *picture = [dic objectForKey:kFileClientServerUpload_RiddingPicture];
-    _riddingPicture.pictureDescription=desc;
-    _riddingPicture.fileKey=picture.fileKey;
-    
-    NSMutableDictionary *mulDic = [[NSMutableDictionary alloc] init];
-    [mulDic setObject:_riddingPicture forKey:kFileClientServerUpload_RiddingPicture];
-    task.paramDic = mulDic;
-    
-    //if(_syncSina){
-      SinaApiRequestUtil *sinaRequest=[[SinaApiRequestUtil alloc]init];
-      [sinaRequest sendWeiBo:desc url:[NSString stringWithFormat:@"%@/%@",imageHost,picture.fileKey] latitude:_riddingPicture.latitude longtitude:_riddingPicture.longtitude];
-    //}
+    _riddingPicture.pictureDescription = desc;
+    _riddingPicture.fileKey = picture.fileKey;
 
+    if (isSyncSina) {
+      SinaApiRequestUtil *sinaRequest = [[SinaApiRequestUtil alloc] init];
+      [sinaRequest sendWeiBo:weiboDesc url:[NSString stringWithFormat:@"%@%@", imageHost, picture.fileKey] latitude:_riddingPicture.latitude longtitude:_riddingPicture.longtitude];
+    }
   }];
-  
-   
+
   [self dismissModalViewControllerAnimated:YES];
 }
-
-- (void)leftBtnClicked:(id)sender {
-
-}
-
 
 - (IBAction)otherClick:(id)sender {
 

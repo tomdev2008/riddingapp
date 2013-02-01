@@ -8,71 +8,73 @@
 
 #import "ResponseCodeCheck.h"
 #import "Reachability.h"
-static ResponseCodeCheck *responseCodeCheck=nil;
+
+static ResponseCodeCheck *responseCodeCheck = nil;
+
 @implementation ResponseCodeCheck
 @synthesize staticInfo;
 
 
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        staticInfo=[StaticInfo getSinglton];
-    }
-    return self;
-}
+- (id)init {
 
-+ (ResponseCodeCheck*)getSinglton
-{
-    @synchronized(self) {
-        if (responseCodeCheck == nil) {
-            responseCodeCheck=[[self alloc] init]; 
-        }
-    }
-    return responseCodeCheck;
-}
-
-
--(BOOL) checkConnect{
-    NetworkStatus networkStatus = [Reachability reachabilityForInternetConnection].currentReachabilityStatus;
-    if(networkStatus== NotReachable)
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"网络连接失败" 
-                                                        message:@"请检查网络，是否已连接网络?" 
-                                                       delegate:self cancelButtonTitle:@"确定"
-                                              otherButtonTitles:nil];
-        [alert show];
-        staticInfo.canConnect=NO;
-        return false;
-    }else if(networkStatus==ReachableViaWWAN){
-        staticInfo.canConnect=YES;
-        return true;
-    }else{
-      staticInfo.canConnect=YES;
-      return true;
-    }
-}
-
-- (BOOL) isWifi{
-   NetworkStatus networkStatus = [Reachability reachabilityForInternetConnection].currentReachabilityStatus;
-  if(networkStatus==ReachableViaWiFi){
-    return TRUE;
+  self = [super init];
+  if (self) {
+    staticInfo = [StaticInfo getSinglton];
   }
-  return FALSE;
+  return self;
 }
 
-- (BOOL) isWWAN{
++ (ResponseCodeCheck *)getSinglton {
+
+  @synchronized (self) {
+    if (responseCodeCheck == nil) {
+      responseCodeCheck = [[self alloc] init];
+    }
+  }
+  return responseCodeCheck;
+}
+
+
+- (BOOL)checkConnect {
+
   NetworkStatus networkStatus = [Reachability reachabilityForInternetConnection].currentReachabilityStatus;
-  if(networkStatus==ReachableViaWWAN){
+  if (networkStatus == NotReachable) {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"网络连接失败"
+                                                    message:@"请检查网络，是否已连接网络?"
+                                                   delegate:self cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+    staticInfo.canConnect = NO;
+    return false;
+  } else if (networkStatus == ReachableViaWWAN) {
+    staticInfo.canConnect = YES;
+    return true;
+  } else {
+    staticInfo.canConnect = YES;
+    return true;
+  }
+}
+
+- (BOOL)isWifi {
+
+  NetworkStatus networkStatus = [Reachability reachabilityForInternetConnection].currentReachabilityStatus;
+  if (networkStatus == ReachableViaWiFi) {
     return TRUE;
   }
   return FALSE;
 }
 
+- (BOOL)isWWAN {
 
+  NetworkStatus networkStatus = [Reachability reachabilityForInternetConnection].currentReachabilityStatus;
+  if (networkStatus == ReachableViaWWAN) {
+    return TRUE;
+  }
+  return FALSE;
+}
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
+
 }
 @end

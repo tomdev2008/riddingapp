@@ -22,6 +22,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *locationLabel;
 @property (nonatomic, retain) IBOutlet UILabel *timeLabel;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingPicture:(RiddingPicture*)riddingPicture isSyncSina:(BOOL)isSyncSina;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingPicture:(RiddingPicture *)riddingPicture isSyncSina:(BOOL)isSyncSina riddingName:(NSString *)riddingName;
 
 @end

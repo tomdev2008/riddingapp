@@ -48,114 +48,113 @@
 #import "ImageScrollView.h"
 #import "UIImageView+WebCache.h"
 #import "QiNiuUtils.h"
-#import "SDWebImageManager.h"
 #import "SVProgressHUD.h"
+
 @implementation ImageScrollView
 @synthesize index;
 
-- (id)initWithFrame:(CGRect)frame
-{
-    if ((self = [super initWithFrame:frame])) {
-        self.showsVerticalScrollIndicator = NO;
-        self.showsHorizontalScrollIndicator = NO;
-        self.bouncesZoom = YES;
-        self.decelerationRate = UIScrollViewDecelerationRateFast;
-        self.delegate = self;
-        
-    }
-    return self;
+- (id)initWithFrame:(CGRect)frame {
+
+  if ((self = [super initWithFrame:frame])) {
+    self.showsVerticalScrollIndicator = NO;
+    self.showsHorizontalScrollIndicator = NO;
+    self.bouncesZoom = YES;
+    self.decelerationRate = UIScrollViewDecelerationRateFast;
+    self.delegate = self;
+
+  }
+  return self;
 }
 
 
 #pragma mark -
 #pragma mark Override layoutSubviews to center content
 
-- (void)layoutSubviews 
-{
-    [super layoutSubviews];
-    
-    // center the image as it becomes smaller than the size of the screen
-    
-    CGSize boundsSize = self.bounds.size;
-    CGRect frameToCenter = imageView.frame;
-    
-    // center horizontally
-    if (frameToCenter.size.width < boundsSize.width)
-        frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2;
-    else
-        frameToCenter.origin.x = 0;
-    
-    // center vertically
-    if (frameToCenter.size.height < boundsSize.height)
-        frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2;
-    else
-        frameToCenter.origin.y = 0;
-    
-    imageView.frame = frameToCenter;
-  
+- (void)layoutSubviews {
+
+  [super layoutSubviews];
+
+  // center the image as it becomes smaller than the size of the screen
+
+  CGSize boundsSize = self.bounds.size;
+  CGRect frameToCenter = imageView.frame;
+
+  // center horizontally
+  if (frameToCenter.size.width < boundsSize.width)
+    frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2;
+  else
+    frameToCenter.origin.x = 0;
+
+  // center vertically
+  if (frameToCenter.size.height < boundsSize.height)
+    frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2;
+  else
+    frameToCenter.origin.y = 0;
+
+  imageView.frame = frameToCenter;
+
 }
 
 #pragma mark -
 #pragma mark UIScrollView delegate methods
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
-    return imageView;
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+
+  return imageView;
 }
 
 #pragma mark -
 #pragma mark Configure scrollView to display new image (tiled or not)
 
-- (void)displayImage:(RiddingPicture *)picture
-{
-    // clear the previous imageView
+- (void)displayImage:(RiddingPicture *)picture {
+  // clear the previous imageView
   [imageView removeFromSuperview];
-  
+
   // reset our zoomScale to 1.0 before doing any further calculations
   self.zoomScale = 1.0;
-  
+
   // make a new UIImageView for the new image
   imageView = [[UIImageView alloc] init];
-  
+
   [self addSubview:imageView];
-  
+
   CGSize boundsSize = [self bounds].size;
-  
+
   // set up our content size and min/max zoomscale
   CGFloat xScale = boundsSize.width / picture.width;    // the scale needed to perfectly fit the image width-wise
   CGFloat yScale = boundsSize.height / picture.height;  // the scale needed to perfectly fit the image height-wise
   CGFloat minScale = MIN(xScale, yScale);
-  
-  NSLog(@"%d",picture.width);
-  NSLog(@"%d",picture.height);
-  
-  CGSize size=CGSizeMake(minScale*picture.width, minScale*picture.height);
-  NSURL *url=[QiNiuUtils getUrlBySizeToUrl:size url:picture.photoUrl type:QINIUMODE_DESHORT];
-  if(![[SDWebImageManager sharedManager]imageWithURL:url]){
+
+  NSLog(@"%d", picture.width);
+  NSLog(@"%d", picture.height);
+
+  CGSize size = CGSizeMake(minScale * picture.width, minScale * picture.height);
+  NSURL *url = [QiNiuUtils getUrlBySizeToUrl:size url:picture.photoUrl type:QINIUMODE_DESHORT];
+  if (![[SDWebImageManager sharedManager] imageWithURL:url]) {
     [SVProgressHUD show];
   }
   [imageView setImageWithURL:url placeholderImage:nil success:^(UIImage *image) {
     [SVProgressHUD dismiss];
-  } failure:^(NSError *error) {
+  }                  failure:^(NSError *error) {
     [SVProgressHUD dismiss];
   }];
 
-  
-  imageView.frame=CGRectMake(0, 0, size.width, size.height);
-  
+
+  imageView.frame = CGRectMake(0, 0, size.width, size.height);
+
 }
 
-- (void)loadOtherImage:(RiddingPicture*)picture{
+- (void)loadOtherImage:(RiddingPicture *)picture {
+
   CGSize boundsSize = [self bounds].size;
   // set up our content size and min/max zoomscale
   CGFloat xScale = boundsSize.width / picture.width;    // the scale needed to perfectly fit the image width-wise
   CGFloat yScale = boundsSize.height / picture.height;  // the scale needed to perfectly fit the image height-wise
   CGFloat minScale = MIN(xScale, yScale);
-  CGSize size=CGSizeMake(minScale*picture.width, minScale*picture.height);
-  NSURL *url=[QiNiuUtils getUrlBySizeToUrl:size url:picture.photoUrl type:QINIUMODE_DESHORT];
+  CGSize size = CGSizeMake(minScale * picture.width, minScale * picture.height);
+  NSURL *url = [QiNiuUtils getUrlBySizeToUrl:size url:picture.photoUrl type:QINIUMODE_DESHORT];
   [[SDWebImageManager sharedManager] downloadWithURL:url delegate:nil];
 }
-
 
 
 @end

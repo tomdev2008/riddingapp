@@ -28,8 +28,8 @@
 // connection was available or no ads were available (i.e. no fill).  If the
 // error was received as a part of the server-side auto refreshing, you can
 // examine the hasAutoRefreshed property of the view.
-- (void)adView:(GADBannerView *)view
-    didFailToReceiveAdWithError:(GADRequestError *)error;
+- (void)             adView:(GADBannerView *)view
+didFailToReceiveAdWithError:(GADRequestError *)error;
 
 #pragma mark Click-Time Lifecycle Notifications
 

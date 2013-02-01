@@ -26,15 +26,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface YLProgressBar : UIProgressView
-{
+@interface YLProgressBar : UIProgressView {
 @public
-    BOOL        animated;
-    
+  BOOL animated;
+
 @protected
-    double      progressOffset;
-    CGFloat     cornerRadius;
-    NSTimer*    animationTimer;
+  double progressOffset;
+  CGFloat cornerRadius;
+  NSTimer *animationTimer;
 }
 /** Run the animation of the progress bar. YES by default. */
 @property (nonatomic, getter = isAnimated) BOOL animated;

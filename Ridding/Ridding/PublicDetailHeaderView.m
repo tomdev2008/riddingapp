@@ -9,10 +9,10 @@
 #import "PublicDetailHeaderView.h"
 #import "UIImageView+WebCache.h"
 #import "UIColor+XMin.h"
-#import "RequestUtil.h"
 #import "MapUtil.h"
 #import "RiddingLocationDao.h"
 #import "UIButton+WebCache.h"
+
 #define frameSize @"28"
 
 @implementation PublicDetailHeaderView
@@ -48,36 +48,33 @@
     createLabel.backgroundColor = [UIColor clearColor];
     createLabel.font = [UIFont systemFontOfSize:12];
     [self addSubview:createLabel];
-    
-    
-    NSString *dictance=[NSString stringWithFormat:@"%0.2fKM", _ridding.map.distance * 1.0 / 1000];;
+
+
+    NSString *dictance = [NSString stringWithFormat:@"%0.2fKM", _ridding.map.distance * 1.0 / 1000];;
     CGSize linesSz = [dictance sizeWithFont:[UIFont boldSystemFontOfSize:12] constrainedToSize:CGSizeMake(100, 25) lineBreakMode:(NSLineBreakMode) UILineBreakModeCharacterWrap];
-    
-    UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(175, 50, linesSz.width, linesSz.height+2)];
+
+    UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(175, 50, linesSz.width, linesSz.height + 2)];
     distanceLabel.textColor = [UIColor whiteColor];
     distanceLabel.textAlignment = UITextAlignmentCenter;
     distanceLabel.text = dictance;
-    distanceLabel.backgroundColor =  [UIColor clearColor];
+    distanceLabel.backgroundColor = [UIColor clearColor];
     distanceLabel.font = [UIFont systemFontOfSize:12];
-    
-    
-    UIImageView *iconImage=[[UIImageView alloc]initWithFrame:CGRectMake(distanceLabel.frame.origin.x-13, distanceLabel.frame.origin.y, 12, 14)];
-    iconImage.image=UIIMAGE_FROMPNG(@"QQNR_PD_DistancePic");
-    
-    UIImageView *distanceViewBG=[[UIImageView alloc]initWithFrame:CGRectMake(distanceLabel.frame.origin.x-15, distanceLabel.frame.origin.y, distanceLabel.frame.size.width+20, distanceLabel.frame.size.height)];
-    distanceViewBG.image=[UIIMAGE_FROMPNG(@"QQNR_PD_DistanceBg") stretchableImageWithLeftCapWidth:4 topCapHeight:10];
-    
+
+
+    UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(distanceLabel.frame.origin.x - 13, distanceLabel.frame.origin.y, 12, 14)];
+    iconImage.image = UIIMAGE_FROMPNG(@"QQNR_PD_DistancePic");
+
+    UIImageView *distanceViewBG = [[UIImageView alloc] initWithFrame:CGRectMake(distanceLabel.frame.origin.x - 15, distanceLabel.frame.origin.y, distanceLabel.frame.size.width + 20, distanceLabel.frame.size.height)];
+    distanceViewBG.image = [UIIMAGE_FROMPNG(@"QQNR_PD_DistanceBg") stretchableImageWithLeftCapWidth:4 topCapHeight:10];
+
     [self addSubview:distanceViewBG];
     [self addSubview:iconImage];
     [self addSubview:distanceLabel];
-    
-        
-
 
     _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(15, 85, 280, 140)];
     _route_view = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80, 290, 150)];
-    _route_view.layer.borderColor=[[UIColor whiteColor]CGColor];
-    _route_view.layer.borderWidth=5.0;
+    _route_view.layer.borderColor = [[UIColor whiteColor] CGColor];
+    _route_view.layer.borderWidth = 5.0;
     [_mapView setShowsUserLocation:NO];
     _mapView.delegate = self;
     [_mapView setZoomEnabled:NO];
@@ -92,6 +89,8 @@
     [self addSubview:_route_view];
     _routes = [[NSMutableArray alloc] init];
     [self drawRoutes];
+
+
   }
   return self;
 }

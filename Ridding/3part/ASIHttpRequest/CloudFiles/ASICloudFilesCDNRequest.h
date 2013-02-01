@@ -9,10 +9,10 @@
 @class ASICloudFilesContainerXMLParserDelegate;
 
 @interface ASICloudFilesCDNRequest : ASICloudFilesRequest {
-	NSString *accountName;
-	NSString *containerName;
-	ASICloudFilesContainerXMLParserDelegate *xmlParserDelegate;
-	
+  NSString *accountName;
+  NSString *containerName;
+  ASICloudFilesContainerXMLParserDelegate *xmlParserDelegate;
+
 }
 
 @property (retain) NSString *accountName;
@@ -27,16 +27,22 @@
 // X-CDN-SSL-URI: https://cdn.ssl.cloudfiles.mosso.com/c1234
 // X-CDN-TTL: 86400
 + (id)containerInfoRequest:(NSString *)containerName;
+
 - (BOOL)cdnEnabled;
+
 - (NSString *)cdnURI;
+
 - (NSString *)cdnSSLURI;
+
 - (NSUInteger)cdnTTL;
 
 
 // GET /<api version>/<account>
 // limit, marker, format, enabled_only=true
 + (id)listRequest;
+
 + (id)listRequestWithLimit:(NSUInteger)limit marker:(NSString *)marker enabledOnly:(BOOL)enabledOnly;
+
 - (NSArray *)containers;
 
 
@@ -44,6 +50,7 @@
 // PUT operations against a Container are used to CDN-enable that Container.
 // Include an HTTP header of X-TTL to specify a custom TTL.
 + (id)putRequestWithContainer:(NSString *)containerName;
+
 + (id)putRequestWithContainer:(NSString *)containerName ttl:(NSUInteger)ttl;
 // returns: - (NSString *)cdnURI;
 
@@ -53,6 +60,7 @@
 // X-TTL: 86400
 // X-CDN-Enabled: True
 + (id)postRequestWithContainer:(NSString *)containerName;
+
 + (id)postRequestWithContainer:(NSString *)containerName cdnEnabled:(BOOL)cdnEnabled ttl:(NSUInteger)ttl;
 // returns: - (NSString *)cdnURI;
 

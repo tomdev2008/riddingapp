@@ -21,20 +21,27 @@
 }
 
 + (NSString *)storageURL;
+
 + (NSString *)cdnManagementURL;
+
 + (NSString *)authToken;
 
 #pragma mark Rackspace Cloud Authentication
 
 + (id)authenticationRequest;
+
 + (NSError *)authenticate;
+
 + (NSString *)username;
+
 + (void)setUsername:(NSString *)username;
+
 + (NSString *)apiKey;
+
 + (void)setApiKey:(NSString *)apiKey;
 
 // helper to parse dates in the format returned by Cloud Files
--(NSDate *)dateFromString:(NSString *)dateString;
+- (NSDate *)dateFromString:(NSString *)dateString;
 
 
 @end

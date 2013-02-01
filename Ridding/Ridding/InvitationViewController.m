@@ -101,8 +101,17 @@
       [returnUsers addObject:user];
     }
   }
-  [self.requestUtil tryAddRiddingUser:_riddingId addUsers:returnUsers];
-  [self.navigationController popViewControllerAnimated:YES];
+  dispatch_queue_t q;
+  q = dispatch_queue_create("textFieldShouldReturn", NULL);
+  dispatch_async(q, ^{
+    [self.requestUtil tryAddRiddingUser:_riddingId addUsers:returnUsers];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [SVProgressHUD dismiss];
+      [self.navigationController popViewControllerAnimated:YES];
+      [[NSNotificationCenter defaultCenter] postNotificationName:kSuccAddFriendsNotification object:nil];
+    });
+  });
+
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -182,7 +191,7 @@
   static NSString *kCellID = @"cellID";
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
   if (cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewStylePlain reuseIdentifier:kCellID];
+    cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyle) UITableViewStylePlain reuseIdentifier:kCellID];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   }
   SinaUserProfile *userProfile;

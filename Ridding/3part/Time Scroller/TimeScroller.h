@@ -21,15 +21,16 @@
 @required
 
 - (UITableView *)tableViewForTimeScroller:(TimeScroller *)timeScroller;
+
 - (NSDate *)dateForCell:(UITableViewCell *)cell;
 
 @end
 
 @interface TimeScroller : UIImageView {
 
-  @protected
+@protected
   id <TimeScrollerDelegate> _delegate;
-  
+
   UITableView *_tableView;
   UIImageView *_scrollBar;
   UILabel *_timeLabel;
@@ -39,41 +40,48 @@
   UIView *_hourHand;
   UIView *_minuteHand;
   NSDate *_lastDate;
-  
+
   CGFloat hourPartOne;
   CGFloat hourPartTwo;
   CGFloat hourPartThree;
   CGFloat hourPartFour;
-  
+
   CGFloat minutePartOne;
   CGFloat minutePartTwo;
   CGFloat minutePartThree;
   CGFloat minutePartFour;
-  
-  
+
+
   CGRect backgroundFrame;
   CGRect timeLabelFrame;
   CGRect dateLabelFrame;
   NSString *dateLabelString;
   NSString *timeLabelString;
   CGFloat dateLabelAlpha;
-  
-  BOOL    useOldAnimation;
+
+  BOOL useOldAnimation;
 }
 
 @property (nonatomic, assign) id <TimeScrollerDelegate> delegate;
 @property (nonatomic, copy) NSCalendar *calendar;
 
 - (id)initWithDelegate:(id <TimeScrollerDelegate>)delegate;
+
 - (void)scrollViewDidScroll;
+
 - (void)scrollViewDidEndDecelerating;
+
 - (void)scrollViewWillBeginDragging;
 
 
 - (void)animation1;
+
 - (void)animation2;
+
 - (void)animation3;
+
 - (void)animation4;
+
 - (void)animation5;
 
 

@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DetailTextView : UILabel
-{
-    NSMutableAttributedString *resultAttributedString;
+@interface DetailTextView : UILabel {
+  NSMutableAttributedString *resultAttributedString;
 }
--(void)setKeyWordTextArray:(NSArray *)keyWordArray WithFont:(UIFont *)font AndColor:(UIColor *)keyWordColor;
--(void)setText:(NSString *)text WithFont:(UIFont *)font AndColor:(UIColor *)color;
--(void)setKeyWordTextString:(NSString *)keyWordArray WithFont:(UIFont *)font AndColor:(UIColor *)keyWordColor;
+- (void)setKeyWordTextArray:(NSArray *)keyWordArray WithFont:(UIFont *)font AndColor:(UIColor *)keyWordColor;
+
+- (void)setText:(NSString *)text WithFont:(UIFont *)font AndColor:(UIColor *)color;
+
+- (void)setKeyWordTextString:(NSString *)keyWordArray WithFont:(UIFont *)font AndColor:(UIColor *)keyWordColor;
 @end

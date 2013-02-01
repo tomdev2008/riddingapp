@@ -15,10 +15,15 @@
 // These are the default delegate methods for request status
 // You can use different ones by setting didStartSelector / didFinishSelector / didFailSelector
 - (void)requestStarted:(ASIHTTPRequest *)request;
+
 - (void)request:(ASIHTTPRequest *)request didReceiveResponseHeaders:(NSDictionary *)responseHeaders;
+
 - (void)request:(ASIHTTPRequest *)request willRedirectToURL:(NSURL *)newURL;
+
 - (void)requestFinished:(ASIHTTPRequest *)request;
+
 - (void)requestFailed:(ASIHTTPRequest *)request;
+
 - (void)requestRedirected:(ASIHTTPRequest *)request;
 
 // When a delegate implements this method, it is expected to process all incoming data itself
@@ -30,6 +35,7 @@
 // The delegate can then either restart the request ([request retryUsingSuppliedCredentials]) once credentials have been set
 // or cancel it ([request cancelAuthentication])
 - (void)authenticationNeededForRequest:(ASIHTTPRequest *)request;
+
 - (void)proxyAuthenticationNeededForRequest:(ASIHTTPRequest *)request;
 
 @end

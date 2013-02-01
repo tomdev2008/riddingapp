@@ -8,13 +8,13 @@
 
 
 @interface ASICloudFilesObject : NSObject {
-	NSString *name;
-	NSString *hash;
-	NSUInteger bytes;
-	NSString *contentType;
-	NSDate *lastModified;
-	NSData *data;
-	NSMutableDictionary *metadata;
+  NSString *name;
+  NSString *hash;
+  NSUInteger bytes;
+  NSString *contentType;
+  NSDate *lastModified;
+  NSData *data;
+  NSMutableDictionary *metadata;
 }
 
 @property (retain) NSString *name;
@@ -22,7 +22,7 @@
 @property (assign) NSUInteger bytes;
 @property (retain) NSString *contentType;
 @property (retain) NSDate *lastModified;
-@property (retain) NSData *data;	
+@property (retain) NSData *data;
 @property (retain) NSMutableDictionary *metadata;
 
 + (id)object;

@@ -84,7 +84,7 @@
     comment.riddingId = _ridding.riddingId;
     comment.userId = [StaticInfo getSinglton].user.userId;
     comment.toUserId = _toUserId;
-    
+
     NSDictionary *dic = [self.requestUtil addRiddingComment:comment];
     dispatch_async(dispatch_get_main_queue(), ^{
       if (dic) {
@@ -96,7 +96,7 @@
       [SVProgressHUD dismiss];
     });
   });
-  
+
 }
 
 //时间是用在进行中的列表，weight是用在推荐列表
@@ -425,7 +425,7 @@
     _toUserId = 0;
     _replyId = 0;
   }
-  
+
   [self addCommentToServer:_textView.text];
 
 }

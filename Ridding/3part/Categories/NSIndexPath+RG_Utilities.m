@@ -11,12 +11,12 @@
 @implementation NSIndexPath (RG_Utilities)
 
 - (BOOL)isSameOfIndexPath:(NSIndexPath *)indexPath {
-	
+
   if (!indexPath) {
     return NO;
   }
 
-	return ([indexPath row]==[self row]) && ([indexPath section] == [self section]);
+  return ([indexPath row] == [self row]) && ([indexPath section] == [self section]);
 }
 
 @end

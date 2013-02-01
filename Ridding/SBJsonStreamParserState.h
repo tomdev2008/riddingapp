@@ -38,13 +38,17 @@
 @interface SBJsonStreamParserState : NSObject
 + (id)sharedInstance;
 
-- (BOOL)parser:(SBJsonStreamParser*)parser shouldAcceptToken:(sbjson_token_t)token;
-- (SBJsonStreamParserStatus)parserShouldReturn:(SBJsonStreamParser*)parser;
-- (void)parser:(SBJsonStreamParser*)parser shouldTransitionTo:(sbjson_token_t)tok;
+- (BOOL)parser:(SBJsonStreamParser *)parser shouldAcceptToken:(sbjson_token_t)token;
+
+- (SBJsonStreamParserStatus)parserShouldReturn:(SBJsonStreamParser *)parser;
+
+- (void)parser:(SBJsonStreamParser *)parser shouldTransitionTo:(sbjson_token_t)tok;
+
 - (BOOL)needKey;
+
 - (BOOL)isError;
 
-- (NSString*)name;
+- (NSString *)name;
 
 @end
 

@@ -34,9 +34,9 @@
 #import "SBJsonStreamParser.h"
 
 typedef enum {
-	SBJsonStreamParserAdapterNone,
-	SBJsonStreamParserAdapterArray,
-	SBJsonStreamParserAdapterObject,
+  SBJsonStreamParserAdapterNone,
+  SBJsonStreamParserAdapterArray,
+  SBJsonStreamParserAdapterObject,
 } SBJsonStreamParserAdapterType;
 
 /**
@@ -52,14 +52,14 @@ typedef enum {
  This method is called if a JSON array is found.
  
  */
-- (void)parser:(SBJsonStreamParser*)parser foundArray:(NSArray*)array;
+- (void)parser:(SBJsonStreamParser *)parser foundArray:(NSArray *)array;
 
 /**
  @brief Called when a JSON object is found
 
  This method is called if a JSON object is found.
  */
-- (void)parser:(SBJsonStreamParser*)parser foundObject:(NSDictionary*)dict;
+- (void)parser:(SBJsonStreamParser *)parser foundObject:(NSDictionary *)dict;
 
 @end
 
@@ -118,13 +118,13 @@ typedef enum {
 */
 @interface SBJsonStreamParserAdapter : NSObject <SBJsonStreamParserDelegate> {
 @private
-	NSUInteger depth;
-    NSMutableArray *array;
-	NSMutableDictionary *dict;
-	NSMutableArray *keyStack;
-	NSMutableArray *stack;
-	
-	SBJsonStreamParserAdapterType currentType;
+  NSUInteger depth;
+  NSMutableArray *array;
+  NSMutableDictionary *dict;
+  NSMutableArray *keyStack;
+  NSMutableArray *stack;
+
+  SBJsonStreamParserAdapterType currentType;
 }
 
 /**
@@ -143,6 +143,6 @@ typedef enum {
  @brief Your delegate object
  Set this to the object you want to receive the SBJsonStreamParserAdapterDelegate messages.
  */
-@property (unsafe_unretained) id<SBJsonStreamParserAdapterDelegate> delegate;
+@property (unsafe_unretained) id <SBJsonStreamParserAdapterDelegate> delegate;
 
 @end

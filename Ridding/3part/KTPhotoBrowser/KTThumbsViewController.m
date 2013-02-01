@@ -7,7 +7,6 @@
 //
 
 #import "KTThumbsViewController.h"
-#import "KTThumbsView.h"
 #import "KTThumbView.h"
 #import "KTPhotoScrollViewController.h"
 
@@ -19,14 +18,16 @@
 @implementation KTThumbsViewController
 
 @synthesize dataSource = dataSource_;
+
 - (void)dealloc {
-   [scrollView_ release], scrollView_ = nil;
-   
-   [super dealloc];
+
+  [scrollView_ release], scrollView_ = nil;
+
+  [super dealloc];
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
+
   [super viewDidLoad];
   // Make sure to set wantsFullScreenLayout or the photo
   // will not display behind the status bar.
@@ -37,37 +38,37 @@
   [scrollView setScrollEnabled:YES];
   [scrollView setAlwaysBounceVertical:YES];
   [scrollView setBackgroundColor:[UIColor whiteColor]];
-  
+
   if ([dataSource_ respondsToSelector:@selector(thumbsHaveBorder)]) {
     [scrollView setThumbsHaveBorder:[dataSource_ thumbsHaveBorder]];
   }
-  
+
   if ([dataSource_ respondsToSelector:@selector(thumbSize)]) {
     [scrollView setThumbSize:[dataSource_ thumbSize]];
   }
-  
+
   if ([dataSource_ respondsToSelector:@selector(thumbsPerRow)]) {
     [scrollView setThumbsPerRow:[dataSource_ thumbsPerRow]];
   }
-  
-  
+
+
   // Retain a reference to the scroll view.
   scrollView_ = scrollView;
   [scrollView_ retain];
-  
+
   // Set main view to the scroll view.
   [self.view addSubview:scrollView_];
-  
+
   // Release the local scroll view reference.
   [scrollView release];
 }
 
 
 - (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
+  // Releases the view if it doesn't have a superview.
+  [super didReceiveMemoryWarning];
+
+  // Release any cached data, images, etc that aren't in use.
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -86,67 +87,70 @@
 }
 
 - (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
+  // Release any retained subviews of the main view.
+  // e.g. self.myOutlet = nil;
 }
 
 - (void)willLoadThumbs {
-   // Do nothing by default.
+  // Do nothing by default.
 }
 
 - (void)didLoadThumbs {
-   // Do nothing by default.
+  // Do nothing by default.
 }
 
 - (void)reloadThumbs {
-   [self willLoadThumbs];
-   [scrollView_ reloadData];
-   [self didLoadThumbs];
+
+  [self willLoadThumbs];
+  [scrollView_ reloadData];
+  [self didLoadThumbs];
 }
 
 - (void)setDataSource:(id <KTPhotoBrowserDataSource>)newDataSource {
-   dataSource_ = newDataSource;
-   [self reloadThumbs];
+
+  dataSource_ = newDataSource;
+  [self reloadThumbs];
 }
 
 - (void)didSelectThumbAtIndex:(NSUInteger)index {
-   KTPhotoScrollViewController *newController = [[KTPhotoScrollViewController alloc] 
-                                                        initWithDataSource:dataSource_ 
-                                                  andStartWithPhotoAtIndex:index];
-  
-   [[self navigationController] pushViewController:newController animated:YES];
-   [newController release];
+
+  KTPhotoScrollViewController *newController = [[KTPhotoScrollViewController alloc]
+      initWithDataSource:dataSource_
+andStartWithPhotoAtIndex:index];
+
+  [[self navigationController] pushViewController:newController animated:YES];
+  [newController release];
 }
 
 
 #pragma mark -
 #pragma mark KTThumbsViewDataSource
 
-- (NSInteger)thumbsViewNumberOfThumbs:(KTThumbsView *)thumbsView
-{
-   NSInteger count = [dataSource_ numberOfPhotos];
-   return count;
+- (NSInteger)thumbsViewNumberOfThumbs:(KTThumbsView *)thumbsView {
+
+  NSInteger count = [dataSource_ numberOfPhotos];
+  return count;
 }
 
-- (KTThumbView *)thumbsView:(KTThumbsView *)thumbsView thumbForIndex:(NSInteger)index
-{
-   KTThumbView *thumbView = [thumbsView dequeueReusableThumbView];
-   if (!thumbView) {
-      thumbView = [[[KTThumbView alloc] initWithFrame:CGRectZero] autorelease];
-      [thumbView setController:self];
-   }
+- (KTThumbView *)thumbsView:(KTThumbsView *)thumbsView thumbForIndex:(NSInteger)index {
 
-   // Set thumbnail image.
-   if ([dataSource_ respondsToSelector:@selector(thumbImageAtIndex:thumbView:)] == NO) {
-      // Set thumbnail image synchronously.
-      UIImage *thumbImage = [dataSource_ thumbImageAtIndex:index];
-      [thumbView setThumbImage:thumbImage];
-   } else {
-      // Set thumbnail image asynchronously.
-      [dataSource_ thumbImageAtIndex:index thumbView:thumbView];
-   }
-   
-   return thumbView;
+  KTThumbView *thumbView = [thumbsView dequeueReusableThumbView];
+  if (!thumbView) {
+    thumbView = [[[KTThumbView alloc] initWithFrame:CGRectZero] autorelease];
+    [thumbView setController:self];
+  }
+
+  // Set thumbnail image.
+  if ([dataSource_ respondsToSelector:@selector(thumbImageAtIndex:thumbView:)] == NO) {
+    // Set thumbnail image synchronously.
+    UIImage *thumbImage = [dataSource_ thumbImageAtIndex:index];
+    [thumbView setThumbImage:thumbImage];
+  } else {
+    // Set thumbnail image asynchronously.
+    [dataSource_ thumbImageAtIndex:index thumbView:thumbView];
+  }
+
+  return thumbView;
 }
 
 

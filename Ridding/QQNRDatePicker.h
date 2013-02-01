@@ -7,20 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+
 #define DEFAULT_HEIGHT 279
+
 @protocol QQNRDatePickerDelegate <NSObject>
 
-- (void)didFinishChoice:(NSString*)dateStr;
+- (void)didFinishChoice:(NSString *)dateStr;
 
 @end
 
-@interface QQNRDatePicker : UIControl{
+@interface QQNRDatePicker : UIControl {
   UIToolbar *_toolBar;
   BOOL _datePickerIsShowing;
 }
 
-@property (nonatomic,retain) UIDatePicker *datePicker;
-@property (nonatomic,assign) id<QQNRDatePickerDelegate> delegate;
+@property (nonatomic, retain) UIDatePicker *datePicker;
+@property (nonatomic, assign) id <QQNRDatePickerDelegate> delegate;
+
 - (void)showDatePicker;
+
 - (void)hideDatePicker;
 @end

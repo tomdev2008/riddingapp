@@ -8,16 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import "StaticInfo.h"
-@interface ResponseCodeCheck : NSObject{
-    StaticInfo *staticInfo;
+
+@interface ResponseCodeCheck : NSObject {
+  StaticInfo *staticInfo;
 }
 
-@property(nonatomic,retain) StaticInfo *staticInfo;
+@property (nonatomic, retain) StaticInfo *staticInfo;
 
-+ (ResponseCodeCheck*)getSinglton;
++ (ResponseCodeCheck *)getSinglton;
 
 //检查网络状态
-- (BOOL) checkConnect;
-- (BOOL) isWifi;
-- (BOOL) isWWAN;
+- (BOOL)checkConnect;
+
+- (BOOL)isWifi;
+
+- (BOOL)isWWAN;
 @end

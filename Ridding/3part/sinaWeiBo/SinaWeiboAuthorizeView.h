@@ -10,36 +10,38 @@
 
 @protocol SinaWeiboAuthorizeViewDelegate;
 
-@interface SinaWeiboAuthorizeView : UIView <UIWebViewDelegate>
-{
-    UIWebView *webView;
-    UIButton *closeButton;
-    UIView *modalBackgroundView;
-    UIActivityIndicatorView *indicatorView;
-    UIInterfaceOrientation previousOrientation;
-    
-    id<SinaWeiboAuthorizeViewDelegate> delegate;
-    
-    NSString *appRedirectURI;
-    NSDictionary *authParams;
+@interface SinaWeiboAuthorizeView : UIView <UIWebViewDelegate> {
+  UIWebView *webView;
+  UIButton *closeButton;
+  UIView *modalBackgroundView;
+  UIActivityIndicatorView *indicatorView;
+  UIInterfaceOrientation previousOrientation;
+
+  id <SinaWeiboAuthorizeViewDelegate> delegate;
+
+  NSString *appRedirectURI;
+  NSDictionary *authParams;
 }
 
-@property (nonatomic, assign) id<SinaWeiboAuthorizeViewDelegate> delegate;
+@property (nonatomic, assign) id <SinaWeiboAuthorizeViewDelegate> delegate;
 
 - (id)initWithAuthParams:(NSDictionary *)params
-                delegate:(id<SinaWeiboAuthorizeViewDelegate>)delegate;
+                delegate:(id <SinaWeiboAuthorizeViewDelegate>)delegate;
 
 - (void)show;
+
 - (void)hide;
 
 @end
 
 @protocol SinaWeiboAuthorizeViewDelegate <NSObject>
 
+- (void)      authorizeView:(SinaWeiboAuthorizeView *)authView
+didRecieveAuthorizationCode:(NSString *)code;
+
 - (void)authorizeView:(SinaWeiboAuthorizeView *)authView
-        didRecieveAuthorizationCode:(NSString *)code;
-- (void)authorizeView:(SinaWeiboAuthorizeView *)authView
-        didFailWithErrorInfo:(NSDictionary *)errorInfo;
+ didFailWithErrorInfo:(NSDictionary *)errorInfo;
+
 - (void)authorizeViewDidCancel:(SinaWeiboAuthorizeView *)authView;
 
 @end

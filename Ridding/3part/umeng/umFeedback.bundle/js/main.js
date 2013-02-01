@@ -1,30 +1,30 @@
-var CONFIG = (function() {
+var CONFIG = (function () {
     var STRINGS = {
-        'FORM_BLANK_ALERT': '请输入反馈内容哦!',
-        'THANKS': '感谢您的反馈!',
-        'NETWORK_ERROR': '网络问题，请稍后再试，本条已经缓存下次自动重发。'
+        'FORM_BLANK_ALERT':'请输入反馈内容哦!',
+        'THANKS':'感谢您的反馈!',
+        'NETWORK_ERROR':'网络问题，请稍后再试，本条已经缓存下次自动重发。'
     };
 
     var EN_STRINGS = {
-        'FORM_BLANK_ALERT': 'Please make sure to provide your comment！',
-        'THANKS': 'We are grateful for your feedback!',
-        'NETWORK_ERROR': 'Internet connection problem occurring. Please try later. This message has been saved and will be resubmitted automatically later.'
+        'FORM_BLANK_ALERT':'Please make sure to provide your comment！',
+        'THANKS':'We are grateful for your feedback!',
+        'NETWORK_ERROR':'Internet connection problem occurring. Please try later. This message has been saved and will be resubmitted automatically later.'
     };
 
     var JA_STRINGS = {
-        'FORM_BLANK_ALERT': 'ご意見を入力してください。',
-        'THANKS': 'ご意見を頂き、ありがとうございました。',
-        'NETWORK_ERROR': '通信上の問題で、後ほどもう一度お試して下さい。このメッセージはすでにバッファーに保存しており、次回は自動送信されます。'
+        'FORM_BLANK_ALERT':'ご意見を入力してください。',
+        'THANKS':'ご意見を頂き、ありがとうございました。',
+        'NETWORK_ERROR':'通信上の問題で、後ほどもう一度お試して下さい。このメッセージはすでにバッファーに保存しており、次回は自動送信されます。'
     };
 
     var I18N = {
-        'en': EN_STRINGS,
-        'zh-Hans': STRINGS,
-        'ja': JA_STRINGS
+        'en':EN_STRINGS,
+        'zh-Hans':STRINGS,
+        'ja':JA_STRINGS
     }
 
     return {
-        get:function(name, language) {
+        get:function (name, language) {
             return I18N[language][name];
         }
     };
@@ -33,45 +33,47 @@ var CONFIG = (function() {
 var myScroll;
 FeedbackJSON = null;
 function loaded() {
-	myScroll = new iScroll('wrapper');
+    myScroll = new iScroll('wrapper');
 }
 
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+document.addEventListener('touchmove', function (e) {
+    e.preventDefault();
+}, false);
 
 document.addEventListener('DOMContentLoaded', loaded, false);
 
-Date.prototype.format = function(fmt) {
+Date.prototype.format = function (fmt) {
     var o = {
-        "M+": this.getMonth() + 1,
+        "M+":this.getMonth() + 1,
         //月份
-        "d+": this.getDate(),
+        "d+":this.getDate(),
         //日
-        "h+": this.getHours() % 12 == 0 ? 12 : this.getHours() % 12,
+        "h+":this.getHours() % 12 == 0 ? 12 : this.getHours() % 12,
         //小时
-        "H+": this.getHours(),
+        "H+":this.getHours(),
         //小时
-        "m+": this.getMinutes(),
+        "m+":this.getMinutes(),
         //分
-        "s+": this.getSeconds(),
+        "s+":this.getSeconds(),
         //秒
-        "q+": Math.floor((this.getMonth() + 3) / 3),
+        "q+":Math.floor((this.getMonth() + 3) / 3),
         //季度
-        "S": this.getMilliseconds() //毫秒
+        "S":this.getMilliseconds() //毫秒
     };
     var week = {
-        "0": "\u65e5",
-        "1": "\u4e00",
-        "2": "\u4e8c",
-        "3": "\u4e09",
-        "4": "\u56db",
-        "5": "\u4e94",
-        "6": "\u516d"
+        "0":"\u65e5",
+        "1":"\u4e00",
+        "2":"\u4e8c",
+        "3":"\u4e09",
+        "4":"\u56db",
+        "5":"\u4e94",
+        "6":"\u516d"
     };
     if (/(y+)/.test(fmt)) {
         fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     }
     if (/(E+)/.test(fmt)) {
-        fmt = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? "\u661f\u671f": "\u5468") : "") + week[this.getDay() + ""]);
+        fmt = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? "\u661f\u671f" : "\u5468") : "") + week[this.getDay() + ""]);
     }
     for (var k in o) {
         if (new RegExp("(" + k + ")").test(fmt)) {
@@ -81,13 +83,13 @@ Date.prototype.format = function(fmt) {
     return fmt;
 }
 
-function getDateTime(){
+function getDateTime() {
     var d = new Date();
     return d.format("yyyy-MM-dd HH:mm:ss");
 }
 
 //弹出alert view , javascript的alert无法修改标题。
-function showAlert(title){
+function showAlert(title) {
     location.href = 'umengjscall:CallAlert:' + decodeURIComponent(title);
 }
 
@@ -119,7 +121,7 @@ function submitForm(language) {
 //        result.remark.userName = userName;
 //    }
 
-    result.remark ={};
+    result.remark = {};
     result.contact = {};
 
     if (!!rate) {
@@ -134,13 +136,13 @@ function submitForm(language) {
 //        showAlert(CONFIG.get('THANKS'));
     }
     else {
-        showAlert(CONFIG.get('FORM_BLANK_ALERT',language));
+        showAlert(CONFIG.get('FORM_BLANK_ALERT', language));
     }
 
     return false;
 }
 
-function initFormValues(values_json){
+function initFormValues(values_json) {
     FeedbackJSON = values_json["FeedbackJSON"];
 //    alert()和console.log()方法都无法使用，只能用content来显示文本来调试
 //    $("#content").val(JSON.stringify(FeedbackJSON));
@@ -165,7 +167,7 @@ function renderFeedbacks(feedbacks) {
     var template = Handlebars.compile(template_source);
     var html = template(feedbacks);
     $("#topics").append(html);
-    if($('#topics').height() > $('#wrapper').height()){
+    if ($('#topics').height() > $('#wrapper').height()) {
         myScroll.refresh();
         myScroll.scrollToElement("#feedbacks_foot", 10);
     }
@@ -180,9 +182,9 @@ function renderNewFeedback(feedback) {
     setTimeout(function () {
             $("#topics").append(html);
             if ($('#topics').height() > $('#wrapper').height()) {
-                    myScroll.refresh();
-                    myScroll.scrollToElement("#feedbacks_foot", 10);
-                }
+                myScroll.refresh();
+                myScroll.scrollToElement("#feedbacks_foot", 10);
+            }
         }
         , 50);
 

@@ -7,7 +7,6 @@
 //
 
 #import "QQNRFeedViewController.h"
-#import "MapFix.h"
 
 #define moveSpeed 0.5
 
@@ -99,7 +98,6 @@
 }
 
 
-
 //iPhone 从APNs服务器获取deviceToken后回调此方法
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
@@ -129,7 +127,7 @@
 
   if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
     // Stop normal location updates and start significant location change updates for battery efficiency.
-    
+
   }
   else {
     NSLog(@"Significant location change monitoring is not available.");
@@ -141,7 +139,7 @@
 
   if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
     // Stop normal location updates and start significant location change updates for battery efficiency.
-    
+
   }
 }
 
@@ -163,7 +161,7 @@
 + (void)moveMidNavgation {
 
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
-  
+
   //往左移动
   [UIView animateWithDuration:moveSpeed animations:^{
     delegate.navController.view.frame = CGRectMake(LeftBarMoveWidth,

@@ -28,34 +28,32 @@ extern NSString *const ASIS3RequestSchemeHTTP;
 extern NSString *const ASIS3RequestSchemeHTTPS;
 
 
-
 typedef enum _ASIS3ErrorType {
-    ASIS3ResponseParsingFailedType = 1,
-    ASIS3ResponseErrorType = 2
+  ASIS3ResponseParsingFailedType = 1,
+  ASIS3ResponseErrorType = 2
 } ASIS3ErrorType;
 
 
-
 @interface ASIS3Request : ASIHTTPRequest <NSCopying, NSXMLParserDelegate> {
-	
-	// Your S3 access key. Set it on the request, or set it globally using [ASIS3Request setSharedAccessKey:]
-	NSString *accessKey;
-	
-	// Your S3 secret access key. Set it on the request, or set it globally using [ASIS3Request setSharedSecretAccessKey:]
-	NSString *secretAccessKey;
-	
-	// Set to ASIS3RequestSchemeHTTPS to send your requests via HTTPS (default is ASIS3RequestSchemeHTTP)
-	NSString *requestScheme;
 
-	// The string that will be used in the HTTP date header. Generally you'll want to ignore this and let the class add the current date for you, but the accessor is used by the tests
-	NSString *dateString;
+  // Your S3 access key. Set it on the request, or set it globally using [ASIS3Request setSharedAccessKey:]
+  NSString *accessKey;
 
-	// The access policy to use when PUTting a file (see the string constants at the top ASIS3Request.h for details on what the possible options are)
-	NSString *accessPolicy;
+  // Your S3 secret access key. Set it on the request, or set it globally using [ASIS3Request setSharedSecretAccessKey:]
+  NSString *secretAccessKey;
 
-	// Internally used while parsing errors
-	NSString *currentXMLElementContent;
-	NSMutableArray *currentXMLElementStack;
+  // Set to ASIS3RequestSchemeHTTPS to send your requests via HTTPS (default is ASIS3RequestSchemeHTTP)
+  NSString *requestScheme;
+
+  // The string that will be used in the HTTP date header. Generally you'll want to ignore this and let the class add the current date for you, but the accessor is used by the tests
+  NSString *dateString;
+
+  // The access policy to use when PUTting a file (see the string constants at the top ASIS3Request.h for details on what the possible options are)
+  NSString *accessPolicy;
+
+  // Internally used while parsing errors
+  NSString *currentXMLElementContent;
+  NSMutableArray *currentXMLElementStack;
 }
 
 // Uses the supplied date to create a Date header string
@@ -64,7 +62,7 @@ typedef enum _ASIS3ErrorType {
 // Will return a dictionary of the 'amz-' headers that wil be sent to S3
 // Override in subclasses to add new ones	
 - (NSMutableDictionary *)S3Headers;
-	
+
 // Returns the string that will used to create a signature for this request
 // Is overridden in ASIS3ObjectRequest
 - (NSString *)stringToSignForHeaders:(NSString *)canonicalizedAmzHeaders resource:(NSString *)canonicalizedResource;
@@ -76,17 +74,20 @@ typedef enum _ASIS3ErrorType {
 
 // Get and set the global access key, this will be used for all requests the access key hasn't been set for
 + (NSString *)sharedAccessKey;
+
 + (void)setSharedAccessKey:(NSString *)newAccessKey;
+
 + (NSString *)sharedSecretAccessKey;
+
 + (void)setSharedSecretAccessKey:(NSString *)newAccessKey;
 
 # pragma mark helpers
-	
+
 // Returns a date formatter than can be used to parse a date from S3
-+ (NSDateFormatter*)S3ResponseDateFormatter;
-	
++ (NSDateFormatter *)S3ResponseDateFormatter;
+
 // Returns a date formatter than can be used to send a date header to S3
-+ (NSDateFormatter*)S3RequestDateFormatter;
++ (NSDateFormatter *)S3RequestDateFormatter;
 
 
 // URL-encodes an S3 key so it can be used in a url

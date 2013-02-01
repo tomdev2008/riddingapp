@@ -75,7 +75,8 @@
   return FALSE;
 }
 
-- (BOOL)syncSina{
-  return _isSyncSina>0;
+- (BOOL)syncSina {
+
+  return _isSyncSina > 0;
 }
 @end

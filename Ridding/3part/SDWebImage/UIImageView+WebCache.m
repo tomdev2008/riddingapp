@@ -10,72 +10,70 @@
 
 @implementation UIImageView (WebCache)
 
-- (void)setImageWithURL:(NSURL *)url
-{
+- (void)setImageWithURL:(NSURL *)url {
+
   [self setImageWithURL:url placeholderImage:nil];
 }
 
 // 根据video的URL产生image
-- (void)setImageWithVideoURL:(NSURL *)url placeholderImage:(UIImage *)placeholder{
-  
+- (void)setImageWithVideoURL:(NSURL *)url placeholderImage:(UIImage *)placeholder {
+
   [self setImageWithURL:url placeholderImage:placeholder options:SDWebImageVideoFirstFrame];
 }
 
-- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder
-{
+- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder {
+
   [self setImageWithURL:url placeholderImage:placeholder options:0];
 }
 
-- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options
-{
-    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options {
 
-    // Remove in progress downloader from queue
-    [manager cancelForDelegate:self];
+  SDWebImageManager *manager = [SDWebImageManager sharedManager];
 
-     self.image = placeholder;
+  // Remove in progress downloader from queue
+  [manager cancelForDelegate:self];
 
-    if (url)
-    {
-        [manager downloadWithURL:url delegate:self options:options];
-    }
+  self.image = placeholder;
+
+  if (url) {
+    [manager downloadWithURL:url delegate:self options:options];
+  }
 }
 
 #if NS_BLOCKS_AVAILABLE
-- (void)setImageWithURL:(NSURL *)url success:(void (^)(UIImage *image))success failure:(void (^)(NSError *error))failure;
-{
-    [self setImageWithURL:url placeholderImage:nil success:success failure:failure];
+- (void)setImageWithURL:(NSURL *)url success:(void (^)(UIImage *image))success failure:(void (^)(NSError *error))failure; {
+
+  [self setImageWithURL:url placeholderImage:nil success:success failure:failure];
 }
 
-- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder success:(void (^)(UIImage *image))success failure:(void (^)(NSError *error))failure;
-{
-    [self setImageWithURL:url placeholderImage:placeholder options:0 success:success failure:failure];
+- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder success:(void (^)(UIImage *image))success failure:(void (^)(NSError *error))failure; {
+
+  [self setImageWithURL:url placeholderImage:placeholder options:0 success:success failure:failure];
 }
 
-- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options success:(void (^)(UIImage *image))success failure:(void (^)(NSError *error))failure;
-{
-    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options success:(void (^)(UIImage *image))success failure:(void (^)(NSError *error))failure; {
 
-    // Remove in progress downloader from queue
-    [manager cancelForDelegate:self];
+  SDWebImageManager *manager = [SDWebImageManager sharedManager];
 
-    self.image = placeholder;
+  // Remove in progress downloader from queue
+  [manager cancelForDelegate:self];
 
-    if (url)
-    {
-        [manager downloadWithURL:url delegate:self options:options success:success failure:failure];
-    }
+  self.image = placeholder;
+
+  if (url) {
+    [manager downloadWithURL:url delegate:self options:options success:success failure:failure];
+  }
 }
 #endif
 
-- (void)cancelCurrentImageLoad
-{
-    [[SDWebImageManager sharedManager] cancelForDelegate:self];
+- (void)cancelCurrentImageLoad {
+
+  [[SDWebImageManager sharedManager] cancelForDelegate:self];
 }
 
-- (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image
-{
-  if(image){
+- (void)webImageManager:(SDWebImageManager *)imageManager didFinishWithImage:(UIImage *)image {
+
+  if (image) {
     self.image = image;
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
   }

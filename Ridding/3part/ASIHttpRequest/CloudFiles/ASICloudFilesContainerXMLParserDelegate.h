@@ -13,13 +13,13 @@
 @class ASICloudFilesContainer;
 
 @interface ASICloudFilesContainerXMLParserDelegate : NSObject <NSXMLParserDelegate> {
-		
-	NSMutableArray *containerObjects;
 
-	// Internally used while parsing the response
-	NSString *currentContent;
-	NSString *currentElement;
-	ASICloudFilesContainer *currentObject;
+  NSMutableArray *containerObjects;
+
+  // Internally used while parsing the response
+  NSString *currentContent;
+  NSString *currentElement;
+  ASICloudFilesContainer *currentObject;
 }
 
 @property (retain) NSMutableArray *containerObjects;

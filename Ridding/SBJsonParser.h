@@ -59,7 +59,7 @@
  @return A string describing the error encountered, or nil if no error occured.
 
  */
-@property(copy) NSString *error;
+@property (copy) NSString *error;
 
 /**
  @brief Return the object represented by the given NSData object.
@@ -70,7 +70,7 @@
  @return The NSArray or NSDictionary represented by the object, or nil if an error occured.
 
  */
-- (id)objectWithData:(NSData*)data;
+- (id)objectWithData:(NSData *)data;
 
 /**
  @brief Return the object represented by the given string
@@ -93,8 +93,8 @@
  @return The NSArray or NSDictionary represented by the object, or nil if an error occured.
  */
 
-- (id)objectWithString:(NSString*)jsonText
-                 error:(NSError**)error;
+- (id)objectWithString:(NSString *)jsonText
+                 error:(NSError **)error;
 
 @end
 

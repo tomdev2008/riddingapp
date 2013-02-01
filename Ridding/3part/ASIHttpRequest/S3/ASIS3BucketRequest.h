@@ -13,32 +13,32 @@
 @class ASIS3BucketObject;
 
 @interface ASIS3BucketRequest : ASIS3Request {
-	
-	// Name of the bucket to talk to
-	NSString *bucket;
-	
-	// A parameter passed to S3 in the query string to tell it to return specialised information
-	// Consult the S3 REST API documentation for more info
-	NSString *subResource;
-	
-	// Options for filtering GET requests
-	// See http://docs.amazonwebservices.com/AmazonS3/2006-03-01/index.html?RESTBucketGET.html
-	NSString *prefix;
-	NSString *marker;
-	int maxResultCount;
-	NSString *delimiter;
-	
-	// Internally used while parsing the response
-	ASIS3BucketObject *currentObject;
-	
-	// Returns an array of ASIS3BucketObjects created from the XML response
-	NSMutableArray *objects;	
-	
-	// Will be populated with a list of 'folders' when a delimiter is set
-	NSMutableArray *commonPrefixes;
-	
-	// Will be true if this request did not return all the results matching the query (use maxResultCount to configure the number of results to return)
-	BOOL isTruncated;
+
+  // Name of the bucket to talk to
+  NSString *bucket;
+
+  // A parameter passed to S3 in the query string to tell it to return specialised information
+  // Consult the S3 REST API documentation for more info
+  NSString *subResource;
+
+  // Options for filtering GET requests
+  // See http://docs.amazonwebservices.com/AmazonS3/2006-03-01/index.html?RESTBucketGET.html
+  NSString *prefix;
+  NSString *marker;
+  int maxResultCount;
+  NSString *delimiter;
+
+  // Internally used while parsing the response
+  ASIS3BucketObject *currentObject;
+
+  // Returns an array of ASIS3BucketObjects created from the XML response
+  NSMutableArray *objects;
+
+  // Will be populated with a list of 'folders' when a delimiter is set
+  NSMutableArray *commonPrefixes;
+
+  // Will be true if this request did not return all the results matching the query (use maxResultCount to configure the number of results to return)
+  BOOL isTruncated;
 }
 
 // Fetch a bucket

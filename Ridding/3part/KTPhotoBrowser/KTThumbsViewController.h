@@ -10,18 +10,19 @@
 #import "KTPhotoBrowserDataSource.h"
 #import "KTThumbsView.h"
 #import "BasicViewController.h"
+
 @class KTThumbsView;
 
-@interface KTThumbsViewController :  BasicViewController<KTThumbsViewDataSource>
-{
+@interface KTThumbsViewController : BasicViewController <KTThumbsViewDataSource> {
 @private
-   id <KTPhotoBrowserDataSource> dataSource_;
-   KTThumbsView *scrollView_;
-   BOOL viewDidAppearOnce_;
-   BOOL navbarWasTranslucent_;
+  id <KTPhotoBrowserDataSource> dataSource_;
+  KTThumbsView *scrollView_;
+  BOOL viewDidAppearOnce_;
+  BOOL navbarWasTranslucent_;
 }
 
 @property (nonatomic, retain) id <KTPhotoBrowserDataSource> dataSource;
+
 /**
  * Re-displays the thumbnail images.
  */

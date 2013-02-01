@@ -25,6 +25,7 @@
 #import "QQNRImagesScrollVCTL.h"
 #import "RiddingLocationDao.h"
 #import "MyLocationManager.h"
+
 @interface UserMap ()
 
 @end
@@ -166,11 +167,12 @@
 
 //定时发送我的当前位置
 - (void)sendMyLocationQuartz {
-  MyLocationManager *myLocationManager=[MyLocationManager getSingleton];
+
+  MyLocationManager *myLocationManager = [MyLocationManager getSingleton];
   [myLocationManager startUpdateMyLocation:^(QQNRMyLocation *location) {
-    if(location==nil){
+    if (location == nil) {
       [SVProgressHUD showSuccessWithStatus:@"请开启定位服务以定位到您的位置" duration:2.0];
-    }else{
+    } else {
       dispatch_queue_t q;
       q = dispatch_queue_create("sendMyLocationQuartz", NULL);
       dispatch_async(q, ^{
@@ -365,7 +367,7 @@
             [self.mapView addAnnotation:photoAnnotation];
             [_photoArray addObject:picture];
             index++;
-          }else{
+          } else {
             [SVProgressHUD showErrorWithStatus:@"您还没有照片噢,赶紧去拍一张"];
           }
         }
@@ -800,7 +802,7 @@
 
 - (IBAction)showLocationButtonClicked:(id)sender {
 
-  if (![CLLocationManager locationServicesEnabled]||[CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
+  if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
     [_sendMyLocationTimer invalidate];
     return;
   }
@@ -980,18 +982,18 @@
   dispatch_async(q, ^{
     QQNRServerTask *task = [[QQNRServerTask alloc] init];
     task.step = STEP_UPLOADPHOTO;
-    RiddingPicture *picture = [[RiddingPicture alloc]initWithRidding:(int)width height:(int)height ridding:_ridding];;
+    RiddingPicture *picture = [[RiddingPicture alloc] initWithRidding:(int) width height:(int) height ridding:_ridding];;
     [picture saveImageToLocal:newImage];
-    
+
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:picture, kFileClientServerUpload_RiddingPicture, nil];
     task.paramDic = dic;
     QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
     [queue addTask:task withDependency:NO];
-    
-    
+
+
     dispatch_async(dispatch_get_main_queue(), ^{
       [picker dismissModalViewControllerAnimated:NO];
-      PhotoDescViewController *descVCTL = [[PhotoDescViewController alloc] initWithNibName:@"PhotoDescViewController" bundle:nil riddingPicture:picture isSyncSina:[_ridding syncSina]];
+      PhotoDescViewController *descVCTL = [[PhotoDescViewController alloc] initWithNibName:@"PhotoDescViewController" bundle:nil riddingPicture:picture isSyncSina:[_ridding syncSina] riddingName:_ridding.riddingName];
       [self presentModalViewController:descVCTL animated:NO];
     });
   });

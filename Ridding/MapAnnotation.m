@@ -10,19 +10,19 @@
 
 @implementation MapAnnotation
 
-@synthesize coordinate,subtitle,title;   
+@synthesize coordinate, subtitle, title;
 
-- (id) initWithCoords:(CLLocationCoordinate2D) coords{   
-    
-    self = [super init];   
-    
-    if (self != nil) {   
-        
-        coordinate = coords;    
-        
-    }   
-    
-    return self;   
-}  
+- (id)initWithCoords:(CLLocationCoordinate2D)coords {
+
+  self = [super init];
+
+  if (self != nil) {
+
+    coordinate = coords;
+
+  }
+
+  return self;
+}
 
 @end

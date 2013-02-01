@@ -21,16 +21,14 @@
 
 #define kWBSDKAPIDomain             @"https://api.weibo.com/2/"
 
-typedef enum
-{
-	kWBErrorCodeInterface	= 100,
-	kWBErrorCodeSDK         = 101,
-}WBErrorCode;
+typedef enum {
+  kWBErrorCodeInterface = 100,
+  kWBErrorCodeSDK = 101,
+} WBErrorCode;
 
-typedef enum
-{
-	kWBSDKErrorCodeParseError       = 200,
-	kWBSDKErrorCodeRequestError     = 201,
-	kWBSDKErrorCodeAccessError      = 202,
-	kWBSDKErrorCodeAuthorizeError	= 203,
-}WBSDKErrorCode;
+typedef enum {
+  kWBSDKErrorCodeParseError = 200,
+  kWBSDKErrorCodeRequestError = 201,
+  kWBSDKErrorCodeAccessError = 202,
+  kWBSDKErrorCodeAuthorizeError = 203,
+} WBSDKErrorCode;

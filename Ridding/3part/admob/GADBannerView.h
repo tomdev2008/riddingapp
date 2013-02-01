@@ -89,7 +89,7 @@
 //
 //   @end
 //
-@property (nonatomic, assign) NSObject<GADBannerViewDelegate> *delegate;
+@property (nonatomic, assign) NSObject <GADBannerViewDelegate> *delegate;
 
 #pragma mark Making an Ad Request
 

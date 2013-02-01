@@ -62,7 +62,7 @@
 
 @protocol SBJsonStreamWriterDelegate
 
-- (void)writer:(SBJsonStreamWriter*)writer appendBytes:(const void *)bytes length:(NSUInteger)length;
+- (void)writer:(SBJsonStreamWriter *)writer appendBytes:(const void *)bytes length:(NSUInteger)length;
 
 @end
 
@@ -83,7 +83,7 @@
  */
 
 @interface SBJsonStreamWriter : NSObject {
-    NSMutableDictionary *cache;
+  NSMutableDictionary *cache;
 }
 
 @property (nonatomic, unsafe_unretained) SBJsonStreamWriterState *state; // Internal
@@ -93,7 +93,7 @@
  @brief delegate to receive JSON output
  Delegate that will receive messages with output.
  */
-@property (unsafe_unretained) id<SBJsonStreamWriterDelegate> delegate;
+@property (unsafe_unretained) id <SBJsonStreamWriterDelegate> delegate;
 
 /**
  @brief The maximum recursing depth.
@@ -136,7 +136,7 @@
  Write an NSDictionary to the JSON stream.
  @return YES if successful, or NO on failure
  */
-- (BOOL)writeObject:(NSDictionary*)dict;
+- (BOOL)writeObject:(NSDictionary *)dict;
 
 /**
  Write an NSArray to the JSON stream.
@@ -179,17 +179,18 @@
 /** Write a Number to the stream
  @return YES if successful, or NO on failure
 */
-- (BOOL)writeNumber:(NSNumber*)n;
+- (BOOL)writeNumber:(NSNumber *)n;
 
 /** Write a String to the stream
  @return YES if successful, or NO on failure
 */
-- (BOOL)writeString:(NSString*)s;
+- (BOOL)writeString:(NSString *)s;
 
 @end
 
 @interface SBJsonStreamWriter (Private)
 - (BOOL)writeValue:(id)v;
+
 - (void)appendBytes:(const void *)bytes length:(NSUInteger)length;
 @end
 

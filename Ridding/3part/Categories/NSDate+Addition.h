@@ -8,44 +8,55 @@
 #import <Foundation/Foundation.h>
 
 
-@interface NSDate(Addition)
+@interface NSDate (Addition)
 
-+ (NSDate*)pd_yesterday;
-+ (NSDate*)pd_lastMonth;
++ (NSDate *)pd_yesterday;
+
++ (NSDate *)pd_lastMonth;
 
 
-- (NSString*)pd_yyyyMMddString;			// 2012-12-12	
-- (NSString*)pd_shortDateString;		// 20120303
-- (NSString*)pd_yyyyMMddString_CN;		// 2012年08月05日
-- (NSString*)pd_yyyyMMddHHmmssString;
-- (NSString*)pd_yyyyMMddHHmmString;
-- (NSString*)pd_fileNameyyyyMMddHHmmssString;
-- (NSString*)pd_fileNameyyyyMMddHHmmss1String;
-- (NSString*)pd_yyyyMMddEEString;
-- (NSString*)pd_HHmmString;
-- (NSString*)pd_nianYueRiString;		// 2012年8月5日
-- (NSString*)pd_EEString;
+- (NSString *)pd_yyyyMMddString;      // 2012-12-12
+- (NSString *)pd_shortDateString;    // 20120303
+- (NSString *)pd_yyyyMMddString_CN;    // 2012年08月05日
+- (NSString *)pd_yyyyMMddHHmmssString;
+
+- (NSString *)pd_yyyyMMddHHmmString;
+
+- (NSString *)pd_fileNameyyyyMMddHHmmssString;
+
+- (NSString *)pd_fileNameyyyyMMddHHmmss1String;
+
+- (NSString *)pd_yyyyMMddEEString;
+
+- (NSString *)pd_HHmmString;
+
+- (NSString *)pd_nianYueRiString;    // 2012年8月5日
+- (NSString *)pd_EEString;
+
 - (NSUInteger)pd_weekDay;
-- (NSString*)pd_MdChineseString;		// 8月5日
-- (NSDate*)pd_dateByMovingToBeginningOfDay;
+
+- (NSString *)pd_MdChineseString;    // 8月5日
+- (NSDate *)pd_dateByMovingToBeginningOfDay;
 
 // 没有年份
-- (NSString*)pd_description;
+- (NSString *)pd_description;
 
 // 有年份
-- (NSString*)pd_description_date;
+- (NSString *)pd_description_date;
 
 // 只有日期
-- (NSString*)pd_description_dateOnly;
+- (NSString *)pd_description_dateOnly;
 
-- (BOOL)pd_isEarlierThan:(NSDate*)aDate;
-- (BOOL)pd_isSameDate:(NSDate*)aDate;
+- (BOOL)pd_isEarlierThan:(NSDate *)aDate;
 
-- (NSDate*)pd_daysBefore:(NSInteger)days;
-- (NSUInteger)pd_daysSince:(NSDate*)date;
+- (BOOL)pd_isSameDate:(NSDate *)aDate;
+
+- (NSDate *)pd_daysBefore:(NSInteger)days;
+
+- (NSUInteger)pd_daysSince:(NSDate *)date;
 
 // 把xxx分钟，转化成 xx小时xx分钟
-+ (NSString*)pd_timeIntervalToHourString:(NSUInteger)min;
++ (NSString *)pd_timeIntervalToHourString:(NSUInteger)min;
 
 - (BOOL)pd_isToday;
 

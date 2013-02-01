@@ -7,25 +7,32 @@
  */
 
 #import <Foundation/Foundation.h>
+
 #define UMFBCheckFinishedNotification @"UMFBCheckFinishedNotification"
 
 @protocol UMFeedbackDataDelegate <NSObject>
 @optional
-- (void)getFinishedWithError: (NSError *)error;
+- (void)getFinishedWithError:(NSError *)error;
+
 - (void)postFinishedWithError:(NSError *)error;
 @end
 
 @interface UMFeedback : NSObject
-@property(nonatomic, assign) id <UMFeedbackDataDelegate> delegate;
-@property(nonatomic, retain) NSMutableArray *newReplies;
-@property(nonatomic, retain) NSMutableArray *topicAndReplies;
+@property (nonatomic, assign) id <UMFeedbackDataDelegate> delegate;
+@property (nonatomic, retain) NSMutableArray *newReplies;
+@property (nonatomic, retain) NSMutableArray *topicAndReplies;
 #pragma Umeng Feedback Show Html UI
 + (void)showFeedback:(UIViewController *)viewController withAppkey:(NSString *)appKey;
+
 + (void)showFeedback:(UIViewController *)viewController withAppkey:(NSString *)appKey dictionary:(NSDictionary *)dictionary;
 #pragma Umeng Feedback Data Api
 + (UMFeedback *)sharedInstance;
-- (void)setAppkey:(NSString *)appKey delegate:(id<UMFeedbackDataDelegate>)newDelegate;
+
+- (void)setAppkey:(NSString *)appKey delegate:(id <UMFeedbackDataDelegate>)newDelegate;
+
 - (void)get;
+
 - (void)post:(NSDictionary *)feedback_dictionary;
+
 + (void)checkWithAppkey:(NSString *)appkey;
 @end

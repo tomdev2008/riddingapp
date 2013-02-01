@@ -12,21 +12,20 @@
 
 @protocol SinaWeiboDelegate;
 
-@interface SinaWeibo : NSObject <SinaWeiboAuthorizeViewDelegate, SinaWeiboRequestDelegate>
-{
-    NSString *userID;
-    NSString *accessToken;
-    NSDate *expirationDate;
-    id<SinaWeiboDelegate> delegate;
-    
-    NSString *appKey;
-    NSString *appSecret;
-    NSString *appRedirectURI;
-    NSString *ssoCallbackScheme;
-    
-    SinaWeiboRequest *request;
-    NSMutableSet *requests;
-    BOOL ssoLoggingIn;
+@interface SinaWeibo : NSObject <SinaWeiboAuthorizeViewDelegate, SinaWeiboRequestDelegate> {
+  NSString *userID;
+  NSString *accessToken;
+  NSDate *expirationDate;
+  id <SinaWeiboDelegate> delegate;
+
+  NSString *appKey;
+  NSString *appSecret;
+  NSString *appRedirectURI;
+  NSString *ssoCallbackScheme;
+
+  SinaWeiboRequest *request;
+  NSMutableSet *requests;
+  BOOL ssoLoggingIn;
 }
 
 @property (nonatomic, copy) NSString *userID;
@@ -34,18 +33,19 @@
 @property (nonatomic, copy) NSDate *expirationDate;
 @property (nonatomic, copy) NSString *refreshToken;
 @property (nonatomic, copy) NSString *ssoCallbackScheme;
-@property (nonatomic, assign) id<SinaWeiboDelegate> delegate;
+@property (nonatomic, assign) id <SinaWeiboDelegate> delegate;
 
 - (id)initWithAppKey:(NSString *)appKey appSecret:(NSString *)appSecrect
       appRedirectURI:(NSString *)appRedirectURI
-         andDelegate:(id<SinaWeiboDelegate>)delegate;
+         andDelegate:(id <SinaWeiboDelegate>)delegate;
 
 - (id)initWithAppKey:(NSString *)appKey appSecret:(NSString *)appSecrect
       appRedirectURI:(NSString *)appRedirectURI
    ssoCallbackScheme:(NSString *)ssoCallbackScheme
-         andDelegate:(id<SinaWeiboDelegate>)delegate;
+         andDelegate:(id <SinaWeiboDelegate>)delegate;
 
 - (void)applicationDidBecomeActive;
+
 - (BOOL)handleOpenURL:(NSURL *)url;
 
 // Log in using OAuth Web authorization.
@@ -58,16 +58,17 @@
 
 // Check if user has logged in, or the authorization is expired.
 - (BOOL)isLoggedIn;
+
 - (BOOL)isAuthorizeExpired;
 
 
 // isLoggedIn && isAuthorizeExpired
 - (BOOL)isAuthValid;
 
-- (SinaWeiboRequest*)requestWithURL:(NSString *)url
-                             params:(NSMutableDictionary *)params
-                         httpMethod:(NSString *)httpMethod
-                           delegate:(id<SinaWeiboRequestDelegate>)delegate;
+- (SinaWeiboRequest *)requestWithURL:(NSString *)url
+                              params:(NSMutableDictionary *)params
+                          httpMethod:(NSString *)httpMethod
+                            delegate:(id <SinaWeiboRequestDelegate>)delegate;
 
 @end
 
@@ -80,9 +81,13 @@
 @optional
 
 - (void)sinaweiboDidLogIn:(SinaWeibo *)sinaweibo;
+
 - (void)sinaweiboDidLogOut:(SinaWeibo *)sinaweibo;
+
 - (void)sinaweiboLogInDidCancel:(SinaWeibo *)sinaweibo;
+
 - (void)sinaweibo:(SinaWeibo *)sinaweibo logInDidFailWithError:(NSError *)error;
+
 - (void)sinaweibo:(SinaWeibo *)sinaweibo accessTokenInvalidOrExpired:(NSError *)error;
 
 @end

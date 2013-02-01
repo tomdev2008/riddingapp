@@ -29,39 +29,44 @@ in the main.m file.
 @class FMDatabase;
 
 @interface FMDatabasePool : NSObject {
-    NSString            *_path;
-    
-    dispatch_queue_t    _lockQueue;
-    
-    NSMutableArray      *_databaseInPool;
-    NSMutableArray      *_databaseOutPool;
-    
-    __unsafe_unretained id _delegate;
-    
-    NSUInteger          _maximumNumberOfDatabasesToCreate;
+  NSString *_path;
+
+  dispatch_queue_t _lockQueue;
+
+  NSMutableArray *_databaseInPool;
+  NSMutableArray *_databaseOutPool;
+
+  __unsafe_unretained id _delegate;
+
+  NSUInteger _maximumNumberOfDatabasesToCreate;
 }
 
 @property (atomic, retain) NSString *path;
 @property (atomic, assign) id delegate;
 @property (atomic, assign) NSUInteger maximumNumberOfDatabasesToCreate;
 
-+ (id)databasePoolWithPath:(NSString*)aPath;
-- (id)initWithPath:(NSString*)aPath;
++ (id)databasePoolWithPath:(NSString *)aPath;
+
+- (id)initWithPath:(NSString *)aPath;
 
 - (NSUInteger)countOfCheckedInDatabases;
+
 - (NSUInteger)countOfCheckedOutDatabases;
+
 - (NSUInteger)countOfOpenDatabases;
+
 - (void)releaseAllDatabases;
 
 - (void)inDatabase:(void (^)(FMDatabase *db))block;
 
 - (void)inTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
+
 - (void)inDeferredTransaction:(void (^)(FMDatabase *db, BOOL *rollback))block;
 
 #if SQLITE_VERSION_NUMBER >= 3007000
 // NOTE: you can not nest these, since calling it will pull another database out of the pool and you'll get a deadlock.
 // If you need to nest, use FMDatabase's startSavePointWithName:error: instead.
-- (NSError*)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block;
+- (NSError *)inSavePoint:(void (^)(FMDatabase *db, BOOL *rollback))block;
 #endif
 
 @end
@@ -69,7 +74,7 @@ in the main.m file.
 
 @interface NSObject (FMDatabasePoolDelegate)
 
-- (BOOL)databasePool:(FMDatabasePool*)pool shouldAddDatabaseToPool:(FMDatabase*)database;
+- (BOOL)databasePool:(FMDatabasePool *)pool shouldAddDatabaseToPool:(FMDatabase *)database;
 
 @end
 

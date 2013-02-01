@@ -18,10 +18,12 @@
 #define UIImageView NSImageView
 #endif
 #else
+
 #import <UIKit/UIKit.h>
+
 #endif
 
-#if ! __has_feature(objc_arc)
+#if !__has_feature(objc_arc)
 #define SDWIAutorelease(__v) ([__v autorelease]);
 #define SDWIReturnAutoreleased SDWIAutorelease
 
@@ -49,32 +51,28 @@
 #endif
 
 
-NS_INLINE UIImage *SDScaledImageForPath(NSString *path, NSData *imageData)
-{
-    if (!imageData)
-    {
-        return nil;
+NS_INLINE UIImage *SDScaledImageForPath(NSString *path, NSData *imageData) {
+
+  if (!imageData) {
+    return nil;
+  }
+
+  UIImage *image = [[UIImage alloc] initWithData:imageData];
+
+  if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
+    CGFloat scale = 1.0;
+    if (path.length >= 8) {
+      // Search @2x. at the end of the string, before a 3 to 4 extension length (only if key len is 8 or more @2x. + 4 len ext)
+      NSRange range = [path rangeOfString:@"@2x." options:0 range:NSMakeRange(path.length - 8, 5)];
+      if (range.location != NSNotFound) {
+        scale = 2.0;
+      }
     }
 
-    UIImage *image = [[UIImage alloc] initWithData:imageData];
+    UIImage *scaledImage = [[UIImage alloc] initWithCGImage:image.CGImage scale:scale orientation:UIImageOrientationUp];
+    SDWISafeRelease(image)
+    image = scaledImage;
+  }
 
-    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
-    {
-        CGFloat scale = 1.0;
-        if (path.length >= 8)
-        {
-            // Search @2x. at the end of the string, before a 3 to 4 extension length (only if key len is 8 or more @2x. + 4 len ext)
-            NSRange range = [path rangeOfString:@"@2x." options:0 range:NSMakeRange(path.length - 8, 5)];
-            if (range.location != NSNotFound)
-            {
-                scale = 2.0;
-            }
-        }
-
-        UIImage *scaledImage = [[UIImage alloc] initWithCGImage:image.CGImage scale:scale orientation:UIImageOrientationUp];
-        SDWISafeRelease(image)
-        image = scaledImage;
-    }
-
-    return SDWIReturnAutoreleased(image);
+  return SDWIReturnAutoreleased(image);
 }

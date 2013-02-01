@@ -11,16 +11,18 @@
 
 ///////////////////////
 
-NSString * KTPathForBundleResource(NSString *relativePath) {
-   NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-   return [resourcePath stringByAppendingPathComponent:relativePath];
+NSString *KTPathForBundleResource(NSString *relativePath) {
+
+  NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+  return [resourcePath stringByAppendingPathComponent:relativePath];
 }
 
 ///////////////////////
 
-UIImage * KTLoadImageFromBundle(NSString *imageName) {
-   NSString *relativePath = [NSString stringWithFormat:@"KTPhotoBrowser.bundle/images/%@", imageName];
-   NSString *path  = KTPathForBundleResource(relativePath);
-   NSData *data = [NSData dataWithContentsOfFile:path];
-   return [UIImage imageWithData:data];
+UIImage *KTLoadImageFromBundle(NSString *imageName) {
+
+  NSString *relativePath = [NSString stringWithFormat:@"KTPhotoBrowser.bundle/images/%@", imageName];
+  NSString *path = KTPathForBundleResource(relativePath);
+  NSData *data = [NSData dataWithContentsOfFile:path];
+  return [UIImage imageWithData:data];
 }

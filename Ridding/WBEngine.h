@@ -48,33 +48,34 @@
 // When you use the WBEngine's request methods,
 // you may receive the following four callbacks.
 - (void)engineNotAuthorized:(WBEngine *)engine;
+
 - (void)engineAuthorizeExpired:(WBEngine *)engine;
 
 - (void)engine:(WBEngine *)engine requestDidFailWithError:(NSError *)error;
+
 - (void)engine:(WBEngine *)engine requestDidSucceedWithResult:(id)result;
 
 @end
 
-@interface WBEngine : NSObject <WBAuthorizeDelegate, WBRequestDelegate>
-{
-    NSString        *appKey;
-    NSString        *appSecret;
-    
-    NSString        *userID;
-    NSString        *accessToken;
-    NSTimeInterval  expireTime;
-    
-    NSString        *redirectURI;
-    
-    // Determine whether user must log out before another logging in.
-    BOOL            isUserExclusive;
-    
-    WBRequest       *request;
-    WBAuthorize     *authorize;
-    
-    id<WBEngineDelegate> delegate;
-    
-    UIViewController *rootViewController;
+@interface WBEngine : NSObject <WBAuthorizeDelegate, WBRequestDelegate> {
+  NSString *appKey;
+  NSString *appSecret;
+
+  NSString *userID;
+  NSString *accessToken;
+  NSTimeInterval expireTime;
+
+  NSString *redirectURI;
+
+  // Determine whether user must log out before another logging in.
+  BOOL isUserExclusive;
+
+  WBRequest *request;
+  WBAuthorize *authorize;
+
+  id <WBEngineDelegate> delegate;
+
+  UIViewController *rootViewController;
 }
 
 @property (nonatomic, retain) NSString *appKey;
@@ -86,7 +87,7 @@
 @property (nonatomic, assign) BOOL isUserExclusive;
 @property (nonatomic, retain) WBRequest *request;
 @property (nonatomic, retain) WBAuthorize *authorize;
-@property (nonatomic, assign) id<WBEngineDelegate> delegate;
+@property (nonatomic, assign) id <WBEngineDelegate> delegate;
 @property (nonatomic, assign) UIViewController *rootViewController;
 
 // Initialize an instance with the AppKey and the AppSecret you have for your client.
@@ -106,6 +107,7 @@
 
 // Check if user has logged in, or the authorization is expired.
 - (BOOL)isLoggedIn;
+
 - (BOOL)isAuthorizeExpired;
 
 // @methodName: The interface you are trying to visit, exp, "statuses/public_timeline.json" for the newest timeline.

@@ -24,18 +24,18 @@ static Method origImageNamedMethod = nil;
 }
 #endif
 
-+ (UIImage *)retina4ImageNamed:(NSString *)imageName type:(NSString *)imageType{
-  
-  
++ (UIImage *)retina4ImageNamed:(NSString *)imageName type:(NSString *)imageType {
+
+
   NSMutableString *imageNameMutable = [imageName mutableCopy];
   NSRange retinaAtSymbol = [imageName rangeOfString:@"@"];
-  
+
   if (retinaAtSymbol.location != NSNotFound) {
-    
+
     [imageNameMutable insertString:@"-568h" atIndex:retinaAtSymbol.location];
-    
+
   } else {
-    
+
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     if ([UIScreen mainScreen].scale == 2.f && screenHeight == 568.0f) {
       NSRange dot = [imageName rangeOfString:@"."];
@@ -45,17 +45,17 @@ static Method origImageNamedMethod = nil;
         [imageNameMutable appendString:@"-568h@2x"];
       }
     }
-    
+
   }
-  
-  
+
+
   NSString *imagePath = [[NSBundle mainBundle] pathForResource:imageNameMutable ofType:imageType];
-  
+
   if (imagePath) {
-    
+
     return UIIMAGE_FROMFILE(imageNameMutable, imageType);
   } else {
-    
+
     return [UIImage imageNamed:imageName];
   }
   return nil;

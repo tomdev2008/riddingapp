@@ -11,7 +11,9 @@
 @protocol TouchedScrollViewDelegate <NSObject>
 
 - (void)scrollViewTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+
 - (void)scrollViewTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+
 - (void)scrollViewTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 
 @end
@@ -20,6 +22,6 @@
 
 }
 
-@property (nonatomic, assign) id<TouchedScrollViewDelegate> touchDelegate;
+@property (nonatomic, assign) id <TouchedScrollViewDelegate> touchDelegate;
 
 @end

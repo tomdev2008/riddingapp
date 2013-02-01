@@ -19,7 +19,7 @@
 @property (nonatomic, retain) UIImage *fileImage;
 
 //将图片保存到本地，并设置filepath
-- (void)saveImageToLocal:(UIImage*)image;
+- (void)saveImageToLocal:(UIImage *)image;
 
-- (UIImage*)imageFromLocal;
+- (UIImage *)imageFromLocal;
 @end

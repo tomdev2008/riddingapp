@@ -14,45 +14,45 @@
 //
 
 #if !defined(__clang__) || __clang_major__ < 3
-    #ifndef __bridge
-        #define __bridge
-    #endif
+#ifndef __bridge
+#define __bridge
+#endif
 
-    #ifndef __bridge_retain
-        #define __bridge_retain
-    #endif
+#ifndef __bridge_retain
+#define __bridge_retain
+#endif
 
-    #ifndef __bridge_retained
-        #define __bridge_retained
-    #endif
+#ifndef __bridge_retained
+#define __bridge_retained
+#endif
 
-    #ifndef __autoreleasing
-        #define __autoreleasing
-    #endif
+#ifndef __autoreleasing
+#define __autoreleasing
+#endif
 
-    #ifndef __strong
-        #define __strong
-    #endif
+#ifndef __strong
+#define __strong
+#endif
 
-    #ifndef __unsafe_unretained
-        #define __unsafe_unretained
-    #endif
+#ifndef __unsafe_unretained
+#define __unsafe_unretained
+#endif
 
-    #ifndef __weak
-        #define __weak
-    #endif
+#ifndef __weak
+#define __weak
+#endif
 #endif
 
 #if __has_feature(objc_arc)
-    #define SAFE_ARC_PROP_RETAIN strong
-    #define SAFE_ARC_RETAIN(x) (x)
-    #define SAFE_ARC_RELEASE(x)
-    #define SAFE_ARC_AUTORELEASE(x) (x)
-    #define SAFE_ARC_BLOCK_COPY(x) (x)
-    #define SAFE_ARC_BLOCK_RELEASE(x)
-    #define SAFE_ARC_SUPER_DEALLOC()
-    #define SAFE_ARC_AUTORELEASE_POOL_START() @autoreleasepool {
-    #define SAFE_ARC_AUTORELEASE_POOL_END() }
+#define SAFE_ARC_PROP_RETAIN strong
+#define SAFE_ARC_RETAIN(x) (x)
+#define SAFE_ARC_RELEASE(x)
+#define SAFE_ARC_AUTORELEASE(x) (x)
+#define SAFE_ARC_BLOCK_COPY(x) (x)
+#define SAFE_ARC_BLOCK_RELEASE(x)
+#define SAFE_ARC_SUPER_DEALLOC()
+#define SAFE_ARC_AUTORELEASE_POOL_START() @autoreleasepool {
+#define SAFE_ARC_AUTORELEASE_POOL_END() }
 #else
     #define SAFE_ARC_PROP_RETAIN retain
     #define SAFE_ARC_RETAIN(x) ([(x) retain])

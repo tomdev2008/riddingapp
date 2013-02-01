@@ -7,10 +7,8 @@
 //
 
 #import "PublicDetailViewController.h"
-#import "RequestUtil.h"
 #import "PublicCommentVCTL.h"
 #import "SDWebImageManager.h"
-#import "UIImageView+WebCache.h"
 #import "UserMap.h"
 #import "QQNRImagesScrollVCTL.h"
 #import "SVProgressHUD.h"
@@ -45,7 +43,7 @@
 - (void)viewDidLoad {
 
   [super viewDidLoad];
-  self.view.backgroundColor=[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"QQNR_MAIN_BG")];
+  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"QQNR_MAIN_BG")];
 
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_Back") forState:UIControlStateNormal];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_Back") forState:UIControlStateHighlighted];
@@ -59,7 +57,7 @@
     [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Join") forState:UIControlStateNormal];
     [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Join") forState:UIControlStateHighlighted];
     [self.barView addSubview:_useBtn];
-    
+
     _careBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_careBtn addTarget:self action:@selector(careClick:) forControlEvents:UIControlEventTouchUpInside];
     _careBtn.frame = CGRectMake(230, 12, 32, 25);
@@ -75,9 +73,8 @@
     [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Comment") forState:UIControlStateNormal];
     [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Comment") forState:UIControlStateHighlighted];
     [self.barView addSubview:_commentBtn];
-    
-    
-    
+
+
     [self.barView.titleLabel removeFromSuperview];
   } else {
     [self.barView.titleLabel setText:_ridding.riddingName];
@@ -136,8 +133,8 @@
 
   [SVProgressHUD showWithStatus:@"加载中"];
   dispatch_async(dispatch_queue_create("downLoad", NULL), ^{
-    [_cellArray removeAllObjects];
     NSArray *serverArray = [self.requestUtil getUploadedPhoto:_ridding.riddingId limit:pageSize lastUpdateTime:_lastUpdateTime];
+    [_cellArray removeAllObjects];
     if ([serverArray count] > 0) {
       NSMutableArray *mulArray = [[NSMutableArray alloc] init];
       for (NSDictionary *dic in serverArray) {
@@ -219,7 +216,7 @@
   } else {
     height = picture.height * 1.0 / picture.width * width;
   }
-  viewHeight += height+43;
+  viewHeight += height + 43;
   viewHeight += PublicDetailCellDefaultDownSpace;
   return viewHeight;
 
@@ -236,7 +233,7 @@
   PublicDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
   RiddingPicture *picture = [_cellArray objectAtIndex:indexPath.row];
   if (cell == nil) {
-    cell = [[PublicDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID info:picture];
+    cell = [[PublicDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID info:picture isMyFeedHome:self.isMyFeedHome];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
   }
@@ -339,8 +336,8 @@
   }
   NSDictionary *dic = [self.requestUtil useRidding:_ridding.riddingId];
   [self updateRidding:dic];
-  if(dic){
-    UIAlertView *view= [[UIAlertView alloc]initWithTitle:@"恭喜恭喜" message:@"骑行活动创建成功,去看看吧!" delegate:nil cancelButtonTitle:@"待会儿去" otherButtonTitles:@"走起!", nil];
+  if (dic) {
+    UIAlertView *view = [[UIAlertView alloc] initWithTitle:@"恭喜恭喜" message:@"骑行活动创建成功,去看看吧!" delegate:nil cancelButtonTitle:@"待会儿去" otherButtonTitles:@"走起!", nil];
     [view show];
   }
 
@@ -375,7 +372,8 @@
 - (void)resetActionBtn {
 
   if (_ridding.nowUserUsed) {
-
+    [_useBtn setBackgroundImage:nil forState:UIControlStateNormal];
+    [_useBtn setBackgroundImage:nil forState:UIControlStateHighlighted];
   } else {
 
   }
@@ -383,7 +381,7 @@
     [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Care") forState:UIControlStateNormal];
     [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Care") forState:UIControlStateHighlighted];
   } else {
-    
+
   }
 
 }
@@ -402,8 +400,16 @@
   [self.navigationController pushViewController:vctl animated:YES];
 }
 
-- (void)likeBtnClick:(PublicDetailCell *)view picture:(RiddingPicture *)picture{
+- (BOOL)likeBtnClick:(PublicDetailCell *)view picture:(RiddingPicture *)picture {
+
+  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+  if (![delegate canLogin]) {
+    [self showLoginAlertView];
+    return FALSE;
+  }
   [self.requestUtil likeRiddingPicture:_ridding.riddingId pictureId:picture.dbId];
+  return TRUE;
+
 }
 
 #pragma mark - PublicDetailHeaderView delegate
@@ -417,6 +423,9 @@
 
 - (void)avatorClick:(PublicDetailHeaderView *)view {
 
+  if (self.isMyFeedHome) {
+    return;
+  }
   QQNRFeedViewController *qqnrFeedVCTL = [[QQNRFeedViewController alloc] initWithUser:_toUser isFromLeft:FALSE];
   [self.navigationController pushViewController:qqnrFeedVCTL animated:YES];
 }

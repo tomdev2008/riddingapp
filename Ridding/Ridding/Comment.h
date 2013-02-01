@@ -8,6 +8,7 @@
 
 #import "BasicObject.h"
 #import "User.h"
+
 #define keyComment @"comment"
 typedef enum _COMMENTTYPE {
   COMMENTTYPE_COMMENT,

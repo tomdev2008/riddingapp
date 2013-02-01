@@ -78,6 +78,9 @@
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(succUpdateBackground:)
                                                name:kSuccUploadBackgroundNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(succAddFriends:)
+                                               name:kSuccAddFriendsNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -230,7 +233,7 @@
   cell.backgroundColor = [UIColor clearColor];
   cell.delegate = self;
   cell.userInteractionEnabled = YES;
-  cell.index=indexPath.row;
+  cell.index = indexPath.row;
   UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnCell:)];
   [cell addGestureRecognizer:longPressRecognizer];
 
@@ -519,5 +522,9 @@
   [_backgroundImageView setImageWithURL:url];
 }
 
+- (void)succAddFriends:(NSNotification *)notif {
+
+  self.didAppearOnce = FALSE;
+}
 
 @end

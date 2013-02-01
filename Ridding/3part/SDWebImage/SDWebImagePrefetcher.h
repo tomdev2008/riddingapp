@@ -9,13 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "SDWebImageManagerDelegate.h"
 
-@interface SDWebImagePrefetcher : NSObject <SDWebImageManagerDelegate>
-{
-    NSArray *_prefetchURLs;
-    NSUInteger _skippedCount;
-    NSUInteger _finishedCount;
-    NSUInteger _requestedCount;
-    NSTimeInterval _startedTime;
+@interface SDWebImagePrefetcher : NSObject <SDWebImageManagerDelegate> {
+  NSArray *_prefetchURLs;
+  NSUInteger _skippedCount;
+  NSUInteger _finishedCount;
+  NSUInteger _requestedCount;
+  NSTimeInterval _startedTime;
 }
 
 /**

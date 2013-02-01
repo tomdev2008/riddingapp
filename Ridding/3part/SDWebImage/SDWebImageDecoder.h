@@ -13,12 +13,12 @@
 
 @protocol SDWebImageDecoderDelegate;
 
-@interface SDWebImageDecoder : NSObject
-{
-    NSOperationQueue *imageDecodingQueue;
+@interface SDWebImageDecoder : NSObject {
+  NSOperationQueue *imageDecodingQueue;
 }
 
 + (SDWebImageDecoder *)sharedImageDecoder;
+
 - (void)decodeImage:(UIImage *)image withDelegate:(id <SDWebImageDecoderDelegate>)delegate userInfo:(NSDictionary *)info;
 
 @end

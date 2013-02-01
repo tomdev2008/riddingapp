@@ -9,28 +9,27 @@
 #import <UIKit/UIKit.h>
 #import "BasicViewController.h"
 #import "ImageScrollView.h"
-@interface QQNRImagesScrollVCTL : BasicViewController<UIScrollViewDelegate,TouchedScrollViewDelegate>{
-  UIScrollView	*_pagingScrollView;
-	
-  NSMutableSet    *_recycledPages;
-  NSMutableSet    *_visiblePages;
-  
-	NSUInteger		startPageIndex;
-	
-	NSTimer			*_fadeTimer;
-  
+
+@interface QQNRImagesScrollVCTL : BasicViewController <UIScrollViewDelegate, TouchedScrollViewDelegate> {
+  UIScrollView *_pagingScrollView;
+
+  NSMutableSet *_recycledPages;
+  NSMutableSet *_visiblePages;
+
+  NSUInteger startPageIndex;
+
+  NSTimer *_fadeTimer;
+
   RiddingPicture *_picture;
-	
-	// show hint
-	BOOL			showHintAlready;
+
+  // show hint
+  BOOL showHintAlready;
 }
 
-@property (nonatomic, retain) NSArray	*photoArray;
-@property (nonatomic, retain) NSTimer	*fadeTimer;
+@property (nonatomic, retain) NSArray *photoArray;
+@property (nonatomic, retain) NSTimer *fadeTimer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil startPageIndex:(NSUInteger)_startPageIndex;
-
-
 
 
 @end

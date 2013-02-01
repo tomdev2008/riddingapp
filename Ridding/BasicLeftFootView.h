@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @class BasicLeftFootView;
+
 @protocol BasicLeftFootViewDelegate <NSObject>
 
 @optional
@@ -16,9 +18,12 @@
 - (void)avatorBtnClick;
 
 @end
+
 @interface BasicLeftFootView : UIView
 
-@property (nonatomic,assign) id<BasicLeftFootViewDelegate> delegate;
+@property (nonatomic, assign) id <BasicLeftFootViewDelegate> delegate;
 
 - (void)setUser;
+
+- (void)resetUser;
 @end

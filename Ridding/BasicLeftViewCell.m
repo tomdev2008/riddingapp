@@ -8,32 +8,35 @@
 
 #import "BasicLeftViewCell.h"
 #import "UIColor+XMin.h"
+
 @implementation BasicLeftViewCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 
-    }
-    return self;
+  self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+  if (self) {
+
+  }
+  return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
 
-    // Configure the view for the selected state
+  [super setSelected:selected animated:animated];
+
+  // Configure the view for the selected state
 }
 
-- (void)selected{
-  self.leftColorView.backgroundColor=[UIColor getColor:ColorGreen];
-  self.backgroundColorView.image=[UIIMAGE_FROMPNG(@"QQNR_LN_Selected") stretchableImageWithLeftCapWidth:50 topCapHeight:20];
+- (void)selected {
+
+  self.leftColorView.backgroundColor = [UIColor getColor:ColorGreen];
+  self.backgroundColorView.image = [UIIMAGE_FROMPNG(@"QQNR_LN_Selected") stretchableImageWithLeftCapWidth:50 topCapHeight:20];
 }
 
-- (void)disSelected{
-  self.leftColorView.backgroundColor=[UIColor clearColor];
-  self.backgroundColorView.image=nil;
+- (void)disSelected {
+
+  self.leftColorView.backgroundColor = [UIColor clearColor];
+  self.backgroundColorView.image = nil;
 }
 
 @end

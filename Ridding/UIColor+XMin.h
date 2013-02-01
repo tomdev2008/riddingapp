@@ -18,15 +18,25 @@
 #import <UIKit/UIKit.h>
 
 @interface UIColor (XMin)
-+(UIColor*)color1WithAlpha:(CGFloat)alpha;
-+(UIColor*)color2WithAlpha:(CGFloat)alpha;
-+(UIColor*)color3WithAlpha:(CGFloat)alpha;
-+(UIColor*)color4WithAlpha:(CGFloat)alpha;
-+(UIColor*)color5WithAlpha:(CGFloat)alpha;
-+(UIColor*)color6WithAlpha:(CGFloat)alpha;
-+(UIColor*)color7WithAlpha:(CGFloat)alpha;
-+(UIColor*)color8WithAlpha:(CGFloat)alpha;
-+(UIColor*)color9WithAlpha:(CGFloat)alpha;
-+(UIColor*)color10WithAlpha:(CGFloat)alpha;
-+(UIColor *)getColor:(NSString *)hexColor;
++ (UIColor *)color1WithAlpha:(CGFloat)alpha;
+
++ (UIColor *)color2WithAlpha:(CGFloat)alpha;
+
++ (UIColor *)color3WithAlpha:(CGFloat)alpha;
+
++ (UIColor *)color4WithAlpha:(CGFloat)alpha;
+
++ (UIColor *)color5WithAlpha:(CGFloat)alpha;
+
++ (UIColor *)color6WithAlpha:(CGFloat)alpha;
+
++ (UIColor *)color7WithAlpha:(CGFloat)alpha;
+
++ (UIColor *)color8WithAlpha:(CGFloat)alpha;
+
++ (UIColor *)color9WithAlpha:(CGFloat)alpha;
+
++ (UIColor *)color10WithAlpha:(CGFloat)alpha;
+
++ (UIColor *)getColor:(NSString *)hexColor;
 @end

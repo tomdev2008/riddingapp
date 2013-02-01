@@ -10,15 +10,14 @@
 
 @protocol AwesomeMenuItemDelegate;
 
-@interface AwesomeMenuItem : UIImageView
-{
-    UIImageView *_contentImageView;
-    CGPoint _startPoint;
-    CGPoint _endPoint;
-    CGPoint _nearPoint; // near
-    CGPoint _farPoint; // far
-    
-    id<AwesomeMenuItemDelegate> _delegate;
+@interface AwesomeMenuItem : UIImageView {
+  UIImageView *_contentImageView;
+  CGPoint _startPoint;
+  CGPoint _endPoint;
+  CGPoint _nearPoint; // near
+  CGPoint _farPoint; // far
+
+  id <AwesomeMenuItemDelegate> _delegate;
 }
 
 @property (nonatomic, retain, readonly) UIImageView *contentImageView;
@@ -28,11 +27,11 @@
 @property (nonatomic) CGPoint nearPoint;
 @property (nonatomic) CGPoint farPoint;
 
-@property (nonatomic, assign) id<AwesomeMenuItemDelegate> delegate;
+@property (nonatomic, assign) id <AwesomeMenuItemDelegate> delegate;
 
-- (id)initWithImage:(UIImage *)img 
+- (id)initWithImage:(UIImage *)img
    highlightedImage:(UIImage *)himg
-       ContentImage:(UIImage *)cimg
+           ContentImage:(UIImage *)cimg
 highlightedContentImage:(UIImage *)hcimg;
 
 
@@ -40,5 +39,6 @@ highlightedContentImage:(UIImage *)hcimg;
 
 @protocol AwesomeMenuItemDelegate <NSObject>
 - (void)AwesomeMenuItemTouchesBegan:(AwesomeMenuItem *)item;
+
 - (void)AwesomeMenuItemTouchesEnd:(AwesomeMenuItem *)item;
 @end

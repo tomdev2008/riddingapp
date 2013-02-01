@@ -7,17 +7,15 @@
 //
 
 #import "MapCreateVCTL.h"
-#import "RequestUtil.h"
 #import "LocationView.h"
 #import "MapUtil.h"
 #import "UIColor+XMin.h"
 
 #import "SVProgressHUD.h"
 #import "QQNRServerTask.h"
-#import "QQNRServerTaskQueue.h"
 #import "MapCreateDescVCTL.h"
-#import <MapKit/MapKit.h>
 #import "MyLocationManager.h"
+
 @interface MapCreateVCTL ()
 
 @end
@@ -84,25 +82,26 @@
   self.clearBtn.frame = CGRectMake(self.clearBtn.frame.origin.x, SCREEN_HEIGHT- 84, self.clearBtn.frame.size.width, self.clearBtn.frame.size.height);
   self.createBtn.frame = CGRectMake(self.createBtn.frame.origin.x, SCREEN_HEIGHT- 84, self.createBtn.frame.size.width, self.createBtn.frame.size.height);
   self.tapView.frame = CGRectMake(self.tapView.frame.origin.x, SCREEN_HEIGHT- 104, self.tapView.frame.size.width, self.tapView.frame.size.height);
-  
+
 }
 
-- (void)viewDidAppear:(BOOL)animated{
+- (void)viewDidAppear:(BOOL)animated {
+
   [super viewDidAppear:animated];
-  if(!self.didAppearOnce){
-    self.didAppearOnce=YES;
+  if (!self.didAppearOnce) {
+    self.didAppearOnce = YES;
     [self checkLocation];
   }
 }
 
 - (void)checkLocation {
 
-  if (![CLLocationManager locationServicesEnabled]||[CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
+  if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
     [SVProgressHUD showSuccessWithStatus:@"请开启定位服务以定位到您的位置" duration:2.0];
   } else {
-    MyLocationManager *manager=[MyLocationManager getSingleton];
+    MyLocationManager *manager = [MyLocationManager getSingleton];
     [manager startUpdateMyLocation:^(QQNRMyLocation *location) {
-      if(location==nil){
+      if (location == nil) {
         [SVProgressHUD showSuccessWithStatus:@"请开启定位服务以定位到您的位置" duration:2.0];
         return;
       }
@@ -111,12 +110,12 @@
       region.span = MKCoordinateSpanMake(0.1, 0.1);
       [self.mapView setRegion:region animated:YES];
     }];
-    
+
   }
 }
 
 - (void)rightBtnClicked:(id)sender {
-  
+
   self.barView.rightButton.enabled = NO;
   if (!_succCreate) {
     [SVProgressHUD showSuccessWithStatus:@"生成路线以后才能创建活动~" duration:2.0];
@@ -379,7 +378,7 @@
 - (IBAction)myLocationBtn:(id)sender {
 
   self.myLocationBtn.enabled = NO;
-  if (![CLLocationManager locationServicesEnabled]||[CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
+  if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
     [SVProgressHUD showErrorWithStatus:@"请开启定位服务以定位到您的位置" duration:2.0];
     self.myLocationBtn.enabled = YES;
     return;
@@ -389,9 +388,9 @@
   region.span = self.mapView.region.span;
   [self.mapView setRegion:region animated:YES];
 
-  MyLocationManager *manager=[MyLocationManager getSingleton];
+  MyLocationManager *manager = [MyLocationManager getSingleton];
   [manager startUpdateMyLocation:^(QQNRMyLocation *location) {
-    if(location==nil){
+    if (location == nil) {
       [SVProgressHUD showSuccessWithStatus:@"请开启定位服务以定位到您的位置" duration:2.0];
       self.myLocationBtn.enabled = YES;
       return;

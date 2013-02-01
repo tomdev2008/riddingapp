@@ -17,7 +17,6 @@
   SVSegmentedControl *_redSC;
   SVSegmentedControl *_publicSC;
   UIButton *_syncSinaBtn;
-  BOOL _sendWeiBo;
   BOOL _isPublic;
   BOOL _showingKeyBoard;
   BOOL _isSyncSina;

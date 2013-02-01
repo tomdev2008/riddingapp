@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "File.h"
+
 #define keyMap @"map"
+
 @interface Map : File
 
 
@@ -33,9 +35,5 @@
 
 
 @property (nonatomic, retain) NSArray *routes;
-
-
-@property (nonatomic, retain) NSArray *toNextDistance;
-@property (nonatomic, retain) NSArray *startLocations;
 
 @end

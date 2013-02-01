@@ -27,55 +27,60 @@
 @optional
 
 - (void)sendViewWillAppear:(WBSendView *)view;
+
 - (void)sendViewDidAppear:(WBSendView *)view;
+
 - (void)sendViewWillDisappear:(WBSendView *)view;
+
 - (void)sendViewDidDisappear:(WBSendView *)view;
 
 - (void)sendViewDidFinishSending:(WBSendView *)view;
+
 - (void)sendView:(WBSendView *)view didFailWithError:(NSError *)error;
 
 - (void)sendViewNotAuthorized:(WBSendView *)view;
+
 - (void)sendViewAuthorizeExpired:(WBSendView *)view;
 
 @end
 
 
-@interface WBSendView : UIView <UITextViewDelegate, WBEngineDelegate> 
-{
-    
-    UITextView  *contentTextView;
-    UIImageView *contentImageView;
-    
-    UIButton    *sendButton;
-    UIButton    *closeButton;
-    UIButton    *clearTextButton;
-    UIButton    *clearImageButton;
-    
-    UILabel     *titleLabel;
-    UILabel     *wordCountLabel;
-    
-    UIView      *panelView;
-    UIImageView *panelImageView;
-    
-    NSString    *contentText;
-    UIImage     *contentImage;
-    
-    UIInterfaceOrientation previousOrientation;
-    
-    BOOL        isKeyboardShowing;
-    
-    WBEngine    *engine;
-    
-    id<WBSendViewDelegate> delegate;
+@interface WBSendView : UIView <UITextViewDelegate, WBEngineDelegate> {
+
+  UITextView *contentTextView;
+  UIImageView *contentImageView;
+
+  UIButton *sendButton;
+  UIButton *closeButton;
+  UIButton *clearTextButton;
+  UIButton *clearImageButton;
+
+  UILabel *titleLabel;
+  UILabel *wordCountLabel;
+
+  UIView *panelView;
+  UIImageView *panelImageView;
+
+  NSString *contentText;
+  UIImage *contentImage;
+
+  UIInterfaceOrientation previousOrientation;
+
+  BOOL isKeyboardShowing;
+
+  WBEngine *engine;
+
+  id <WBSendViewDelegate> delegate;
 }
 
 @property (nonatomic, retain) NSString *contentText;
 @property (nonatomic, retain) UIImage *contentImage;
-@property (nonatomic, assign) id<WBSendViewDelegate> delegate;
+@property (nonatomic, assign) id <WBSendViewDelegate> delegate;
 
 - (id)initWithAppKey:(NSString *)appKey appSecret:(NSString *)appSecret text:(NSString *)text image:(UIImage *)image;
 
 - (void)show:(BOOL)animated;
+
 - (void)hide:(BOOL)animated;
 
 @end

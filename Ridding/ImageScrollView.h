@@ -9,15 +9,17 @@
 #import <Foundation/Foundation.h>
 #import "TouchedScrollView.h"
 #import "RiddingPicture.h"
+
 @interface ImageScrollView : TouchedScrollView <UIScrollViewDelegate> {
-    
-    UIImageView        *imageView;
-    NSUInteger     index;
+
+  UIImageView *imageView;
+  NSUInteger index;
 
 }
 
 @property (assign) NSUInteger index;
 
 - (void)displayImage:(RiddingPicture *)image;
-- (void)loadOtherImage:(RiddingPicture*)imageInfo;
+
+- (void)loadOtherImage:(RiddingPicture *)imageInfo;
 @end

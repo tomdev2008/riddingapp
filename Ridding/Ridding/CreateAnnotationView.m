@@ -55,15 +55,15 @@
   CGFloat scale = 0.001f;
   self.calloutView.transform = CGAffineTransformMake(scale, 0.0f, 0.0f, scale, 0, -50);
 
-  [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationCurveEaseOut animations:^{
+  [UIView animateWithDuration:0.15 delay:0 options:(UIViewAnimationOptions) UIViewAnimationCurveEaseOut animations:^{
     CGFloat scale = 1.1f;
     self.calloutView.transform = CGAffineTransformMake(scale, 0.0f, 0.0f, scale, 0, 2);
   }                completion:^(BOOL finished) {
-    [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationCurveEaseInOut animations:^{
+    [UIView animateWithDuration:0.1 delay:0 options:(UIViewAnimationOptions)UIViewAnimationCurveEaseInOut animations:^{
       CGFloat scale = 0.95;
       self.calloutView.transform = CGAffineTransformMake(scale, 0.0f, 0.0f, scale, 0, -2);
     }                completion:^(BOOL finished) {
-      [UIView animateWithDuration:0.075 delay:0 options:UIViewAnimationCurveEaseInOut animations:^{
+      [UIView animateWithDuration:0.075 delay:0 options:(UIViewAnimationOptions)UIViewAnimationCurveEaseInOut animations:^{
         CGFloat scale = 1.0;
         self.calloutView.transform = CGAffineTransformMake(scale, 0.0f, 0.0f, scale, 0, 0);
       }                completion:nil];

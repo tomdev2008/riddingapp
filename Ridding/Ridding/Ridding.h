@@ -10,6 +10,7 @@
 #import "User.h"
 #import "Map.h"
 #import "RiddingPicture.h"
+
 #define keyRidding @"ridding"
 
 typedef enum _RIDDINGACTION {

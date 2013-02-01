@@ -12,18 +12,20 @@
 @synthesize name, hash, bytes, contentType, lastModified, data, metadata;
 
 + (id)object {
-	ASICloudFilesObject *object = [[[self alloc] init] autorelease];
-	return object;
+
+  ASICloudFilesObject *object = [[[self alloc] init] autorelease];
+  return object;
 }
 
--(void)dealloc {
-	[name release];
-	[hash release];
-	[contentType release];
-	[lastModified release];
-	[data release];
-	[metadata release];
-	[super dealloc];
+- (void)dealloc {
+
+  [name release];
+  [hash release];
+  [contentType release];
+  [lastModified release];
+  [data release];
+  [metadata release];
+  [super dealloc];
 }
 
 @end
