@@ -31,27 +31,6 @@
       [BWStatusBarOverlay dismiss];
     }
       break;
-    case STEP_UPLOADRIDDING:
-    {
-      Ridding *ridding=[self.paramDic objectForKey:kFileClientServerUpload_Ridding];
-      RequestUtil *requestUtil=[[RequestUtil alloc]init];
-      NSDictionary *dic= [requestUtil addRidding:ridding];
-      if(dic){
-        Ridding *ridding=[[Ridding alloc]initWithJSONDic:[dic objectForKey:@"ridding"]];
-        if(ridding.riddingId>0){
-          [[NSNotificationCenter defaultCenter]postNotificationName:kSuccUploadPictureNotification object:self];
-        }
-      }
-      [BWStatusBarOverlay dismiss];
-    }
-      break;
-    case STEP_UPLOADRIDDINGMAP:
-    {
-      [self performSelectorOnMainThread:@selector(updateUIWhenTaskBegin) withObject:nil waitUntilDone:NO];
-      [[QQNRFileServerComm getSingleton] updateMapPhotoToQiNiu:[self.paramDic objectForKey:kFileClientServerUpload_Ridding] target:self];
-      
-    }
-      break;
     case STEP_UPLOADBACKGROUNDPHOTO:
     {
       [self performSelectorOnMainThread:@selector(updateUIWhenTaskBegin) withObject:nil waitUntilDone:NO];
@@ -91,7 +70,7 @@
   if (self.taskDelegate) {
     [self.taskDelegate serverTask:self errorWithServerJSON:nil];
   }
-  [BWStatusBarOverlay setMessage:@"执行失败" animated:NO];
+  [BWStatusBarOverlay setMessage:@"失败" animated:NO];
   [BWStatusBarOverlay dismiss];
 }
 - (void)fileClientServerUploadOneFileSuccess:(NSDictionary *)info{
@@ -107,20 +86,21 @@
     File *file=[info objectForKey:kFileClientServerUpload_File];
     NSDictionary *dic=[request updateUserBackgroundUrl:file.fileKey];
     if(dic){
-      User *user=[[User alloc]initWithJSONDic:[dic objectForKey:@"user"]];
+      User *user=[[User alloc]initWithJSONDic:[dic objectForKey:keyUser]];
       [StaticInfo getSinglton].user.backGroundUrl=user.backGroundUrl;
       NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
       [prefs setObject:user.backGroundUrl forKey:kStaticInfo_backgroundUrl];
       [[NSNotificationCenter defaultCenter]postNotificationName:kSuccUploadBackgroundNotification object:self];
     }
   }
+
   
   [self performSelectorOnMainThread:@selector(updateStatusBarWithUploadPhotoStatus) withObject:nil waitUntilDone:NO];
 }
 
 - (void)updateStatusBarWithUploadPhotoStatus {
   [BWStatusBarOverlay setProgress:1 animated:YES];
-  [BWStatusBarOverlay setMessage:@"执行成功" animated:YES];
+  [BWStatusBarOverlay setMessage:@"成功" animated:YES];
   [BWStatusBarOverlay dismiss];
   return;
 }

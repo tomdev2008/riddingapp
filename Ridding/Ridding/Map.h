@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "File.h"
-
+#define keyMap @"map"
 @interface Map : File
 
 

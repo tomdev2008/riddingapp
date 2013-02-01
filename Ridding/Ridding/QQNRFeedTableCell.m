@@ -47,9 +47,11 @@
 }
 
 - (void)drawRoutes:(NSArray *)routes {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[MapUtil getSinglton] center_map:_mapView routes:routes];
+    [[MapUtil getSinglton] update_route_view:_mapView to:_mapLineView line_color:[UIColor getColor:lineColor] routes:routes];
+  });
 
-  [[MapUtil getSinglton] center_map:_mapView routes:routes];
-  [[MapUtil getSinglton] update_route_view:_mapView to:_mapLineView line_color:[UIColor getColor:lineColor] routes:routes];
 }
 
 - (IBAction)leaderViewTap:(id)selector {

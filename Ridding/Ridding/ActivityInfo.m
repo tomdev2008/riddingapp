@@ -22,7 +22,7 @@
 
   self = [super init];
   if (self) {
-    self.ridding = [[Ridding alloc] initWithJSONDic:[jsonDic objectForKey:@"ridding"]];
+    self.ridding = [[Ridding alloc] initWithJSONDic:[jsonDic objectForKey:keyRidding]];
     self.weight = [[jsonDic objectForKey:@"weight"] intValue];
     self.firstPicUrl = [jsonDic objectForKey:@"firstpicurl"];
   }

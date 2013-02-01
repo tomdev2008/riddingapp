@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "UserAnnotation.h"
 #import "BasicObject.h"
-
+#define keyUser @"user"
+#define keyToUser @"touser"
 typedef enum _SOURCETYPE {
   SOURCE_SINA = 1,
   SOURCE_WEB = 2,

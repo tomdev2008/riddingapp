@@ -151,6 +151,7 @@
         [alert show];
       }
       [self.tv reloadData];
+      [self downLoadMapRoutes];
       [SVProgressHUD dismiss];
       _isLoading = FALSE;
     });
@@ -174,7 +175,7 @@
 
   if (array && [array count] > 0) {
     for (NSDictionary *dic in array) {
-      Ridding *ridding = [[Ridding alloc] initWithJSONDic:[dic objectForKey:@"ridding"]];
+      Ridding *ridding = [[Ridding alloc] initWithJSONDic:[dic objectForKey:keyRidding]];
 
       [_dataSource addObject:ridding];
     }
@@ -229,11 +230,11 @@
   cell.backgroundColor = [UIColor clearColor];
   cell.delegate = self;
   cell.userInteractionEnabled = YES;
+  cell.index=indexPath.row;
   UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnCell:)];
   [cell addGestureRecognizer:longPressRecognizer];
 
   Ridding *ridding = [_dataSource objectAtIndex:indexPath.row];
-  cell.index = indexPath.row;
   [cell initContentView:ridding];
   return cell;
 }
@@ -303,16 +304,13 @@
           //如果数据库中存在，那么取数据库中的地图路径，如果不存在，http去请求服务器。
           //数据库中取出是mapTaps或者points
           NSMutableDictionary *map_dic = [self.requestUtil getMapMessage:ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
-          Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:@"map"]];
+          Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:keyMap]];
           NSArray *array = map.mapPoint;
           [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
           [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:array]];
-
           [RiddingLocationDao setRiddingLocationToDB:routes riddingId:ridding.riddingId];
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-          [cell drawRoutes:routes];
-        });
+        [cell drawRoutes:routes];
       });
 
     }
@@ -413,7 +411,7 @@
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     Ridding *ridding = [_dataSource objectAtIndex:cell.index];
     NSDictionary *dic = [self.requestUtil getUserProfile:ridding.leaderUser.userId sourceType:SOURCE_SINA];
-    User *_user = [[User alloc] initWithJSONDic:[dic objectForKey:@"user"]];
+    User *_user = [[User alloc] initWithJSONDic:[dic objectForKey:keyUser]];
     dispatch_async(dispatch_get_main_queue(), ^{
       if (self) {
         QQNRFeedViewController *QQNRFVC = [[QQNRFeedViewController alloc] initWithUser:_user isFromLeft:FALSE];

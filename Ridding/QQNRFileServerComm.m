@@ -28,22 +28,15 @@ static QQNRFileServerComm *qqnrFileServerComm=nil;
   
   NSString *fileName=[self getFileName:riddingPicture.width height:riddingPicture.height];
   
-  NSString *localPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"tmp.jpg"];
-  riddingPicture.fileData=UIImageJPEGRepresentation(riddingPicture.image, 1.0);
-  [riddingPicture.fileData writeToFile:localPath atomically:YES];
-  
-  
   NSFileManager *manager = [NSFileManager defaultManager];
-  if (localPath == nil || ![manager fileExistsAtPath:localPath]) {
+  if (riddingPicture.filePath == nil || ![manager fileExistsAtPath:riddingPicture.filePath]) {
     
     [target fileClientServerUploadOneFileError:nil];
     
     return;
-    
   }
   
-  int retureCode=[self doUpload:fileName localPath:localPath];
-  NSLog(@"%d",retureCode);
+  int retureCode=[self doUpload:fileName localPath:riddingPicture.filePath];
   if(retureCode==200){
     fileName=[NSString stringWithFormat:@"/%@",fileName];
     riddingPicture.fileKey=fileName;
@@ -55,7 +48,9 @@ static QQNRFileServerComm *qqnrFileServerComm=nil;
   }else{
     [target fileClientServerUploadOneFileError:nil];
   }
-  
+  if([manager fileExistsAtPath:riddingPicture.filePath]){
+    [manager removeItemAtPath:riddingPicture.filePath error:nil];
+  }
 }
 
 - (void)updateMapPhotoToQiNiu:(Ridding *)ridding target:(id<QQNRFileClientServerUploadProtocol>)target{
@@ -87,6 +82,9 @@ static QQNRFileServerComm *qqnrFileServerComm=nil;
     
   }else{
     [target fileClientServerUploadOneFileError:nil];
+  }
+  if([manager fileExistsAtPath:localPath]){
+    [manager removeItemAtPath:localPath error:nil];
   }
   
 }

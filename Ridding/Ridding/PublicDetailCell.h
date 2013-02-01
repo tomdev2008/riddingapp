@@ -13,13 +13,15 @@
 
 #define PublicDetailCellDefaultSpace 4
 #define PublicDetailCellDefaultDownSpace 10
-#define PublicDetailCellOriginX 15
-#define PublicDetailCellWidth 270
+#define PublicDetailCellOriginX 20
+#define PublicDetailCellWidth 280
 @class PublicDetailCell;
 
 @protocol PublicDetailCellDelegate <NSObject>
 @optional
 - (void)imageViewClick:(PublicDetailCell *)view picture:(RiddingPicture *)picture imageView:(UIView *)imageView;
+
+- (void)likeBtnClick:(PublicDetailCell *)view picture:(RiddingPicture *)picture;
 
 @end
 

@@ -33,7 +33,7 @@
 - (void)viewDidLoad {
 
   [super viewDidLoad];
-  //self.view.backgroundColor=[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"QQNR_MAIN_BG")];
+  self.view.backgroundColor=[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"QQNR_MAIN_BG")];
 
   [self.barView.titleLabel setText:@"推荐骑记"];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_LIST") forState:UIControlStateNormal];
@@ -53,7 +53,16 @@
 
   [self addTableHeader];
   [self addTableFooter];
-
+  
+  GADSearchBannerView *bannerView=[[GADSearchBannerView alloc]initWithAdSize:GADAdSizeFromCGSize(GAD_SIZE_320x50) origin:CGPointMake(0, SCREEN_HEIGHT-50)];
+  bannerView.adUnitID=MY_BANNER_UNIT_ID;
+  bannerView.delegate=self;
+  bannerView.rootViewController=self;
+  [self.view addSubview:bannerView];
+  GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
+  [adRequest setQuery:@"sport"];
+  [bannerView loadRequest:[adRequest request]];
+  
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -250,6 +259,15 @@
 - (BOOL)down_egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
 
   return _isLoading; // should return if data source model is reloading
+}
+
+- (void)adView:(GADBannerView *)view
+didFailToReceiveAdWithError:(GADRequestError *)error{
+  [view removeFromSuperview];
+}
+
+- (void)adViewDidReceiveAd:(GADBannerView *)view{
+  NSLog(@"received");
 }
 
 @end

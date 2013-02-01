@@ -33,8 +33,8 @@
     self.replyId = [[jsonDic objectForKey:@"replyid"] longLongValue];
     self.createTime = [[jsonDic objectForKey:@"createtime"] longLongValue];
     self.createTimeStr = [jsonDic objectForKey:@"createtimestr"];
-    self.user = [[User alloc] initWithJSONDic:[jsonDic objectForKey:@"user"]];
-    self.toUser = [[User alloc] initWithJSONDic:[jsonDic objectForKey:@"touser"]];
+    self.user = [[User alloc] initWithJSONDic:[jsonDic objectForKey:keyUser]];
+    self.toUser = [[User alloc] initWithJSONDic:[jsonDic objectForKey:keyToUser]];
     self.beforeTime = [jsonDic objectForKey:@"beforetime"];
   }
   return self;

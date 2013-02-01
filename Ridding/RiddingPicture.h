@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "File.h"
 #import "User.h"
+#import "Ridding.h"
+#define keyRiddingPicture @"picture"
+
 @interface RiddingPicture : File
 
 
@@ -17,7 +20,6 @@
 @property(nonatomic,retain) User *user;
 @property(nonatomic) long long riddingId;
 @property(nonatomic) long long dbId;
-@property(nonatomic,retain) UIImage *image;
 @property(nonatomic,copy) NSString *photoUrl;
 @property(nonatomic) long long takePicDateL;
 @property(nonatomic,copy) NSString *takePicDateStr;
@@ -27,6 +29,8 @@
 
 @property(nonatomic) BOOL isFirstPic;
 @property(nonatomic) long long createTime;
+@property (nonatomic) BOOL liked;
+@property (nonatomic) int likeCount;
 
-
+- (RiddingPicture *)initWithRidding:(int)width height:(int)height ridding:(Ridding*)ridding;
 @end

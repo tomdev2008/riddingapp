@@ -33,18 +33,19 @@ latitude text,longtitide text,nextDistance INTEGER,weight INTEGER);";
   FMResultSet *rs;
   @synchronized(self){
     rs=[db executeQuery:[NSString stringWithFormat:@"SELECT * FROM TB_RiddingLocation where riddingid =%lld and weight>=%d ;",riddingId,beginWeight]];
+    
+    NSMutableArray *riddingLocations=[[NSMutableArray alloc]init];
+    while ([rs next]){
+      RiddingLocation *location=[[RiddingLocation alloc]init];
+      location.dbId=[rs longLongIntForColumn:@"id"];
+      location.riddingId=[rs longLongIntForColumn:@"riddingid"];
+      location.latitude=[rs doubleForColumn:@"latitude"];
+      location.longtitude=[rs doubleForColumn:@"longtitude"];
+      location.weight=[rs intForColumn:@"weight"];
+      [riddingLocations addObject:location];
+    }
+    return riddingLocations;
   }
-  NSMutableArray *riddingLocations=[[NSMutableArray alloc]init];
-  while ([rs next]){
-    RiddingLocation *location=[[RiddingLocation alloc]init];
-    location.dbId=[rs longLongIntForColumn:@"id"];
-    location.riddingId=[rs longLongIntForColumn:@"riddingid"];
-    location.latitude=[rs doubleForColumn:@"latitude"];
-    location.longtitude=[rs doubleForColumn:@"longtitude"];
-    location.weight=[rs intForColumn:@"weight"];
-    [riddingLocations addObject:location];
-  }
-  return riddingLocations;
 
 }
 
@@ -52,7 +53,7 @@ latitude text,longtitide text,nextDistance INTEGER,weight INTEGER);";
   FMDatabase *db=[StaticInfo getSinglton].sqlDB;
   FMResultSet *rs;
   @synchronized(self){
-    rs=[db executeQuery:@"select count(*) from TB_RiddingLocation where riddingid = %lld;",riddingId];
+    rs=[db executeQuery:[NSString stringWithFormat:@"select count(*) from TB_RiddingLocation where riddingid = %lld ;",riddingId]];
   }
   while ([rs next]){
     return [rs intForColumnIndex:0];
@@ -73,7 +74,7 @@ latitude text,longtitide text,nextDistance INTEGER,weight INTEGER);";
     [locations addObject:riddingLocation];
   }
   int count= [self getRiddingLocationCount:riddingId];
-  if(count>0){
+  if(count==0){
       [self addRiddingLocation:riddingId locations:locations];
   }
 

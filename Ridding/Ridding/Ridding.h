@@ -10,12 +10,14 @@
 #import "User.h"
 #import "Map.h"
 #import "RiddingPicture.h"
+#define keyRidding @"ridding"
 
 typedef enum _RIDDINGACTION {
   RIDDINGACTION_LIKE = 0,
   RIDDINGACTION_CARE = 1,
   RIDDINGACTION_FINISH = 2,
   RIDDINGACTION_USE = 3,
+  RIDDINGACTION_LIKEPICTURE = 4,
 } RIDDINGACTION;
 
 
@@ -56,4 +58,6 @@ typedef enum _RIDDINGACTION {
 - (void)setEnd;
 
 + (BOOL)isLeader:(int)userRole;
+
+- (BOOL)syncSina;
 @end

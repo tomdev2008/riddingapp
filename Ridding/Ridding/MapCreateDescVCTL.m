@@ -46,7 +46,7 @@
   self.totalDistanceLB.text = [NSString stringWithFormat:@"总行程:%0.2fKM", _ridding.map.distance * 1.0 / 1000];
 
   self.nameField.returnKeyType = UIReturnKeyGo;
-  self.mapImageView.image = _ridding.map.coverImage;
+  
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"bg_dt")];
 
   _redSC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"不分享", @"分享", nil]];
@@ -66,9 +66,16 @@
   _publicSC.selectedIndex = 1;
   [self.view addSubview:_publicSC];
   _publicSC.center = CGPointMake(240, 355);
-
   _isPublic = TRUE;
-
+  
+  
+  _syncSinaBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+  _syncSinaBtn.frame=CGRectMake(150, 370, 20, 20);
+  [_syncSinaBtn setTitle:@"同步" forState:UIControlStateNormal];
+  [_syncSinaBtn setTitle:@"同步" forState:UIControlStateHighlighted];
+  [_syncSinaBtn addTarget:self action:@selector(sinaSyncChangedValue:) forControlEvents:UIControlEventTouchUpInside];
+  [self.view addSubview:_syncSinaBtn];
+  _isSyncSina = FALSE;
 
 }
 
@@ -97,44 +104,35 @@
     self.barView.rightButton.enabled = YES;
     return;
   }
-
-  QQNRServerTask *task = [[QQNRServerTask alloc] init];
-  task.step = STEP_UPLOADRIDDING;
-  task.taskDelegate = self;
-
-  QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
-  [queue addTask:task withDependency:YES];
-
-  __block NSString *riddingName = self.nameField.text;
-  __block NSString *beginLocation = self.beginLocationTV.text;
-  __block NSString *endLocation = self.endLocationTV.text;
-  __block int isPublic = _isPublic ? 1 : 0;
-  __block BOOL sendWeiBo = _sendWeiBo;
-  [task setDataProcessBlock:(BlockProcessLastTaskData) ^(NSDictionary *dic) {
-    if (dic) {
-      Ridding *ridding = [dic objectForKey:kFileClientServerUpload_Ridding];
-      ridding.riddingName = riddingName;
-      ridding.map.beginLocation = beginLocation;
-      ridding.map.endLocation = endLocation;
-      ridding.isPublic = isPublic;
+  [SVProgressHUD showWithStatus:@"创建进行中"];
+  _ridding.riddingName = self.nameField.text;
+  _ridding.map.beginLocation = self.beginLocationTV.text;
+  _ridding.map.endLocation = self.endLocationTV.text;
+  _ridding.isPublic = _isPublic ? 1 : 0;
 #warning issync
-      ridding.isSyncSina = isPublic;
-
-      NSMutableDictionary *mulDic = [[NSMutableDictionary alloc] init];
-      [mulDic setObject:ridding forKey:kFileClientServerUpload_Ridding];
-      task.paramDic = mulDic;
-      if (sendWeiBo) {
-        NSString *status = [NSString stringWithFormat:@"我刚刚用#骑行者#创建了一个骑行活动:%@,推荐给大家。 @骑去哪儿网 下载地址:%@", _ridding.riddingName, downLoadPath];
-        [[SinaApiRequestUtil getSinglton] sendCreateRidding:status url:[NSString stringWithFormat:@"%@/%@", imageHost, ridding.map.fileKey]];
-      } else {
-        [MobClick event:@"2012111905"];
-      }
-
+  _ridding.isSyncSina = _isSyncSina ? 1 : 0;
+  
+  dispatch_queue_t q;
+  q = dispatch_queue_create("riddingCreate", NULL);
+  dispatch_async(q, ^{
+    RequestUtil *requestUtil=[[RequestUtil alloc]init];
+    NSDictionary *dic= [requestUtil addRidding:_ridding];
+    if(dic){
+      _ridding=[[Ridding alloc]initWithJSONDic:[dic objectForKey:keyRidding]];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        if(_ridding.riddingId>0){
+          if (_sendWeiBo) {
+            NSString *status = [NSString stringWithFormat:@"我刚刚用#骑行者#创建了一个骑行活动:%@,推荐给大家。 @骑去哪儿网 下载地址:%@", _ridding.riddingName, downLoadPath];
+            [[SinaApiRequestUtil getSinglton] sendCreateRidding:status url:[NSString stringWithFormat:@"%@/%@", imageHost, _ridding.map.fileKey]];
+          } else {
+            [MobClick event:@"2012111905"];
+          }
+        }
+        [SVProgressHUD dismiss];
+      });
     }
-  }];
-
+  });
   self.barView.rightButton.enabled = YES;
-  [SVProgressHUD dismiss];
 
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
   QQNRFeedViewController *FVC = [[QQNRFeedViewController alloc] initWithUser:[StaticInfo getSinglton].user isFromLeft:TRUE];
@@ -238,6 +236,10 @@
   } else if (segmentedControl.selectedIndex == 1) {
     _isPublic = TRUE;
   }
+}
+
+- (void)sinaSyncChangedValue:(id)selector{
+  
 }
 
 #pragma mark -

@@ -9,5 +9,9 @@
 #import "BasicViewController.h"
 
 @interface BasicNeedLoginViewController : BasicViewController<RiddingViewControllerDelegate,QQNRSourceLoginViewControllerDelegate>
+
+
 - (void)showLoginAlertView;
+
+-(void)presentLoginView;
 @end

@@ -112,8 +112,6 @@ static SinaApiRequestUtil *sinaApiRequestUtil=nil;
   [arequest setPostValue:url forKey:@"url"];
   [arequest setDefaultResponseEncoding:NSUTF8StringEncoding];
   [arequest startAsynchronous];
-  
-  
 }
 
 
@@ -138,6 +136,23 @@ static SinaApiRequestUtil *sinaApiRequestUtil=nil;
   [arequest startSynchronous];
   NSString* response= [arequest responseString];
   return [[response JSONValue]objectForKey:@"users"];
+}
+#warning 同步新浪微博
+-(void)sendWeiBo:(NSString*)text url:(NSString*)url latitude:(double)latitude longtitude:(double)longtitude{
+  NSString* methodName=[NSString stringWithFormat:@"https://%@/2/statuses/upload_url_text.json",apiSinaHost];
+  methodName= [[NSString alloc]initWithUTF8String:[methodName UTF8String]];
+  NSURL *apiUrl=[NSURL URLWithString:methodName];
+  ASIFormDataRequest *arequest=[ASIFormDataRequest requestWithURL:apiUrl];
+  [arequest setRequestMethod:@"POST"];
+  [arequest setPostValue:text forKey:@"status"];
+  [arequest setPostValue:staticInfo.user.accessToken forKey:@"access_token"];
+  [arequest setPostValue:url forKey:@"url"];
+  [arequest setPostValue:DOUBLE2NUM(latitude) forKey:@"lat"];
+  [arequest setPostValue:DOUBLE2NUM(longtitude) forKey:@"long"];
+  [arequest setDefaultResponseEncoding:NSUTF8StringEncoding];
+  [arequest startSynchronous];
+  NSString* response= [arequest responseString];
+  NSLog(@"%@",response);
 }
 
 //异步请求完成

@@ -25,7 +25,7 @@
   long long _lastUpdateTime;
   BOOL _isMyFeedHome;
   User *_toUser;
-  UIButton *_likeBtn;
+  UIButton *_useBtn;
   UIButton *_careBtn;
   UIButton *_commentBtn;
 

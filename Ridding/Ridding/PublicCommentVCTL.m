@@ -71,25 +71,32 @@
 
 - (void)addCommentToServer:(NSString *)text {
 
-  Comment *comment = [[Comment alloc] init];
-  comment.replyId = _replyId;
-  if (_replyId == 0) {
-    comment.commentType = COMMENTTYPE_COMMENT;
-  } else {
-    comment.commentType = COMMENTTYPE_REPLY;
-  }
-  comment.text = text;
-  comment.usePicUrl = @"";
-  comment.riddingId = _ridding.riddingId;
-  comment.userId = [StaticInfo getSinglton].user.userId;
-  comment.toUserId = _toUserId;
-  NSDictionary *dic = [self.requestUtil addRiddingComment:comment];
-  if (dic) {
-    _textView.text = @"";
-    _isTheEnd = FALSE;
-    _endCreateTime = -1;
-    [self download];
-  }
+  dispatch_async(dispatch_queue_create("download", NULL), ^{
+    Comment *comment = [[Comment alloc] init];
+    comment.replyId = _replyId;
+    if (_replyId == 0) {
+      comment.commentType = COMMENTTYPE_COMMENT;
+    } else {
+      comment.commentType = COMMENTTYPE_REPLY;
+    }
+    comment.text = text;
+    comment.usePicUrl = @"";
+    comment.riddingId = _ridding.riddingId;
+    comment.userId = [StaticInfo getSinglton].user.userId;
+    comment.toUserId = _toUserId;
+    
+    NSDictionary *dic = [self.requestUtil addRiddingComment:comment];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (dic) {
+        _textView.text = @"";
+        _isTheEnd = FALSE;
+        _endCreateTime = -1;
+        [self download];
+      }
+      [SVProgressHUD dismiss];
+    });
+  });
+  
 }
 
 //时间是用在进行中的列表，weight是用在推荐列表
@@ -129,8 +136,8 @@
 
   if (array && [array count] > 0) {
     for (NSDictionary *dic in array) {
-      if ([dic objectForKey:@"comment"]) {
-        Comment *comment = [[Comment alloc] initWithJSONDic:[dic objectForKey:@"comment"]];
+      if ([dic objectForKey:keyComment]) {
+        Comment *comment = [[Comment alloc] initWithJSONDic:[dic objectForKey:keyComment]];
         [_dataSource addObject:comment];
 
       }
@@ -418,8 +425,9 @@
     _toUserId = 0;
     _replyId = 0;
   }
+  
   [self addCommentToServer:_textView.text];
-  [SVProgressHUD dismiss];
+
 }
 
 - (void)keyboardWillShow:(NSNotification *)note {

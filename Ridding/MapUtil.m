@@ -84,7 +84,8 @@ static MapUtil *mapUtil=nil;
 -(NSString*)getPoints:(NSDictionary*) dic_data{
   NSArray *dic_routes=[dic_data objectForKey:@"routes"];
   NSDictionary *legs=[dic_routes objectAtIndex:0];
-  NSDictionary *points=[legs objectForKey:@"overview_polyline"];    return [points objectForKey:@"points"];
+  NSDictionary *points=[legs objectForKey:@"overview_polyline"];
+  return [points objectForKey:@"points"];
 }
 //插入下一个点
 -(NSArray*)getToNextDistance:(NSDictionary*) dic_data{

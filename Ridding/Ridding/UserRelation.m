@@ -25,8 +25,8 @@
 
   self = [super init];
   if (self) {
-    self.user = [[User alloc] initWithJSONDic:[jsonDic objectForKey:@"user"]];
-    self.toUser = [[User alloc] initWithJSONDic:[jsonDic objectForKey:@"touser"]];
+    self.user = [[User alloc] initWithJSONDic:[jsonDic objectForKey:keyUser]];
+    self.toUser = [[User alloc] initWithJSONDic:[jsonDic objectForKey:keyToUser]];
     self.createTime = [[jsonDic objectForKey:@"createtime"] longLongValue];
     self.dbId = [[jsonDic objectForKey:@"id"] longLongValue];
     self.status = [[jsonDic objectForKey:@"status"] intValue];

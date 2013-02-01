@@ -12,7 +12,7 @@
 #import "RequestUtil.h"
 #import "MapUtil.h"
 #import "RiddingLocationDao.h"
-
+#import "UIButton+WebCache.h"
 #define frameSize @"28"
 
 @implementation PublicDetailHeaderView
@@ -26,46 +26,58 @@
     self.backgroundColor = [UIColor clearColor];
 
 
-    UIImageView *avatorImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 55, 55)];
+    UIButton *avatorBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 15, 55, 55)];
     NSURL *url = [NSURL URLWithString:_ridding.leaderUser.savatorUrl];
-    [avatorImageView setImageWithURL:url placeholderImage:UIIMAGE_DEFAULT_USER_AVATOR];
-    [self addSubview:avatorImageView];
+    [avatorBtn setImageWithURL:url placeholderImage:UIIMAGE_DEFAULT_USER_AVATOR];
+    avatorBtn.showsTouchWhenHighlighted = YES;
+    [avatorBtn addTarget:self action:@selector(avatorClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:avatorBtn];
 
-    UIButton *maskBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    maskBtn.frame = CGRectMake(15, 15, 55, 55);
-    [maskBtn setImage:UIIMAGE_FROMPNG(@"PublicView_Head") forState:UIControlStateNormal];
-    [maskBtn setImage:UIIMAGE_FROMPNG(@"PublicView_Head") forState:UIControlStateHighlighted];
-    maskBtn.showsTouchWhenHighlighted = YES;
-    [maskBtn addTarget:self action:@selector(avatorClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:maskBtn];
-
-    UILabel *riddingNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 15, 250, 30)];
-    riddingNameLabel.textColor = [UIColor getColor:barTextColor];
+    UILabel *riddingNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 10, 250, 30)];
+    riddingNameLabel.textColor = [UIColor whiteColor];
     riddingNameLabel.textAlignment = UITextAlignmentLeft;
     riddingNameLabel.text = _ridding.riddingName;
     riddingNameLabel.backgroundColor = [UIColor clearColor];
     riddingNameLabel.font = [UIFont systemFontOfSize:20];
     [self addSubview:riddingNameLabel];
 
-
-    UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 45, 200, 15)];
-    distanceLabel.textColor = [UIColor getColor:barTextColor];
-    distanceLabel.textAlignment = UITextAlignmentLeft;
-    distanceLabel.text = [NSString stringWithFormat:@"行程 : %0.2fKM", _ridding.map.distance * 1.0 / 1000];
-    distanceLabel.backgroundColor = [UIColor clearColor];
-    distanceLabel.font = [UIFont systemFontOfSize:12];
-    [self addSubview:distanceLabel];
-
-    UILabel *createLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 60, 200, 15)];
-    createLabel.textColor = [UIColor getColor:barTextColor];
+    UILabel *createLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 50, 75, 15)];
+    createLabel.textColor = [UIColor whiteColor];
     createLabel.textAlignment = UITextAlignmentLeft;
-    createLabel.text = [NSString stringWithFormat:@"创建时间: %@", _ridding.createTimeStr];
+    createLabel.text = [NSString stringWithFormat:@"%@", _ridding.createTimeStr];
     createLabel.backgroundColor = [UIColor clearColor];
     createLabel.font = [UIFont systemFontOfSize:12];
     [self addSubview:createLabel];
+    
+    
+    NSString *dictance=[NSString stringWithFormat:@"%0.2fKM", _ridding.map.distance * 1.0 / 1000];;
+    CGSize linesSz = [dictance sizeWithFont:[UIFont boldSystemFontOfSize:12] constrainedToSize:CGSizeMake(100, 25) lineBreakMode:(NSLineBreakMode) UILineBreakModeCharacterWrap];
+    
+    UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(175, 50, linesSz.width, linesSz.height+2)];
+    distanceLabel.textColor = [UIColor whiteColor];
+    distanceLabel.textAlignment = UITextAlignmentCenter;
+    distanceLabel.text = dictance;
+    distanceLabel.backgroundColor =  [UIColor clearColor];
+    distanceLabel.font = [UIFont systemFontOfSize:12];
+    
+    
+    UIImageView *iconImage=[[UIImageView alloc]initWithFrame:CGRectMake(distanceLabel.frame.origin.x-13, distanceLabel.frame.origin.y, 12, 14)];
+    iconImage.image=UIIMAGE_FROMPNG(@"QQNR_PD_DistancePic");
+    
+    UIImageView *distanceViewBG=[[UIImageView alloc]initWithFrame:CGRectMake(distanceLabel.frame.origin.x-15, distanceLabel.frame.origin.y, distanceLabel.frame.size.width+20, distanceLabel.frame.size.height)];
+    distanceViewBG.image=[UIIMAGE_FROMPNG(@"QQNR_PD_DistanceBg") stretchableImageWithLeftCapWidth:4 topCapHeight:10];
+    
+    [self addSubview:distanceViewBG];
+    [self addSubview:iconImage];
+    [self addSubview:distanceLabel];
+    
+        
 
-    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(15, 80, 290, 200)];
-    _route_view = [[UIImageView alloc] initWithFrame:CGRectMake(15, 80, 290, 200)];
+
+    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(15, 85, 280, 140)];
+    _route_view = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80, 290, 150)];
+    _route_view.layer.borderColor=[[UIColor whiteColor]CGColor];
+    _route_view.layer.borderWidth=5.0;
     [_mapView setShowsUserLocation:NO];
     _mapView.delegate = self;
     [_mapView setZoomEnabled:NO];
@@ -100,7 +112,7 @@
       //数据库中取出是mapTaps或者points
       RequestUtil *requestUtil = [[RequestUtil alloc] init];
       NSMutableDictionary *map_dic = [requestUtil getMapMessage:_ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
-      Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:@"map"]];
+      Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:keyMap]];
       NSArray *array = map.mapPoint;
       [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
       _routes = [[MapUtil getSinglton] decodePolyLineArray:array];

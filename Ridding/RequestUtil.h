@@ -84,6 +84,8 @@
 - (NSDictionary*) careRidding: (long long)riddingId;
 - (NSDictionary*) useRidding: (long long)riddingId;
 
+- (void) likeRiddingPicture: (long long)riddingId pictureId:(long long)pictureId;
+
 - (NSDictionary*) getUserRiddingAction:(long long)riddingId;
 
 - (NSDictionary*) updateUserBackgroundUrl:(NSString*)urlStr;

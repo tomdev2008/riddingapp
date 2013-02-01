@@ -21,9 +21,6 @@
 #define kFileClientServerUpload_Ridding              @"FileClientServerUpload_ridding"
 #define kFileClientServerUpload_File                 @"FileClientServerUpload_file"
 
-
-#define kFinishUpdateMyLocationNotification @"FinishUpdateMyLocationNotification"
-#define kFailUpdateMyLocationNotification @"FailUpdateMyLocationNotification"
 #define kSuccAddRiddingNotification @"SuccAddRiddingNotification"
 #define kSuccUploadPictureNotification @"SuccUploadPictureNotification"
 #define kSuccUploadBackgroundNotification @"SuccUploadBackgroundNotification"
@@ -35,13 +32,14 @@
 #define linkAppStore @"itms-apps://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=557123754"
 #define linkAppStoreComment @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=557123754"
 #define riddingappuid @"2672248903"
-#define imageHost @"images.qiqunar.com.cn"
+#define imageHost @"http://images.qiqunar.com.cn"
 
 #define QIQUNARHOME @"http://qiqunar.com.cn"
 
 #define sendMyLocationTime @"10"
 #define getToDestinationTime @"15"
 #define YouMenAppKey @"4fb3ce805270152b53000128"
+#define MY_BANNER_UNIT_ID @"a151069f9007f3a"
 
 #ifdef DEBUG
 #   define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);

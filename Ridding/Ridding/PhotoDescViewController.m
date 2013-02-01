@@ -9,7 +9,9 @@
 #import "PhotoDescViewController.h"
 #import "QQNRServerTask.h"
 #import "QQNRServerTaskQueue.h"
-
+#import "MyLocationManager.h"
+#import "SVProgressHUD.h"
+#import "SinaApiRequestUtil.h"
 @interface PhotoDescViewController ()
 
 @end
@@ -18,22 +20,9 @@
 @synthesize imageView = _imageView;
 @synthesize textView = _textView;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-
-  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-  if (self) {
-    // Custom initialization
-  }
-  return self;
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil info:(NSDictionary *)info {
-
-  RiddingPicture *picture = (RiddingPicture *) [info objectForKey:@"picture"];
-  if (picture) {
-    _image = picture.image;
-    _dbId = picture.dbId;
-  }
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingPicture:(RiddingPicture *)riddingPicture isSyncSina:(BOOL)isSyncSina{
+  _syncSina=isSyncSina;
+  _riddingPicture=riddingPicture;
   return [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 }
 
@@ -47,8 +36,10 @@
   [self.barView.leftButton setTitle:@"取消" forState:UIControlStateHighlighted];
   [self.barView.rightButton setTitle:@"确定" forState:UIControlStateNormal];
   self.barView.titleLabel.text = @"添加描述";
-  self.imageView.image = _image;
+  
+  self.imageView.image = [_riddingPicture imageFromLocal];
   self.imageView.displayAsStack = NO;
+  
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   [formatter setDateFormat:@"yyyy年MM月dd日HH时mm分"];
   self.timeLabel.text = [formatter stringFromDate:[NSDate date]];
@@ -58,8 +49,17 @@
   self.timeLabel.userInteractionEnabled = YES;
   [self.timeLabel addGestureRecognizer:tapGesture];
 
-  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
-  self.locationLabel.text = [delegate myLocation].name;
+  MyLocationManager *manager=[MyLocationManager getSingleton];
+  [manager startUpdateMyLocation:^(QQNRMyLocation *location) {
+    if(location==nil){
+      [SVProgressHUD showSuccessWithStatus:@"请开启定位服务以定位到您的位置" duration:2.0];
+      return;
+    }
+    self.locationLabel.text=location.city;
+    _riddingPicture.location=location.city;
+    _riddingPicture.latitude=location.latitude;
+    _riddingPicture.longtitude=location.longtitude;
+  }];
 
   if (!_datePicker) {
     _datePicker = [[QQNRDatePicker alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, DEFAULT_HEIGHT)];
@@ -99,12 +99,21 @@
   __block NSString *desc = self.textView.text;
   [task setDataProcessBlock:(BlockProcessLastTaskData) ^(NSDictionary *dic) {
     RiddingPicture *picture = [dic objectForKey:kFileClientServerUpload_RiddingPicture];
-    picture.pictureDescription = desc;
+    _riddingPicture.pictureDescription=desc;
+    _riddingPicture.fileKey=picture.fileKey;
+    
     NSMutableDictionary *mulDic = [[NSMutableDictionary alloc] init];
-    [mulDic setObject:picture forKey:kFileClientServerUpload_RiddingPicture];
+    [mulDic setObject:_riddingPicture forKey:kFileClientServerUpload_RiddingPicture];
     task.paramDic = mulDic;
-  }];
+    
+    //if(_syncSina){
+      SinaApiRequestUtil *sinaRequest=[[SinaApiRequestUtil alloc]init];
+      [sinaRequest sendWeiBo:desc url:[NSString stringWithFormat:@"%@/%@",imageHost,picture.fileKey] latitude:_riddingPicture.latitude longtitude:_riddingPicture.longtitude];
+    //}
 
+  }];
+  
+   
   [self dismissModalViewControllerAnimated:YES];
 }
 

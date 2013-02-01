@@ -32,11 +32,12 @@
 
 -(void)friendShip:(NSString*)nickName accessUserId:(NSString*)accessUserId;
 
-
 -(void)sendCreateRidding:(NSString*)status url:(NSString*)url;
 
 -(void)sendLoginRidding:(NSString*)status;
 
 - (NSArray*)getBilateralUserList;
+
+-(void)sendWeiBo:(NSString*)text url:(NSString*)url latitude:(double)latitude longtitude:(double)longtitude;
 
 @end

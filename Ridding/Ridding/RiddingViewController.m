@@ -67,8 +67,11 @@
 }
 
 - (void)leftBtnClicked:(id)sender {
-
-  [RiddingAppDelegate moveMidNavgation];
+  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+  POSITION position=((BasicViewController *) delegate.navController.visibleViewController).position;
+  if(position==POSITION_RIGHT){
+    [RiddingAppDelegate moveMidNavgation];
+  }
   [self dismissModalViewControllerAnimated:YES];
 }
 

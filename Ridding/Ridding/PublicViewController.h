@@ -11,8 +11,9 @@
 #import "ActivityInfo.h"
 #import "EGORefreshTableHeaderView.h"
 #import "TouchEnabledTableView.h"
-
-@interface PublicViewController : BasicViewController <UP_EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource, EGORefreshTableHeaderDelegate, UIScrollViewDelegate> {
+#import "GADSearchBannerView.h"
+#import "GADSearchRequest.h"
+@interface PublicViewController : BasicViewController <UP_EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource, EGORefreshTableHeaderDelegate, UIScrollViewDelegate,GADBannerViewDelegate> {
   UP_EGORefreshTableHeaderView *_ego;
   EGORefreshTableHeaderView *_top_Ego;
   NSMutableArray *_dataSource;

@@ -15,22 +15,12 @@
 @synthesize window = _window;
 @synthesize rootViewController = _rootViewController;
 @synthesize navController = _navController;
-@synthesize myLocationManager = _myLocationManager;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
   });
-
-  _myLocation = [[QQNRMyLocation alloc] init];
-  _myLocationManager = [[CLLocationManager alloc] init];
-  [_myLocationManager setDelegate:self];
-  [_myLocationManager setDesiredAccuracy:kCLLocationAccuracyBest];
-  [_myLocationManager startUpdatingLocation];
-  if ([CLLocationManager headingAvailable]) {
-    _myLocationManager.headingFilter = 5;
-  }
 
   [MobClick startWithAppkey:YouMenAppKey reportPolicy:REALTIME channelId:nil];
   [MobClick checkUpdate];
@@ -85,7 +75,7 @@
   }
   RequestUtil *requestUtil = [[RequestUtil alloc] init];
   NSDictionary *userProfileDic = [requestUtil getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType];
-  User *user = [[User alloc] initWithJSONDic:[userProfileDic objectForKey:@"user"]];
+  User *user = [[User alloc] initWithJSONDic:[userProfileDic objectForKey:keyUser]];
   //如果新浪成功，并且authtoken有效
   if (staticInfo.user.accessToken != nil && userProfileDic != nil) {
     staticInfo.user.name = user.name;
@@ -108,14 +98,6 @@
   return FALSE;
 }
 
-- (NSString *)getPlist:(NSString *)key {
-
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  NSString *documentsDirectoryPath = [paths objectAtIndex:0];
-  NSString *path = [documentsDirectoryPath stringByAppendingPathComponent:@"Ridding-Info.plist"];
-  NSMutableDictionary *DictPlist = [NSDictionary dictionaryWithContentsOfFile:path];
-  return [DictPlist objectForKey:key];
-}
 
 
 //iPhone 从APNs服务器获取deviceToken后回调此方法
@@ -128,80 +110,6 @@
 
 //注册push功能失败 后 返回错误信息，执行相应的处理
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
-}
-
-
-#pragma mark locationManager delegate functions
-- (void)locationManager:(CLLocationManager *)manager
-       didFailWithError:(NSError *)error {
-
-  _canGetLocation = FALSE;
-  [[NSNotificationCenter defaultCenter] postNotificationName:kFailUpdateMyLocationNotification object:self userInfo:nil];
-}
-
-- (void)locationManager:(CLLocationManager *)manager
-    didUpdateToLocation:(CLLocation *)newLocation
-           fromLocation:(CLLocation *)oldLocation {
-
-  _canGetLocation = TRUE;
-  RequestUtil *requestUtil = [[RequestUtil alloc] init];
-  NSDictionary *myLocationDic = [requestUtil getMapFix:_myLocationManager.location.coordinate.latitude longtitude:_myLocationManager.location.coordinate.longitude];
-  MapFix *mapFix = [[MapFix alloc] initWithJSONDic:[myLocationDic objectForKey:@"mapfix"]];
-
-  CLLocation *location;
-  if (mapFix.realLatitude && mapFix.realLongtitude) {
-    location = [[CLLocation alloc] initWithLatitude:mapFix.realLatitude longitude:mapFix.realLongtitude];
-  } else {
-    location = _myLocationManager.location;
-  }
-  CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
-  [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-    if (placemarks) {
-      CLPlacemark *mark = [placemarks objectAtIndex:0];
-      _myLocation.name = mark.name;
-      if (mark.locality) {
-        _myLocation.city = mark.locality;
-      } else {
-        _myLocation.city = mark.subLocality;
-      }
-
-      _myLocation.latitude = location.coordinate.latitude;
-      _myLocation.longtitude = location.coordinate.longitude;
-      _myLocation.location = [[CLLocation alloc] initWithLatitude:_myLocation.latitude longitude:_myLocation.longtitude];
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kFinishUpdateMyLocationNotification object:self userInfo:nil];
-  }];
-}
-
-- (BOOL)canGetLocation {
-
-  return _canGetLocation;
-}
-
-- (CLLocationManager *)myLocationManager {
-
-  return _myLocationManager;
-}
-
-- (QQNRMyLocation *)myLocation {
-
-  [_myLocationManager startUpdatingLocation];
-  return _myLocation;
-}
-
-- (NSString *)myLocationCity {
-
-  return _myLocation.city;
-}
-
-- (void)startUpdateMyLocation {
-
-  [_myLocationManager startUpdatingLocation];
-}
-
-- (void)startUpdateMyLocationHeading {
-
-  [_myLocationManager startUpdatingHeading];
 }
 
 + (RiddingAppDelegate *)shareDelegate {
@@ -221,7 +129,7 @@
 
   if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
     // Stop normal location updates and start significant location change updates for battery efficiency.
-    [_myLocationManager stopUpdatingLocation];
+    
   }
   else {
     NSLog(@"Significant location change monitoring is not available.");
@@ -233,7 +141,7 @@
 
   if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
     // Stop normal location updates and start significant location change updates for battery efficiency.
-    [_myLocationManager startUpdatingLocation];
+    
   }
 }
 
@@ -255,6 +163,7 @@
 + (void)moveMidNavgation {
 
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+  
   //往左移动
   [UIView animateWithDuration:moveSpeed animations:^{
     delegate.navController.view.frame = CGRectMake(LeftBarMoveWidth,

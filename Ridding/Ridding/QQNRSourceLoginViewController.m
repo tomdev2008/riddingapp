@@ -97,7 +97,7 @@
 
     NSDictionary *profileDic = [self.requestUtil getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType];
 
-    User *user = [[User alloc] initWithJSONDic:[profileDic objectForKey:@"user"]];
+    User *user = [[User alloc] initWithJSONDic:[profileDic objectForKey:keyUser]];
     user.userId = staticInfo.user.userId;
     user.authToken = staticInfo.user.authToken;
     user.sourceType = staticInfo.user.sourceType;

@@ -137,6 +137,14 @@
   return [responseDic objectForKey:@"data"];
 }
 
+- (void) likeRiddingPicture:(long long)riddingId pictureId:(long long)pictureId
+{
+  NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/action/likePic/?objectId=%lld", QIQUNARHOME, riddingId, self.staticInfo.user.userId,pictureId]];
+  ASIHTTPRequest* asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest addRequestHeader:@"authToken" value:self.staticInfo.user.authToken];
+  [asiRequest startAsynchronous];
+}
+
 - (NSDictionary*) careRidding: (long long)riddingId
 {
   NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/action/?type=%d", QIQUNARHOME, riddingId, self.staticInfo.user.userId,RIDDINGACTION_CARE]];

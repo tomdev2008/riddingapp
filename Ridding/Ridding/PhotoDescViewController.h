@@ -12,9 +12,9 @@
 #import "QQNRDatePicker.h"
 
 @interface PhotoDescViewController : BasicViewController <QQNRDatePickerDelegate> {
-  UIImage *_image;
-  long long _dbId;
   QQNRDatePicker *_datePicker;
+  RiddingPicture *_riddingPicture;
+  BOOL _syncSina;
 }
 
 @property (nonatomic, retain) IBOutlet SWSnapshotStackView *imageView;
@@ -22,6 +22,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *locationLabel;
 @property (nonatomic, retain) IBOutlet UILabel *timeLabel;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil info:(NSDictionary *)info;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingPicture:(RiddingPicture*)riddingPicture isSyncSina:(BOOL)isSyncSina;
 
 @end

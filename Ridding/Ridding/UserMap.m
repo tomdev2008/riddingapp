@@ -24,7 +24,7 @@
 #import "QiNiuUtils.h"
 #import "QQNRImagesScrollVCTL.h"
 #import "RiddingLocationDao.h"
-
+#import "MyLocationManager.h"
 @interface UserMap ()
 
 @end
@@ -143,7 +143,7 @@
     NSArray *array = [self.requestUtil getUserList:_ridding.riddingId];
     if (array && [array count] > 0) {
       for (NSDictionary *dic in array) {
-        User *user = [[User alloc] initWithJSONDic:[dic objectForKey:@"user"]];
+        User *user = [[User alloc] initWithJSONDic:[dic objectForKey:keyUser]];
         if (_staticInfo.user.userId == user.userId) {
           if ([Ridding isLeader:user.userRole]) {
             _staticInfo.user.isLeader = TRUE;
@@ -166,20 +166,23 @@
 
 //定时发送我的当前位置
 - (void)sendMyLocationQuartz {
-
-  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
-  [delegate startUpdateMyLocation];
-  [delegate startUpdateMyLocationHeading];
-  dispatch_queue_t q;
-  q = dispatch_queue_create("sendMyLocationQuartz", NULL);
-  dispatch_async(q, ^{
-    MKCoordinateRegion theRegion;
-    theRegion.center = [delegate myLocation].location.coordinate;
-    CLLocationDegrees latitude = theRegion.center.latitude;
-    CLLocationDegrees longtitude = theRegion.center.longitude;
-    double speed = 0.0;
-    [self.requestUtil sendAndGetAnnotation:_ridding.riddingId latitude:latitude longtitude:longtitude status:1 speed:speed isGetUsers:_isShowTeamers ? 1 : 0];
-  });
+  MyLocationManager *myLocationManager=[MyLocationManager getSingleton];
+  [myLocationManager startUpdateMyLocation:^(QQNRMyLocation *location) {
+    if(location==nil){
+      [SVProgressHUD showSuccessWithStatus:@"请开启定位服务以定位到您的位置" duration:2.0];
+    }else{
+      dispatch_queue_t q;
+      q = dispatch_queue_create("sendMyLocationQuartz", NULL);
+      dispatch_async(q, ^{
+        MKCoordinateRegion theRegion;
+        theRegion.center = location.location.coordinate;
+        CLLocationDegrees latitude = theRegion.center.latitude;
+        CLLocationDegrees longtitude = theRegion.center.longitude;
+        double speed = 0.0;
+        [self.requestUtil sendAndGetAnnotation:_ridding.riddingId latitude:latitude longtitude:longtitude status:1 speed:speed isGetUsers:_isShowTeamers ? 1 : 0];
+      });
+    }
+  }];
 }
 
 //画路线
@@ -200,7 +203,7 @@
       //如果数据库中存在，那么取数据库中的地图路径，如果不存在，http去请求服务器。
       //数据库中取出是mapTaps或者points
       NSMutableDictionary *map_dic = [self.requestUtil getMapMessage:_ridding.riddingId userId:_staticInfo.user.userId];
-      Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:@"map"]];
+      Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:keyMap]];
       NSArray *array = map.mapPoint;
       [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
       self.routes = [[MapUtil getSinglton] decodePolyLineArray:array];
@@ -341,7 +344,7 @@
 
 - (void)updatePhotoAnnotation {
 
-  [SVProgressHUD show];
+  [SVProgressHUD showWithStatus:@"获取图片中。。"];
   dispatch_async(dispatch_queue_create("updatePhotoAnnotation", NULL), ^{
     [_photoArray removeAllObjects];
     NSArray *serverArray = [self.requestUtil getUploadedPhoto:_ridding.riddingId limit:-1 lastUpdateTime:-1];
@@ -350,7 +353,7 @@
         int index = 0;
         for (NSDictionary *dic in serverArray) {
           NSLog(@"%@", dic);
-          RiddingPicture *picture = [[RiddingPicture alloc] initWithJSONDic:[dic objectForKey:@"picture"]];
+          RiddingPicture *picture = [[RiddingPicture alloc] initWithJSONDic:[dic objectForKey:keyRiddingPicture]];
           if (picture) {
             CLLocationDegrees latitude = picture.latitude;
             CLLocationDegrees longtitude = picture.longtitude;
@@ -362,6 +365,8 @@
             [self.mapView addAnnotation:photoAnnotation];
             [_photoArray addObject:picture];
             index++;
+          }else{
+            [SVProgressHUD showErrorWithStatus:@"您还没有照片噢,赶紧去拍一张"];
           }
         }
       }
@@ -795,8 +800,7 @@
 
 - (IBAction)showLocationButtonClicked:(id)sender {
 
-  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
-  if (![delegate canGetLocation]) {
+  if (![CLLocationManager locationServicesEnabled]||[CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
     [_sendMyLocationTimer invalidate];
     return;
   }
@@ -976,48 +980,26 @@
   dispatch_async(q, ^{
     QQNRServerTask *task = [[QQNRServerTask alloc] init];
     task.step = STEP_UPLOADPHOTO;
-    RiddingPicture *picture = [self returnRiddingPicture:(int) width height:(int) height];
-    picture.image = newImage;
+    RiddingPicture *picture = [[RiddingPicture alloc]initWithRidding:(int)width height:(int)height ridding:_ridding];;
+    [picture saveImageToLocal:newImage];
+    
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:picture, kFileClientServerUpload_RiddingPicture, nil];
     task.paramDic = dic;
-
     QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
     [queue addTask:task withDependency:NO];
-
-    if (picture) {
-      dispatch_async(dispatch_get_main_queue(), ^{
-        [picker dismissModalViewControllerAnimated:NO];
-        NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:picture, @"picture", nil];
-        PhotoDescViewController *descVCTL = [[PhotoDescViewController alloc] initWithNibName:@"PhotoDescViewController" bundle:nil info:dic];
-        [self presentModalViewController:descVCTL animated:NO];
-      });
-    }
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [picker dismissModalViewControllerAnimated:NO];
+      PhotoDescViewController *descVCTL = [[PhotoDescViewController alloc] initWithNibName:@"PhotoDescViewController" bundle:nil riddingPicture:picture isSyncSina:[_ridding syncSina]];
+      [self presentModalViewController:descVCTL animated:NO];
+    });
   });
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
 
   [picker dismissModalViewControllerAnimated:YES];
-}
-
-- (RiddingPicture *)returnRiddingPicture:(int)width height:(int)height {
-
-  RiddingPicture *picture = [[RiddingPicture alloc] init];
-  picture.riddingId = _ridding.riddingId;
-  picture.user = [StaticInfo getSinglton].user;
-
-  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
-  [delegate startUpdateMyLocation];
-  QQNRMyLocation *myLocation = [delegate myLocation];
-  picture.latitude = myLocation.latitude;
-  picture.longtitude = myLocation.longtitude;
-
-  NSDate *date = [NSDate dateWithTimeIntervalSinceNow:0];
-  picture.takePicDateL = (long long) [date timeIntervalSince1970] * 1000;
-  picture.location = myLocation.city;
-  picture.width = width;
-  picture.height = height;
-  return picture;
 }
 
 @end

@@ -26,15 +26,13 @@
     self.userCount = [[jsonDic objectForKey:@"usercount"] intValue];
     self.userRole = [[jsonDic objectForKey:@"userrole"] intValue];
     self.riddingName = [jsonDic objectForKey:@"riddingname"];
-    self.leaderUser = [[User alloc] initWithJSONDic:[jsonDic objectForKey:@"user"]];
+    self.leaderUser = [[User alloc] initWithJSONDic:[jsonDic objectForKey:keyUser]];
     self.riddingType = [[jsonDic objectForKey:@"riddingtype"] intValue];
     self.createTime = [[jsonDic objectForKey:@"createtime"] longLongValue];
     self.createTimeStr = [jsonDic objectForKey:@"createtimestr"];
     self.lastUpdateTime = [[jsonDic objectForKey:@"lastupdatetime"] longLongValue];
     self.lastUpdateTimeStr = [jsonDic objectForKey:@"lastupdatetimestr"];
-    if ([jsonDic objectForKey:@"map"]) {
-      self.map = [[Map alloc] initWithJSONDic:[jsonDic objectForKey:@"map"]];
-    }
+    self.map = [[Map alloc] initWithJSONDic:[jsonDic objectForKey:keyMap]];
     self.userCount = [[jsonDic objectForKey:@"usercount"] intValue];
     self.likeCount = [[jsonDic objectForKey:@"likecount"] intValue];
     self.commentCount = [[jsonDic objectForKey:@"commentcount"] intValue];
@@ -75,5 +73,9 @@
     return TRUE;
   }
   return FALSE;
+}
+
+- (BOOL)syncSina{
+  return _isSyncSina>0;
 }
 @end

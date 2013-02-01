@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "RiddingViewController.h"
-#import "QQNRMyLocation.h"
-#import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "PublicViewController.h"
 #import "BasicLeftViewController.h"
@@ -17,7 +15,6 @@
 
 @interface RiddingAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate> {
   BOOL _canGetLocation;
-  QQNRMyLocation *_myLocation;
 }
 
 @property (retain, nonatomic) UIWindow *window;
@@ -28,30 +25,14 @@
 
 @property (retain, nonatomic) UINavigationController *navController;
 
-@property (nonatomic, retain) CLLocationManager *myLocationManager;
-
 
 + (RiddingAppDelegate *)shareDelegate;
 
 - (void)setUserInfo;
 
-- (NSString *)getPlist:(NSString *)key;
-
 - (BOOL)canLogin;
 
-- (BOOL)canGetLocation;
-
 + (BOOL)isMyFeedHome:(User *)user;
-
-- (QQNRMyLocation *)myLocation;
-
-- (CLLocationManager *)myLocationManager;
-
-- (NSString *)myLocationCity;
-
-- (void)startUpdateMyLocation;
-
-- (void)startUpdateMyLocationHeading;
 
 + (void)moveLeftNavgation;
 

@@ -45,36 +45,42 @@
 - (void)viewDidLoad {
 
   [super viewDidLoad];
-  UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[UIIMAGE_FROMPNG(@"PublicDetail_BG") stretchableImageWithLeftCapWidth:0 topCapHeight:55]];
-  [self.tv setBackgroundView:bgImageView];
+  self.view.backgroundColor=[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"QQNR_MAIN_BG")];
 
-  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateNormal];
-  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateHighlighted];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_Back") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_Back") forState:UIControlStateHighlighted];
 
   if (!self.isMyFeedHome) {
-    _likeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _likeBtn.frame = CGRectMake(90, 6, 31, 31);
-    [_likeBtn addTarget:self action:@selector(likeClick:) forControlEvents:UIControlEventTouchUpInside];
-    _likeBtn.showsTouchWhenHighlighted = YES;
-    [self.barView addSubview:_likeBtn];
 
+    _useBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    _useBtn.frame = CGRectMake(190, 12, 32, 25);
+    [_useBtn addTarget:self action:@selector(useClick:) forControlEvents:UIControlEventTouchUpInside];
+    _useBtn.showsTouchWhenHighlighted = YES;
+    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Join") forState:UIControlStateNormal];
+    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Join") forState:UIControlStateHighlighted];
+    [self.barView addSubview:_useBtn];
+    
     _careBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_careBtn addTarget:self action:@selector(careClick:) forControlEvents:UIControlEventTouchUpInside];
-    _careBtn.frame = CGRectMake(150, 6, 31, 31);
+    _careBtn.frame = CGRectMake(230, 12, 32, 25);
     _careBtn.showsTouchWhenHighlighted = YES;
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Care") forState:UIControlStateNormal];
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Care") forState:UIControlStateHighlighted];
     [self.barView addSubview:_careBtn];
 
     _commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _commentBtn.frame = CGRectMake(210, 6, 31, 31);
+    _commentBtn.frame = CGRectMake(270, 12, 32, 25);
     [_commentBtn addTarget:self action:@selector(commentAdd:) forControlEvents:UIControlEventTouchUpInside];
     _commentBtn.showsTouchWhenHighlighted = YES;
+    [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Comment") forState:UIControlStateNormal];
+    [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Comment") forState:UIControlStateHighlighted];
     [self.barView addSubview:_commentBtn];
+    
+    
+    
     [self.barView.titleLabel removeFromSuperview];
   } else {
     [self.barView.titleLabel setText:_ridding.riddingName];
-//    [self.barView.rightButton setTitle:@"设置" forState:UIControlStateNormal];
-//    [self.barView.rightButton setTitle:@"设置" forState:UIControlStateHighlighted];
-//    [self.barView.rightButton setHidden:NO];
   }
 
   [self addTableHeader];
@@ -91,7 +97,6 @@
 
   [super viewDidAppear:animated];
   if (!self.didAppearOnce) {
-    [_cellArray removeAllObjects];
     _isTheEnd = FALSE;
     _lastUpdateTime = -1;
     _extDateStr = nil;
@@ -110,7 +115,7 @@
   dispatch_async(dispatch_queue_create("downLoad", NULL), ^{
     NSDictionary *dic = [self.requestUtil getUserRiddingAction:_ridding.riddingId];
     if (dic) {
-      Ridding *ridding = [[Ridding alloc] initWithJSONDic:[dic objectForKey:@"ridding"]];
+      Ridding *ridding = [[Ridding alloc] initWithJSONDic:[dic objectForKey:keyRidding]];
       if (ridding) {
         _ridding.nowUserCared = ridding.nowUserCared;
         _ridding.nowUserLiked = ridding.nowUserLiked;
@@ -131,11 +136,12 @@
 
   [SVProgressHUD showWithStatus:@"加载中"];
   dispatch_async(dispatch_queue_create("downLoad", NULL), ^{
+    [_cellArray removeAllObjects];
     NSArray *serverArray = [self.requestUtil getUploadedPhoto:_ridding.riddingId limit:pageSize lastUpdateTime:_lastUpdateTime];
     if ([serverArray count] > 0) {
       NSMutableArray *mulArray = [[NSMutableArray alloc] init];
       for (NSDictionary *dic in serverArray) {
-        RiddingPicture *picture = [[RiddingPicture alloc] initWithJSONDic:[dic objectForKey:@"picture"]];
+        RiddingPicture *picture = [[RiddingPicture alloc] initWithJSONDic:[dic objectForKey:keyRiddingPicture]];
         if (!_extDateStr || ![_extDateStr isEqualToString:picture.takePicDateStr]) {
           picture.isFirstPic = TRUE;
           _extDateStr = picture.takePicDateStr;
@@ -175,7 +181,7 @@
 #pragma mark - QQNRFeedHeaderViewDelegate
 - (void)addTableHeader {
 
-  _headerView = [[PublicDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 280) ridding:_ridding isMyHome:_isMyFeedHome];
+  _headerView = [[PublicDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 260) ridding:_ridding isMyHome:_isMyFeedHome];
   _headerView.delegate = self;
   [self.tv setTableHeaderView:_headerView];
 
@@ -213,9 +219,10 @@
   } else {
     height = picture.height * 1.0 / picture.width * width;
   }
-  viewHeight += height;
+  viewHeight += height+43;
   viewHeight += PublicDetailCellDefaultDownSpace;
   return viewHeight;
+
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -332,6 +339,11 @@
   }
   NSDictionary *dic = [self.requestUtil useRidding:_ridding.riddingId];
   [self updateRidding:dic];
+  if(dic){
+    UIAlertView *view= [[UIAlertView alloc]initWithTitle:@"恭喜恭喜" message:@"骑行活动创建成功,去看看吧!" delegate:nil cancelButtonTitle:@"待会儿去" otherButtonTitles:@"走起!", nil];
+    [view show];
+  }
+
 }
 
 - (void)updateRidding:(NSDictionary *)dic {
@@ -339,9 +351,8 @@
   if (!dic) {
     return;
   }
-  Ridding *returnRidding = [[Ridding alloc] initWithJSONDic:[dic objectForKey:@"ridding"]];
+  Ridding *returnRidding = [[Ridding alloc] initWithJSONDic:[dic objectForKey:keyRidding]];
   if (returnRidding) {
-    NSLog(@"%d", returnRidding.likeCount);
     _ridding.useCount = returnRidding.useCount;
     _ridding.likeCount = returnRidding.likeCount;
     _ridding.careCount = returnRidding.careCount;
@@ -360,36 +371,20 @@
   [self.navigationController pushViewController:commentVCTL animated:YES];
 }
 
-- (void)resetActionBtn {
 
-  [_careBtn setTitle:[NSString stringWithFormat:@"%d", _ridding.careCount] forState:UIControlStateNormal];
-  [_careBtn setTitle:[NSString stringWithFormat:@"%d", _ridding.careCount] forState:UIControlStateHighlighted];
-  [_commentBtn setTitle:[NSString stringWithFormat:@"%d", _ridding.commentCount] forState:UIControlStateNormal];
-  [_commentBtn setTitle:[NSString stringWithFormat:@"%d", _ridding.commentCount] forState:UIControlStateHighlighted];
-  [_likeBtn setTitle:[NSString stringWithFormat:@"%d", _ridding.likeCount] forState:UIControlStateNormal];
-  [_likeBtn setTitle:[NSString stringWithFormat:@"%d", _ridding.likeCount] forState:UIControlStateHighlighted];
+- (void)resetActionBtn {
 
   if (_ridding.nowUserUsed) {
 
   } else {
 
   }
-  if (_ridding.nowUserLiked) {
-    [_likeBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_like_xz") forState:UIControlStateNormal];
-    [_likeBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_like_xz") forState:UIControlStateHighlighted];
-  } else {
-    [_likeBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_like") forState:UIControlStateNormal];
-    [_likeBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_like") forState:UIControlStateHighlighted];
-  }
   if (_ridding.nowUserCared) {
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_care_xz") forState:UIControlStateNormal];
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_care_xz") forState:UIControlStateHighlighted];
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Care") forState:UIControlStateNormal];
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Care") forState:UIControlStateHighlighted];
   } else {
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_care") forState:UIControlStateNormal];
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_care") forState:UIControlStateHighlighted];
+    
   }
-  [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_comment") forState:UIControlStateNormal];
-  [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"navbar_comment") forState:UIControlStateHighlighted];
 
 }
 #pragma mark - RiddingViewController delegate
@@ -405,6 +400,10 @@
   QQNRImagesScrollVCTL *vctl = [[QQNRImagesScrollVCTL alloc] initWithNibName:@"QQNRImagesScrollVCTL" bundle:nil startPageIndex:view.index];
   vctl.photoArray = _cellArray;
   [self.navigationController pushViewController:vctl animated:YES];
+}
+
+- (void)likeBtnClick:(PublicDetailCell *)view picture:(RiddingPicture *)picture{
+  [self.requestUtil likeRiddingPicture:_ridding.riddingId pictureId:picture.dbId];
 }
 
 #pragma mark - PublicDetailHeaderView delegate
