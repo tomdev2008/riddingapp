@@ -31,6 +31,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *distanceLabel;
 @property (nonatomic, retain) IBOutlet UIImageView *mapLineView;
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
+@property (nonatomic, retain) IBOutlet UIImageView *avatorBgView;
 
 
 - (void)initContentView:(Ridding *)ridding;

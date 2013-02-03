@@ -65,8 +65,8 @@
   _locationViews = [[NSMutableArray alloc] init];
 
 
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_LIST") forState:UIControlStateNormal];
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_LIST") forState:UIControlStateHighlighted];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateHighlighted];
   [self.barView.rightButton setTitle:@"创建活动" forState:UIControlStateNormal];
   [self.barView.rightButton setTitle:@"创建活动" forState:UIControlStateHighlighted];
   self.barView.rightButton.frame = CGRectMake(240, 6, 70, 31);
@@ -160,6 +160,7 @@
       [self addNewAnnotation:annotation];
       break;
     }
+    [SVProgressHUD dismiss];
   }];
 }
 
@@ -449,6 +450,7 @@
   _ridding.map.cityName = ((LocationView *) [_locationViews objectAtIndex:0]).annotation.city;
   self.route_view.image = nil;
   [_routes removeAllObjects];
+  [SVProgressHUD showWithStatus:@"路线生成中"];
   dispatch_async(dispatch_queue_create("drawRoutes", NULL), ^{
     line_color = [UIColor getColor:lineColor];
     [[MapUtil getSinglton] calculate_routes_from:locationArray map:_ridding.map];
@@ -464,15 +466,15 @@
             [self.coverImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
             _newCoverImage = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
+            [SVProgressHUD dismiss];
           } else {
             [SVProgressHUD showErrorWithStatus:@"生成失败,google的网络不太好,再来一次吧^_^!!" duration:2];
             [MobClick event:@"2012111907"];
           }
         }
-
+        
       });
     }
-
     self.createBtn.enabled = YES;
   });
 }

@@ -23,11 +23,14 @@
 
   CGFloat _viewHeight;
   UIImageView *_headImageView;
+  UIButton *_headImageBtn;
   UILabel *_nameLabel;
   UILabel *_descLabel;
   UILabel *_dateLabel;
   UIImageView *_headLineView;
   UIButton *_callBackBtn;
+  UIImageView *_headIconView;
+  UIImageView *_timeImageView;
 }
 @property (nonatomic, retain) Comment *comment;
 @property (nonatomic) int index;

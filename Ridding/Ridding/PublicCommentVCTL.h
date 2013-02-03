@@ -21,6 +21,7 @@
   long long _endCreateTime;
   Ridding *_ridding;
   HPGrowingTextView *_textView;
+  UIImageView *_textBgView;
   UIView *_tContainerView;
   UIButton *_tSendBtn;
   long long _toUserId;

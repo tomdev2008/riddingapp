@@ -42,7 +42,7 @@
   self.totalDistanceLB.textColor = [UIColor getColor:@"666666"];
   self.beginLocationTV.text = [NSString stringWithFormat:@"%@", _ridding.map.beginLocation];
   self.endLocationTV.text = [NSString stringWithFormat:@"%@", _ridding.map.endLocation];
-  self.totalDistanceLB.text = [NSString stringWithFormat:@"总行程:%0.2fKM", _ridding.map.distance * 1.0 / 1000];
+  self.totalDistanceLB.text = [NSString stringWithFormat:@"总行程:%@", [_ridding.map totalDistanceToKm]];
 
   self.nameField.returnKeyType = UIReturnKeyGo;
 

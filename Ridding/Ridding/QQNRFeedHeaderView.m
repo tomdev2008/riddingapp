@@ -20,38 +20,35 @@
   self = [super initWithFrame:frame];
   if (self) {
 
-    UIView *frameView = [[UIView alloc] initWithFrame:CGRectMake(40, self.frame.size.height - 60, 40, 40)];
-    [frameView setBackgroundColor:[UIColor clearColor]];
-    frameView.layer.cornerRadius = [frameSize doubleValue] / 1.5;
-    frameView.clipsToBounds = YES;
-    [self addSubview:frameView];
-
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectInset(frameView.frame, ([frameSize doubleValue] - [iconSize doubleValue]) / 2.0, ([frameSize doubleValue] - [iconSize doubleValue]) / 2.0)];
-    imageView.layer.cornerRadius = [iconSize doubleValue] / 1.5;
-    imageView.clipsToBounds = YES;
-    NSURL *url = [NSURL URLWithString:user.savatorUrl];
+    CGRect frameViewFrame=CGRectMake(self.frame.size.width/2-33, self.frame.size.height*0.4-33, 66, 66);
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(frameViewFrame.origin.x+6, frameViewFrame.origin.y+4, 54, 54)];
+    NSURL *url = [NSURL URLWithString:user.bavatorUrl];
     [imageView setImageWithURL:url placeholderImage:UIIMAGE_DEFAULT_USER_AVATOR];
     [self addSubview:imageView];
+    
+    UIImageView *frameView = [[UIImageView alloc] initWithFrame:frameViewFrame];
+    frameView.image=UIIMAGE_FROMPNG(@"qqnr_photo_bg");
+    [self addSubview:frameView];
 
-
-    UILabel *userName = [[UILabel alloc] initWithFrame:CGRectMake(90, self.frame.size.height - 60, 100, 20)];
-    userName.textAlignment = UITextAlignmentLeft;
+    UILabel *userName = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2-50, self.frame.size.height*0.6 , 100, 30)];
+    userName.textAlignment = UITextAlignmentCenter;
     userName.textColor = [UIColor whiteColor];
     userName.backgroundColor = [UIColor clearColor];
     userName.shadowColor = [UIColor blackColor];
-    userName.shadowOffset = CGSizeMake(1.0, 0.0);
-    userName.font = [UIFont boldSystemFontOfSize:18];
+    userName.shadowOffset = CGSizeMake(0.0, 1.0);
+    userName.font = [UIFont boldSystemFontOfSize:20];
     userName.text = user.name;
     [self addSubview:userName];
 
-    _mileStone = [[UILabel alloc] initWithFrame:CGRectMake(90, self.frame.size.height - 50, 100, 40)];
-    _mileStone.textAlignment = UITextAlignmentLeft;
+    _mileStone = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2-50, userName.frame.origin.y + 20, 100, 30)];
+    _mileStone.textAlignment = UITextAlignmentCenter;
     _mileStone.textColor = [UIColor whiteColor];
     _mileStone.backgroundColor = [UIColor clearColor];
     _mileStone.shadowColor = [UIColor blackColor];
-    _mileStone.shadowOffset = CGSizeMake(1.0, 0.0);
+    _mileStone.shadowOffset = CGSizeMake(0.0, 1.0);
     _mileStone.font = [UIFont fontWithName:@"Arial" size:12];
-    _mileStone.text = [NSString stringWithFormat:@"总距离: %@", [user getTotalDistanceToKm]];
+    _mileStone.text = [NSString stringWithFormat:@"总距离:%@", [user getTotalDistanceToKm]];
     [self addSubview:_mileStone];
 
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(90, 20, 140, 140)];

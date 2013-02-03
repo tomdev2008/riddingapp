@@ -70,6 +70,7 @@
 #define ColorOrange @"f15e1d"
 #define ColorBlue @"5cc1de"
 #define ColorOrangeMore @"f26f31"
+#define ColorTextColor @"FFFFFF"
 #define COLOR_GRAY    [UIColor colorWithRed:(115/255.0) green:(115/255.0) blue:(115/255.0) alpha:1]
 #define COLOR_BLACK   [UIColor colorWithRed:(15/255.0) green:(15/255.0) blue:(15/255.0) alpha:1]
 #define COLOR_LOWGRAY [UIColor colorWithRed:(197/255.0) green:(197/255.0) blue:(197/255.0) alpha:1]

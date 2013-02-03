@@ -30,11 +30,21 @@
   self.hasLeftView = TRUE;
 
 
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_LIST") forState:UIControlStateNormal];
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_LIST") forState:UIControlStateHighlighted];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateHighlighted];
   [self.barView.leftButton setHidden:NO];
 
-  [self.uiTableView setBackgroundColor:[UIColor getColor:@"E6E6E6"]];
+  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
+  self.uiTableView.backgroundColor=[UIColor clearColor];
+  
+  GADSearchBannerView *bannerView = [[GADSearchBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(GAD_SIZE_320x50) origin:CGPointMake(0, SCREEN_HEIGHT- 50)];
+  bannerView.adUnitID = MY_BANNER_UNIT_ID;
+  bannerView.rootViewController = self;
+  [self.view addSubview:bannerView];
+  GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
+  [adRequest setQuery:@"sport"];
+  [bannerView loadRequest:[adRequest request]];
+
 }
 
 - (void)viewDidUnload {

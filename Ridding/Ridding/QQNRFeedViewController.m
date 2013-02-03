@@ -44,18 +44,22 @@
 
   [super viewDidLoad];
   self.barView.titleLabel.text = _toUser.name;
-  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"QQNR_MAIN_BG")];
+  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   self.tv.backgroundColor = [UIColor clearColor];
 
   if (_isFromLeft) {
-    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_LIST") forState:UIControlStateNormal];
-    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_LIST") forState:UIControlStateHighlighted];
+    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
+    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateHighlighted];
     [self.barView.leftButton setHidden:NO];
     self.hasLeftView = TRUE;
   }
+  [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_main_refresh") forState:UIControlStateNormal];
+  [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_main_refresh_hl") forState:UIControlStateHighlighted];
+  [self.barView.rightButton setHidden:NO];
 
   _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, SCREEN_STATUS_BAR, SCREEN_WIDTH, QQNRFeedHeaderView_Default_Height)];
   NSURL *url = [QiNiuUtils getUrlByWidthToUrl:_backgroundImageView.frame.size.width url:_toUser.backGroundUrl type:QINIUMODE_DEDEFAULT];
+#warning <#message#>
   [_backgroundImageView setImageWithURL:url placeholderImage:nil];
   _backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
   _backgroundImageView.clipsToBounds = YES;
@@ -111,6 +115,11 @@
       }
     }
   }
+}
+
+- (void)rightBtnClicked:(id)sender {
+  _isLoadOld = FALSE;
+  [self download];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -363,7 +372,7 @@
           [self.tv reloadData];
           [SVProgressHUD showSuccessWithStatus:@"退出成功" duration:1.0];
         }
-        [SVProgressHUD dismiss];
+        
       });
     });
   } else if ([str isEqualToString:@"相机"]) {
@@ -517,7 +526,7 @@
 - (void)succUpdateBackground:(NSNotification *)noti {
 
   NSString *urlStr = [StaticInfo getSinglton].user.backGroundUrl;
-  NSLog(@"%@", urlStr);
+
   NSURL *url = [QiNiuUtils getUrlBySizeToUrl:_backgroundImageView.frame.size url:urlStr type:QINIUMODE_DEDEFAULT];
   [_backgroundImageView setImageWithURL:url];
 }

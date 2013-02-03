@@ -51,16 +51,16 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<object class="NSCustomResource" key="IBUIImage" id="913174309">
+								<object class="NSCustomResource" key="IBUIImage" id="431560953">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">QQNR_PL_PicBg.png</string>
+									<string key="NSResourceName">qqnr_pd_picbg.png</string>
 								</object>
-								<reference key="IBUIHighlightedImage" ref="913174309"/>
+								<reference key="IBUIHighlightedImage" ref="431560953"/>
 							</object>
 							<object class="IBUIImageView" id="556182463">
 								<reference key="NSNextResponder" ref="195909891"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{15, 15}, {290, 150}}</string>
+								<string key="NSFrame">{{15, 11}, {290, 155}}</string>
 								<reference key="NSSuperview" ref="195909891"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="644263504"/>
@@ -158,6 +158,7 @@
 										<string key="NSFrame">{{10, 43}, {110, 15}}</string>
 										<reference key="NSSuperview" ref="644263504"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="647868486"/>
 										<bool key="IBUIOpaque">NO</bool>
@@ -377,7 +378,7 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="PublicViewCell_BG@2x.png">{270, 138}</string>
-			<string key="QQNR_PL_PicBg.png">{302, 159}</string>
+			<string key="qqnr_pd_picbg.png">{302, 159}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

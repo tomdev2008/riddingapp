@@ -35,7 +35,7 @@
 - (void)viewDidLoad {
 
   [super viewDidLoad];
-  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"QQNR_LN_bg")];
+  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   
   self.uiTableView.backgroundColor=[UIColor clearColor];
   self.uiTableView.tableHeaderView = [[BasicLeftHeadView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 60)];
@@ -77,17 +77,17 @@
   switch (indexPath.row) {
     case 0: {
       cell.titleLabel.text = @"我的骑记";
-      cell.iconView.image = UIIMAGE_FROMPNG(@"QQNR_LN_myRidding");
+      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_myridding");
     }
       break;
     case 1: {
       cell.titleLabel.text = @"新建骑记";
-      cell.iconView.image = UIIMAGE_FROMPNG(@"QQNR_LN_create");
+      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_create");
     }
       break;
     case 2: {
       cell.titleLabel.text = @"骑行广场";
-      cell.iconView.image = UIIMAGE_FROMPNG(@"QQNR_LN_myRidding");
+      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_myridding");
     }
       break;
     default:

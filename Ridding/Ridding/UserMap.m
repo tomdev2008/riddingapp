@@ -195,7 +195,6 @@
   dispatch_async(q, ^{
     _line_color = [UIColor getColor:lineColor];
     NSArray *routeArray = [RiddingLocationDao getRiddingLocations:_ridding.riddingId beginWeight:0];
-    int totalDistance = 0;
     if ([routeArray count] > 0) {
       for (RiddingLocation *location in routeArray) {
         CLLocation *loc = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longtitude];
@@ -209,13 +208,13 @@
       NSArray *array = map.mapPoint;
       [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
       self.routes = [[MapUtil getSinglton] decodePolyLineArray:array];
-      totalDistance = map.distance;
       [RiddingLocationDao setRiddingLocationToDB:self.routes riddingId:_ridding.riddingId];
     }
-    float dis = totalDistance * 1.0 / 1000;
     dispatch_async(dispatch_get_main_queue(), ^{
       if (self) {
-        self.distanceLabel.text = [NSString stringWithFormat:@"总距离:%0.2lf km", dis];
+        
+        self.distanceLabel.text = [NSString stringWithFormat:@"总距离:%0.2lf km", _ridding.map.distance*1.0/1000];
+       
         [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:_line_color routes:self.routes];
         [[MapUtil getSinglton] center_map:self.mapView routes:self.routes];
         CLLocation *startLocation = [self.routes objectAtIndex:0];
@@ -354,7 +353,7 @@
       if ([serverArray count] > 0) {
         int index = 0;
         for (NSDictionary *dic in serverArray) {
-          NSLog(@"%@", dic);
+       
           RiddingPicture *picture = [[RiddingPicture alloc] initWithJSONDic:[dic objectForKey:keyRiddingPicture]];
           if (picture) {
             CLLocationDegrees latitude = picture.latitude;
@@ -966,7 +965,11 @@
 #pragma mark -
 #pragma mark UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-
+  // 保存拍照
+  if(_isFromCamera) {
+    UIImageWriteToSavedPhotosAlbum([info objectForKey:UIImagePickerControllerOriginalImage], nil, nil, nil);
+  }
+  
   UIImage *newImage = [info objectForKey:UIImagePickerControllerOriginalImage];
   CGFloat width;
   CGFloat height;
@@ -977,6 +980,7 @@
     width = CGImageGetWidth([newImage CGImage]);
     height = CGImageGetHeight([newImage CGImage]);
   }
+  
   dispatch_queue_t q;
   q = dispatch_queue_create("didFinishPickingMediaWithInfo", NULL);
   dispatch_async(q, ^{
@@ -990,12 +994,12 @@
     QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
     [queue addTask:task withDependency:NO];
 
-
     dispatch_async(dispatch_get_main_queue(), ^{
       [picker dismissModalViewControllerAnimated:NO];
       PhotoDescViewController *descVCTL = [[PhotoDescViewController alloc] initWithNibName:@"PhotoDescViewController" bundle:nil riddingPicture:picture isSyncSina:[_ridding syncSina] riddingName:_ridding.riddingName];
       [self presentModalViewController:descVCTL animated:NO];
     });
+    
   });
 }
 
@@ -1004,4 +1008,6 @@
   [picker dismissModalViewControllerAnimated:YES];
 }
 
+- (void) video: (NSString *) videoPath didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo {
+}
 @end

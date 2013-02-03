@@ -194,6 +194,15 @@
   return nil;//[responseDic objectForKey:@"data"]; 不做回调
 }
 
+- (void)deleteRiddingPicture:(long long)riddingId pictureId:(long long)pictureId{
+
+  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/picture/%lld/delete", QIQUNARHOME, riddingId, self.staticInfo.user.userId,pictureId]];
+  ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest addRequestHeader:@"authToken" value:self.staticInfo.user.authToken];
+  [asiRequest startAsynchronous];
+  
+}
+
 - (NSDictionary *)deleteRiddingUser:(long long)riddingId deleteUserIds:(NSArray *)delteUserIds {
 
   NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/deleteUser/?sourceType=%@", QIQUNARHOME, riddingId, self.staticInfo.user.userId, [NSString stringWithFormat:@"%d", SOURCE_SINA]]];
@@ -260,7 +269,6 @@
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
   NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
-  NSLog(@"apiResponse%@", responseDic);
   return [responseDic objectForKey:@"data"];
 }
 
@@ -419,7 +427,7 @@
     return nil;
   }
   NSDictionary *dic = [apiResponse JSONValue];
-  NSLog(@"%@", dic);
+
   int code = [[dic objectForKey:@"code"] intValue];
   if (self.delegate) {
     [self.delegate checkServerError:self code:code asiRequest:asiRequest];

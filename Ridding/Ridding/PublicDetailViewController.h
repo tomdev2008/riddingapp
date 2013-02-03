@@ -13,7 +13,7 @@
 #import "PublicDetailHeaderView.h"
 #import "QQNRSourceLoginViewController.h"
 
-@interface PublicDetailViewController : BasicNeedLoginViewController <UP_EGORefreshTableHeaderDelegate, PublicDetailHeaderDelegate, PublicDetailCellDelegate, RiddingViewControllerDelegate, QQNRSourceLoginViewControllerDelegate> {
+@interface PublicDetailViewController : BasicNeedLoginViewController <UP_EGORefreshTableHeaderDelegate, PublicDetailHeaderDelegate, PublicDetailCellDelegate, RiddingViewControllerDelegate, QQNRSourceLoginViewControllerDelegate,UIActionSheetDelegate> {
   UP_EGORefreshTableHeaderView *_ego;
   PublicDetailHeaderView *_headerView;
   BOOL _isTheEnd;
@@ -28,7 +28,7 @@
   UIButton *_useBtn;
   UIButton *_careBtn;
   UIButton *_commentBtn;
-
+  int _deletePicIndex;
 }
 
 @property (nonatomic) BOOL isMyFeedHome;

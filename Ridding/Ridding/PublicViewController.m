@@ -33,12 +33,18 @@
 - (void)viewDidLoad {
 
   [super viewDidLoad];
-  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"QQNR_MAIN_BG")];
-
-  [self.barView.titleLabel setText:@"推荐骑记"];
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_LIST") forState:UIControlStateNormal];
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_LIST") forState:UIControlStateHighlighted];
-
+  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
+  
+  [self.barView.titleLabel removeFromSuperview];
+  UIButton *imageTitlebtn=[UIButton buttonWithType:UIButtonTypeCustom];
+  imageTitlebtn.frame=CGRectMake(116, 9, 87, 25);
+  [imageTitlebtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_title") forState:UIControlStateNormal];
+  [imageTitlebtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_title") forState:UIControlStateHighlighted];
+  [self.barView addSubview:imageTitlebtn];
+  
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateHighlighted];
+  
   _dataSource = [[NSMutableArray alloc] init];
   _endUpdateTime = -1;
   _endWeight = -1;
@@ -169,7 +175,7 @@
   [cell.firstPicImageView setImageWithURL:url placeholderImage:nil];
   cell.nameLabel.text = info.ridding.riddingName;
   cell.dateLabel.text = info.ridding.createTimeStr;
-  cell.distanceLabel.text = [NSString stringWithFormat:@"%0.2fKM", info.ridding.map.distance * 1.0 / 1000];
+  cell.distanceLabel.text = [info.ridding.map totalDistanceToKm];
   return cell;
 }
 
@@ -265,11 +271,6 @@
 didFailToReceiveAdWithError:(GADRequestError *)error {
 
   [view removeFromSuperview];
-}
-
-- (void)adViewDidReceiveAd:(GADBannerView *)view {
-
-  NSLog(@"received");
 }
 
 @end

@@ -43,37 +43,29 @@
 - (void)viewDidLoad {
 
   [super viewDidLoad];
-  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"QQNR_MAIN_BG")];
+  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
 
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_Back") forState:UIControlStateNormal];
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"QQNR_Back") forState:UIControlStateHighlighted];
-
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
+  _deletePicIndex=-1;
   if (!self.isMyFeedHome) {
 
     _useBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _useBtn.frame = CGRectMake(190, 12, 32, 25);
+    _useBtn.frame = CGRectMake(190, 8, 32, 25);
     [_useBtn addTarget:self action:@selector(useClick:) forControlEvents:UIControlEventTouchUpInside];
-    _useBtn.showsTouchWhenHighlighted = YES;
-    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Join") forState:UIControlStateNormal];
-    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Join") forState:UIControlStateHighlighted];
     [self.barView addSubview:_useBtn];
 
     _careBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_careBtn addTarget:self action:@selector(careClick:) forControlEvents:UIControlEventTouchUpInside];
-    _careBtn.frame = CGRectMake(230, 12, 32, 25);
-    _careBtn.showsTouchWhenHighlighted = YES;
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Care") forState:UIControlStateNormal];
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Care") forState:UIControlStateHighlighted];
+    _careBtn.frame = CGRectMake(230, 8, 32, 25);
     [self.barView addSubview:_careBtn];
 
     _commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _commentBtn.frame = CGRectMake(270, 12, 32, 25);
+    _commentBtn.frame = CGRectMake(270, 8, 32, 25);
     [_commentBtn addTarget:self action:@selector(commentAdd:) forControlEvents:UIControlEventTouchUpInside];
-    _commentBtn.showsTouchWhenHighlighted = YES;
-    [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Comment") forState:UIControlStateNormal];
-    [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Comment") forState:UIControlStateHighlighted];
+    [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment") forState:UIControlStateNormal];
+    [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_hl") forState:UIControlStateHighlighted];
     [self.barView addSubview:_commentBtn];
-
 
     [self.barView.titleLabel removeFromSuperview];
   } else {
@@ -337,11 +329,20 @@
   NSDictionary *dic = [self.requestUtil useRidding:_ridding.riddingId];
   [self updateRidding:dic];
   if (dic) {
-    UIAlertView *view = [[UIAlertView alloc] initWithTitle:@"恭喜恭喜" message:@"骑行活动创建成功,去看看吧!" delegate:nil cancelButtonTitle:@"待会儿去" otherButtonTitles:@"走起!", nil];
+    UIAlertView *view = [[UIAlertView alloc] initWithTitle:@"恭喜恭喜" message:@"骑行活动创建成功,去看看吧!" delegate:self cancelButtonTitle:@"待会儿去" otherButtonTitles:@"走起!", nil];
     [view show];
   }
-
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  
+  if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"走起!"]) {
+    QQNRFeedViewController *viewController=[[QQNRFeedViewController alloc]initWithUser:[StaticInfo getSinglton].user isFromLeft:FALSE];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }
+  [super alertView:alertView clickedButtonAtIndex:buttonIndex];
+}
+
 
 - (void)updateRidding:(NSDictionary *)dic {
 
@@ -372,16 +373,23 @@
 - (void)resetActionBtn {
 
   if (_ridding.nowUserUsed) {
-    [_useBtn setBackgroundImage:nil forState:UIControlStateNormal];
-    [_useBtn setBackgroundImage:nil forState:UIControlStateHighlighted];
+    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_join_disable") forState:UIControlStateNormal];
+    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_join_disable") forState:UIControlStateHighlighted];
+    [_useBtn setEnabled:NO];
   } else {
-
+    [_useBtn setEnabled:YES];
+    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_join") forState:UIControlStateNormal];
+    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_join_hl") forState:UIControlStateHighlighted];
+    
   }
   if (_ridding.nowUserCared) {
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Care") forState:UIControlStateNormal];
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"QQNR_PD_Care") forState:UIControlStateHighlighted];
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_care_disable") forState:UIControlStateNormal];
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_care_disable") forState:UIControlStateHighlighted];
+    [_useBtn setEnabled:YES];
   } else {
-
+    [_useBtn setEnabled:NO];
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_care") forState:UIControlStateNormal];
+    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_care_hl") forState:UIControlStateHighlighted];
   }
 
 }
@@ -410,6 +418,28 @@
   [self.requestUtil likeRiddingPicture:_ridding.riddingId pictureId:picture.dbId];
   return TRUE;
 
+}
+
+- (void)deletePicture:(PublicDetailCell *)view index:(int)index {
+  
+  UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"确定要删除这张照片吗?" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:nil];
+  actionSheet.delegate = self;
+  [actionSheet showInView:self.view];
+  _deletePicIndex=index;
+  
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+  
+  
+  NSString *str = [actionSheet buttonTitleAtIndex:buttonIndex];
+  
+  if ([str isEqualToString:@"删除照片"]) {
+    RiddingPicture *picture=[_cellArray objectAtIndex:_deletePicIndex];
+    [self.requestUtil deleteRiddingPicture:_ridding.riddingId pictureId:picture.dbId];
+    [_cellArray removeObjectAtIndex:_deletePicIndex];
+    _deletePicIndex=-1;
+  }
 }
 
 #pragma mark - PublicDetailHeaderView delegate

@@ -93,6 +93,8 @@
 
 - (NSDictionary *)useRidding:(long long)riddingId;
 
+- (void)deleteRiddingPicture:(long long)riddingId pictureId:(long long)pictureId;
+
 - (void)likeRiddingPicture:(long long)riddingId pictureId:(long long)pictureId;
 
 - (NSDictionary *)getUserRiddingAction:(long long)riddingId;

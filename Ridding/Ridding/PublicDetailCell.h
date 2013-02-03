@@ -23,6 +23,8 @@
 
 - (BOOL)likeBtnClick:(PublicDetailCell *)view picture:(RiddingPicture *)picture;
 
+- (void)deletePicture:(PublicDetailCell *)view index:(int)index;
+
 @end
 
 @interface PublicDetailCell : UITableViewCell {

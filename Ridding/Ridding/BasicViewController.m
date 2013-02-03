@@ -30,7 +30,7 @@
 
 - (void)rightBtnClicked:(id)sender {
 
-  NSLog(@"123");
+
   // [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -60,7 +60,7 @@
   self.requestUtil = [[RequestUtil alloc] init];
   self.requestUtil.delegate = self;
   [super viewDidLoad];
-  self.barView.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"QQNR_NAV")];
+  self.barView.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_nav")];
   self.barView.delegate = self;
   // Do any additional setup after loading the view from its nib.
 }
@@ -239,13 +239,13 @@
 - (void)checkServerError:(RequestUtil *)request code:(int)code asiRequest:(ASIHTTPRequest *)asiRequest {
 
   if ([asiRequest responseStatusCode] != 200) {
-    [SVProgressHUD showErrorWithStatus:@"服务器请求失败"];
+    [SVProgressHUD showErrorWithStatus:@"服务器请求失败" duration:1.0];
     return;
   }
 
   NSString *message = [self returnErrorMessage:code];
   if (message) {
-    [SVProgressHUD showErrorWithStatus:message];
+    [SVProgressHUD showErrorWithStatus:message duration:1.0];
   }
 }
 

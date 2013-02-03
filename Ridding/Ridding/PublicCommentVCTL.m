@@ -31,18 +31,25 @@
 - (void)viewDidLoad {
 
   [super viewDidLoad];
-  self.tv.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")];
+  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
 
-  [self.barView.titleLabel setText:@"评论"];
-  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateNormal];
-  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateHighlighted];
-
+  [self.barView.titleLabel removeFromSuperview];
+  UIButton *imageTitlebtn=[UIButton buttonWithType:UIButtonTypeCustom];
+  imageTitlebtn.frame=self.barView.titleLabel.frame;
+  [imageTitlebtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_title") forState:UIControlStateNormal];
+  [imageTitlebtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_title") forState:UIControlStateHighlighted];
+  [self.barView addSubview:imageTitlebtn];
+  
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateHighlighted];
+  [self.barView.leftButton setHidden:NO];
+  
   _dataSource = [[NSMutableArray alloc] init];
   _endCreateTime = -1;
   _isTheEnd = FALSE;
   _isLoadOld = FALSE;
   _isLoading = FALSE;
-  [self.barView.leftButton setHidden:NO];
+  
   [self addTableHeader];
   [self addTableFooter];
   [self setupGrowingTextField];
@@ -150,8 +157,9 @@
 
 - (void)addTableHeader {
 
-  _top_Ego = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, -45, SCREEN_WIDTH, 45)];
+  _top_Ego = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0, SCREEN_WIDTH, 45)];
   _top_Ego.delegate = self;
+  _top_Ego.backgroundColor=[UIColor clearColor];
   [self.tv setTableHeaderView:_top_Ego];
 }
 
@@ -159,6 +167,7 @@
 
   _ego = [[UP_EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 10, SCREEN_WIDTH, 45) withBackgroundColor:[UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")]];
   _ego.delegate = self;
+  _ego.backgroundColor=[UIColor clearColor];
   [self.tv setTableFooterView:_ego];
 }
 
@@ -310,31 +319,30 @@
 
 - (void)setupGrowingTextField {
 
-  _tContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 40, 320, 40)];
-
-  _textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
+  _tContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 50, SCREEN_WIDTH, 50)];
+  
+  _textBgView=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, _tContainerView.frame.size.width, _tContainerView.frame.size.height)];
+  _textBgView.image=[UIIMAGE_FROMPNG(@"qqnr_pd_comment_tabbar_bg") stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+  [_tContainerView addSubview:_textBgView];
+  
+  _textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(17, 10, 250, 31)];
   _textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
-
+  
   _textView.minNumberOfLines = 1;
   _textView.maxNumberOfLines = 6;
   _textView.returnKeyType = UIReturnKeyDefault;
   _textView.font = [UIFont systemFontOfSize:14.0f];
   _textView.delegate = self;
   _textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-  _textView.backgroundColor = [UIColor whiteColor];
+  _textView.textColor=[UIColor whiteColor];
+  _textView.backgroundColor = [UIColor clearColor];
 
   [self.view addSubview:_tContainerView];
 
-  UIImage *rawEntryBackground = UIIMAGE_FROMPNG(@"MessageEntryInputField");
-  UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-  UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-  entryImageView.frame = CGRectMake(5, 0, 248, 40);
-  entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
-  UIImage *rawBackground = UIIMAGE_FROMPNG(@"MessageEntryBackground");
+  UIImage *rawBackground = UIIMAGE_FROMPNG(@"qqnr_pd_comment_tabbar_ib");
   UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
   UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
-  imageView.frame = CGRectMake(0, 0, _tContainerView.frame.size.width, _tContainerView.frame.size.height);
+  imageView.frame = _textView.frame;
   imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
   _textView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -342,26 +350,16 @@
   // view hierachy
   [_tContainerView addSubview:imageView];
   [_tContainerView addSubview:_textView];
-  [_tContainerView addSubview:entryImageView];
-
-  UIImage *sendBtnBackground = [UIIMAGE_FROMPNG(@"MessageEntrySendButton")
-      stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-  UIImage *selectedSendBtnBackground = [UIIMAGE_FROMPNG(@"MessageEntrySendButtonPressed")
-      stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-
+  
   _tSendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-  _tSendBtn.frame = CGRectMake(_tContainerView.frame.size.width - 69, 8, 63, 27);
+  _tSendBtn.frame = CGRectMake(_tContainerView.frame.size.width - 45, 15, 24, 24);
   _tSendBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-  [_tSendBtn setTitle:@"评论" forState:UIControlStateNormal];
-
-  [_tSendBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
-  _tSendBtn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-  _tSendBtn.titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-
-  [_tSendBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+  [_tSendBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_tabbar_sent") forState:UIControlStateNormal];
+  [_tSendBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_tabbar_sent_hl") forState:UIControlStateHighlighted];
+  _tSendBtn.showsTouchWhenHighlighted=YES;
   [_tSendBtn addTarget:self action:@selector(sendBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
-  [_tSendBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
-  [_tSendBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
+
+  
   [_tContainerView addSubview:_tSendBtn];
   _tContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 
@@ -381,13 +379,13 @@
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
 
   float diff = (growingTextView.frame.size.height - height);
-
   CGRect r = _tContainerView.frame;
   r.size.height -= diff;
   r.origin.y += diff;
   _tContainerView.frame = r;
 
-
+  _textBgView.frame=CGRectMake(0, 0, _tContainerView.frame.size.width, _tContainerView.frame.size.height);
+  _textBgView.image=[UIIMAGE_FROMPNG(@"qqnr_pd_comment_tabbar_bg") stretchableImageWithLeftCapWidth:10 topCapHeight:10];
 }
 
 - (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView {
@@ -418,7 +416,7 @@
     [Utilities alertInstant:@"评论字数太少了，至少3个字吧" isError:YES];
     return;
   }
-  [SVProgressHUD show];
+  [SVProgressHUD showWithStatus:@"添加评论中。。"];
   [_textView resignFirstResponder];
 
   if (!_beginStr || ![_textView.text hasPrefix:_beginStr]) {

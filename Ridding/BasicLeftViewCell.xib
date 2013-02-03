@@ -46,6 +46,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrameSize">{320, 58}</string>
 								<reference key="NSSuperview" ref="375439583"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="303324236"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -56,19 +57,21 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{0, 58}, {320, 2}}</string>
 								<reference key="NSSuperview" ref="375439583"/>
+								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">QQNR_LN_Sepator.png</string>
+									<string key="NSResourceName">qqnr_ln_sepator.png</string>
 								</object>
 							</object>
 							<object class="IBUIView" id="303324236">
 								<reference key="NSNextResponder" ref="375439583"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 3}, {10, 53}}</string>
+								<string key="NSFrameSize">{10, 58}</string>
 								<reference key="NSSuperview" ref="375439583"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1026326581"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="709630578">
@@ -82,6 +85,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{40, 17}, {26, 26}}</string>
 								<reference key="NSSuperview" ref="375439583"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="382512750"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="709630578"/>
@@ -93,6 +97,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{80, 15}, {200, 30}}</string>
 								<reference key="NSSuperview" ref="375439583"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="208359239"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="709630578"/>
@@ -122,6 +127,7 @@
 						</array>
 						<string key="NSFrameSize">{320, 59}</string>
 						<reference key="NSSuperview" ref="153257943"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="607926757"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
 						<reference key="IBUIBackgroundColor" ref="709630578"/>
@@ -134,12 +140,13 @@
 				</array>
 				<string key="NSFrameSize">{320, 60}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="375439583"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBUISelectionStyle">0</int>
 				<reference key="IBUIContentView" ref="375439583"/>
-				<real value="45" key="IBUIRowHeight"/>
+				<real value="60" key="IBUIRowHeight"/>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -294,7 +301,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">QQNR_LN_Sepator.png</string>
+			<string key="NS.key.0">qqnr_ln_sepator.png</string>
 			<string key="NS.object.0">{4, 2}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

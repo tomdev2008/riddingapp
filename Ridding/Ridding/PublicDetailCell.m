@@ -54,7 +54,7 @@
   if (_info.isFirstPic) {
     if (!_beginImageView) {
       _beginImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, _viewHeight + 3, 15, 14)];
-      _beginImageView.image = UIIMAGE_FROMPNG(@"QQNR_PD_Bike");
+      _beginImageView.image = UIIMAGE_FROMPNG(@"qqnr_pd_bike");
     }
     [self addSubview:_beginImageView];
 
@@ -102,6 +102,10 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewTap:)];
     _imageView.userInteractionEnabled = YES;
     [_imageView addGestureRecognizer:tap];
+    if(_isMyFeedHome){
+      UILongPressGestureRecognizer *longPress=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(showDeleteAction:)];
+      [_imageView addGestureRecognizer:longPress];
+    }
   } else {
     _imageView.frame = CGRectMake(PublicDetailCellOriginX, _viewHeight, width, height);
   }
@@ -109,12 +113,12 @@
   [_imageView setImageWithURL:url placeholderImage:nil];
 
   if (!_imageBGView) {
-    _imageBGView = [[UIImageView alloc] initWithFrame:CGRectMake(_imageView.frame.origin.x - 10, _imageView.frame.origin.y - 15, _imageView.frame.size.width + 20, _imageView.frame.size.height + 32)];
+    _imageBGView = [[UIImageView alloc] initWithFrame:CGRectMake(_imageView.frame.origin.x - 10, _imageView.frame.origin.y - 10, _imageView.frame.size.width + 20, _imageView.frame.size.height + 27)];
 
   } else {
-    _imageBGView.frame = CGRectMake(_imageView.frame.origin.x - 10, _imageView.frame.origin.y - 15, _imageView.frame.size.width + 20, _imageView.frame.size.height + 32);
+    _imageBGView.frame = CGRectMake(_imageView.frame.origin.x - 10, _imageView.frame.origin.y - 10, _imageView.frame.size.width + 20, _imageView.frame.size.height + 27);
   }
-  _imageBGView.image = [UIIMAGE_FROMPNG(@"QQNR_PD_PicBg") stretchableImageWithLeftCapWidth:50 topCapHeight:50];
+  _imageBGView.image = [UIIMAGE_FROMPNG(@"qqnr_pd_picbg") stretchableImageWithLeftCapWidth:50 topCapHeight:50];
 
   [self addSubview:_imageBGView];
   [self addSubview:_imageView];
@@ -146,7 +150,7 @@
   } else {
     _imageViewDescBG.frame = CGRectMake(0, 0, _imageViewDescView.frame.size.width, _imageViewDescView.frame.size.height);
   }
-  _imageViewDescBG.image = [UIIMAGE_FROMPNG(@"QQNR_PD_DescBg") stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+  _imageViewDescBG.image = [UIIMAGE_FROMPNG(@"qqnr_pd_descbg") stretchableImageWithLeftCapWidth:10 topCapHeight:10];
 
 
   if (!_descLabel) {
@@ -196,13 +200,13 @@
 
   }
   if (self.info.liked) {
-    [_likeBtn setImage:UIIMAGE_FROMPNG(@"QQNR_PD_LikedPic") forState:UIControlStateNormal];
-    [_likeBtn setImage:UIIMAGE_FROMPNG(@"QQNR_PD_LikedPic") forState:UIControlStateHighlighted];
+    [_likeBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_likedpic") forState:UIControlStateNormal];
+    [_likeBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_likedpic") forState:UIControlStateHighlighted];
     _likeClickView.userInteractionEnabled = NO;
   } else {
     //可以喜欢
-    [_likeBtn setImage:UIIMAGE_FROMPNG(@"QQNR_PD_LikePic") forState:UIControlStateNormal];
-    [_likeBtn setImage:UIIMAGE_FROMPNG(@"QQNR_PD_LikePic") forState:UIControlStateHighlighted];
+    [_likeBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_likepic") forState:UIControlStateNormal];
+    [_likeBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_likepic") forState:UIControlStateHighlighted];
     _likeClickView.userInteractionEnabled = YES;
   }
 }
@@ -216,10 +220,20 @@
   if (succ) {
     self.info.liked = TRUE;
     _likeClickView.userInteractionEnabled = NO;
-    [_likeBtn setImage:UIIMAGE_FROMPNG(@"QQNR_PD_LikedPic") forState:UIControlStateNormal];
-    [_likeBtn setImage:UIIMAGE_FROMPNG(@"QQNR_PD_LikedPic") forState:UIControlStateHighlighted];
+    [_likeBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_likedpic") forState:UIControlStateNormal];
+    [_likeBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_likedpic") forState:UIControlStateHighlighted];
     self.info.likeCount += 1;
     _likeCountLabel.text = INT2STR(self.info.likeCount);
+  }
+
+}
+
+- (void)showDeleteAction:(UIGestureRecognizer *)gestureRecognizer  {
+    
+  if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+    if (self.delegate){
+      [self.delegate deletePicture:self index:_index];
+    }
   }
 
 }

@@ -36,4 +36,6 @@
 
 @property (nonatomic, retain) NSArray *routes;
 
+
+- (NSString *)totalDistanceToKm;
 @end

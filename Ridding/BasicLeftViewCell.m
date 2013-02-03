@@ -30,7 +30,7 @@
 - (void)selected {
 
   self.leftColorView.backgroundColor = [UIColor getColor:ColorGreen];
-  self.backgroundColorView.image = [UIIMAGE_FROMPNG(@"QQNR_LN_Selected") stretchableImageWithLeftCapWidth:50 topCapHeight:20];
+  self.backgroundColorView.image = [UIIMAGE_FROMPNG(@"qqnr_ln_selected") stretchableImageWithLeftCapWidth:50 topCapHeight:20];
 }
 
 - (void)disSelected {

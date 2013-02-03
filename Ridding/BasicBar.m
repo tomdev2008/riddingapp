@@ -43,8 +43,8 @@
   self = [super initWithCoder:aDecoder];
   if (self) {
     // Initialization code
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 8, 142, 27)];
-    _titleLabel.textColor = [UIColor getColor:barTextColor];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 6, 142, 27)];
+    _titleLabel.textColor = [UIColor whiteColor];
     _titleLabel.font = [UIFont boldSystemFontOfSize:17];
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.textAlignment = UITextAlignmentCenter;
@@ -52,26 +52,20 @@
     [self addSubview:_titleLabel];
 
     _leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _leftButton.frame = CGRectMake(6, 8, 64, 31);
-    _leftButton.layer.cornerRadius = 5;
-    _leftButton.layer.masksToBounds = YES;
-    [_leftButton setTitleColor:[UIColor getColor:barTextColor] forState:UIControlStateNormal];
-    [_leftButton setTitleColor:[UIColor getColor:barTextColor] forState:UIControlStateHighlighted];
+    _leftButton.frame = CGRectMake(0, 6, 64, 31);
+    [_leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     _leftButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
     _leftButton.showsTouchWhenHighlighted = YES;
     [_leftButton addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_leftButton];
 
     _rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _rightButton.frame = CGRectMake(245, 8, 64, 31);
-    _rightButton.layer.cornerRadius = 5;
-    _rightButton.layer.masksToBounds = YES;
+    _rightButton.frame = CGRectMake(255, 6, 64, 31);
     _rightButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
     _rightButton.showsTouchWhenHighlighted = YES;
-    [_rightButton setTitleColor:[UIColor getColor:barTextColor] forState:UIControlStateNormal];
-    [_rightButton setTitleColor:[UIColor getColor:barTextColor] forState:UIControlStateHighlighted];
-    [_rightButton setTitle:@"确定" forState:UIControlStateNormal];
-    [_rightButton setTitle:@"确定" forState:UIControlStateHighlighted];
+    [_rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [_rightButton addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [_rightButton setHidden:YES];
     [self addSubview:_rightButton];

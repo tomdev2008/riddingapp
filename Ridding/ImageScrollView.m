@@ -125,8 +125,6 @@
   CGFloat yScale = boundsSize.height / picture.height;  // the scale needed to perfectly fit the image height-wise
   CGFloat minScale = MIN(xScale, yScale);
 
-  NSLog(@"%d", picture.width);
-  NSLog(@"%d", picture.height);
 
   CGSize size = CGSizeMake(minScale * picture.width, minScale * picture.height);
   NSURL *url = [QiNiuUtils getUrlBySizeToUrl:size url:picture.photoUrl type:QINIUMODE_DESHORT];

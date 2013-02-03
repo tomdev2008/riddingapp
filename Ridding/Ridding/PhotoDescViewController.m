@@ -98,6 +98,9 @@
   QQNRServerTask *task = [[QQNRServerTask alloc] init];
   task.step = STEP_UPLOADDESC;
 
+  NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:_riddingPicture, kFileClientServerUpload_RiddingPicture, nil];
+  task.paramDic = dic;
+  
   QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
   [queue addTask:task withDependency:YES];
 

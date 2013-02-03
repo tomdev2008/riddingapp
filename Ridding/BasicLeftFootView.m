@@ -24,15 +24,15 @@
   if (self) {
     
     UIImageView *lineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 2)];
-    lineView.image = [UIIMAGE_FROMPNG(@"QQNR_LN_Sepator") stretchableImageWithLeftCapWidth:2 topCapHeight:0];
+    lineView.image = [UIIMAGE_FROMPNG(@"qqnr_ln_sepator") stretchableImageWithLeftCapWidth:2 topCapHeight:0];
     [self addSubview:lineView];
 
     [self setUser];
 
     UIButton *settingBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    settingBtn.frame = CGRectMake(200, 17, 26, 26);
-    [settingBtn setImage:UIIMAGE_FROMPNG(@"QQNR_LN_Setting") forState:UIControlStateNormal];
-    [settingBtn setImage:UIIMAGE_FROMPNG(@"QQNR_LN_Setting") forState:UIControlStateHighlighted];
+    settingBtn.frame = CGRectMake(200, 7, 52, 52);
+    [settingBtn setImage:UIIMAGE_FROMPNG(@"qqnr_ln_setting") forState:UIControlStateNormal];
+    [settingBtn setImage:UIIMAGE_FROMPNG(@"qqnr_ln_setting_hl") forState:UIControlStateHighlighted];
     [settingBtn addTarget:self action:@selector(settingBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     settingBtn.showsTouchWhenHighlighted = YES;
     [self addSubview:settingBtn];

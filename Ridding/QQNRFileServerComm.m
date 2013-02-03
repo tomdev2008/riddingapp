@@ -70,7 +70,7 @@ static QQNRFileServerComm *qqnrFileServerComm = nil;
   }
 
   int retureCode = [self doUpload:fileName localPath:localPath];
-  NSLog(@"%d", retureCode);
+
   if (retureCode == 200) {
     fileName = [NSString stringWithFormat:@"/%@", fileName];
     ridding.map.fileKey = fileName;

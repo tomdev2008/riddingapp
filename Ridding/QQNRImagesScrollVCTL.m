@@ -232,7 +232,7 @@
 
   [self asyncLoadImage:page forIndex:index];
   _picture = [self.photoArray objectAtIndex:index];
-  NSLog(@"%@", _picture.photoUrl);
+  
   [page displayImage:_picture];
 }
 

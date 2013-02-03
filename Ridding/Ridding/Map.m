@@ -32,5 +32,10 @@
   return self;
 }
 
+- (NSString *)totalDistanceToKm {
+  float distance = self.distance * 1.0 / 1000;
+  return [NSString stringWithFormat:@"%0.2lf KM", distance];
+}
+
 
 @end

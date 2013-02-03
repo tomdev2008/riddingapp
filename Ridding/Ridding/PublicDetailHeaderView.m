@@ -25,13 +25,17 @@
     _isMyHome = isMyHome;
     self.backgroundColor = [UIColor clearColor];
 
-
-    UIButton *avatorBtn = [[UIButton alloc] initWithFrame:CGRectMake(15, 15, 55, 55)];
+    UIButton *avatorBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    avatorBtn.frame=CGRectMake(15, 15, 55, 55);
     NSURL *url = [NSURL URLWithString:_ridding.leaderUser.savatorUrl];
     [avatorBtn setImageWithURL:url placeholderImage:UIIMAGE_DEFAULT_USER_AVATOR];
     avatorBtn.showsTouchWhenHighlighted = YES;
     [avatorBtn addTarget:self action:@selector(avatorClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:avatorBtn];
+    
+    UIImageView *avatorBgView=[[UIImageView alloc]initWithFrame:CGRectMake(11, 13, 61, 61)];
+    avatorBgView.image=UIIMAGE_FROMPNG(@"qqnr_photo_bg");
+    [self addSubview:avatorBgView];
 
     UILabel *riddingNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 10, 250, 30)];
     riddingNameLabel.textColor = [UIColor whiteColor];
@@ -50,22 +54,22 @@
     [self addSubview:createLabel];
 
 
-    NSString *dictance = [NSString stringWithFormat:@"%0.2fKM", _ridding.map.distance * 1.0 / 1000];;
-    CGSize linesSz = [dictance sizeWithFont:[UIFont boldSystemFontOfSize:12] constrainedToSize:CGSizeMake(100, 25) lineBreakMode:(NSLineBreakMode) UILineBreakModeCharacterWrap];
+    NSString *dictance = [_ridding.map totalDistanceToKm];
+    CGSize linesSz = [dictance sizeWithFont:[UIFont boldSystemFontOfSize:12] constrainedToSize:CGSizeMake(70, 25) lineBreakMode:(NSLineBreakMode) UILineBreakModeCharacterWrap];
 
-    UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(175, 50, linesSz.width, linesSz.height + 2)];
+    UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(245, 50, linesSz.width, linesSz.height + 2)];
     distanceLabel.textColor = [UIColor whiteColor];
-    distanceLabel.textAlignment = UITextAlignmentCenter;
+    distanceLabel.textAlignment = UITextAlignmentLeft;
     distanceLabel.text = dictance;
     distanceLabel.backgroundColor = [UIColor clearColor];
     distanceLabel.font = [UIFont systemFontOfSize:12];
 
 
-    UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(distanceLabel.frame.origin.x - 13, distanceLabel.frame.origin.y, 12, 14)];
-    iconImage.image = UIIMAGE_FROMPNG(@"QQNR_PD_DistancePic");
+    UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(distanceLabel.frame.origin.x - 18, distanceLabel.frame.origin.y, 12, 14)];
+    iconImage.image = UIIMAGE_FROMPNG(@"qqnr_pd_distancepic");
 
-    UIImageView *distanceViewBG = [[UIImageView alloc] initWithFrame:CGRectMake(distanceLabel.frame.origin.x - 15, distanceLabel.frame.origin.y, distanceLabel.frame.size.width + 20, distanceLabel.frame.size.height)];
-    distanceViewBG.image = [UIIMAGE_FROMPNG(@"QQNR_PD_DistanceBg") stretchableImageWithLeftCapWidth:4 topCapHeight:10];
+    UIImageView *distanceViewBG = [[UIImageView alloc] initWithFrame:CGRectMake(distanceLabel.frame.origin.x - 20, distanceLabel.frame.origin.y, distanceLabel.frame.size.width + 25, distanceLabel.frame.size.height)];
+    distanceViewBG.image = [UIIMAGE_FROMPNG(@"qqnr_pd_distancebg") stretchableImageWithLeftCapWidth:4 topCapHeight:10];
 
     [self addSubview:distanceViewBG];
     [self addSubview:iconImage];
@@ -89,7 +93,10 @@
     [self addSubview:_route_view];
     _routes = [[NSMutableArray alloc] init];
     [self drawRoutes];
-
+    
+    UIImageView *mapBottomView=[[UIImageView alloc]initWithFrame:CGRectMake(_route_view.frame.origin.x, _route_view.frame.origin.y+_route_view.frame.size.height, 290, 10)];
+    mapBottomView.image=UIIMAGE_FROMPNG(@"qqnr_pd_map_bg");
+    [self addSubview:mapBottomView];
 
   }
   return self;
