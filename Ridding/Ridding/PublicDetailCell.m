@@ -101,6 +101,8 @@
     _imageView.backgroundColor = [UIColor clearColor];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewTap:)];
     _imageView.userInteractionEnabled = YES;
+    _imageView.layer.borderColor=[[UIColor whiteColor]CGColor];
+    _imageView.layer.borderWidth=1.0;
     [_imageView addGestureRecognizer:tap];
     if(_isMyFeedHome){
       UILongPressGestureRecognizer *longPress=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(showDeleteAction:)];

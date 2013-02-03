@@ -62,6 +62,8 @@
   QQNRSourceLoginViewController *loginController = [[QQNRSourceLoginViewController alloc] init];
   loginController.delegate = self;
   [self presentModalViewController:loginController animated:YES];
+  
+ 
 }
 
 #pragma mark - RiddingViewController delegate

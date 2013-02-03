@@ -90,8 +90,11 @@
 }
 
 + (BOOL)isMyFeedHome:(User *)user {
-
-  if ([StaticInfo getSinglton].user && [StaticInfo getSinglton].user.userId == user.userId && user.userId > 0) {
+  
+  if([StaticInfo getSinglton].user.userId<=0){
+    return FALSE;
+  }
+  if ([StaticInfo getSinglton].user && [StaticInfo getSinglton].user.userId == user.userId ) {
     return TRUE;
   }
   return FALSE;

@@ -33,7 +33,6 @@
     case STEP_UPLOADBACKGROUNDPHOTO: {
       [self performSelectorOnMainThread:@selector(updateUIWhenTaskBegin) withObject:nil waitUntilDone:NO];
       [[QQNRFileServerComm getSingleton] updateFileToQiNiu:[self.paramDic objectForKey:kFileClientServerUpload_File] target:self];
-
     }
       break;
     default:

@@ -66,7 +66,7 @@
   CLPlacemark *mark = [_placemarks objectAtIndex:indexPath.row];
   cell.textLabel.text = mark.name;
   cell.textLabel.font = [UIFont systemFontOfSize:13];
-  cell.textLabel.textColor = COLOR_GRAY;
+ 
   return cell;
 }
 

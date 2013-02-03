@@ -10,7 +10,7 @@
 #import "NSString+TomAddition.h"
 #import "Utilities.h"
 #import "SVProgressHUD.h"
-
+#import "QQNRFeedViewController.h"
 #define pageSize 10
 
 @interface PublicCommentVCTL ()
@@ -44,6 +44,10 @@
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateHighlighted];
   [self.barView.leftButton setHidden:NO];
   
+  UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tableViewTap:)];
+  self.tv.userInteractionEnabled=YES;
+  [self.tv addGestureRecognizer:gesture];
+  
   _dataSource = [[NSMutableArray alloc] init];
   _endCreateTime = -1;
   _isTheEnd = FALSE;
@@ -74,6 +78,10 @@
     self.didAppearOnce = TRUE;
     [self download];
   }
+}
+
+- (void)tableViewTap:(UIGestureRecognizer*)gesture{
+  [_textView resignFirstResponder];
 }
 
 - (void)addCommentToServer:(NSString *)text {
@@ -186,6 +194,15 @@
   _beginStr = [NSString stringWithFormat:@"回复%@:", comment.user.name];
   [_textView setText:_beginStr];
   [_textView becomeFirstResponder];
+}
+
+- (void)avatorBtnClick:(PublicCommentCell *)cell{
+  
+  Comment *comment = [_dataSource objectAtIndex:cell.index];
+  if(comment.user.userId!=[StaticInfo getSinglton].user.userId){
+    QQNRFeedViewController *qqnrFeedVCTL = [[QQNRFeedViewController alloc] initWithUser:comment.user isFromLeft:FALSE];
+    [self.navigationController pushViewController:qqnrFeedVCTL animated:YES];
+  }
 }
 
 
@@ -352,7 +369,7 @@
   [_tContainerView addSubview:_textView];
   
   _tSendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-  _tSendBtn.frame = CGRectMake(_tContainerView.frame.size.width - 45, 15, 24, 24);
+  _tSendBtn.frame = CGRectMake(_tContainerView.frame.size.width - 35, 15, 24, 24);
   _tSendBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
   [_tSendBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_tabbar_sent") forState:UIControlStateNormal];
   [_tSendBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_tabbar_sent_hl") forState:UIControlStateHighlighted];

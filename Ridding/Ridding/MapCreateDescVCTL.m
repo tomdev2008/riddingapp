@@ -119,6 +119,7 @@
     if (dic) {
       _ridding = [[Ridding alloc] initWithJSONDic:[dic objectForKey:keyRidding]];
       dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter]postNotificationName:kSuccAddRiddingNotification object:nil];
         [SVProgressHUD dismiss];
       });
     }

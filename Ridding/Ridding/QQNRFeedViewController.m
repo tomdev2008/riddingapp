@@ -50,17 +50,21 @@
   if (_isFromLeft) {
     [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
     [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateHighlighted];
-    [self.barView.leftButton setHidden:NO];
     self.hasLeftView = TRUE;
+  }else{
+    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateHighlighted];
+    self.hasLeftView = FALSE;
   }
+  [self.barView.leftButton setHidden:NO];
   [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_main_refresh") forState:UIControlStateNormal];
   [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_main_refresh_hl") forState:UIControlStateHighlighted];
   [self.barView.rightButton setHidden:NO];
 
   _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, SCREEN_STATUS_BAR, SCREEN_WIDTH, QQNRFeedHeaderView_Default_Height)];
   NSURL *url = [QiNiuUtils getUrlByWidthToUrl:_backgroundImageView.frame.size.width url:_toUser.backGroundUrl type:QINIUMODE_DEDEFAULT];
-#warning <#message#>
-  [_backgroundImageView setImageWithURL:url placeholderImage:nil];
+  
+  [_backgroundImageView setImageWithURL:url placeholderImage:UIIMAGE_FROMPNG(@"qqnr_main_pic")];
   _backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
   _backgroundImageView.clipsToBounds = YES;
   [self.view addSubview:_backgroundImageView];
@@ -96,7 +100,7 @@
     if ([[ResponseCodeCheck getSinglton] isWifi]) {
       NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
-      if ([StaticInfo getSinglton].user.nowRiddingCount >= 3 && ![prefs objectForKey:@"recomComment"]) {
+      if (_isMyFeedHome &&[StaticInfo getSinglton].user.nowRiddingCount >= 3 && ![prefs objectForKey:@"recomComment"]) {
         UIAlertView *alert = nil;
         if ([StaticInfo getSinglton].user.nowRiddingCount >= 10) {
           alert = [[UIAlertView alloc] initWithTitle:@"喜欢这款骑行应用吗?"
@@ -138,9 +142,9 @@
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSArray *array;
     if (_isLoadOld) {
-      array = [self.requestUtil getUserMaps:dataLimit createTime:_endCreateTime userId:[StaticInfo getSinglton].user.userId isLarger:0];
+      array = [self.requestUtil getUserMaps:dataLimit createTime:_endCreateTime userId:_toUser.userId isLarger:0];
     } else {
-      array = [self.requestUtil getUserMaps:dataLimit createTime:-1 userId:[StaticInfo getSinglton].user.userId isLarger:0];
+      array = [self.requestUtil getUserMaps:dataLimit createTime:-1 userId:_toUser.userId isLarger:0];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
       if (!_isLoadOld) {
@@ -155,7 +159,7 @@
       } else {
         [_ego setHidden:NO];
       }
-      if ([_dataSource count] == 0) {
+      if ([_dataSource count] == 0&&_isMyFeedHome) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"开始骑行之旅"
                                                         message:@"您的骑行之旅还没有骑行活动吗?^_^"
                                                        delegate:self cancelButtonTitle:@"取消"

@@ -60,18 +60,19 @@
     _careBtn.frame = CGRectMake(230, 8, 32, 25);
     [self.barView addSubview:_careBtn];
 
-    _commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _commentBtn.frame = CGRectMake(270, 8, 32, 25);
-    [_commentBtn addTarget:self action:@selector(commentAdd:) forControlEvents:UIControlEventTouchUpInside];
-    [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment") forState:UIControlStateNormal];
-    [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_hl") forState:UIControlStateHighlighted];
-    [self.barView addSubview:_commentBtn];
-
     [self.barView.titleLabel removeFromSuperview];
   } else {
     [self.barView.titleLabel setText:_ridding.riddingName];
   }
 
+  _commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+  _commentBtn.frame = CGRectMake(270, 8, 32, 25);
+  [_commentBtn addTarget:self action:@selector(commentAdd:) forControlEvents:UIControlEventTouchUpInside];
+  [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment") forState:UIControlStateNormal];
+  [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_hl") forState:UIControlStateHighlighted];
+  [self.barView addSubview:_commentBtn];
+
+  
   [self addTableHeader];
   [self addTableFooter];
   _cellArray = [[NSMutableArray alloc] init];
@@ -364,14 +365,14 @@
 
 - (void)commentAdd:(id)sender {
 
-  self.didAppearOnce = NO;
+  self.didAppearOnce = FALSE;
   PublicCommentVCTL *commentVCTL = [[PublicCommentVCTL alloc] initWithNibName:@"PublicCommentVCTL" bundle:nil ridding:_ridding];
   [self.navigationController pushViewController:commentVCTL animated:YES];
 }
 
 
 - (void)resetActionBtn {
-
+  
   if (_ridding.nowUserUsed) {
     [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_join_disable") forState:UIControlStateNormal];
     [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_join_disable") forState:UIControlStateHighlighted];
@@ -380,14 +381,13 @@
     [_useBtn setEnabled:YES];
     [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_join") forState:UIControlStateNormal];
     [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_join_hl") forState:UIControlStateHighlighted];
-    
   }
   if (_ridding.nowUserCared) {
     [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_care_disable") forState:UIControlStateNormal];
     [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_care_disable") forState:UIControlStateHighlighted];
-    [_useBtn setEnabled:YES];
+    [_careBtn setEnabled:NO];
   } else {
-    [_useBtn setEnabled:NO];
+    [_careBtn setEnabled:YES];
     [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_care") forState:UIControlStateNormal];
     [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_care_hl") forState:UIControlStateHighlighted];
   }

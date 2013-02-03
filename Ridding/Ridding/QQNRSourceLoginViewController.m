@@ -36,7 +36,7 @@
   NSString *url = [[NSString alloc] initWithString:OAuthUrl];
   NSURLRequest *loginRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
   [self.web loadRequest:loginRequest];
-  _sendWeiBo = TRUE;
+  _sendWeiBo = FALSE;
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   if (![prefs boolForKey:kRecomApp]) {
     [self setFollowView];
@@ -163,7 +163,7 @@
   [_redSC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
   _redSC.crossFadeLabelsOnDrag = YES;
   _redSC.thumb.tintColor = [UIColor getColor:ColorBlue];
-  _redSC.selectedIndex = 1;
+  _redSC.selectedIndex = 0;
   [self.view addSubview:_redSC];
   _redSC.center = CGPointMake(240, 355);
   _sendWeiBo = TRUE;

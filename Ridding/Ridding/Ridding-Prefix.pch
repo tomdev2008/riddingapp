@@ -27,8 +27,6 @@
 #define kSuccAddFriendsNotification   @"SuccAddFriendsNotification"
 #define kSuccLoginNotification @"succLoginNotification"
 #define kSuccLogoutNotification @"succLogoutNotification"
-#define kFinishNotification @"FinishNotification"
-#define kInitNotification @"InitNotification"
 #define apiSinaHost @"api.weibo.com"
 #define downLoadPath @"https://itunes.apple.com/cn/app/qi-xing-zhe/id557123754?ls=1&mt=8"
 #define linkAppStore @"itms-apps://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=557123754"
@@ -39,7 +37,6 @@
 #define QIQUNARHOME @"http://qiqunar.com.cn"
 
 #define sendMyLocationTime @"10"
-#define getToDestinationTime @"15"
 #define YouMenAppKey @"4fb3ce805270152b53000128"
 #define MY_BANNER_UNIT_ID @"a151069f9007f3a"
 
@@ -67,15 +64,9 @@
 #define NUMBER_SET_A_WITH_B_ONLYIF_B_IS_NOT_NIL(A,B)  if((B)!=nil) { A= ([B intValue]);}
 
 #define ColorGreen @"1fb1a6"
-#define ColorOrange @"f15e1d"
 #define ColorBlue @"5cc1de"
-#define ColorOrangeMore @"f26f31"
 #define ColorTextColor @"FFFFFF"
-#define COLOR_GRAY    [UIColor colorWithRed:(115/255.0) green:(115/255.0) blue:(115/255.0) alpha:1]
-#define COLOR_BLACK   [UIColor colorWithRed:(15/255.0) green:(15/255.0) blue:(15/255.0) alpha:1]
-#define COLOR_LOWGRAY [UIColor colorWithRed:(197/255.0) green:(197/255.0) blue:(197/255.0) alpha:1]
 #define lineColor @"0048ff"
-#define barTextColor @"6f6f6f"
 #define kColor_pickerViewBarTint    [UIColor colorWithWhite:128/255.0 alpha:1.0]
 #define LeftBarMoveWidth 260
 

@@ -33,16 +33,17 @@
   
 
   if (!_headImageView) {
-    _headImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, MPCommentCellDefaultSpace, 42, 42)];
+    _headImageView = [[UIImageView alloc] initWithFrame:CGRectMake(13, MPCommentCellDefaultSpace, 46, 46)];
     _headImageView.image=UIIMAGE_FROMPNG(@"qqnr_pd_comment_photo_bg");
     [self addSubview:_headImageView];
   }
   
   if (!_headImageBtn){
     _headImageBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    [_headImageBtn addTarget:self action:@selector(avatorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_headImageBtn];
   }
-  _headImageBtn.frame=CGRectMake(19, MPCommentCellDefaultSpace+2, 34, 34);
+  _headImageBtn.frame=CGRectMake(18, MPCommentCellDefaultSpace+3, 36, 36);
     NSURL *headerUrl = [QiNiuUtils getUrlBySizeToUrl:_headImageView.frame.size url:_comment.user.savatorUrl type:QINIUMODE_DEDEFAULT];
   [_headImageBtn setImageWithURL:headerUrl placeholderImage:UIIMAGE_DEFAULT_USER_AVATOR];
 
@@ -112,7 +113,16 @@
     _viewHeight += _descLabel.frame.size.height;
   }
   
+  if(!_lineImageView){
+    _lineImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0, _viewHeight+8, self.frame.size.width, 2)];
+    _lineImageView.image=[UIIMAGE_FROMPNG(@"qqnr_pd_comment_line") stretchableImageWithLeftCapWidth:17 topCapHeight:0];
+    [self addSubview:_lineImageView];
+  }else{
+    _lineImageView.frame=CGRectMake(0, _viewHeight+8, self.frame.size.width, 2);
+  }
+  
   _viewHeight += 10; //间距
+  
 }
 
 - (void)callBackBtnClick:(id)sender {
@@ -138,11 +148,13 @@
 
   viewHeight += 10; //日期
 
-//  if (viewHeight < 60) {
-//    return 60;
-//  }
-
   return viewHeight;
+}
+
+- (void)avatorBtnClick:(id)sender{
+  if(self.delegate){
+    [self.delegate avatorBtnClick:self];
+  }
 }
 
 @end

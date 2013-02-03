@@ -16,6 +16,8 @@
 @optional
 - (void)callBackBtnClick:(PublicCommentCell *)cell;
 
+- (void)avatorBtnClick:(PublicCommentCell *)cell;
+
 @end
 
 
@@ -31,6 +33,7 @@
   UIButton *_callBackBtn;
   UIImageView *_headIconView;
   UIImageView *_timeImageView;
+  UIImageView *_lineImageView;
 }
 @property (nonatomic, retain) Comment *comment;
 @property (nonatomic) int index;
