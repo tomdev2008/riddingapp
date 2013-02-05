@@ -57,7 +57,7 @@
     NSString *dictance = [_ridding.map totalDistanceToKm];
     CGSize linesSz = [dictance sizeWithFont:[UIFont boldSystemFontOfSize:12] constrainedToSize:CGSizeMake(70, 25) lineBreakMode:(NSLineBreakMode) UILineBreakModeCharacterWrap];
 
-    UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(245, 50, linesSz.width, linesSz.height + 2)];
+    UILabel *distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(225, 50, linesSz.width, linesSz.height + 2)];
     distanceLabel.textColor = [UIColor whiteColor];
     distanceLabel.textAlignment = UITextAlignmentLeft;
     distanceLabel.text = dictance;
@@ -98,6 +98,30 @@
     mapBottomView.image=UIIMAGE_FROMPNG(@"qqnr_pd_map_bg");
     [self addSubview:mapBottomView];
 
+    
+    if(_ridding.aPublic.adContentType==1){
+      [_adImageView removeFromSuperview];
+      _adLabel =[[UILabel alloc]initWithFrame:CGRectMake(_route_view.frame.origin.x, mapBottomView.frame.origin.y+mapBottomView.frame.size.height+10, 290, 30)];
+      _adLabel.backgroundColor=[UIColor clearColor];
+      _adLabel.textColor=[UIColor whiteColor];
+      _adLabel.text=_ridding.aPublic.linkText;
+      _adLabel.userInteractionEnabled=YES;
+      UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(linkTap:)];
+      [_adLabel addGestureRecognizer:gesture];
+      [self addSubview:_adLabel];
+    }
+    
+    if(_ridding.aPublic.adContentType==2){
+      [_adLabel removeFromSuperview];
+      _adImageView=[[UIImageView alloc]initWithFrame:CGRectMake(_route_view.frame.origin.x, mapBottomView.frame.origin.y+mapBottomView.frame.size.height+10, 290, 50)];
+      NSURL *url=[NSURL URLWithString:_ridding.aPublic.linkImageUrl];
+      [_adImageView setImageWithURL:url placeholderImage:nil];
+      [self addSubview:_adImageView];
+      _adImageView.userInteractionEnabled=YES;
+      UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(linkTap:)];
+      [_adImageView addGestureRecognizer:gesture];
+    }
+    
   }
   return self;
 }
@@ -155,6 +179,13 @@
 
   if (self.delegate) {
     [self.delegate avatorClick:self];
+  }
+}
+
+
+- (void)linkTap:(UIGestureRecognizer*)gesture{
+  if(self.delegate){
+    [self.delegate linkTap:self];
   }
 }
 

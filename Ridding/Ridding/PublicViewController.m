@@ -13,7 +13,7 @@
 #import "PublicDetailViewController.h"
 #import "SVProgressHUD.h"
 
-#define dataLimit 2
+#define dataLimit 10
 
 @interface PublicViewController ()
 
@@ -62,7 +62,6 @@
 
   GADSearchBannerView *bannerView = [[GADSearchBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(GAD_SIZE_320x50) origin:CGPointMake(0, SCREEN_HEIGHT- 50)];
   bannerView.adUnitID = MY_BANNER_UNIT_ID;
-  bannerView.delegate = self;
   bannerView.rootViewController = self;
   [self.view addSubview:bannerView];
   GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
@@ -171,7 +170,7 @@
 
   PublicViewCell *cell = (PublicViewCell *) [Utilities cellByClassName:@"PublicViewCell" inNib:@"PublicViewCell" forTableView:self.tv];
   ActivityInfo *info = [_dataSource objectAtIndex:indexPath.row];
-  NSURL *url = [QiNiuUtils getUrlBySizeToUrl:cell.firstPicImageView.frame.size url:info.firstPicUrl type:QINIUMODE_DEDEFAULT];
+  NSURL *url = [QiNiuUtils getUrlBySizeToUrl:cell.firstPicImageView.frame.size url:info.ridding.aPublic.firstPicUrl type:QINIUMODE_DEDEFAULT];
   [cell.firstPicImageView setImageWithURL:url placeholderImage:nil];
   cell.nameLabel.text = info.ridding.riddingName;
   cell.dateLabel.text = info.ridding.createTimeStr;
@@ -267,10 +266,5 @@
   return _isLoading; // should return if data source model is reloading
 }
 
-- (void)             adView:(GADBannerView *)view
-didFailToReceiveAdWithError:(GADRequestError *)error {
-
-  [view removeFromSuperview];
-}
 
 @end

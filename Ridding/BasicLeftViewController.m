@@ -65,7 +65,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   // Return the number of rows in the section.
-  return 3;
+  return 4;
 }
 
 // Customize the appearance of table view cells.
@@ -90,6 +90,11 @@
       cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_myridding");
     }
       break;
+    case 3: {
+      cell.titleLabel.text = @"推荐给骑友";
+      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_myridding");
+      
+    }
     default:
       break;
   }
@@ -124,13 +129,58 @@
       [self showPublic];
       break;
     case 3:
-      [self showSetting];
+      [self showShare];
       break;
     default:
       break;
   }
 
 }
+
+- (void)showShare {
+  if([MFMessageComposeViewController canSendText]){
+		
+    MFMessageComposeViewController *smsComposer = [[MFMessageComposeViewController alloc] init];
+		
+    smsComposer.body = [NSString stringWithFormat:@"我下载了一个骑行应用叫\"骑行者\",真不错啊！以后出去骑车果断靠它了。可以画路线,添加队友,追踪队友位置,还能拍照记录行程。果断去下一个啊!给你链接:%@",linkAppStore];
+    smsComposer.messageComposeDelegate = self;
+		
+    [self moveRight];
+    [self presentModalViewController:smsComposer animated:NO];
+  }
+  else{
+		
+		NSString *deviceType = [UIDevice currentDevice].model;
+		if([deviceType isEqualToString:@"iPhone"] ){
+			
+			// 老版本iphone
+			
+			ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
+		//	picker.peoplePickerDelegate = self;
+			
+			// Display only a person's phone, email, and birthdate
+			NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonPhoneProperty],
+                                 [NSNumber numberWithInt:kABPersonEmailProperty],
+                                 [NSNumber numberWithInt:kABPersonBirthdayProperty], nil];
+			
+			
+			picker.displayedProperties = displayedItems;
+			// Show the picker
+			[self presentModalViewController:picker animated:YES];
+			
+		}else {
+      [Utilities alertInstant:@"抱歉\n你没有发短信的功能哦" isError:YES];
+		}
+  }
+
+}
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
+  
+	[self dismissModalViewControllerAnimated:YES];
+  [self restoreViewLocation];
+}
+
 
 - (void)showSetting {
 

@@ -17,6 +17,8 @@
 - (void)mapViewTap:(PublicDetailHeaderView *)view;
 
 - (void)avatorClick:(PublicDetailHeaderView *)view;
+
+- (void)linkTap:(PublicDetailHeaderView *)view;
 @end
 
 @interface PublicDetailHeaderView : UIView <MKMapViewDelegate> {
@@ -25,6 +27,8 @@
   NSMutableArray *_routes;
   UIImageView *_route_view;
   BOOL _isMyHome;
+  UILabel *_adLabel;
+  UIImageView *_adImageView;
 }
 
 @property (nonatomic, assign) id <PublicDetailHeaderDelegate> delegate;

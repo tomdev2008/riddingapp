@@ -13,7 +13,7 @@
 #import "QQNRImagesScrollVCTL.h"
 #import "SVProgressHUD.h"
 #import "QQNRFeedViewController.h"
-
+#import "PublicLinkWebViewController.h"
 #define pageSize 10
 
 @interface PublicDetailViewController ()
@@ -85,7 +85,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 
-  [super viewDidAppear:animated];
+  
   if (!self.didAppearOnce) {
     _isTheEnd = FALSE;
     _lastUpdateTime = -1;
@@ -98,6 +98,7 @@
     }
     self.didAppearOnce = TRUE;
   }
+  [super viewDidAppear:animated];
 }
 
 - (void)downLoadRiddingAction {
@@ -127,7 +128,6 @@
   [SVProgressHUD showWithStatus:@"加载中"];
   dispatch_async(dispatch_queue_create("downLoad", NULL), ^{
     NSArray *serverArray = [self.requestUtil getUploadedPhoto:_ridding.riddingId limit:pageSize lastUpdateTime:_lastUpdateTime];
-    [_cellArray removeAllObjects];
     if ([serverArray count] > 0) {
       NSMutableArray *mulArray = [[NSMutableArray alloc] init];
       for (NSDictionary *dic in serverArray) {
@@ -170,8 +170,14 @@
 
 #pragma mark - QQNRFeedHeaderViewDelegate
 - (void)addTableHeader {
-
-  _headerView = [[PublicDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 260) ridding:_ridding isMyHome:_isMyFeedHome];
+  CGFloat height=260;
+  if(_ridding.aPublic.adContentType==PublicType_Text){
+    height+=40;
+  }
+  if(_ridding.aPublic.adContentType==PublicType_Image){
+    height+=60;
+  }
+  _headerView = [[PublicDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, height) ridding:_ridding isMyHome:_isMyFeedHome];
   _headerView.delegate = self;
   [self.tv setTableHeaderView:_headerView];
 
@@ -179,7 +185,7 @@
 
 - (void)addTableFooter {
 
-  _ego = [[UP_EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 10, SCREEN_WIDTH, 45) withBackgroundColor:[UIColor whiteColor]];
+  _ego = [[UP_EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 10, SCREEN_WIDTH, 45) withBackgroundColor:[UIColor clearColor]];
   _ego.delegate = self;
   [_ego setHidden:YES];
   [self.tv setTableFooterView:_ego];
@@ -340,8 +346,10 @@
   if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"走起!"]) {
     QQNRFeedViewController *viewController=[[QQNRFeedViewController alloc]initWithUser:[StaticInfo getSinglton].user isFromLeft:FALSE];
     [self.navigationController pushViewController:viewController animated:YES];
+  }else{
+    [super alertView:alertView clickedButtonAtIndex:buttonIndex];
+    
   }
-  [super alertView:alertView clickedButtonAtIndex:buttonIndex];
 }
 
 
@@ -364,7 +372,7 @@
 }
 
 - (void)commentAdd:(id)sender {
-
+  [_cellArray removeAllObjects];
   self.didAppearOnce = FALSE;
   PublicCommentVCTL *commentVCTL = [[PublicCommentVCTL alloc] initWithNibName:@"PublicCommentVCTL" bundle:nil ridding:_ridding];
   [self.navigationController pushViewController:commentVCTL animated:YES];
@@ -422,7 +430,7 @@
 
 - (void)deletePicture:(PublicDetailCell *)view index:(int)index {
   
-  UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"确定要删除这张照片吗?" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:nil];
+  UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"确定要删除这张照片吗?" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除照片" otherButtonTitles:nil];
   actionSheet.delegate = self;
   [actionSheet showInView:self.view];
   _deletePicIndex=index;
@@ -439,6 +447,7 @@
     [self.requestUtil deleteRiddingPicture:_ridding.riddingId pictureId:picture.dbId];
     [_cellArray removeObjectAtIndex:_deletePicIndex];
     _deletePicIndex=-1;
+    [self.tv reloadData];
   }
 }
 
@@ -458,6 +467,11 @@
   }
   QQNRFeedViewController *qqnrFeedVCTL = [[QQNRFeedViewController alloc] initWithUser:_toUser isFromLeft:FALSE];
   [self.navigationController pushViewController:qqnrFeedVCTL animated:YES];
+}
+
+- (void)linkTap:(PublicDetailHeaderView *)view{
+  PublicLinkWebViewController *linkWebVCTL=[[PublicLinkWebViewController alloc]initWithNibName:@"PublicLinkWebViewController" bundle:nil url:_ridding.aPublic.linkUrl];
+  [self.navigationController pushViewController:linkWebVCTL animated:YES];
 }
 
 

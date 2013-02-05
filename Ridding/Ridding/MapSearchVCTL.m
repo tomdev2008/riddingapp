@@ -27,8 +27,10 @@
 - (void)viewDidLoad {
 
   [super viewDidLoad];
-  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateNormal];
-  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateHighlighted];
+  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
+  [self.barView.leftButton setHidden:NO];
   [self.barView.titleLabel setText:@"位置搜索"];
 
 }

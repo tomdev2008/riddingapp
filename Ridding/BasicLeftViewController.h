@@ -11,8 +11,10 @@
 #import "RiddingViewController.h"
 #import "QQNRSourceLoginViewController.h"
 #import "BasicLeftFootView.h"
-
-@interface BasicLeftViewController : BasicViewController <UITableViewDelegate, UITableViewDataSource, RiddingViewControllerDelegate, QQNRSourceLoginViewControllerDelegate, BasicLeftFootViewDelegate> {
+#import <MessageUI/MessageUI.h>
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
+@interface BasicLeftViewController : BasicViewController <UITableViewDelegate, UITableViewDataSource, RiddingViewControllerDelegate, QQNRSourceLoginViewControllerDelegate, BasicLeftFootViewDelegate,MFMessageComposeViewControllerDelegate> {
   NSIndexPath *_selectedIndex;
   BasicLeftFootView *_footView;
 }

@@ -243,16 +243,19 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
   QQNRFeedTableCell *cell = (QQNRFeedTableCell *) [Utilities cellByClassName:@"QQNRFeedTableCell" inNib:@"QQNRFeedTableCell" forTableView:self.tv];
-  cell.backgroundColor = [UIColor clearColor];
-  cell.delegate = self;
-  cell.userInteractionEnabled = YES;
-  cell.index = indexPath.row;
-  UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnCell:)];
-  [cell addGestureRecognizer:longPressRecognizer];
-
-  Ridding *ridding = [_dataSource objectAtIndex:indexPath.row];
-  [cell initContentView:ridding];
-  return cell;
+  if(cell){
+    cell.backgroundColor = [UIColor clearColor];
+    cell.delegate = self;
+    cell.userInteractionEnabled = YES;
+    cell.index = indexPath.row;
+    UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnCell:)];
+    [cell addGestureRecognizer:longPressRecognizer];
+    
+    Ridding *ridding = [_dataSource objectAtIndex:indexPath.row];
+    [cell initContentView:ridding];
+    return cell;
+  }
+  return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -303,8 +306,12 @@
 
   NSArray *cellArray = [self.tv visibleCells];
   if (cellArray) {
-    for (QQNRFeedTableCell *cell in cellArray) {
+    for (int i=0;i<[cellArray count];i++) {
       NSMutableArray *routes = [[NSMutableArray alloc] init];
+      QQNRFeedTableCell *cell=(QQNRFeedTableCell*)[cellArray objectAtIndex:i];
+      if(cell==nil){
+        return;
+      }
       dispatch_queue_t q;
       q = dispatch_queue_create("drawRoutes", NULL);
       dispatch_async(q, ^{
@@ -326,7 +333,11 @@
           [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:array]];
           [RiddingLocationDao setRiddingLocationToDB:routes riddingId:ridding.riddingId];
         }
-        [cell drawRoutes:routes];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          if(cell){
+            [cell drawRoutes:routes];
+          }
+        });
       });
 
     }
@@ -429,10 +440,8 @@
     NSDictionary *dic = [self.requestUtil getUserProfile:ridding.leaderUser.userId sourceType:SOURCE_SINA];
     User *_user = [[User alloc] initWithJSONDic:[dic objectForKey:keyUser]];
     dispatch_async(dispatch_get_main_queue(), ^{
-      if (self) {
         QQNRFeedViewController *QQNRFVC = [[QQNRFeedViewController alloc] initWithUser:_user isFromLeft:FALSE];
         [self.navigationController pushViewController:QQNRFVC animated:YES];
-      }
     });
   });
 }

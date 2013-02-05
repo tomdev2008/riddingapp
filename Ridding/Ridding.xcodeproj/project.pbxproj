@@ -462,6 +462,8 @@
 		18E0A3321657E983006E1916 /* setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E0A3301657E983006E1916 /* setting@2x.png */; };
 		18E0A3351657EC3A006E1916 /* feed_shuaxin.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E0A3331657EC3A006E1916 /* feed_shuaxin.png */; };
 		18E0A3361657EC3A006E1916 /* feed_shuaxin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E0A3341657EC3A006E1916 /* feed_shuaxin@2x.png */; };
+		18E1C5A116BF8D4600DE4D03 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E1C5A016BF8D4500DE4D03 /* AddressBook.framework */; };
+		18E1C5A316BF8D4A00DE4D03 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E1C5A216BF8D4A00DE4D03 /* AddressBookUI.framework */; };
 		18E3065116AEC82B00BE4369 /* BasicLeftViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18E3065016AEC82B00BE4369 /* BasicLeftViewCell.xib */; };
 		18E3067F16AEEB0300BE4369 /* BasicLeftFootView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E3067E16AEEB0300BE4369 /* BasicLeftFootView.m */; };
 		18E512B015F1B993003BC849 /* RiddingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18E512AF15F1B993003BC849 /* RiddingViewController.xib */; };
@@ -500,6 +502,10 @@
 		18F7A1F91664FB6C004782DB /* locate.png in Resources */ = {isa = PBXBuildFile; fileRef = 18F7A1F71664FB6C004782DB /* locate.png */; };
 		18F7A1FA1664FB6C004782DB /* locate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18F7A1F81664FB6C004782DB /* locate@2x.png */; };
 		18F7AEC3165A901E000D09BF /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 18F7AEC2165A901E000D09BF /* Icon.png */; };
+		18F9DA4F16C0CA9600691F00 /* PublicCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18F9DA4E16C0CA9600691F00 /* PublicCommentCell.xib */; };
+		18F9DA5216C1030400691F00 /* Public.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F9DA5116C1030400691F00 /* Public.m */; };
+		18F9DA5616C10B2600691F00 /* PublicLinkWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18F9DA5416C10B2600691F00 /* PublicLinkWebViewController.m */; };
+		18F9DA5716C10B2600691F00 /* PublicLinkWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18F9DA5516C10B2600691F00 /* PublicLinkWebViewController.xib */; };
 		18FA533A16304225008064B1 /* location.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FA533916304225008064B1 /* location.png */; };
 		18FA533D1630422F008064B1 /* location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FA533B1630422F008064B1 /* location@2x.png */; };
 		18FA533E1630422F008064B1 /* loginBg-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FA533C1630422F008064B1 /* loginBg-568h@2x.png */; };
@@ -1202,6 +1208,8 @@
 		18E0A3301657E983006E1916 /* setting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting@2x.png"; sourceTree = "<group>"; };
 		18E0A3331657EC3A006E1916 /* feed_shuaxin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = feed_shuaxin.png; sourceTree = "<group>"; };
 		18E0A3341657EC3A006E1916 /* feed_shuaxin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "feed_shuaxin@2x.png"; sourceTree = "<group>"; };
+		18E1C5A016BF8D4500DE4D03 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		18E1C5A216BF8D4A00DE4D03 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		18E3065016AEC82B00BE4369 /* BasicLeftViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BasicLeftViewCell.xib; sourceTree = "<group>"; };
 		18E3067D16AEEB0200BE4369 /* BasicLeftFootView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicLeftFootView.h; sourceTree = "<group>"; };
 		18E3067E16AEEB0300BE4369 /* BasicLeftFootView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicLeftFootView.m; sourceTree = "<group>"; };
@@ -1248,6 +1256,12 @@
 		18F7A1F71664FB6C004782DB /* locate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = locate.png; sourceTree = "<group>"; };
 		18F7A1F81664FB6C004782DB /* locate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "locate@2x.png"; sourceTree = "<group>"; };
 		18F7AEC2165A901E000D09BF /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
+		18F9DA4E16C0CA9600691F00 /* PublicCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PublicCommentCell.xib; sourceTree = "<group>"; };
+		18F9DA5016C1030400691F00 /* Public.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Public.h; sourceTree = "<group>"; };
+		18F9DA5116C1030400691F00 /* Public.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Public.m; sourceTree = "<group>"; };
+		18F9DA5316C10B2600691F00 /* PublicLinkWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicLinkWebViewController.h; sourceTree = "<group>"; };
+		18F9DA5416C10B2600691F00 /* PublicLinkWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicLinkWebViewController.m; sourceTree = "<group>"; };
+		18F9DA5516C10B2600691F00 /* PublicLinkWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PublicLinkWebViewController.xib; sourceTree = "<group>"; };
 		18FA533916304225008064B1 /* location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location.png; sourceTree = "<group>"; };
 		18FA533B1630422F008064B1 /* location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location@2x.png"; sourceTree = "<group>"; };
 		18FA533C1630422F008064B1 /* loginBg-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginBg-568h@2x.png"; sourceTree = "<group>"; };
@@ -1311,6 +1325,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18E1C5A316BF8D4A00DE4D03 /* AddressBookUI.framework in Frameworks */,
+				18E1C5A116BF8D4600DE4D03 /* AddressBook.framework in Frameworks */,
 				189D369716B6DECD00DC4FA7 /* AudioToolbox.framework in Frameworks */,
 				189D369516B6DE5D00DC4FA7 /* MessageUI.framework in Frameworks */,
 				189D368F16B6DE1400DC4FA7 /* StoreKit.framework in Frameworks */,
@@ -1394,6 +1410,9 @@
 				181DC49716743F5E00CC53A1 /* PublicCommentVCTL.h */,
 				181DC49816743F5E00CC53A1 /* PublicCommentVCTL.m */,
 				181DC49916743F5E00CC53A1 /* PublicCommentVCTL.xib */,
+				18F9DA5316C10B2600691F00 /* PublicLinkWebViewController.h */,
+				18F9DA5416C10B2600691F00 /* PublicLinkWebViewController.m */,
+				18F9DA5516C10B2600691F00 /* PublicLinkWebViewController.xib */,
 			);
 			name = Public;
 			sourceTree = "<group>";
@@ -1410,6 +1429,7 @@
 				182A7F1F166B7B1000749E97 /* PublicViewCell.xib */,
 				181DC49C1674465700CC53A1 /* PublicCommentCell.h */,
 				181DC49D1674465700CC53A1 /* PublicCommentCell.m */,
+				18F9DA4E16C0CA9600691F00 /* PublicCommentCell.xib */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -2025,6 +2045,8 @@
 				1808A4F31686153000D1CEC8 /* File.m */,
 				1871CD291697122900C19543 /* UserRelation.h */,
 				1871CD2A1697122900C19543 /* UserRelation.m */,
+				18F9DA5016C1030400691F00 /* Public.h */,
+				18F9DA5116C1030400691F00 /* Public.m */,
 			);
 			name = meta;
 			sourceTree = "<group>";
@@ -2105,6 +2127,8 @@
 		1878B8A61516DF2D00985FC8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				18E1C5A216BF8D4A00DE4D03 /* AddressBookUI.framework */,
+				18E1C5A016BF8D4500DE4D03 /* AddressBook.framework */,
 				189D369616B6DECD00DC4FA7 /* AudioToolbox.framework */,
 				189D369416B6DE5D00DC4FA7 /* MessageUI.framework */,
 				189D368E16B6DE1400DC4FA7 /* StoreKit.framework */,
@@ -2977,6 +3001,8 @@
 				18FAB69F16BE631F00A89072 /* qqnr_main_pic@2x.png in Resources */,
 				1887723B16BE999F00DD9CC5 /* qqnr_pd_comment_line.png in Resources */,
 				1887723C16BE999F00DD9CC5 /* qqnr_pd_comment_line@2x.png in Resources */,
+				18F9DA4F16C0CA9600691F00 /* PublicCommentCell.xib in Resources */,
+				18F9DA5716C10B2600691F00 /* PublicLinkWebViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3158,6 +3184,8 @@
 				188C8D8516B43AC6001504F7 /* FMDatabaseQueue.m in Sources */,
 				188C8D8716B43AC6001504F7 /* FMResultSet.m in Sources */,
 				184572D216B506EA00776610 /* MyLocationManager.m in Sources */,
+				18F9DA5216C1030400691F00 /* Public.m in Sources */,
+				18F9DA5616C10B2600691F00 /* PublicLinkWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3263,7 +3291,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "AB0C60C2-43A9-4A08-8BD2-FA5B71E43787";
+				PROVISIONING_PROFILE = "5216096A-3CC0-471E-B758-A4D07E12C4ED";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
@@ -3291,7 +3319,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "AB0C60C2-43A9-4A08-8BD2-FA5B71E43787";
+				PROVISIONING_PROFILE = "5216096A-3CC0-471E-B758-A4D07E12C4ED";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

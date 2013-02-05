@@ -13,6 +13,7 @@
   if (self) {
     self.leaderUser = [[User alloc] init];
     self.map = [[Map alloc] init];
+    self.aPublic=[[Public alloc]init];
   }
   return self;
 }
@@ -43,7 +44,11 @@
     self.nowUserLiked = [[jsonDic objectForKey:@"nowuserliked"] boolValue];
     self.nowUserCared = [[jsonDic objectForKey:@"nowusercared"] boolValue];
     self.nowUserUsed = [[jsonDic objectForKey:@"nowuserused"] boolValue];
+    
+    self.aPublic=[[Public alloc]initWithJSONDic:[jsonDic objectForKey:keyPublic]];
+    
     NSArray *array = [jsonDic objectForKey:@"riddingpictures"];
+    
     if (array) {
       self.riddingPictures = [[NSMutableArray alloc] init];
 

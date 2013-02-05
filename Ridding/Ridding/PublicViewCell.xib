@@ -158,7 +158,6 @@
 										<string key="NSFrame">{{10, 43}, {110, 15}}</string>
 										<reference key="NSSuperview" ref="644263504"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<reference key="IBUIBackgroundColor" ref="647868486"/>
 										<bool key="IBUIOpaque">NO</bool>

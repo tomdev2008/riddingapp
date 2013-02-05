@@ -23,20 +23,16 @@
 
 @interface PublicCommentCell : UITableViewCell {
 
-  CGFloat _viewHeight;
-  UIImageView *_headImageView;
-  UIButton *_headImageBtn;
-  UILabel *_nameLabel;
-  UILabel *_descLabel;
-  UILabel *_dateLabel;
-  UIImageView *_headLineView;
-  UIButton *_callBackBtn;
-  UIImageView *_headIconView;
-  UIImageView *_timeImageView;
-  UIImageView *_lineImageView;
 }
 @property (nonatomic, retain) Comment *comment;
 @property (nonatomic) int index;
+
+@property (nonatomic,retain) IBOutlet UIImageView *headImageView;
+@property (nonatomic,retain) IBOutlet UIButton *headImageBtn;
+@property (nonatomic,retain) IBOutlet UILabel *nameLabel;
+@property (nonatomic,retain) IBOutlet UILabel *descLabel;
+@property (nonatomic,retain) IBOutlet UILabel *dateLabel;
+@property (nonatomic,retain) IBOutlet UIButton *callBackBtn;
 
 @property (nonatomic, assign) id <PublicCommentCellDelegate> delegate;
 

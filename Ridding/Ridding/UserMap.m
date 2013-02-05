@@ -274,14 +274,14 @@
 //插入用户位置的异步回调
 #pragma requestUtil delegate
 - (void)asyncReturnDic:(NSDictionary *)dic {
-
-  NSArray *userArray = [dic objectForKey:@"users"];
+ 
+  NSArray *userArray = [dic objectForKey:@"data"];
   if (dic == nil || self.userArray == nil) {
     return;
   }
   NSMutableDictionary *mulDic = [[NSMutableDictionary alloc] init];
   for (NSDictionary *location in userArray) {
-    User *user = [[User alloc] initWithJSONDic:location];
+    User *user = [[User alloc] initWithJSONDic:[location objectForKey:keyUser]];
     [mulDic setObject:user forKey:LONGLONG2NUM(user.userId)];
   }
   NSMutableDictionary *annotationDic = [[NSMutableDictionary alloc] init];
@@ -303,7 +303,8 @@
     }
     dispatch_async(q, ^{
 
-      User *serverUser = [mulDic objectForKey:[NSString stringWithFormat:@"%lld", user.userId]];
+      User *serverUser = [mulDic objectForKey:LONGLONG2NUM(user.userId)];
+     
       if (serverUser != nil) {
         CLLocationDegrees latitude = serverUser.latitude;
         CLLocationDegrees longtitude = serverUser.longtitude;

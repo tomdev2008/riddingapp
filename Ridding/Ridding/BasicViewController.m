@@ -276,9 +276,19 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 
+  
   [super viewWillDisappear:animated];
   [SVProgressHUD dismiss];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+  self.requestUtil.delegate=self;
+  [super viewDidAppear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+  [super viewDidDisappear:animated];
+  self.requestUtil.delegate=nil;
+}
 
 @end

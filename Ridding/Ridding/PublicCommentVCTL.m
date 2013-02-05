@@ -43,10 +43,7 @@
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateHighlighted];
   [self.barView.leftButton setHidden:NO];
-  
-  UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tableViewTap:)];
-  self.tv.userInteractionEnabled=YES;
-  [self.tv addGestureRecognizer:gesture];
+
   
   _dataSource = [[NSMutableArray alloc] init];
   _endCreateTime = -1;
@@ -227,18 +224,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  static NSString *kCellID = @"CellID";
-  PublicCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
+  PublicCommentCell *cell = (PublicCommentCell *) [Utilities cellByClassName:@"PublicCommentCell" inNib:@"PublicCommentCell" forTableView:self.tv];
   Comment *comment = [_dataSource objectAtIndex:indexPath.row];
-  if (cell == nil) {
-    cell = [[PublicCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID comment:comment];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+  if (cell != nil) {
     cell.delegate = self;
+    cell.comment = comment;
+    cell.index = indexPath.row;
+    [cell initContentView];
   }
-  cell.comment = comment;
-  cell.index = indexPath.row;
-  [cell initContentView];
-
   return cell;
 }
 

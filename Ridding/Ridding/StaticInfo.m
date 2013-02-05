@@ -81,27 +81,30 @@ static StaticInfo *staticInfo = nil;
 }
 
 - (void)initSqlDB {
-  //paths： ios下Document路径，Document为ios中可读写的文件夹
-  NSFileManager *fileManager = [NSFileManager defaultManager];
-  NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"newRidding.sqlite"];
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  NSString *documentDirectory = [paths objectAtIndex:0];
-  //dbPath： 数据库路径，在Document中。
-  NSString *dbPath = [documentDirectory stringByAppendingPathComponent:@"newRidding.sqlite"];
-  if (![fileManager fileExistsAtPath:dbPath]) {
-    NSError *error;
-    BOOL success = [fileManager copyItemAtPath:defaultDBPath toPath:dbPath error:&error];
-    if (!success) {
-      NSAssert1(0, @"Failed to create writable database file with message '%@'.", [error localizedDescription]);
+  @synchronized(self){
+    //paths： ios下Document路径，Document为ios中可读写的文件夹
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"newRidding.sqlite"];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = [paths objectAtIndex:0];
+    //dbPath： 数据库路径，在Document中。
+    NSString *dbPath = [documentDirectory stringByAppendingPathComponent:@"newRidding.sqlite"];
+    if (![fileManager fileExistsAtPath:dbPath]) {
+      NSError *error;
+      BOOL success = [fileManager copyItemAtPath:defaultDBPath toPath:dbPath error:&error];
+      if (!success) {
+        NSAssert1(0, @"Failed to create writable database file with message '%@'.", [error localizedDescription]);
+        return;
+      }
+    }
+    
+    //创建数据库实例 db  这里说明下:如果路径中不存在"Test.db"的文件,sqlite会自动创建"Test.db"
+    _sqlDB = [FMDatabase databaseWithPath:dbPath];
+    if (![_sqlDB open]) {
       return;
     }
   }
 
-  //创建数据库实例 db  这里说明下:如果路径中不存在"Test.db"的文件,sqlite会自动创建"Test.db"
-  _sqlDB = [FMDatabase databaseWithPath:dbPath];
-  if (![_sqlDB open]) {
-    return;
-  }
 }
 
 

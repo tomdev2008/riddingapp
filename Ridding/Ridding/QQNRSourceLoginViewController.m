@@ -32,6 +32,11 @@
 
   [super viewDidLoad];
   self.barView.titleLabel.text = @"登录";
+  
+  [self.barView.leftButton setTitle:@"取消" forState:UIControlStateNormal];
+  [self.barView.leftButton setTitle:@"取消" forState:UIControlStateHighlighted];
+  self.barView.leftButton.hidden = NO;
+  
   NSString *OAuthUrl = [NSString stringWithFormat:@"%@/bind/mobilesinabind/", QIQUNARHOME];
   NSString *url = [[NSString alloc] initWithString:OAuthUrl];
   NSURLRequest *loginRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:url]];

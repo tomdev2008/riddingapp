@@ -82,9 +82,15 @@ static MapUtil *mapUtil = nil;
 - (NSString *)getPoints:(NSDictionary *)dic_data {
 
   NSArray *dic_routes = [dic_data objectForKey:@"routes"];
-  NSDictionary *legs = [dic_routes objectAtIndex:0];
-  NSDictionary *points = [legs objectForKey:@"overview_polyline"];
-  return [points objectForKey:@"points"];
+  if(dic_routes&&[dic_routes count]>0){
+    NSDictionary *legs = [dic_routes objectAtIndex:0];
+    if(legs){
+      NSDictionary *points = [legs objectForKey:@"overview_polyline"];
+      return [points objectForKey:@"points"];
+    }
+  }
+  return nil;
+  
 }
 
 //插入下一个点
@@ -185,8 +191,8 @@ static MapUtil *mapUtil = nil;
     lng += dlng;
     NSNumber *latitude = [[NSNumber alloc] initWithFloat:lat * 1e-5];
     NSNumber *longitude = [[NSNumber alloc] initWithFloat:lng * 1e-5];
-    printf("[%f,", [latitude doubleValue]);
-    printf("%f]", [longitude doubleValue]);
+//    printf("[%f,", [latitude doubleValue]);
+//    printf("%f]", [longitude doubleValue]);
     CLLocation *loc = [[CLLocation alloc] initWithLatitude:[latitude floatValue] longitude:[longitude floatValue]];
     [array addObject:loc];
   }

@@ -33,14 +33,17 @@
 
 - (void)viewDidLoad {
 
-  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"feed_cbg")];
   [super viewDidLoad];
-  self.barView.leftButton.hidden = YES;
+  
+  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
+  
+  
+  [self.barView.rightButton setTitle:@"确定" forState:UIControlStateNormal];
   self.barView.rightButton.hidden = NO;
   [self.barView.leftButton setTitle:@"取消" forState:UIControlStateNormal];
   [self.barView.leftButton setTitle:@"取消" forState:UIControlStateHighlighted];
-  [self.barView.rightButton setTitle:@"确定" forState:UIControlStateNormal];
-  self.barView.titleLabel.text = @"添加描述";
+  self.barView.leftButton.hidden = NO;
+  self.barView.titleLabel.text = @"照片描述";
 
   self.imageView.image = [_riddingPicture imageFromLocal];
   self.imageView.displayAsStack = NO;
@@ -48,7 +51,6 @@
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   [formatter setDateFormat:@"yyyy年MM月dd日HH时mm分"];
   self.timeLabel.text = [formatter stringFromDate:[NSDate date]];
-  self.textView.text = [NSString stringWithFormat:@"描述"];
 
   UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(timeLabelClick:)];
   self.timeLabel.userInteractionEnabled = YES;
@@ -93,6 +95,10 @@
   self.timeLabel.text = dateStr;
 }
 
+- (void)leftBtnClicked:(id)sender {
+  [self dismissModalViewControllerAnimated:YES];
+}
+
 - (void)rightBtnClicked:(id)sender {
 
   QQNRServerTask *task = [[QQNRServerTask alloc] init];
@@ -105,7 +111,8 @@
   [queue addTask:task withDependency:YES];
 
   __block NSString *desc = self.textView.text;
-  __block NSString *weiboDesc = [NSString stringWithFormat:@"分享我的骑行旅程:%@。同步更新中,%@ @骑去哪儿", _riddingName, desc];
+
+  __block NSString *weiboDesc = [NSString stringWithFormat:@"\"%@\" 我的骑行旅程:%@。同步更新中。。。欢迎加入 骑行者:%@ @骑去哪儿", desc,_riddingName,QIQUNARHOME];
   __block BOOL isSyncSina = _syncSina;
   [task setDataProcessBlock:(BlockProcessLastTaskData) ^(NSDictionary *dic) {
     RiddingPicture *picture = [dic objectForKey:kFileClientServerUpload_RiddingPicture];
@@ -126,7 +133,21 @@
   if (![sender isKindOfClass:[self.textView class]]) {
     [self.textView resignFirstResponder];
   }
+  [_datePicker hideDatePicker];
 }
+
+#pragma mark -
+#pragma mark UITextViewDelegate
+- (void)textViewDidEndEditing:(UITextView *)textView {
+  
+}
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+   [_datePicker hideDatePicker];
+  return TRUE;
+}
+
+
 
 
 @end

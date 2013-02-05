@@ -48,7 +48,7 @@
     _titleLabel.font = [UIFont boldSystemFontOfSize:17];
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.textAlignment = UITextAlignmentCenter;
-    _titleLabel.text = @"标题";
+    _titleLabel.text = @"";
     [self addSubview:_titleLabel];
 
     _leftButton = [UIButton buttonWithType:UIButtonTypeCustom];

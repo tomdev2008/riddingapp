@@ -11,7 +11,7 @@
 #import "SWSnapshotStackView.h"
 #import "QQNRDatePicker.h"
 
-@interface PhotoDescViewController : BasicViewController <QQNRDatePickerDelegate> {
+@interface PhotoDescViewController : BasicViewController <QQNRDatePickerDelegate,UITextViewDelegate> {
   QQNRDatePicker *_datePicker;
   RiddingPicture *_riddingPicture;
   BOOL _syncSina;

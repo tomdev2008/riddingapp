@@ -9,7 +9,7 @@
 #import "PublicDetailCell.h"
 #import "UIImageView+WebCache.h"
 #import "QiNiuUtils.h"
-
+#import "UIColor+XMin.h"
 @interface PublicDetailCell () {
   UILabel *_dateLabel;
   UIImageView *_imageView;
@@ -101,7 +101,7 @@
     _imageView.backgroundColor = [UIColor clearColor];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewTap:)];
     _imageView.userInteractionEnabled = YES;
-    _imageView.layer.borderColor=[[UIColor whiteColor]CGColor];
+    _imageView.layer.borderColor=[[UIColor getColor:@"747474"]CGColor];
     _imageView.layer.borderWidth=1.0;
     [_imageView addGestureRecognizer:tap];
     if(_isMyFeedHome){
@@ -115,10 +115,10 @@
   [_imageView setImageWithURL:url placeholderImage:nil];
 
   if (!_imageBGView) {
-    _imageBGView = [[UIImageView alloc] initWithFrame:CGRectMake(_imageView.frame.origin.x - 10, _imageView.frame.origin.y - 10, _imageView.frame.size.width + 20, _imageView.frame.size.height + 27)];
+    _imageBGView = [[UIImageView alloc] initWithFrame:CGRectMake(_imageView.frame.origin.x - 10, _imageView.frame.origin.y - 10, _imageView.frame.size.width + 20, _imageView.frame.size.height + 22)];
 
   } else {
-    _imageBGView.frame = CGRectMake(_imageView.frame.origin.x - 10, _imageView.frame.origin.y - 10, _imageView.frame.size.width + 20, _imageView.frame.size.height + 27);
+    _imageBGView.frame = CGRectMake(_imageView.frame.origin.x - 10, _imageView.frame.origin.y - 10, _imageView.frame.size.width + 20, _imageView.frame.size.height + 22);
   }
   _imageBGView.image = [UIIMAGE_FROMPNG(@"qqnr_pd_picbg") stretchableImageWithLeftCapWidth:50 topCapHeight:50];
 
@@ -206,7 +206,6 @@
     [_likeBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_likedpic") forState:UIControlStateHighlighted];
     _likeClickView.userInteractionEnabled = NO;
   } else {
-    //可以喜欢
     [_likeBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_likepic") forState:UIControlStateNormal];
     [_likeBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_likepic") forState:UIControlStateHighlighted];
     _likeClickView.userInteractionEnabled = YES;

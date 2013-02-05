@@ -10,7 +10,7 @@
 #import "User.h"
 #import "Map.h"
 #import "RiddingPicture.h"
-
+#import "Public.h"
 #define keyRidding @"ridding"
 
 typedef enum _RIDDINGACTION {
@@ -53,6 +53,7 @@ typedef enum _RIDDINGACTION {
 @property (nonatomic) BOOL nowUserLiked;
 @property (nonatomic) BOOL nowUserCared;
 @property (nonatomic) BOOL nowUserUsed;
+@property (nonatomic,retain) Public *aPublic;
 
 - (BOOL)isEnd;
 

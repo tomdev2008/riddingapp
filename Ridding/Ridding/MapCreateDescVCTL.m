@@ -11,7 +11,8 @@
 #import "SinaApiRequestUtil.h"
 #import "SVProgressHUD.h"
 #import "QQNRFeedViewController.h"
-
+#import "MapUtil.h"
+#import "RiddingLocationDao.h"
 @interface MapCreateDescVCTL ()
 
 @end
@@ -31,50 +32,33 @@
 
   [super viewDidLoad];
 
+  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
+  
   [self.barView.rightButton setTitle:@"确定" forState:UIControlStateNormal];
   [self.barView.rightButton setTitle:@"确定" forState:UIControlStateHighlighted];
   [self.barView.rightButton setHidden:NO];
+  
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
+  [self.barView.leftButton setHidden:NO];
 
   self.barView.titleLabel.text = @"创建活动";
-  self.beginLocationTV.textColor = [UIColor getColor:@"666666"];
-  self.endLocationTV.textColor = [UIColor getColor:@"666666"];
-  self.nameField.textColor = [UIColor getColor:@"666666"];
-  self.totalDistanceLB.textColor = [UIColor getColor:@"666666"];
-  self.beginLocationTV.text = [NSString stringWithFormat:@"%@", _ridding.map.beginLocation];
-  self.endLocationTV.text = [NSString stringWithFormat:@"%@", _ridding.map.endLocation];
+  
+  self.beginLocationTV.text = _ridding.map.beginLocation;
+  self.endLocationTV.text = _ridding.map.endLocation;
+  
   self.totalDistanceLB.text = [NSString stringWithFormat:@"总行程:%@", [_ridding.map totalDistanceToKm]];
 
   self.nameField.returnKeyType = UIReturnKeyGo;
 
-  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"bg_dt")];
-
-//  _redSC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"不分享", @"分享", nil]];
-//  [_redSC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
-//  _redSC.crossFadeLabelsOnDrag = YES;
-//  _redSC.thumb.tintColor = [UIColor getColor:ColorBlue];
-//  _redSC.selectedIndex = 0;
-//  [self.view addSubview:_redSC];
-//  _redSC.center = CGPointMake(280, 405);
-//  _sendWeiBo = FALSE;
-
-
-  _publicSC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"不公开", @"公开", nil]];
-  [_publicSC addTarget:self action:@selector(publicChangedValue:) forControlEvents:UIControlEventValueChanged];
-  _publicSC.crossFadeLabelsOnDrag = YES;
-  _publicSC.thumb.tintColor = [UIColor getColor:ColorBlue];
-  _publicSC.selectedIndex = 1;
-  [self.view addSubview:_publicSC];
-  _publicSC.center = CGPointMake(240, 355);
-  _isPublic = TRUE;
-
-
-  _syncSinaBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-  _syncSinaBtn.frame = CGRectMake(150, 370, 20, 20);
-  [_syncSinaBtn setTitle:@"同步" forState:UIControlStateNormal];
-  [_syncSinaBtn setTitle:@"同步" forState:UIControlStateHighlighted];
-  [_syncSinaBtn addTarget:self action:@selector(sinaSyncChangedValue:) forControlEvents:UIControlEventTouchUpInside];
-  [self.view addSubview:_syncSinaBtn];
+  
   _isSyncSina = FALSE;
+
+  NSMutableArray *routes = [[NSMutableArray alloc] init];
+  [[MapUtil getSinglton] calculate_routes_from:_ridding.map.mapTaps map:_ridding.map];
+  [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:_ridding.map.mapPoint]];
+  [[MapUtil getSinglton] center_map:_mapView routes:routes];
+  [[MapUtil getSinglton] update_route_view:_mapView to:_lineImageView line_color:[UIColor getColor:lineColor] routes:routes];
 
 }
 
@@ -107,8 +91,6 @@
   _ridding.riddingName = self.nameField.text;
   _ridding.map.beginLocation = self.beginLocationTV.text;
   _ridding.map.endLocation = self.endLocationTV.text;
-  _ridding.isPublic = _isPublic ? 1 : 0;
-#warning issync
   _ridding.isSyncSina = _isSyncSina ? 1 : 0;
 
   dispatch_queue_t q;
@@ -134,7 +116,7 @@
 
 - (void)leftBtnClicked:(id)sender {
 
-  [self dismissModalViewControllerAnimated:YES];
+  [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark -
@@ -147,7 +129,6 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 
-  [self.nameField setText:@""];
   return YES;
 }
 
@@ -207,26 +188,6 @@
     }];
   }
 
-
-}
-
-#pragma mark -
-#pragma mark SPSegmentedControl
-- (void)segmentedControlChangedValue:(SVSegmentedControl *)segmentedControl {
-
-
-}
-
-- (void)publicChangedValue:(SVSegmentedControl *)segmentedControl {
-
-  if (segmentedControl.selectedIndex == 0) {
-    _isPublic = FALSE;
-  } else if (segmentedControl.selectedIndex == 1) {
-    _isPublic = TRUE;
-  }
-}
-
-- (void)sinaSyncChangedValue:(id)selector {
 
 }
 

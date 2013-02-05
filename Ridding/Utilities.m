@@ -67,7 +67,7 @@
   if (cell == nil) {
 
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
-
+    
     for (id oneObject in nib)
       if ([oneObject isMemberOfClass:cellClass])
         return oneObject;

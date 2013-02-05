@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define DEFAULT_HEIGHT 279
+#define DEFAULT_HEIGHT 260
 
 @protocol QQNRDatePickerDelegate <NSObject>
 
