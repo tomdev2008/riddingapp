@@ -23,11 +23,11 @@
     case STEP_UPLOADDESC: {
       RiddingPicture *riddingPicture = [self.paramDic objectForKey:kFileClientServerUpload_RiddingPicture];
       RequestUtil *requestUtil = [[RequestUtil alloc] init];
+      [BWStatusBarOverlay dismiss];
       BOOL succ = [requestUtil uploadRiddingPhoto:riddingPicture];
       if (succ) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kSuccUploadPictureNotification object:self];
       }
-      [BWStatusBarOverlay dismiss];
     }
       break;
     case STEP_UPLOADBACKGROUNDPHOTO: {
@@ -55,7 +55,7 @@
     //如果post的param为空，尝试传非空的block
     if (dic) {
       if (_dataProcessBlock) {
-        _dataProcessBlock(dic);
+       self.paramDic = _dataProcessBlock(dic);
       }
     }
   }
@@ -93,7 +93,6 @@
       [[NSNotificationCenter defaultCenter] postNotificationName:kSuccUploadBackgroundNotification object:self];
     }
   }
-
 
   [self performSelectorOnMainThread:@selector(updateStatusBarWithUploadPhotoStatus) withObject:nil waitUntilDone:NO];
 }

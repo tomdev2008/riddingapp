@@ -37,21 +37,21 @@ static MapUtil *mapUtil = nil;
     return;
   }
   NSMutableArray *mulpoint = [[NSMutableArray alloc] init];
-  NSString *saddr;
-  NSString *daddr;
-  NSString *point;
   int distance = 0;
   NSDictionary *response;
   bool succ = true;
   for (int i = 1; i < [mapLoactions count]; i++) {
-    saddr = [mapLoactions objectAtIndex:i - 1];
-    daddr = [mapLoactions objectAtIndex:i];
+    NSString *saddr = [mapLoactions objectAtIndex:i - 1];
+    NSString *daddr = [mapLoactions objectAtIndex:i];
     response = [self getResponFromGoogle:saddr to:daddr];
     if (response == nil) {
       succ = false;
       break;
     }
-    point = [self getPoints:response];
+     NSString *point = [self getPoints:response];
+    if(!point){
+      return;
+    }
     [mulpoint addObject:point];
     distance += [self getTotalDistance:response];
   }

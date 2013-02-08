@@ -48,7 +48,7 @@
     UILabel *createLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 50, 75, 15)];
     createLabel.textColor = [UIColor whiteColor];
     createLabel.textAlignment = UITextAlignmentLeft;
-    createLabel.text = [NSString stringWithFormat:@"%@", _ridding.createTimeStr];
+    createLabel.text = _ridding.createTimeStr;
     createLabel.backgroundColor = [UIColor clearColor];
     createLabel.font = [UIFont systemFontOfSize:12];
     [self addSubview:createLabel];

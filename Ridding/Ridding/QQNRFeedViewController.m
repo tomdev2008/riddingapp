@@ -178,7 +178,10 @@
 
   if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"去创建一个"]) {
     MapCreateVCTL *mapCreate = [[MapCreateVCTL alloc] init];
-    [self presentModalViewController:mapCreate animated:YES];
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+    [delegate.navController pushViewController:mapCreate animated:YES];
+
   } else if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"还不错噢"]) {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
   } else if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"这就去"]) {

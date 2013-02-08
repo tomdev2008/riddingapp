@@ -36,8 +36,7 @@ static QQNRServerTaskQueue *sharedQueue = nil;
 
 - (void)addTask:(QQNRServerTask *)task withDependency:(BOOL)dependsOnLastOperation {
 
-  if (dependsOnLastOperation && [_queue operationCount] > 0) {
-
+  if (dependsOnLastOperation &&[[_queue operations]count]>0) {
     [task addDependency:[[_queue operations] lastObject]];
   }
   task.queueDelegate = self;
@@ -49,7 +48,6 @@ static QQNRServerTaskQueue *sharedQueue = nil;
 
 #pragma mark - MPServerTaskQueueDelegate
 - (void)setServerResponseJSON:(NSDictionary *)serverJSON {
-
   self.lastTaskServerResponseJSON = serverJSON;
 }
 

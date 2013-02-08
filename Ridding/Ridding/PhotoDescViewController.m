@@ -12,6 +12,8 @@
 #import "MyLocationManager.h"
 #import "SVProgressHUD.h"
 #import "SinaApiRequestUtil.h"
+#import "NSString+TomAddition.h"
+#import "NSDate+Addition.h"
 
 @interface PhotoDescViewController () {
   NSString *_riddingName;
@@ -48,9 +50,7 @@
   self.imageView.image = [_riddingPicture imageFromLocal];
   self.imageView.displayAsStack = NO;
 
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"yyyy年MM月dd日HH时mm分"];
-  self.timeLabel.text = [formatter stringFromDate:[NSDate date]];
+  self.timeLabel.text = [[NSDate date]pd_yyyyMMddHHmmssString];
 
   UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(timeLabelClick:)];
   self.timeLabel.userInteractionEnabled = YES;
@@ -103,28 +103,29 @@
 
   QQNRServerTask *task = [[QQNRServerTask alloc] init];
   task.step = STEP_UPLOADDESC;
-
-  NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:_riddingPicture, kFileClientServerUpload_RiddingPicture, nil];
-  task.paramDic = dic;
   
-  QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
-  [queue addTask:task withDependency:YES];
+  
 
-  __block NSString *desc = self.textView.text;
+   NSDate *date = [self.timeLabel.text pd_yyyyMMddHHmmssDate];
+  
+  _riddingPicture.takePicDateL=(long long) [date timeIntervalSince1970] * 1000;
+  _riddingPicture.pictureDescription=self.textView.text;
 
-  __block NSString *weiboDesc = [NSString stringWithFormat:@"\"%@\" 我的骑行旅程:%@。同步更新中。。。欢迎加入 骑行者:%@ @骑去哪儿", desc,_riddingName,QIQUNARHOME];
+  __block NSString *weiboDesc = [NSString stringWithFormat:@"\"%@\" 我的骑行旅程:%@。同步更新中。。。 我正在使用骑行者app:%@ @骑去哪儿", _riddingPicture.pictureDescription,_riddingName,QIQUNARHOME];
   __block BOOL isSyncSina = _syncSina;
   [task setDataProcessBlock:(BlockProcessLastTaskData) ^(NSDictionary *dic) {
     RiddingPicture *picture = [dic objectForKey:kFileClientServerUpload_RiddingPicture];
-    _riddingPicture.pictureDescription = desc;
     _riddingPicture.fileKey = picture.fileKey;
-
+    NSMutableDictionary *paramDic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:_riddingPicture, kFileClientServerUpload_RiddingPicture, nil];
+    
     if (isSyncSina) {
       SinaApiRequestUtil *sinaRequest = [[SinaApiRequestUtil alloc] init];
       [sinaRequest sendWeiBo:weiboDesc url:[NSString stringWithFormat:@"%@%@", imageHost, picture.fileKey] latitude:_riddingPicture.latitude longtitude:_riddingPicture.longtitude];
     }
+    return paramDic;
   }];
-
+  QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
+  [queue addTask:task withDependency:YES];
   [self dismissModalViewControllerAnimated:YES];
 }
 

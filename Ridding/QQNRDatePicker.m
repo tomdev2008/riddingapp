@@ -7,7 +7,7 @@
 //
 
 #import "QQNRDatePicker.h"
-
+#import "NSDate+Addition.h"
 #define DATEPICKER_HEIGHT 235
 #define TOOLBAR_HEIGHT 44
 
@@ -84,9 +84,7 @@
 
   if (self.delegate != nil) {
     NSDate *date_one = _datePicker.date;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy年MM月dd日hh:mm分"];
-    [self.delegate didFinishChoice:[formatter stringFromDate:date_one]];
+    [self.delegate didFinishChoice:[date_one pd_yyyyMMddHHmmssString]];
   }
   [self hideDatePicker];
 }

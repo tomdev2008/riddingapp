@@ -22,6 +22,7 @@
 
   self = [super init];
   if (self) {
+    
     self.riddingId = [[jsonDic objectForKey:@"riddingid"] longLongValue];
     self.riddingStatus = [[jsonDic objectForKey:@"riddingstatus"] intValue];
     self.userCount = [[jsonDic objectForKey:@"usercount"] intValue];
@@ -39,7 +40,7 @@
     self.commentCount = [[jsonDic objectForKey:@"commentcount"] intValue];
     self.useCount = [[jsonDic objectForKey:@"usecount"] intValue];
     self.careCount = [[jsonDic objectForKey:@"carecount"] intValue];
-    self.isSyncSina = [[jsonDic objectForKey:@"issyncsinae"] intValue];
+    self.isSyncSina = [[jsonDic objectForKey:@"issyncsina"] intValue];
 
     self.nowUserLiked = [[jsonDic objectForKey:@"nowuserliked"] boolValue];
     self.nowUserCared = [[jsonDic objectForKey:@"nowusercared"] boolValue];

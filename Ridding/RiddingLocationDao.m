@@ -12,8 +12,6 @@
 
 @implementation RiddingLocationDao
 
-//   char *sql = "CREATE TABLE IF NOT EXISTS riddinglocation (id INTEGER primary key,riddingid INTEGER, \
-latitude text,longtitide text,nextDistance INTEGER,weight INTEGER);";
 
 + (Boolean)addRiddingLocation:(long long)riddingId locations:(NSArray *)locations {
 

@@ -16,18 +16,13 @@
 @synthesize navController = _navController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
-  });
-
+  
   [MobClick startWithAppkey:YouMenAppKey reportPolicy:REALTIME channelId:nil];
   [MobClick checkUpdate];
   [[ResponseCodeCheck getSinglton] checkConnect];
 
   //检查网络
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
   [self setUserInfo];
 
   self.rootViewController = [[PublicViewController alloc] init];
@@ -39,12 +34,16 @@
 
 
   self.leftViewController = [[BasicLeftViewController alloc] init];
-  self.leftViewController.view.frame = CGRectMake(0, 20, self.leftViewController.view.frame.size.width, self.leftViewController.view.frame.size.height);
+  self.leftViewController.view.frame = CGRectMake(0, 20, SCREEN_WIDTH, SCREEN_HEIGHT);
 
   [self.window addSubview:self.leftViewController.view];
   [self.window addSubview:self.navController.view];
 
   [self.window makeKeyAndVisible];
+  
+  // Let the device know we want to receive push notifications
+	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+	 (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
 
   return YES;
 }

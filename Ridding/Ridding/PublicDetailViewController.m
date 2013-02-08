@@ -477,10 +477,13 @@
 
 #pragma mark - MapCreateDescVCTL delegate
 - (void)succUploadPicture:(NSNotification *)note {
+  
+  if([self.navigationController visibleViewController]==self){
+    [_cellArray removeAllObjects];
+    _lastUpdateTime = -1;
+    [self downLoad];
+  }
 
-  [_cellArray removeAllObjects];
-  _lastUpdateTime = -1;
-  [self downLoad];
 }
 
 @end

@@ -11,7 +11,7 @@
 
 @class QQNRServerTask;
 
-typedef NSDictionary *(^BlockProcessLastTaskData)(NSDictionary *);
+typedef NSMutableDictionary *(^BlockProcessLastTaskData)(NSDictionary *);
 
 typedef enum TASKSTEP_ {
   STEP_UPLOADPHOTO,

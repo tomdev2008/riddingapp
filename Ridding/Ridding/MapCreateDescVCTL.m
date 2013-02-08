@@ -31,7 +31,6 @@
 - (void)viewDidLoad {
 
   [super viewDidLoad];
-
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   
   [self.barView.rightButton setTitle:@"确定" forState:UIControlStateNormal];
@@ -52,7 +51,7 @@
   self.nameField.returnKeyType = UIReturnKeyGo;
 
   
-  _isSyncSina = FALSE;
+  _isSyncSina = TRUE;
 
   NSMutableArray *routes = [[NSMutableArray alloc] init];
   [[MapUtil getSinglton] calculate_routes_from:_ridding.map.mapTaps map:_ridding.map];
@@ -87,7 +86,8 @@
     self.barView.rightButton.enabled = YES;
     return;
   }
-  [SVProgressHUD showWithStatus:@"创建进行中"];
+  [self.nameField resignFirstResponder];
+  [SVProgressHUD showWithStatus:@"创建中,请稍候"];
   _ridding.riddingName = self.nameField.text;
   _ridding.map.beginLocation = self.beginLocationTV.text;
   _ridding.map.endLocation = self.endLocationTV.text;
@@ -99,19 +99,31 @@
     RequestUtil *requestUtil = [[RequestUtil alloc] init];
     NSDictionary *dic = [requestUtil addRidding:_ridding];
     if (dic) {
-      _ridding = [[Ridding alloc] initWithJSONDic:[dic objectForKey:keyRidding]];
+      Ridding *returnRidding = [[Ridding alloc] initWithJSONDic:[dic objectForKey:keyRidding]];
+      _ridding.riddingId=returnRidding.riddingId;
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [SVProgressHUD showWithStatus:@"正在保存数据"];
+      });
+      //保存到本地数据库
+      Map *map = _ridding.map;
+      NSArray *array = map.mapPoint;
+      [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
+      NSMutableArray *mapPoints = [[MapUtil getSinglton] decodePolyLineArray:array];
+      [RiddingLocationDao setRiddingLocationToDB:mapPoints riddingId:_ridding.riddingId];
+      
       dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter]postNotificationName:kSuccAddRiddingNotification object:nil];
         [SVProgressHUD dismiss];
+        self.barView.rightButton.enabled = YES;
+  
+        RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+        QQNRFeedViewController *FVC = [[QQNRFeedViewController alloc] initWithUser:[StaticInfo getSinglton].user isFromLeft:TRUE];
+        [RiddingAppDelegate popAllNavgation];
+        [delegate.navController pushViewController:FVC animated:NO];
       });
     }
   });
-  self.barView.rightButton.enabled = YES;
 
-  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
-  QQNRFeedViewController *FVC = [[QQNRFeedViewController alloc] initWithUser:[StaticInfo getSinglton].user isFromLeft:TRUE];
-  [RiddingAppDelegate popAllNavgation];
-  [delegate.navController pushViewController:FVC animated:NO];
 }
 
 - (void)leftBtnClicked:(id)sender {

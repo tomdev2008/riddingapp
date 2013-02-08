@@ -278,6 +278,7 @@
   ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest addRequestHeader:@"authToken" value:self.staticInfo.user.authToken];
   NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+  NSLog(@"%lld",riddingPicture.takePicDateL);
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, SAFESTR(riddingPicture.fileKey), @"filekey");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, DOUBLE2NUM(riddingPicture.latitude), @"latitude");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, DOUBLE2NUM(riddingPicture.longtitude), @"longtitude");
@@ -315,6 +316,7 @@
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, SAFESTR(ridding.map.fileKey), @"urlkey");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(ridding.isPublic), @"ispublic");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(ridding.isSyncSina), @"issyncsina");
+
   NSData *data = [[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
   [asiRequest appendPostData:data];
   [asiRequest startSynchronous];
