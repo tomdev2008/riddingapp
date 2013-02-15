@@ -24,6 +24,8 @@
   BOOL _succCreate;
   Ridding *_ridding;
   UIImage *_newCoverImage;
+  BOOL _hasBeginPoint;
+  BOOL _hasEndPoint;
 }
 @property (nonatomic, retain) IBOutlet UIImageView *route_view;
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
@@ -36,7 +38,8 @@
 @property (nonatomic, retain) IBOutlet UIButton *endBtn;
 @property (nonatomic, retain) IBOutlet UIButton *createBtn;
 @property (nonatomic, retain) IBOutlet UIButton *clearBtn;
-@property (nonatomic, retain) IBOutlet UILabel *tipsLabel;
 @property (nonatomic, retain) IBOutlet UIButton *myLocationBtn;
+@property (nonatomic, retain) IBOutlet UIImageView *searchFieldView;
+@property (nonatomic, retain) IBOutlet UIImageView *positionsView;
 
 @end

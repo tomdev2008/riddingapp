@@ -26,7 +26,7 @@
     [self.calloutView setFrame:CGRectMake(-24, 35, 0, 0)];
     [self.calloutView sizeToFit];
 
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:UIIMAGE_FROMPNG(@"close")];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:UIIMAGE_FROMPNG(@"qqnr_dl_button_delete")];
     imageView.userInteractionEnabled = YES;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewTap:)];
     [imageView addGestureRecognizer:tapGesture];

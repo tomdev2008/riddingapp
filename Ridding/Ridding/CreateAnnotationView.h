@@ -17,7 +17,7 @@
 @end
 
 
-@interface CreateAnnotationView : MKPinAnnotationView
+@interface CreateAnnotationView : MKAnnotationView
 
 @property (nonatomic, strong) UIView *calloutView;
 @property (nonatomic, assign) id <CreateAnnotationViewDelegate> delegate;

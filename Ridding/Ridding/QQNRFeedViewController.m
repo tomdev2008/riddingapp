@@ -506,7 +506,10 @@
 
 #pragma mark - QQNRFeedHeaderView delegate
 - (void)backGroupViewClick:(QQNRFeedHeaderView *)view {
-
+  if(!_isMyFeedHome){
+    return;
+  }
+  
   UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"选择照片来源" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"相机" otherButtonTitles:@"本地相册", nil];
   actionSheet.delegate = self;
   [actionSheet showInView:self.view];

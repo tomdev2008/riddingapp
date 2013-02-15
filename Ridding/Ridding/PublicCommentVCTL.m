@@ -33,13 +33,7 @@
   [super viewDidLoad];
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
 
-  [self.barView.titleLabel removeFromSuperview];
-  UIButton *imageTitlebtn=[UIButton buttonWithType:UIButtonTypeCustom];
-  imageTitlebtn.frame=self.barView.titleLabel.frame;
-  [imageTitlebtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_title") forState:UIControlStateNormal];
-  [imageTitlebtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_title") forState:UIControlStateHighlighted];
-  [self.barView addSubview:imageTitlebtn];
-  
+  [self.barView.titleLabel setText:@"评论"];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateHighlighted];
   [self.barView.leftButton setHidden:NO];

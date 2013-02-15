@@ -35,13 +35,7 @@
   [super viewDidLoad];
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   
-  [self.barView.titleLabel removeFromSuperview];
-  UIButton *imageTitlebtn=[UIButton buttonWithType:UIButtonTypeCustom];
-  imageTitlebtn.frame=CGRectMake(116, 9, 87, 25);
-  [imageTitlebtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_title") forState:UIControlStateNormal];
-  [imageTitlebtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_title") forState:UIControlStateHighlighted];
-  [self.barView addSubview:imageTitlebtn];
-  
+  [self.barView.titleLabel setText:@"骑行广场"];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateHighlighted];
   

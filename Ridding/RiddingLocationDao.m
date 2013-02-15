@@ -19,8 +19,8 @@
   if (!db) {
     return FALSE;
   }
-  for (RiddingLocation *location in locations) {
-    @synchronized (self) {
+  @synchronized (self) {
+    for (RiddingLocation *location in locations) {
       [db executeUpdate:@"INSERT INTO TB_RiddingLocation (riddingid, latitude,longtitude,weight) VALUES (?,?,?,?)", LONGLONG2NUM(riddingId), DOUBLE2STR(location.latitude), DOUBLE2STR(location.longtitude), INT2STR(location.weight)];
     }
   }
@@ -56,30 +56,32 @@
   FMResultSet *rs;
   @synchronized (self) {
     rs = [db executeQuery:[NSString stringWithFormat:@"select count(*) from TB_RiddingLocation where riddingid = %lld ;", riddingId]];
+    while ([rs next]) {
+      return [rs intForColumnIndex:0];
+    }
   }
-  while ([rs next]) {
-    return [rs intForColumnIndex:0];
-  }
+
   return 0;
 }
 
 //插入骑行的经纬度等信息到数据库
 + (void)setRiddingLocationToDB:(NSArray *)routes riddingId:(long long)riddingId {
-
-  NSMutableArray *locations = [[NSMutableArray alloc] init];
-  int index = 0;
-  for (CLLocation *location in routes) {
-    RiddingLocation *riddingLocation = [[RiddingLocation alloc] init];
-    riddingLocation.latitude = location.coordinate.latitude;
-    riddingLocation.longtitude = location.coordinate.longitude;
-    riddingLocation.riddingId = riddingId;
-    riddingLocation.weight = index++;
-    [locations addObject:riddingLocation];
-  }
-  int count = [self getRiddingLocationCount:riddingId];
-  if (count == 0) {
-    [self addRiddingLocation:riddingId locations:locations];
-  }
+  dispatch_async(dispatch_queue_create("setRiddingLocationToDB", NULL), ^{
+    NSMutableArray *locations = [[NSMutableArray alloc] init];
+    int index = 0;
+    for (CLLocation *location in routes) {
+      RiddingLocation *riddingLocation = [[RiddingLocation alloc] init];
+      riddingLocation.latitude = location.coordinate.latitude;
+      riddingLocation.longtitude = location.coordinate.longitude;
+      riddingLocation.riddingId = riddingId;
+      riddingLocation.weight = index++;
+      [locations addObject:riddingLocation];
+    }
+    int count = [self getRiddingLocationCount:riddingId];
+    if (count == 0) {
+      [self addRiddingLocation:riddingId locations:locations];
+    }
+  });
 
 }
 

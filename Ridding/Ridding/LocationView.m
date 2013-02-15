@@ -10,11 +10,10 @@
 
 @implementation LocationView
 
-- (id)initWithFrame:(CGRect)frame type:(LOCATIONTYPE)type {
+- (id)initWithFrame:(CGRect)frame{
 
   self = [super initWithFrame:frame];
   if (self) {
-    self.type = type;
   }
   return self;
 }
@@ -22,26 +21,24 @@
 
 - (void)setSubViews {
 
-  switch (_type) {
-    case LOCATIONTYPE_BEGIN: {
-      UIImage *image = UIIMAGE_FROMPNG(@"起点图标");
-//      CGFloat width= CGImageGetWidth([image CGImage]);
-//      CGFloat height= CGImageGetHeight([image CGImage]);
-      UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 20, 30)];
+  switch (self.annotation.type) {
+    case MyAnnotationType_BEGIN: {
+      UIImage *image = UIIMAGE_FROMPNG(@"qqnr_dl_tabbar_icon_start");
+      UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(7, 8, 26, 34)];
       imageView.image = image;
       [self addSubview:imageView];
     }
       break;
-    case LOCATIONTYPE_MID: {
-      UIImage *image = UIIMAGE_FROMPNG(@"greenbiker");
-      UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 40, 40)];
+    case MyAnnotationType_MID: {
+      UIImage *image = UIIMAGE_FROMPNG(@"qqnr_dl_tabbar_icon_pass");
+      UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(7, 8, 26, 34)];
       imageView.image = image;
       [self addSubview:imageView];
     }
       break;
-    case LOCATIONTYPE_END: {
-      UIImage *image = UIIMAGE_FROMPNG(@"endPoint");
-      UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 20, 30)];
+    case MyAnnotationType_END: {
+      UIImage *image = UIIMAGE_FROMPNG(@"qqnr_dl_tabbar_icon_end");
+      UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(7, 8, 26, 34)];
       imageView.image = image;
       [self addSubview:imageView];
     }

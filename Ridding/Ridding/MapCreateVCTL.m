@@ -41,48 +41,22 @@
   dropPin.minimumPressDuration = 0.3;
   [self.mapView addGestureRecognizer:dropPin];
 
-  self.searchField.backgroundColor = [UIColor blackColor];
-  self.searchField.alpha = 0.7;
-  self.searchField.textColor = [UIColor whiteColor];
-  self.searchField.layer.cornerRadius = 10;
-  self.searchField.layer.masksToBounds = YES;
   self.searchField.returnKeyType = UIReturnKeyGo;
 
-  self.tapView.backgroundColor = [UIColor blackColor];
-  self.tapView.alpha = 0.7;
-  self.tapView.layer.cornerRadius = 10;
-  self.tapView.layer.masksToBounds = YES;
-
-  self.scrollView.backgroundColor = [UIColor blackColor];
-  self.scrollView.alpha = 0.7;
-
-  self.clearBtn.layer.cornerRadius = 10;
-  self.clearBtn.layer.masksToBounds = YES;
-
-  self.createBtn.layer.cornerRadius = 10;
-  self.createBtn.layer.masksToBounds = YES;
-
   _locationViews = [[NSMutableArray alloc] init];
-
+  _ridding = [[Ridding alloc] init];
 
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateHighlighted];
-  [self.barView.rightButton setTitle:@"创建活动" forState:UIControlStateNormal];
-  [self.barView.rightButton setTitle:@"创建活动" forState:UIControlStateHighlighted];
-  self.barView.rightButton.frame = CGRectMake(240, 6, 70, 31);
-  [self.barView.rightButton setHidden:NO];
+  [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_dl_navbar_icon_create") forState:UIControlStateNormal];
+  [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_dl_navbar_icon_create") forState:UIControlStateHighlighted];
+  [self.barView.rightButton setHidden:YES];
   self.barView.titleLabel.text = @"画路线";
-  _ridding = [[Ridding alloc] init];
-
-  self.myLocationBtn.layer.cornerRadius = 10;
-  self.myLocationBtn.layer.masksToBounds = YES;
+  
+  self.positionsView.image=[UIIMAGE_FROMPNG(@"qqnr_dl_search_bg") stretchableImageWithLeftCapWidth:1 topCapHeight:0];
+  self.searchFieldView.image=[UIIMAGE_FROMPNG(@"qqnr_dl_search_bg") stretchableImageWithLeftCapWidth:1 topCapHeight:0];
+  
   self.hasLeftView = TRUE;
-
-  self.mapView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT_WITHOUT_STATUS_BAR);
-  self.clearBtn.frame = CGRectMake(self.clearBtn.frame.origin.x, SCREEN_HEIGHT- 84, self.clearBtn.frame.size.width, self.clearBtn.frame.size.height);
-  self.createBtn.frame = CGRectMake(self.createBtn.frame.origin.x, SCREEN_HEIGHT- 84, self.createBtn.frame.size.width, self.createBtn.frame.size.height);
-  self.tapView.frame = CGRectMake(self.tapView.frame.origin.x, SCREEN_HEIGHT- 104, self.tapView.frame.size.width, self.tapView.frame.size.height);
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -118,7 +92,7 @@
 
   self.barView.rightButton.enabled = NO;
   if (!_succCreate) {
-    [SVProgressHUD showSuccessWithStatus:@"生成路线以后才能创建活动~" duration:2.0];
+    [SVProgressHUD showSuccessWithStatus:@"生成路线后才能创建活动~" duration:2.0];
     self.barView.rightButton.enabled = YES;
     return;
   }
@@ -157,7 +131,8 @@
       } else {
         annotation.city = @"";
       }
-      [self addNewAnnotation:annotation];
+      _nowAnnotation=annotation;
+      [self showTapView];
       break;
     }
     [SVProgressHUD dismiss];
@@ -183,16 +158,30 @@
   if ([annotation isKindOfClass:[MKUserLocation class]]) {
     return nil;
   }
+  
   // Handle any custom annotations.
   if ([annotation isKindOfClass:[MyAnnotation class]]) {
     CreateAnnotationView *pinView = [[CreateAnnotationView alloc] initWithAnnotation:annotation
                                                                      reuseIdentifier:@"CreateAnnotationView"];
-    [pinView setPinColor:MKPinAnnotationColorGreen];
-    [pinView setAnimatesDrop:YES];
     [pinView setCanShowCallout:YES];
     [pinView setDraggable:NO];
     pinView.delegate = self;
     pinView.annotation = annotation;
+    MyAnnotation *myAnnotation=(MyAnnotation*)annotation;
+    switch (myAnnotation.type) {
+      case MyAnnotationType_BEGIN:
+        pinView.image=UIIMAGE_FROMPNG(@"qqnr_dl_map_icon_start");
+        break;
+      case MyAnnotationType_MID:
+        pinView.image=UIIMAGE_FROMPNG(@"qqnr_dl_map_icon_pass");
+        break;
+      case MyAnnotationType_END:
+        pinView.image=UIIMAGE_FROMPNG(@"qqnr_dl_map_icon_end");
+        break;
+        
+      default:
+        break;
+    }
     return pinView;
   }
 
@@ -205,32 +194,37 @@
   if (![view isKindOfClass:[UITextField class]]) {
     [_searchField resignFirstResponder];
   }
-  [self hideAndDeleteAnnotation];
+  NSArray *annotations = [self.mapView annotations];
+  if (annotations && [annotations count] > 0) {
+    for (id <MKAnnotation> annotation in annotations) {
+      [self.mapView deselectAnnotation:annotation animated:NO];
+
+    }
+  }
+     
 }
 
-- (void)addNewAnnotation:(MyAnnotation *)annotation {
 
-  if (self.tipsLabel) {
-    [self.tipsLabel removeFromSuperview];
-  }
+- (void)addNewAnnotation{
+
   _succCreate = FALSE;
   [self hideAndDeleteAnnotation];
   MKCoordinateRegion region;
-  region.center = annotation.coordinate;
+  region.center = _nowAnnotation.coordinate;
   region.span = self.mapView.region.span;
   [self.mapView setRegion:region animated:YES];
-  [self.mapView addAnnotation:annotation];
-  [self.mapView selectAnnotation:annotation animated:YES];
-  _nowAnnotation = annotation;
-  [self showTapView];
+  [self.mapView addAnnotation:_nowAnnotation];
+  [self.mapView selectAnnotation:_nowAnnotation animated:YES];
   [SVProgressHUD dismiss];
 }
 
 
-- (void)addTapView:(LOCATIONTYPE)type {
-
+- (void)addTapView:(MyAnnotationType)type {
+  
   _nowAnnotation.checked = TRUE;
-  LocationView *locationView = [[LocationView alloc] initWithFrame:CGRectMake([_locationViews count] * viewWidth, 0, viewWidth, viewHeight) type:type];
+  _nowAnnotation.type=type;
+  [self addNewAnnotation];
+  LocationView *locationView = [[LocationView alloc] initWithFrame:CGRectMake([_locationViews count] * viewWidth, 0, viewWidth, viewHeight)];
   locationView.latitude = _nowAnnotation.coordinate.latitude;
   locationView.longtitude = _nowAnnotation.coordinate.longitude;
   locationView.totalLocation = _nowAnnotation.title;
@@ -240,21 +234,22 @@
   [locationView addGestureRecognizer:tapGesture];
   [locationView setSubViews];
   switch (type) {
-    case LOCATIONTYPE_BEGIN: {
+    case MyAnnotationType_BEGIN: {
       if ([_locationViews count] > 0) {
         LocationView *view = [_locationViews objectAtIndex:0];
-        if (view && view.type == LOCATIONTYPE_BEGIN) {
+        if (view.annotation && view.annotation.type == MyAnnotationType_BEGIN) {
           [self.mapView removeAnnotation:view.annotation];
           [_locationViews removeObject:view];
         }
       }
       [_locationViews insertObject:locationView atIndex:0];
       [self reloadScrollView];
+      _hasBeginPoint=TRUE;
     }
       break;
-    case LOCATIONTYPE_MID: {
+    case MyAnnotationType_MID: {
       LocationView *view = [_locationViews lastObject];
-      if (view && view.type == LOCATIONTYPE_END) {
+      if (view.annotation && view.annotation.type == MyAnnotationType_END) {
         [_locationViews insertObject:locationView atIndex:([_locationViews count] - 1)];
         [self reloadScrollView];
       } else {
@@ -263,9 +258,9 @@
       }
     }
       break;
-    case LOCATIONTYPE_END: {
+    case MyAnnotationType_END: {
       LocationView *view = [_locationViews lastObject];
-      if (view && view.type == LOCATIONTYPE_END) {
+      if (view.annotation && view.annotation.type == MyAnnotationType_END) {
         [self.mapView removeAnnotation:view.annotation];
         [_locationViews removeLastObject];
         [_locationViews addObject:locationView];
@@ -274,7 +269,7 @@
       }
       [_locationViews addObject:locationView];
       [self.scrollView addSubview:locationView];
-
+      _hasEndPoint=TRUE;
     }
       break;
     default:
@@ -282,7 +277,11 @@
   }
   self.scrollView.contentSize = CGSizeMake(viewWidth* [_locationViews count], viewHeight);
   [self hideTapView];
+  [self checkCreateBtn];
+  
 }
+
+
 
 - (void)reloadScrollView {
 
@@ -343,19 +342,19 @@
 - (IBAction)beginClick:(id)sender {
 
   self.beginBtn.enabled = NO;
-  [self addTapView:LOCATIONTYPE_BEGIN];
+  [self addTapView:MyAnnotationType_BEGIN];
 }
 
 - (IBAction)midClick:(id)sender {
 
   self.midBtn.enabled = NO;
-  [self addTapView:LOCATIONTYPE_MID];
+  [self addTapView:MyAnnotationType_MID];
 }
 
 - (IBAction)endClick:(id)sender {
 
   self.endBtn.enabled = NO;
-  [self addTapView:LOCATIONTYPE_END];
+  [self addTapView:MyAnnotationType_END];
 }
 
 - (IBAction)clearClick:(id)sender {
@@ -374,6 +373,9 @@
   self.route_view.image = nil;
   [self hideTapView];
   self.createBtn.enabled = YES;
+  _hasBeginPoint=FALSE;
+  _hasEndPoint=FALSE;
+  [self checkCreateBtn];
 }
 
 - (IBAction)myLocationBtn:(id)sender {
@@ -405,11 +407,11 @@
     } else {
       annotation.city = @"";
     }
-    [self addNewAnnotation:annotation];
+    _nowAnnotation=annotation;
+    [self showTapView];
     [SVProgressHUD dismiss];
-    self.myLocationBtn.enabled = YES;
   }];
-
+   self.myLocationBtn.enabled = YES;
 }
 
 - (IBAction)createClick:(id)sender {
@@ -418,16 +420,7 @@
   [self.mapView deselectAnnotation:_nowAnnotation animated:YES];
   _succCreate = FALSE;
   self.createBtn.enabled = NO;
-  BOOL succ = FALSE;
-  if ([_locationViews count] >= 2) {
-    LocationView *beginView = [_locationViews objectAtIndex:0];
-    LocationView *endView = [_locationViews lastObject];
-    if (beginView.type == LOCATIONTYPE_BEGIN && endView.type == LOCATIONTYPE_END) {
-      succ = TRUE;
-    }
-  }
-
-  if (!succ) {
+  if (!_hasEndPoint||!_hasBeginPoint) {
     [SVProgressHUD showErrorWithStatus:@"必须要有起点终点噢!^_^" duration:2];
     self.createBtn.enabled = YES;
     return;
@@ -467,6 +460,7 @@
             _newCoverImage = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
             [SVProgressHUD dismiss];
+            [self.barView.rightButton setHidden:NO];
           } else {
             [SVProgressHUD showErrorWithStatus:@"生成失败,google的网络不太好,再来一次吧^_^!!" duration:2];
             [MobClick event:@"2012111907"];
@@ -510,6 +504,11 @@
   BOOL findView = FALSE;
   for (LocationView *locationView in _scrollView.subviews) {
     if (locationView.annotation == annotation) {
+      if(locationView.annotation.type==MyAnnotationType_BEGIN){
+        _hasBeginPoint=FALSE;
+      }else if(locationView.annotation.type==MyAnnotationType_END){
+        _hasEndPoint=FALSE;
+      }
       [locationView removeFromSuperview];
       [_locationViews removeObject:locationView];
       findView = TRUE;
@@ -520,6 +519,7 @@
       locationView.frame = frame;
     }
   }
+  [self checkCreateBtn];
 }
 
 - (void)didSelectPlaceMarks:(MapSearchVCTL *)mapSearchVCTL placemark:(CLPlacemark *)placemark {
@@ -527,7 +527,22 @@
   MyAnnotation *annotation = [[MyAnnotation alloc] initWithLocation:placemark.location.coordinate];
   annotation.title = placemark.name;
   annotation.city = placemark.locality;
-  [self addNewAnnotation:annotation];
+  _nowAnnotation=annotation;
+  [self showTapView];
 }
+
+
+- (void)checkCreateBtn{
+  if(_hasBeginPoint&&_hasEndPoint){
+    self.createBtn.enabled=TRUE;
+    [self.createBtn setImage:UIIMAGE_FROMPNG(@"qqnr_dl_tabbar_icon_confirm") forState:UIControlStateNormal];
+    [self.createBtn setImage:UIIMAGE_FROMPNG(@"qqnr_dl_tabbar_icon_confirm_press") forState:UIControlStateHighlighted];
+  }else{
+    self.createBtn.enabled=FALSE;
+    [self.createBtn setImage:UIIMAGE_FROMPNG(@"qqnr_dl_tabbar_icon_confirm_disable") forState:UIControlStateNormal];
+    [self.createBtn setImage:UIIMAGE_FROMPNG(@"qqnr_dl_tabbar_icon_confirm_disable") forState:UIControlStateHighlighted];
+  }
+}
+
 
 @end
