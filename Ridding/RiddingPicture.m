@@ -20,7 +20,7 @@
 
 - (id)initWithJSONDic:(NSDictionary *)jsonDic {
 
-  self = [super init];
+  self = [super initWithJSONDic:jsonDic];
   if (self) {
     self.dbId = [[jsonDic objectForKey:@"dbid"] longLongValue];
     self.latitude = [[jsonDic objectForKey:@"latitude"] doubleValue];

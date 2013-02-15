@@ -12,7 +12,7 @@
 
 - (id)initWithJSONDic:(NSDictionary *)jsonDic {
 
-  self = [super init];
+  self = [super initWithJSONDic:jsonDic];
   if (self) {
     if ([jsonDic objectForKey:@"uid"]) {
       self.dbId = [[jsonDic objectForKey:@"uid"] longLongValue];

@@ -13,7 +13,7 @@
 
 - (id)initWithJSONDic:(NSDictionary *)jsonDic {
 
-  self = [super init];
+  self = [super initWithJSONDic:jsonDic];
   if (self) {
     self.latitude = [[jsonDic objectForKey:@"latitude"] doubleValue];
     self.longtitude = [[jsonDic objectForKey:@"longtitude"] doubleValue];

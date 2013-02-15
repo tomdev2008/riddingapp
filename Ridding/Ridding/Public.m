@@ -22,7 +22,7 @@
 
 - (id)initWithJSONDic:(NSDictionary *)jsonDic {
   
-  self = [super init];
+  self = [super initWithJSONDic:jsonDic];
   if (self) {
     
     _dbId=[[jsonDic objectForKey:@"dbid"]longLongValue];

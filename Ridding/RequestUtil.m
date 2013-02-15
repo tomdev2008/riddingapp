@@ -420,6 +420,10 @@
 
 }
 
+- (NSArray *)nearByUsers:(int)limit offset:(int)offset latitude:(double)latitude longitude:(double)longitude{
+  return nil;
+}
+
 /**
  * 检查返回的code是否正确
  **/

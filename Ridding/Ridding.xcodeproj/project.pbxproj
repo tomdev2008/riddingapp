@@ -419,6 +419,15 @@
 		18B60719154BDBC5003B051F /* newRidding.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 18B60718154BDBC5003B051F /* newRidding.sqlite */; };
 		18BABCFE154C491C002F1B77 /* staticInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18BABCFD154C491C002F1B77 /* staticInfo.plist */; };
 		18BC723D16873AD50047B730 /* BasicNeedLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BC723C16873AD50047B730 /* BasicNeedLoginViewController.m */; };
+		18BFF4BB16C5463E0004B04F /* NearByUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BFF4B916C5463E0004B04F /* NearByUserViewController.m */; };
+		18BFF4BC16C5463E0004B04F /* NearByUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18BFF4BA16C5463E0004B04F /* NearByUserViewController.xib */; };
+		18BFF4C016C548600004B04F /* NearByUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BFF4BF16C548600004B04F /* NearByUserCell.m */; };
+		18BFF4C216C5488D0004B04F /* NearByUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18BFF4C116C5488D0004B04F /* NearByUserCell.xib */; };
+		18BFF4C516C54A930004B04F /* UserNearBy.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BFF4C416C54A930004B04F /* UserNearBy.m */; };
+		18BFF4CA16C5530D0004B04F /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BFF4C816C5530C0004B04F /* FriendsViewController.m */; };
+		18BFF4CB16C5530D0004B04F /* FriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18BFF4C916C5530D0004B04F /* FriendsViewController.xib */; };
+		18BFF4D016C555160004B04F /* FriendsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BFF4CF16C555160004B04F /* FriendsCell.m */; };
+		18BFF4D216C555270004B04F /* FriendsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18BFF4D116C555270004B04F /* FriendsCell.xib */; };
 		18C403FF151EFA150091165D /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C403FD151EFA150091165D /* GTMBase64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		18C40429151EFC960091165D /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C40428151EFC960091165D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		18C4042B151F01E60091165D /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18C4042A151F01E60091165D /* libsqlite3.0.dylib */; };
@@ -1133,6 +1142,20 @@
 		18BABCFD154C491C002F1B77 /* staticInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = staticInfo.plist; sourceTree = "<group>"; };
 		18BC723B16873AD50047B730 /* BasicNeedLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicNeedLoginViewController.h; sourceTree = "<group>"; };
 		18BC723C16873AD50047B730 /* BasicNeedLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicNeedLoginViewController.m; sourceTree = "<group>"; };
+		18BFF4B816C5463E0004B04F /* NearByUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearByUserViewController.h; sourceTree = "<group>"; };
+		18BFF4B916C5463E0004B04F /* NearByUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearByUserViewController.m; sourceTree = "<group>"; };
+		18BFF4BA16C5463E0004B04F /* NearByUserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NearByUserViewController.xib; sourceTree = "<group>"; };
+		18BFF4BE16C548600004B04F /* NearByUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearByUserCell.h; sourceTree = "<group>"; };
+		18BFF4BF16C548600004B04F /* NearByUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearByUserCell.m; sourceTree = "<group>"; };
+		18BFF4C116C5488D0004B04F /* NearByUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NearByUserCell.xib; sourceTree = "<group>"; };
+		18BFF4C316C54A930004B04F /* UserNearBy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserNearBy.h; sourceTree = "<group>"; };
+		18BFF4C416C54A930004B04F /* UserNearBy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserNearBy.m; sourceTree = "<group>"; };
+		18BFF4C716C5530B0004B04F /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
+		18BFF4C816C5530C0004B04F /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
+		18BFF4C916C5530D0004B04F /* FriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsViewController.xib; sourceTree = "<group>"; };
+		18BFF4CE16C555160004B04F /* FriendsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsCell.h; sourceTree = "<group>"; };
+		18BFF4CF16C555160004B04F /* FriendsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsCell.m; sourceTree = "<group>"; };
+		18BFF4D116C555270004B04F /* FriendsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsCell.xib; sourceTree = "<group>"; };
 		18C403FC151EFA150091165D /* GTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMBase64.h; sourceTree = "<group>"; };
 		18C403FD151EFA150091165D /* GTMBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMBase64.m; sourceTree = "<group>"; };
 		18C403FE151EFA150091165D /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
@@ -1768,20 +1791,6 @@
 			path = image;
 			sourceTree = SOURCE_ROOT;
 		};
-		1838875916185670007D1FCA /* Ridding */ = {
-			isa = PBXGroup;
-			children = (
-				1880C82C1699CD9800379717 /* view */,
-				1848454A1518DA34006CDA84 /* UserMap.h */,
-				1848454B1518DA34006CDA84 /* UserMap.m */,
-				189E07F11535350E00E8CF5E /* UserMap.xib */,
-				B0CDABEE1599EBD300F37DB2 /* InvitationViewController.h */,
-				B0CDABEF1599EBD300F37DB2 /* InvitationViewController.m */,
-				189C74E615B2C39C00E3D9E4 /* InvitationViewController.xib */,
-			);
-			name = Ridding;
-			sourceTree = "<group>";
-		};
 		1838875A161856A5007D1FCA /* Index */ = {
 			isa = PBXGroup;
 			children = (
@@ -2047,6 +2056,8 @@
 				1871CD2A1697122900C19543 /* UserRelation.m */,
 				18F9DA5016C1030400691F00 /* Public.h */,
 				18F9DA5116C1030400691F00 /* Public.m */,
+				18BFF4C316C54A930004B04F /* UserNearBy.h */,
+				18BFF4C416C54A930004B04F /* UserNearBy.m */,
 			);
 			name = meta;
 			sourceTree = "<group>";
@@ -2159,7 +2170,8 @@
 		1878B8AD1516DF2D00985FC8 /* Ridding */ = {
 			isa = PBXGroup;
 			children = (
-				1838875916185670007D1FCA /* Ridding */,
+				18BFF4CC16C553110004B04F /* Friend */,
+				18BFF4B716C5451B0004B04F /* NearBy */,
 				186790211670DE0500BE2950 /* meta */,
 				1876EC661654E8BC00C1197D /* mapCreate */,
 				182C6010164F747300605E42 /* Public */,
@@ -2167,7 +2179,6 @@
 				1838875B161856F5007D1FCA /* Setting */,
 				1838875A161856A5007D1FCA /* Index */,
 				189C08C6161483E500DD4338 /* Feed */,
-				187D360D160B649C00FE1640 /* Picture */,
 				1878B8B61516DF2D00985FC8 /* RiddingAppDelegate.h */,
 				1878B8B71516DF2D00985FC8 /* RiddingAppDelegate.m */,
 				1878B8AE1516DF2D00985FC8 /* Supporting Files */,
@@ -2217,16 +2228,6 @@
 			name = 3part;
 			sourceTree = "<group>";
 		};
-		187D360D160B649C00FE1640 /* Picture */ = {
-			isa = PBXGroup;
-			children = (
-				18A7ADE8163EED6400402A81 /* PhotoDescViewController.h */,
-				18A7ADE9163EED6400402A81 /* PhotoDescViewController.m */,
-				18A7ADEA163EED6400402A81 /* PhotoDescViewController.xib */,
-			);
-			name = Picture;
-			sourceTree = "<group>";
-		};
 		187F447D162859360033D4A5 /* SVSegmentedControl */ = {
 			isa = PBXGroup;
 			children = (
@@ -2237,15 +2238,6 @@
 			);
 			name = SVSegmentedControl;
 			path = 3part/SVSegmentedControl;
-			sourceTree = "<group>";
-		};
-		1880C82C1699CD9800379717 /* view */ = {
-			isa = PBXGroup;
-			children = (
-				182981F61520C09D00146A71 /* UserView.h */,
-				182981F71520C09D00146A71 /* UserView.m */,
-			);
-			name = view;
 			sourceTree = "<group>";
 		};
 		18819F631615C6C500157802 /* SDWebImage */ = {
@@ -2358,6 +2350,16 @@
 		189C08C6161483E500DD4338 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				18BFF4C616C552BB0004B04F /* View */,
+				18A7ADE8163EED6400402A81 /* PhotoDescViewController.h */,
+				18A7ADE9163EED6400402A81 /* PhotoDescViewController.m */,
+				18A7ADEA163EED6400402A81 /* PhotoDescViewController.xib */,
+				1848454A1518DA34006CDA84 /* UserMap.h */,
+				1848454B1518DA34006CDA84 /* UserMap.m */,
+				189E07F11535350E00E8CF5E /* UserMap.xib */,
+				B0CDABEE1599EBD300F37DB2 /* InvitationViewController.h */,
+				B0CDABEF1599EBD300F37DB2 /* InvitationViewController.m */,
+				189C74E615B2C39C00E3D9E4 /* InvitationViewController.xib */,
 				189C08CB161484E900DD4338 /* QQNRFeedViewController.h */,
 				189C08CC161484E900DD4338 /* QQNRFeedViewController.m */,
 				189C08CD161484E900DD4338 /* QQNRFeedViewController.xib */,
@@ -2429,6 +2431,57 @@
 				1833261316169E1600771A4A /* Utilities.m */,
 			);
 			name = Util;
+			sourceTree = "<group>";
+		};
+		18BFF4B716C5451B0004B04F /* NearBy */ = {
+			isa = PBXGroup;
+			children = (
+				18BFF4BD16C547CA0004B04F /* view */,
+				18BFF4B816C5463E0004B04F /* NearByUserViewController.h */,
+				18BFF4B916C5463E0004B04F /* NearByUserViewController.m */,
+				18BFF4BA16C5463E0004B04F /* NearByUserViewController.xib */,
+			);
+			name = NearBy;
+			sourceTree = "<group>";
+		};
+		18BFF4BD16C547CA0004B04F /* view */ = {
+			isa = PBXGroup;
+			children = (
+				18BFF4BE16C548600004B04F /* NearByUserCell.h */,
+				18BFF4BF16C548600004B04F /* NearByUserCell.m */,
+				18BFF4C116C5488D0004B04F /* NearByUserCell.xib */,
+			);
+			name = view;
+			sourceTree = "<group>";
+		};
+		18BFF4C616C552BB0004B04F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				182981F61520C09D00146A71 /* UserView.h */,
+				182981F71520C09D00146A71 /* UserView.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		18BFF4CC16C553110004B04F /* Friend */ = {
+			isa = PBXGroup;
+			children = (
+				18BFF4CD16C555040004B04F /* view */,
+				18BFF4C716C5530B0004B04F /* FriendsViewController.h */,
+				18BFF4C816C5530C0004B04F /* FriendsViewController.m */,
+				18BFF4C916C5530D0004B04F /* FriendsViewController.xib */,
+			);
+			name = Friend;
+			sourceTree = "<group>";
+		};
+		18BFF4CD16C555040004B04F /* view */ = {
+			isa = PBXGroup;
+			children = (
+				18BFF4CE16C555160004B04F /* FriendsCell.h */,
+				18BFF4CF16C555160004B04F /* FriendsCell.m */,
+				18BFF4D116C555270004B04F /* FriendsCell.xib */,
+			);
+			name = view;
 			sourceTree = "<group>";
 		};
 		18C403FB151EFA090091165D /* CTMBase64 */ = {
@@ -3003,6 +3056,10 @@
 				1887723C16BE999F00DD9CC5 /* qqnr_pd_comment_line@2x.png in Resources */,
 				18F9DA4F16C0CA9600691F00 /* PublicCommentCell.xib in Resources */,
 				18F9DA5716C10B2600691F00 /* PublicLinkWebViewController.xib in Resources */,
+				18BFF4BC16C5463E0004B04F /* NearByUserViewController.xib in Resources */,
+				18BFF4C216C5488D0004B04F /* NearByUserCell.xib in Resources */,
+				18BFF4CB16C5530D0004B04F /* FriendsViewController.xib in Resources */,
+				18BFF4D216C555270004B04F /* FriendsCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3186,6 +3243,11 @@
 				184572D216B506EA00776610 /* MyLocationManager.m in Sources */,
 				18F9DA5216C1030400691F00 /* Public.m in Sources */,
 				18F9DA5616C10B2600691F00 /* PublicLinkWebViewController.m in Sources */,
+				18BFF4BB16C5463E0004B04F /* NearByUserViewController.m in Sources */,
+				18BFF4C016C548600004B04F /* NearByUserCell.m in Sources */,
+				18BFF4C516C54A930004B04F /* UserNearBy.m in Sources */,
+				18BFF4CA16C5530D0004B04F /* FriendsViewController.m in Sources */,
+				18BFF4D016C555160004B04F /* FriendsCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -23,7 +23,7 @@
 
 - (id)initWithJSONDic:(NSDictionary *)jsonDic {
 
-  self = [super init];
+  self = [super initWithJSONDic:jsonDic];
   if (self) {
     self.user = [[User alloc] initWithJSONDic:[jsonDic objectForKey:keyUser]];
     self.toUser = [[User alloc] initWithJSONDic:[jsonDic objectForKey:keyToUser]];

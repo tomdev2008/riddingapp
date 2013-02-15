@@ -101,6 +101,8 @@
 
 - (NSDictionary *)updateUserBackgroundUrl:(NSString *)urlStr;
 
+- (NSArray *)nearByUsers:(int)limit offset:(int)offset latitude:(double)latitude longitude:(double)longitude;
+
 
 @end
 

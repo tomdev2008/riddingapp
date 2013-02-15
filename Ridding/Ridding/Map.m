@@ -11,7 +11,7 @@
 
 - (id)initWithJSONDic:(NSDictionary *)jsonDic {
 
-  self = [super init];
+  self = [super initWithJSONDic:jsonDic];
   if (self) {
     self.mapId = [[jsonDic objectForKey:@"mapid"] longLongValue];
     self.mapUrl = [jsonDic objectForKey:@"mapurl"];

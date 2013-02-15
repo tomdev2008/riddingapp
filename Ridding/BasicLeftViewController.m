@@ -14,7 +14,7 @@
 #import "BasicLeftHeadView.h"
 #import "BasicLeftViewCell.h"
 #import "Utilities.h"
-
+#import "NearByUserViewController.h"
 @interface BasicLeftViewController () {
 
 }
@@ -93,7 +93,10 @@
     case 3: {
       cell.titleLabel.text = @"推荐给骑友";
       cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_myridding");
-      
+    }
+    case 4: {
+      cell.titleLabel.text = @"附近";
+      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_myridding");
     }
     default:
       break;
@@ -131,8 +134,32 @@
     case 3:
       [self showShare];
       break;
+    case 4:
+      [self showNearBy];
+      break;
     default:
       break;
+  }
+
+}
+
+- (void)showNearBy {
+  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+  if ([delegate canLogin]) {
+    if (![self isShowingViewController:[NearByUserViewController class]]) {
+      [self moveRight];
+      //如果新浪成功，并且authtoken有效
+      NearByUserViewController *nearByVCTL = [[NearByUserViewController alloc] init];
+      
+      [RiddingAppDelegate popAllNavgation];
+      [delegate.navController pushViewController:nearByVCTL animated:NO];
+    }
+    [self restoreViewLocation];
+  } else {
+    [self moveRight];
+    RiddingViewController *riddingViewController = [[RiddingViewController alloc] init];
+    riddingViewController.delegate = self;
+    [self presentModalViewController:riddingViewController animated:YES];
   }
 
 }

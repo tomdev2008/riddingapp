@@ -3155,19 +3155,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "RequestUtil.m"
-         timestampString = "381913729.041769"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "418"
-         endingLineNumber = "418"
-         landmarkName = "-updateUserBackgroundUrl:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "Ridding/PublicCommentVCTL.m"
          timestampString = "381750391.510952"
          startingColumnNumber = "9223372036854775807"
@@ -3175,19 +3162,6 @@
          startingLineNumber = "299"
          endingLineNumber = "299"
          landmarkName = "-egoRefreshTableHeaderDataSourceIsLoading:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RequestUtil.m"
-         timestampString = "381913729.041769"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "416"
-         endingLineNumber = "416"
-         landmarkName = "-updateUserBackgroundUrl:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -3452,19 +3426,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "RequestUtil.m"
-         timestampString = "381913729.041769"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "393"
-         endingLineNumber = "393"
-         landmarkName = "@implementation RequestUtil"
-         landmarkType = "3">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "QQNRFileServerComm.m"
          timestampString = "380984405.419348"
          startingColumnNumber = "9223372036854775807"
@@ -3491,19 +3452,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "RequestUtil.m"
-         timestampString = "381913729.041769"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "395"
-         endingLineNumber = "395"
-         landmarkName = "-getUserRiddingAction:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "Ridding/QQNRFeedHeaderView.m"
          timestampString = "381569071.006365"
          startingColumnNumber = "9223372036854775807"
@@ -3511,19 +3459,6 @@
          startingLineNumber = "25"
          endingLineNumber = "25"
          landmarkName = "-initWithFrame:user:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RequestUtil.m"
-         timestampString = "381913729.041769"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "403"
-         endingLineNumber = "403"
-         landmarkName = "-getUserRiddingAction:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint

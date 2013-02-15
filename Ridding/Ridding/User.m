@@ -19,7 +19,7 @@
 
 - (id)initWithJSONDic:(NSDictionary *)jsonDic {
 
-  self = [super init];
+  self = [super initWithJSONDic:jsonDic];
   if (self) {
     self.accessToken = [jsonDic objectForKey:@"accesstoken"];
     self.name = [jsonDic objectForKey:@"username"];

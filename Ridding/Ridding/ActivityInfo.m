@@ -20,7 +20,7 @@
 
 - (id)initWithJSONDic:(NSDictionary *)jsonDic {
 
-  self = [super init];
+  self = [super initWithJSONDic:jsonDic];
   if (self) {
     self.ridding = [[Ridding alloc] initWithJSONDic:[jsonDic objectForKey:keyRidding]];
     self.weight = [[jsonDic objectForKey:@"weight"] intValue];

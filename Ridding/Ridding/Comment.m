@@ -21,7 +21,7 @@
 
 - (id)initWithJSONDic:(NSDictionary *)jsonDic {
 
-  self = [super init];
+  self = [super initWithJSONDic:jsonDic];
   if (self) {
     self.dbId = [[jsonDic objectForKey:@"id"] longLongValue];
     self.riddingId = [[jsonDic objectForKey:@"riddingid"] longLongValue];
