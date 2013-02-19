@@ -142,7 +142,7 @@
 		
     MFMessageComposeViewController *smsComposer = [[MFMessageComposeViewController alloc] init];
 		
-    smsComposer.body = [NSString stringWithFormat:@"我下载了一个骑行应用叫\"骑行者\",真不错啊！以后出去骑车果断靠它了。可以画路线,添加队友,追踪队友位置,还能拍照记录行程。果断去下一个啊!给你链接:%@",linkAppStore];
+    smsComposer.body = [NSString stringWithFormat:@"我下载了一款骑行应用叫\"骑行者\",非常不错！以后出去骑车就靠它了。可以画路线,添加队友,追踪队友位置,还能拍照记录行程。赶紧下一个去!给你链接:%@",linkAppStore];
     smsComposer.messageComposeDelegate = self;
 		
     [self moveRight];

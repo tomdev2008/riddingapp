@@ -107,8 +107,7 @@
 
   [self.view bringSubviewToFront:self.barView];
 
-  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateNormal];
-  [self.barView.leftButton setTitle:@"返回" forState:UIControlStateHighlighted];
+
   // Step 2: prepare to tile content
 
   _recycledPages = [[NSMutableSet alloc] init];
@@ -236,8 +235,9 @@
 
   [self asyncLoadImage:page forIndex:index];
   _picture = [self.photoArray objectAtIndex:index];
-  
+
   [page displayImage:_picture];
+  
 }
 
 - (void)asyncLoadImage:(ImageScrollView *)page forIndex:(NSUInteger)index {

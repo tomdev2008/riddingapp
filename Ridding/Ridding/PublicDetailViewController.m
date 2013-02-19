@@ -430,6 +430,10 @@
 
 - (void)deletePicture:(PublicDetailCell *)view index:(int)index {
   
+  RiddingPicture *picture=(RiddingPicture*)[_cellArray objectAtIndex:index];
+  if(![StaticInfo getSinglton].user||picture.user.userId!=[StaticInfo getSinglton].user.userId){
+    return;
+  }
   UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"确定要删除这张照片吗?" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除照片" otherButtonTitles:nil];
   actionSheet.delegate = self;
   [actionSheet showInView:self.view];

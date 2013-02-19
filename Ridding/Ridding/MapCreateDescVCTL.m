@@ -8,7 +8,6 @@
 
 #import "MapCreateDescVCTL.h"
 #import "UIColor+XMin.h"
-#import "SinaApiRequestUtil.h"
 #import "SVProgressHUD.h"
 #import "QQNRFeedViewController.h"
 #import "MapUtil.h"
@@ -31,10 +30,11 @@
 - (void)viewDidLoad {
 
   [super viewDidLoad];
+  
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   
-  [self.barView.rightButton setTitle:@"确定" forState:UIControlStateNormal];
-  [self.barView.rightButton setTitle:@"确定" forState:UIControlStateHighlighted];
+  [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_dl_navbar_icon_create") forState:UIControlStateNormal];
+  [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_dl_navbar_icon_create") forState:UIControlStateHighlighted];
   [self.barView.rightButton setHidden:NO];
   
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
@@ -57,7 +57,7 @@
   [[MapUtil getSinglton] calculate_routes_from:_ridding.map.mapTaps map:_ridding.map];
   [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:_ridding.map.mapPoint]];
   [[MapUtil getSinglton] center_map:_mapView routes:routes];
-  [[MapUtil getSinglton] update_route_view:_mapView to:_lineImageView line_color:[UIColor getColor:lineColor] routes:routes];
+  [[MapUtil getSinglton] update_route_view:_mapView to:_lineImageView line_color:[UIColor getColor:lineColor] routes:routes width:5.0];
 
 }
 
@@ -154,6 +154,9 @@
   UIView *view = (UIView *) sender;
   if (view != self.nameField) {
     [self.nameField resignFirstResponder];
+    if([self.nameField.text isEqualToString:@"添加活动名称"]){
+      self.nameField.text=@"";
+    }
   }
   if (view != self.beginLocationTV) {
     [self.beginLocationTV resignFirstResponder];
@@ -171,15 +174,6 @@
 }
 #pragma mark -
 #pragma mark UITextViewDelegate
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-
-  [self moveView:-150];
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView {
-
-  [self moveView:150];
-}
 
 - (void)moveView:(CGFloat)viewHeight {
 

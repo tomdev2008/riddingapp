@@ -101,6 +101,8 @@
 
 - (NSDictionary *)updateUserBackgroundUrl:(NSString *)urlStr;
 
+- (NSDictionary *)weatherRequest:(NSString*)latitudeLongitude;
+
 
 @end
 

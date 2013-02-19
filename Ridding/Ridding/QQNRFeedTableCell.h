@@ -17,6 +17,7 @@
 - (void)leaderTap:(QQNRFeedTableCell *)cell;
 
 - (void)statusTap:(QQNRFeedTableCell *)cell;
+
 @end
 
 @interface QQNRFeedTableCell : UITableViewCell {
@@ -32,6 +33,7 @@
 @property (nonatomic, retain) IBOutlet UIImageView *mapLineView;
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) IBOutlet UIImageView *avatorBgView;
+@property (nonatomic, retain) IBOutlet UIButton *statusBtn;
 
 
 - (void)initContentView:(Ridding *)ridding;

@@ -130,7 +130,6 @@
 						<string key="NSFrame">{{44, 177}, {25, 35}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -145,7 +144,6 @@
 						<string key="NSFrame">{{44, 220}, {25, 35}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -267,7 +265,7 @@
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIClipsSubviews">YES</bool>
-						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<bool key="IBMKZoomEnabled">NO</bool>
 						<bool key="IBMKScrollEnabled">NO</bool>
@@ -602,22 +600,10 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">MapCreateDescVCTL</string>
 					<string key="superclassName">BasicViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">viewClick:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">viewClick:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">viewClick:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="beginLocationTV">UITextField</string>
 						<string key="endLocationTV">UITextField</string>
 						<string key="lineImageView">UIImageView</string>
-						<string key="mapImageView">UIImageView</string>
 						<string key="mapView">MKMapView</string>
 						<string key="nameField">UITextField</string>
 						<string key="totalDistanceLB">UILabel</string>
@@ -633,10 +619,6 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="lineImageView">
 							<string key="name">lineImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="mapImageView">
-							<string key="name">mapImageView</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="mapView">

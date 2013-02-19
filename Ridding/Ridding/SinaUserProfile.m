@@ -7,7 +7,7 @@
 //
 
 #import "SinaUserProfile.h"
-
+#import "NSString+MD5Addition.h"
 @implementation SinaUserProfile
 
 - (id)initWithJSONDic:(NSDictionary *)jsonDic {
@@ -35,6 +35,10 @@
     self.city = [[jsonDic objectForKey:@"city"] intValue];
   }
   return self;
+}
+
+- (NSString*)avatorUrlStr{
+  return [NSString stringWithFormat:@"http://tp1.sinaimg.cn/%lld/50/%lld",self.dbId,self.dbId];
 }
 
 @end

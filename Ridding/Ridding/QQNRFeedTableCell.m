@@ -42,11 +42,20 @@
   self.distanceLabel.text = [ridding.map totalDistanceToKm];
   self.teamCountLabel.text = [NSString stringWithFormat:@"共%d人 ", ridding.userCount];
   self.nameLabel.text = ridding.riddingName;
+  
+  if([ridding isEnd]){
+    
+    [self.statusBtn setImage:UIIMAGE_FROMPNG(@"qqnr_main_trip-finish") forState:UIControlStateNormal];
+    [self.statusBtn setEnabled:FALSE];
+  }else{
+    
+    [self.statusBtn setImage:UIIMAGE_FROMPNG(@"qqnr_main_trip-ing") forState:UIControlStateNormal];
+  }
 }
 
 - (void)drawRoutes:(NSArray *)routes {
-    [[MapUtil getSinglton] center_map:_mapView routes:routes];
-  [[MapUtil getSinglton] update_route_view:_mapView to:_mapLineView line_color:[UIColor getColor:lineColor] routes:routes];
+  [[MapUtil getSinglton] center_map:_mapView routes:routes];
+  [[MapUtil getSinglton] update_route_view:_mapView to:_mapLineView line_color:[UIColor getColor:lineColor] routes:routes width:3.0];
 }
 
 - (IBAction)leaderViewTap:(id)selector {
@@ -56,8 +65,7 @@
   }
 }
 
-
-- (void)statusTap:(id)selector {
+- (IBAction)statusTap:(id)selector {
 
   if (self.delegate) {
     [self.delegate statusTap:self];

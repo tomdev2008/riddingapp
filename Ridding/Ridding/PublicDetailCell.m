@@ -21,6 +21,7 @@
   UIButton *_likeBtn;
   UILabel *_likeCountLabel;
   UIView *_likeClickView;
+  UIImageView *_avatorImageView;
 }
 @end
 
@@ -111,7 +112,7 @@
   } else {
     _imageView.frame = CGRectMake(PublicDetailCellOriginX, _viewHeight, width, height);
   }
-  NSURL *url = [QiNiuUtils getUrlBySizeToUrl:_imageView.frame.size url:_info.photoUrl type:QINIUMODE_DESHORT];
+  NSURL *url = [QiNiuUtils getUrlBySizeToUrl:_imageView.frame.size url:_info.photoUrl type:QINIUMODE_DEDEFAULT];
   [_imageView setImageWithURL:url placeholderImage:nil];
 
   if (!_imageBGView) {
@@ -130,7 +131,7 @@
 
   CGFloat likeViewWidth = 40;
   NSString *desc = self.info.pictureDescription;
-  CGSize linesSz = [desc sizeWithFont:[UIFont boldSystemFontOfSize:14] constrainedToSize:CGSizeMake(PublicDetailCellWidth - likeViewWidth, 70) lineBreakMode:(NSLineBreakMode) UILineBreakModeCharacterWrap];
+  CGSize linesSz = [desc sizeWithFont:[UIFont boldSystemFontOfSize:14] constrainedToSize:CGSizeMake(PublicDetailCellWidth - likeViewWidth-40, 70) lineBreakMode:(NSLineBreakMode) UILineBreakModeCharacterWrap];
 
   CGFloat bgHeight = linesSz.height + 30;
   bgHeight = bgHeight < 30 ? 30 : bgHeight;
@@ -155,8 +156,17 @@
   _imageViewDescBG.image = [UIIMAGE_FROMPNG(@"qqnr_pd_descbg") stretchableImageWithLeftCapWidth:10 topCapHeight:10];
 
 
+  if(!_avatorImageView){
+    _avatorImageView=[[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 25, 25)];
+    [_imageViewDescView addSubview:_avatorImageView];
+  }else{
+    _avatorImageView.frame=CGRectMake(10, 5, 25, 25);
+  }
+  url=[QiNiuUtils getUrlBySizeToUrl:_avatorImageView.frame.size url:self.info.user.savatorUrl type:QINIUMODE_DESHORT];
+  [_avatorImageView setImageWithURL:url placeholderImage:UIIMAGE_DEFAULT_USER_AVATOR];
+  
   if (!_descLabel) {
-    _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, PublicDetailCellWidth - likeViewWidth, linesSz.height)];
+    _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 5, PublicDetailCellWidth - likeViewWidth - 30 , linesSz.height)];
     _descLabel.backgroundColor = [UIColor clearColor];
     _descLabel.lineBreakMode = UILineBreakModeWordWrap;
     _descLabel.numberOfLines = 0;
@@ -165,7 +175,7 @@
     _descLabel.font = [UIFont boldSystemFontOfSize:12];
     [_imageViewDescView addSubview:_descLabel];
   } else {
-    _descLabel.frame = CGRectMake(10, 5, PublicDetailCellWidth - likeViewWidth, linesSz.height);
+    _descLabel.frame = CGRectMake(40, 5, PublicDetailCellWidth - likeViewWidth, linesSz.height);
   }
   _descLabel.text = desc;
 
@@ -230,7 +240,7 @@
 }
 
 - (void)showDeleteAction:(UIGestureRecognizer *)gestureRecognizer  {
-    
+  
   if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
     if (self.delegate){
       [self.delegate deletePicture:self index:_index];

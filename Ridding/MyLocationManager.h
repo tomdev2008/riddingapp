@@ -24,4 +24,6 @@ typedef void (^MyLocationBlock)(QQNRMyLocation *);
 
 - (void)startUpdateMyLocation:(MyLocationBlock)block;
 
+- (void)stopUpdateLocation;
+
 @end

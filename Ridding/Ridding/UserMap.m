@@ -15,6 +15,8 @@
 #import "QQNRFeedViewController.h"
 #import "PhotoDescViewController.h"
 #import "RiddingLocation.h"
+#import "UIImageView+WebCache.h"
+#import "AnnotationPhotoView.h"
 #import "MapUtil.h"
 #import "StartAnnotation.h"
 #import "EndAnnotation.h"
@@ -25,7 +27,9 @@
 #import "QQNRImagesScrollVCTL.h"
 #import "RiddingLocationDao.h"
 #import "MyLocationManager.h"
-
+#import "Weather.h"
+#import "PhotoAnnotationView.h"
+#import "BasicPhotoAnnotation.h"
 @interface UserMap ()
 
 @end
@@ -67,14 +71,7 @@
     _isMyRidding = TRUE;
   }
   if (_isMyRidding) {
-    [self showSwitch];
     [self myLocationQuartz];
-    [self initAwesomeView];
-    //兼容ip5
-    self.zoomInButton.frame = CGRectMake(self.zoomInButton.frame.origin.x, SCREEN_HEIGHT- (460 - self.zoomInButton.frame.origin.y), self.zoomInButton.frame.size.width, self.zoomInButton.frame.size.height);
-    self.zoomOutButton.frame = CGRectMake(self.zoomOutButton.frame.origin.x, SCREEN_HEIGHT- (460 - self.zoomOutButton.frame.origin.y), self.zoomOutButton.frame.size.width, self.zoomOutButton.frame.size.height);
-    self.showLocationButton.frame = CGRectMake(self.showLocationButton.frame.origin.x, SCREEN_HEIGHT- (460 - self.showLocationButton.frame.origin.y), self.showLocationButton.frame.size.width, self.showLocationButton.frame.size.height);
-    [self.distanceSpeedView setHidden:NO];
   }
   UITapGestureRecognizer *viewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapViewClick:)]; //动态添加点击操作
   [self.mapView addGestureRecognizer:viewTap];
@@ -84,8 +81,23 @@
   _isShowTeamers = FALSE;
   _userInited = FALSE;
 
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
+  [self.barView.leftButton setHidden:NO];
+  
+  UIImageView *distanceIcon=[[UIImageView alloc]initWithFrame:CGRectMake(105, 6, 25, 25)];
+  distanceIcon.image=UIIMAGE_FROMPNG(@"qqnr_map_narbar_icon_mileage");
+  [self.barView addSubview:distanceIcon];
+  
+  UILabel *distanceLabel=[[UILabel alloc]initWithFrame:CGRectMake(135, 6, 100, 25)];
+  distanceLabel.text=[_ridding.map totalDistanceToKm];
+  distanceLabel.textColor=[UIColor getColor:@"005c4e"];
+  distanceLabel.backgroundColor=[UIColor clearColor];
+  distanceLabel.font=[UIFont systemFontOfSize:14];
+  [self.barView addSubview:distanceLabel];
+
   _photoArray = [[NSMutableArray alloc] init];
-  self.userScrollView.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMFILE(@"hy_beijing", @"jpg")];
+  self.userScrollView.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_tabbar_bg")];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -97,19 +109,6 @@
       [self download];
     });
   });
-}
-
-- (void)showSwitch {
-
-  if (!_redSC) {
-    _redSC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"队友", @"单人", @"照片", nil]];
-    [_redSC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
-    _redSC.crossFadeLabelsOnDrag = YES;
-    _redSC.thumb.tintColor = [UIColor getColor:ColorBlue];
-    _redSC.selectedIndex = 1;
-    [self.view addSubview:_redSC];
-    _redSC.center = CGPointMake(120, 20);
-  }
 }
 
 - (void)download {
@@ -165,26 +164,38 @@
   });
 }
 
+
+
+- (void)myLocationQuartz {
+  
+  _sendMyLocationTimer = [NSTimer scheduledTimerWithTimeInterval:sendMyLocationTime target:self selector:@selector(sendMyLocationQuartz) userInfo:nil repeats:YES];
+  [_sendMyLocationTimer fire];
+}
+
+
+
 //定时发送我的当前位置
 - (void)sendMyLocationQuartz {
 
   MyLocationManager *myLocationManager = [MyLocationManager getSingleton];
-  [myLocationManager startUpdateMyLocation:^(QQNRMyLocation *location) {
-    if (location == nil) {
-      [SVProgressHUD showSuccessWithStatus:@"请开启定位服务以定位到您的位置" duration:2.0];
-    } else {
-      dispatch_queue_t q;
-      q = dispatch_queue_create("sendMyLocationQuartz", NULL);
-      dispatch_async(q, ^{
+  dispatch_queue_t q;
+  q = dispatch_queue_create("sendMyLocationQuartz", NULL);
+  dispatch_async(q, ^{
+    [myLocationManager startUpdateMyLocation:^(QQNRMyLocation *location) {
+      if (location == nil) {
+        [SVProgressHUD showSuccessWithStatus:@"请开启定位服务以定位到您的位置" duration:2.0];
+      } else {
+        
         MKCoordinateRegion theRegion;
         theRegion.center = location.location.coordinate;
         CLLocationDegrees latitude = theRegion.center.latitude;
         CLLocationDegrees longtitude = theRegion.center.longitude;
         double speed = 0.0;
         [self.requestUtil sendAndGetAnnotation:_ridding.riddingId latitude:latitude longtitude:longtitude status:1 speed:speed isGetUsers:_isShowTeamers ? 1 : 0];
-      });
-    }
-  }];
+        
+      }
+    }];
+  });
 }
 
 //画路线
@@ -193,7 +204,7 @@
   dispatch_queue_t q;
   q = dispatch_queue_create("drawRoutes", NULL);
   dispatch_async(q, ^{
-    _line_color = [UIColor getColor:lineColor];
+   
     NSArray *routeArray = [RiddingLocationDao getRiddingLocations:_ridding.riddingId beginWeight:0];
     if ([routeArray count] > 0) {
       for (RiddingLocation *location in routeArray) {
@@ -213,9 +224,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
       if (self) {
         
-        self.distanceLabel.text = [NSString stringWithFormat:@"总距离:%0.2lf km", _ridding.map.distance*1.0/1000];
-       
-        [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:_line_color routes:self.routes];
+        [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:[UIColor getColor:lineColor] routes:self.routes width:5.0];
         [[MapUtil getSinglton] center_map:self.mapView routes:self.routes];
         CLLocation *startLocation = [self.routes objectAtIndex:0];
         [self addStartAnnotationWithcoordinateX:startLocation.coordinate.latitude coordinateY:startLocation.coordinate.longitude Title:@"title1" Subtitle:@"subtitle1"];
@@ -230,12 +239,6 @@
   });
 }
 
-- (void)myLocationQuartz {
-
-  NSTimeInterval time = [[NSString stringWithFormat:@"%@", sendMyLocationTime] doubleValue];
-  _sendMyLocationTimer = [NSTimer scheduledTimerWithTimeInterval:time target:self selector:@selector(sendMyLocationQuartz) userInfo:nil repeats:YES];
-  [_sendMyLocationTimer fire];
-}
 
 
 - (void)addStartAnnotationWithcoordinateX:(double)coorX coordinateY:(double)coorY
@@ -296,15 +299,15 @@
   }
   dispatch_queue_t q;
   q = dispatch_queue_create("updateAnnotations", NULL);
-  for (User *user in self.userArray) {
-    //如果是当前用户
-    if (user.userId == _staticInfo.user.userId) {
-      continue;
-    }
-    dispatch_async(q, ^{
-
+  
+  dispatch_async(q, ^{
+    for (User *user in self.userArray) {
+      //如果是当前用户
+      if (user.userId == _staticInfo.user.userId) {
+        continue;
+      }
       User *serverUser = [mulDic objectForKey:LONGLONG2NUM(user.userId)];
-     
+      
       if (serverUser != nil) {
         CLLocationDegrees latitude = serverUser.latitude;
         CLLocationDegrees longtitude = serverUser.longtitude;
@@ -326,8 +329,9 @@
         userAnnotation.title = user.name;
         user.annotation = userAnnotation;
       }
-    });
-  }
+    }
+  });
+
   _onlineUserCount = 0;
   for (UIView *view in [self.userScrollView subviews]) {
     if ([view isKindOfClass:[UserView class]]) {
@@ -346,34 +350,34 @@
 
 - (void)updatePhotoAnnotation {
 
-  [SVProgressHUD showWithStatus:@"获取图片中。。"];
+  [SVProgressHUD showWithStatus:@"获取图片中"];
   dispatch_async(dispatch_queue_create("updatePhotoAnnotation", NULL), ^{
     [_photoArray removeAllObjects];
     NSArray *serverArray = [self.requestUtil getUploadedPhoto:_ridding.riddingId limit:-1 lastUpdateTime:-1];
-    dispatch_async(dispatch_get_main_queue(), ^{
-      if ([serverArray count] > 0) {
-        int index = 0;
-        for (NSDictionary *dic in serverArray) {
-       
-          RiddingPicture *picture = [[RiddingPicture alloc] initWithJSONDic:[dic objectForKey:keyRiddingPicture]];
-          if (picture) {
-            CLLocationDegrees latitude = picture.latitude;
-            CLLocationDegrees longtitude = picture.longtitude;
-            PhotoAnnotation *photoAnnotation = [[PhotoAnnotation alloc] initWithLatitude:latitude andLongitude:longtitude];
-            NSURL *url = [QiNiuUtils getUrlBySizeToUrl:CGSizeMake(50, 50) url:picture.photoUrl type:QINIUMODE_DESHORT];
-            NSData *imageData = [NSData dataWithContentsOfURL:url];
-            photoAnnotation.image = [UIImage imageWithData:imageData];
-            photoAnnotation.index = index++;
-            [self.mapView addAnnotation:photoAnnotation];
+    
+    if ([serverArray count] > 0) {
+      for (int i=0;i<[serverArray count];i++) {
+        NSDictionary *dic=[serverArray objectAtIndex:i];
+        RiddingPicture *picture = [[RiddingPicture alloc] initWithJSONDic:[dic objectForKey:keyRiddingPicture]];
+        if (picture) {
+          CLLocationDegrees latitude = picture.latitude;
+          CLLocationDegrees longtitude = picture.longtitude;
+          dispatch_async(dispatch_get_main_queue(), ^{
+            BasicPhotoAnnotation *basicPhotoAnnotation = [[BasicPhotoAnnotation alloc] initWithLatitude:latitude andLongitude:longtitude];
+            basicPhotoAnnotation.index = i;
+            [self.mapView addAnnotation:basicPhotoAnnotation];
             [_photoArray addObject:picture];
-            index++;
-          } else {
-            [SVProgressHUD showErrorWithStatus:@"您还没有照片噢,赶紧去拍一张"];
-          }
+          });
         }
       }
-      [SVProgressHUD dismiss];
-    });
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [SVProgressHUD dismiss];
+      });
+    }else {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [SVProgressHUD showErrorWithStatus:@"您还没有照片噢,赶紧去拍一张" duration:1.0];
+      });
+    }
   });
 }
 
@@ -397,7 +401,7 @@
     NSArray *annotations = [self.mapView annotations];
     if (annotations && [annotations count] > 0) {
       for (id <MKAnnotation> annotation in annotations) {
-        if ([annotation isKindOfClass:[CalloutMapAnnotation class]]) {
+        if ([annotation isKindOfClass:[PhotoAnnotationView class]]) {
           [self.mapView removeAnnotation:annotation];
         }
       }
@@ -447,12 +451,12 @@
 - (void)setUserScrollView {
 
   isShowDelete = FALSE;
-  int width = 80;
-  int height = 80;
+  int width = 45;
+  int height = 51;
   int index = 1;
   int addViewCount = 1;
   //如果不是队长是成员
-  if (!_staticInfo.user.isLeader || _ridding.riddingStatus == 20) {
+  if (!_staticInfo.user.isLeader || [_ridding isEnd]) {
     addViewCount = 0;
     index = 0;
   }
@@ -462,22 +466,21 @@
   if (self.userArray && [self.userArray count] > 4) {
     [imageView setFrame:CGRectMake(0, 0, width * ([self.userArray count] + addViewCount), self.userScrollView.frame.size.height)];
   }
-  UIView *outActionView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-  outActionView.userInteractionEnabled = YES;
-  UITapGestureRecognizer *viewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionViewClick:)];
-  [outActionView addGestureRecognizer:viewTap];
-  if (_staticInfo.user.isLeader && _ridding.riddingStatus != 20) {
-    UIImageView *actionview = [[UIImageView alloc] initWithFrame:CGRectMake(10, 15, 60, 60)];
-    UIImage *image = [UIImage imageNamed:@"addUser.png"];
-    actionview.image = image;
-    [outActionView addSubview:actionview];
+  
+  if (_staticInfo.user.isLeader && ![_ridding isEnd]) {
+    UIButton *actionBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    actionBtn.frame=CGRectMake(10, 13, 35, 25);
+    [actionBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_addmember_icon_add") forState:UIControlStateNormal];
+    [actionBtn addTarget:self action:@selector(actionViewClick:) forControlEvents:UIControlEventTouchUpInside];
+    actionBtn.showsTouchWhenHighlighted=YES;
+    [self.userScrollView addSubview:actionBtn];
   }
-  [self.userScrollView addSubview:outActionView];
+  
   self.userScrollView.contentSize = CGSizeMake(width, height);
   self.userScrollView.bounces = YES;
   if (self.userArray && [self.userArray count] > 0) {
     for (User *user in self.userArray) {
-      UserView *userView = [[UserView alloc] initWithFrame:CGRectMake(5 + (width) * (index++), 0, width, height)];
+      UserView *userView = [[UserView alloc] initWithFrame:CGRectMake(10 + (width) * (index++), 0, width, height)];
       userView.user = user;
       userView.delegate = self;
       userView = [userView init];
@@ -498,9 +501,9 @@
 #pragma mark - Animation for Member Views
 //点击地图后，scrollview隐藏显示的信息操作
 - (void)mapViewClick:(UITapGestureRecognizer *)gestureRecognize {
-
+  
   if (_isUserTapViewOut == TRUE) {
-    [self membersViewUpToDown];
+    [self membersViewDownToUp];
     _isUserTapViewOut = FALSE;
     NSArray *array = [self.userScrollView subviews];
     if (array && [array count] > 0) {
@@ -595,7 +598,7 @@
   _userInited = FALSE;
   InvitationViewController *invitationView = [[InvitationViewController alloc] initWithNibName:@"InvitationViewController" bundle:nil riddingId:_ridding.riddingId nowTeamers:self.userArray];
   [self.navigationController pushViewController:invitationView animated:YES];
-  [self membersViewUpToDown];
+  [self membersViewDownToUp];
 }
 
 - (void)membersViewDownToUp {
@@ -603,27 +606,26 @@
   if (!_userInited || !_routesInited) {
     return;
   }
-  if (self.userScrollView.frame.origin.y != SCREEN_HEIGHT) {
+  if (self.userScrollView.frame.origin.y < 0) {
     return;
   }
   _isAnimationing = YES;
-  [_menu setHidden:YES];
   [UIView beginAnimations:nil context:NULL];
   [UIView setAnimationDuration:0.3f];
   [UIView setAnimationDelegate:self];
   [UIView setAnimationDidStopSelector:@selector(myAnimationDidStop:finished:context:)];
-  [self.userScrollView setFrame:CGRectMake(0, SCREEN_HEIGHT- self.userScrollView.frame.size.height, self.view.frame.size.width, self.userScrollView.frame.size.height)];
+  [self.userScrollView setFrame:CGRectMake(0, SCREEN_STATUS_BAR -  self.userScrollView.frame.size.height, self.view.frame.size.width, self.userScrollView.frame.size.height)];
   [UIView commitAnimations];
   if (_isShowTeamers) {
     self.userOnlineLabel.hidden = NO;
   }
-
-  _isUserTapViewOut = TRUE;
+  _isUserTapViewOut = FALSE;
+  
 }
 
 - (void)membersViewUpToDown {
 
-  if (self.userScrollView.frame.origin.y == SCREEN_HEIGHT) {
+  if (self.userScrollView.frame.origin.y > 0) {
     return;
   }
   self.userOnlineLabel.hidden = YES;
@@ -633,10 +635,10 @@
   [UIView setAnimationDuration:0.3f];
   [UIView setAnimationDelegate:self];
   [UIView setAnimationDidStopSelector:@selector(myAnimationDidStop:finished:context:)];
-  [self.userScrollView setFrame:CGRectMake(0, SCREEN_HEIGHT, self.userScrollView.frame.size.width, self.userScrollView.frame.size.height)];
+  [self.userScrollView setFrame:CGRectMake(0, SCREEN_STATUS_BAR, self.userScrollView.frame.size.width, self.userScrollView.frame.size.height)];
   [UIView commitAnimations];
-  [_menu setHidden:NO];
-  _isUserTapViewOut = FALSE;
+  
+  _isUserTapViewOut = TRUE;
 }
 
 - (void)removeAllUserView {
@@ -671,7 +673,7 @@
 //地图移动结束后的操作
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
 
-  [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:_line_color routes:self.routes];
+  [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:[UIColor getColor:lineColor]  routes:self.routes width:5.0];
   self.route_view.hidden = NO;
   [self.route_view setNeedsDisplay];
 }
@@ -679,14 +681,14 @@
 //选中某个annotation时
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
   //添加点击弹出图
-  if ([view.annotation isKindOfClass:[PhotoAnnotation class]]) {
+  if ([view.annotation isKindOfClass:[BasicPhotoAnnotation class]]) {
     [self removeAllCalloutAnnotations];
-    PhotoAnnotation *photoAnnotation = (PhotoAnnotation *) view.annotation;
-    CLLocationCoordinate2D location = photoAnnotation.coordinate;
-    CalloutMapAnnotation *annotation = [[CalloutMapAnnotation alloc] initWithLatitude:location.latitude andLongitude:location.longitude];
-    annotation.index = photoAnnotation.index;
-    _showingImage = photoAnnotation.image;
-    [self.mapView addAnnotation:annotation];
+    BasicPhotoAnnotation *basicPhotoAnnotation = (BasicPhotoAnnotation *) view.annotation;
+    CLLocationCoordinate2D location = basicPhotoAnnotation.coordinate;
+    PhotoAnnotation *photoAnnotation = [[PhotoAnnotation alloc] initWithLatitude:location.latitude andLongitude:location.longitude];
+    photoAnnotation.index = basicPhotoAnnotation.index;
+    
+    [self.mapView addAnnotation:photoAnnotation];
     _showingAnnotationView = view;
   }
 }
@@ -707,14 +709,14 @@
   }
   if ([annotation isKindOfClass:[StartAnnotation class]]) {
     MKAnnotationView *newAnnotation = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"annotationStart"];
-    newAnnotation.image = [UIImage imageNamed:@"起点.png"];
+    newAnnotation.image = UIIMAGE_FROMPNG(@"qqnr_dl_map_icon_start");
     newAnnotation.canShowCallout = NO;
     return newAnnotation;
   }
 
   if ([annotation isKindOfClass:[EndAnnotation class]]) {
     MKAnnotationView *newAnnotation = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"annotationEnd"];
-    newAnnotation.image = [UIImage imageNamed:@"终点.png"];
+    newAnnotation.image = UIIMAGE_FROMPNG(@"qqnr_dl_map_icon_end");
     newAnnotation.canShowCallout = NO;
     return newAnnotation;
   }
@@ -731,46 +733,45 @@
     headImage.image = userAnnotation.headImage;
     customPinView.leftCalloutAccessoryView = headImage; //设置最左边的头像
 
-    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    [rightButton addTarget:self action:@selector(showDetails)  //点击右边的按钮之后，显示另外一个页面
-          forControlEvents:UIControlEventTouchUpInside];
-
-    customPinView.rightCalloutAccessoryView = rightButton;
-    UIImage *image = [UIImage imageNamed:@"其他队友.png"];
-    customPinView.image = image;
+//    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+//    [rightButton addTarget:self action:@selector(showDetails)  //点击右边的按钮之后，显示另外一个页面
+//          forControlEvents:UIControlEventTouchUpInside];
+//
+//    customPinView.rightCalloutAccessoryView = rightButton;
+    customPinView.image = UIIMAGE_FROMPNG(@"qqnr_map_icon_member");
     customPinView.opaque = YES;
     return customPinView;
   }
-  if ([annotation isKindOfClass:[PhotoAnnotation class]]) {
-    static NSString *travellerAnnotationIdentifier = @"PhotoAnnotationIdentifier";
-    MKPinAnnotationView *pinView = (MKPinAnnotationView *)
-        [self.mapView dequeueReusableAnnotationViewWithIdentifier:travellerAnnotationIdentifier];
-    if (!pinView) {
-      pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"PhotoAnnotationIdentifier"];
-    } else {
-      pinView.annotation = annotation;
+  
+  if ([annotation isKindOfClass:[BasicPhotoAnnotation class]]) {
+    
+    MKAnnotationView *pinView = (MKAnnotationView*)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"PhotoAnnotationIdentifier"];
+    if(!pinView){
+      pinView = [[MKAnnotationView alloc] initWithAnnotation:annotation
+                                                reuseIdentifier:@"PhotoAnnotationIdentifier"];
+      [pinView setCanShowCallout:NO];
+      [pinView setDraggable:NO];
+      pinView.image=UIIMAGE_FROMPNG(@"qqnr_map_icon_photo");
+    }else{
+      pinView.annotation=annotation;
     }
+    
     return pinView;
   }
-  if ([annotation isKindOfClass:[CalloutMapAnnotation class]]) {
-    CalloutMapAnnotationView *calloutMapAnnotationView = [[CalloutMapAnnotationView alloc] initWithAnnotation:annotation
-                                                                                              reuseIdentifier:@"CalloutAnnotation"];
-    calloutMapAnnotationView.contentHeight = 90.0f;
-    calloutMapAnnotationView.userInteractionEnabled = YES;
-    CalloutMapAnnotation *callOutAnnotation = (CalloutMapAnnotation *) annotation;
-    calloutMapAnnotationView.index = callOutAnnotation.index;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoViewTap:)];
-    [calloutMapAnnotationView addGestureRecognizer:tap];
-    CGFloat width = 90;
-    CGFloat height = width / CGImageGetWidth([_showingImage CGImage]) * CGImageGetHeight([_showingImage CGImage]);
-    SWSnapshotStackView *stackView = [[SWSnapshotStackView alloc] initWithFrame:CGRectMake(5, 2, width, height)];
-    stackView.contentMode = UIViewContentModeRedraw;
-    stackView.displayAsStack = NO;
-    stackView.image = _showingImage;
-    [calloutMapAnnotationView.contentView addSubview:stackView];
-    calloutMapAnnotationView.parentAnnotationView = _showingAnnotationView;
-    calloutMapAnnotationView.mapView = self.mapView;
-    return calloutMapAnnotationView;
+  
+  if ([annotation isKindOfClass:[PhotoAnnotation class]]) {
+    PhotoAnnotationView *annotationView = (PhotoAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"PhotoAnnotationView"];
+    if (!annotationView) {
+      annotationView = [[PhotoAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"PhotoAnnotationView"];
+    }
+    PhotoAnnotation *photoAnnotation=(PhotoAnnotation*)annotation;
+    AnnotationPhotoView  *view = [[[NSBundle mainBundle] loadNibNamed:@"AnnotationPhotoView" owner:self options:nil] objectAtIndex:0];
+    view.index=photoAnnotation.index;
+    view.delegate=self;
+    RiddingPicture *picture=[_photoArray objectAtIndex:photoAnnotation.index];
+    [view initViewWithPhoto:picture];
+    [annotationView.contentView addSubview:view];
+    return annotationView;
   }
   return nil;
 }
@@ -779,13 +780,13 @@
   //显示用户详情,annotationview
 }
 
-- (void)photoViewTap:(UIGestureRecognizer *)gesture {
-
-  CalloutMapAnnotationView *view = (CalloutMapAnnotationView *) gesture.view;
+- (void)photoClick:(AnnotationPhotoView*)view{
+  
   QQNRImagesScrollVCTL *vctl = [[QQNRImagesScrollVCTL alloc] initWithNibName:@"QQNRImagesScrollVCTL" bundle:nil startPageIndex:view.index];
   vctl.photoArray = _photoArray;
   [self.navigationController pushViewController:vctl animated:YES];
 }
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 
@@ -793,6 +794,14 @@
 }
 
 #pragma mark - Button Responser IBAction
+- (IBAction)weatherBtnClick:(id)sender{
+//  for(NSString *taps in _ridding.map.mapTaps){
+//    NSDictionary *dic= [self.requestUtil weatherRequest:taps];
+//    NSArray *dateArray=[dic objectForKey:keyWeather];
+//    Weather *weather=[[Weather alloc]initWithJSONDic:[dateArray objectAtIndex:0]];
+//  }
+}
+
 - (IBAction)backBtnClick:(id)sender {
 
   if (self) {
@@ -809,10 +818,15 @@
   if (![_sendMyLocationTimer isValid]) {
     [_sendMyLocationTimer fire];
   }
+  if(_zooming){
+    return;
+  }
+  _zooming=TRUE;
   MKCoordinateRegion region;
   region.center = [self.mapView userLocation].coordinate;
   region.span = self.mapView.region.span;
   [self.mapView setRegion:region animated:YES];
+  _zooming=FALSE;
 }
 
 - (IBAction)zoomInButtonClicked:(id)sender {
@@ -824,10 +838,11 @@
   MKCoordinateRegion region = self.mapView.region;
   region.span.latitudeDelta = region.span.latitudeDelta / 2;
   region.span.longitudeDelta = region.span.longitudeDelta / 2;
+  _zooming = TRUE;
   if (region.span.latitudeDelta > 0 && region.span.longitudeDelta > 0) {
     [self.mapView setRegion:region animated:YES];
   }
-  _zooming = false;
+  _zooming = FALSE;
 
 }
 
@@ -840,91 +855,35 @@
   if (_zooming || region.span.latitudeDelta > 200) {
     return;
   }
-  _zooming = true;
+  _zooming = TRUE;
   [self.mapView setRegion:region animated:YES];
-  _zooming = false;
+  _zooming = FALSE;
 }
 
-
-- (void)initAwesomeView {
-
-  UIImage *storyMenuItemImage = UIIMAGE_FROMPNG(@"bg-menuitem");
-  UIImage *storyMenuItemImagePressed = UIIMAGE_FROMPNG(@"bg-menuitem-highlighted");
-
-  UIImage *showUser;
-  if (_isShowTeamers) {
-    showUser = UIIMAGE_FROMPNG(@"showSingleUser");
-  } else {
-    showUser = UIIMAGE_FROMPNG(@"showMultipleUsers");
-  }
-
-  UIImage *takePhotoImg = UIIMAGE_FROMPNG(@"btn_fabu");
-  AwesomeMenuItem *starMenuItem2 = [[AwesomeMenuItem alloc] initWithImage:storyMenuItemImage
-                                                         highlightedImage:storyMenuItemImagePressed
-                                                             ContentImage:showUser
-                                                  highlightedContentImage:nil];
-  AwesomeMenuItem *starMenuItem3 = [[AwesomeMenuItem alloc] initWithImage:storyMenuItemImage
-                                                         highlightedImage:storyMenuItemImagePressed
-                                                             ContentImage:takePhotoImg
-                                                  highlightedContentImage:nil];
-
-
-  NSArray *menus = [NSArray arrayWithObjects:starMenuItem2, starMenuItem3, nil];
-
-
-  _menu = [[AwesomeMenu alloc] initWithFrame:CGRectMake(-130, 170, 38, 38) menus:menus];
-  _menu.frame = CGRectMake(_menu.frame.origin.x, SCREEN_HEIGHT- (460 - _menu.frame.origin.y), _menu.frame.size.width, _menu.frame.size.height);
-  // customize menu
-  _menu.rotateAngle = M_PI / 5.0;
-  _menu.menuWholeAngle = M_PI / 2.5;
-  _menu.timeOffset = 0.1f;
-  _menu.farRadius = 200.0f;
-  _menu.endRadius = 150.0f;
-  _menu.nearRadius = 50.0f;
-  _menu.delegate = self;
-  [self.view addSubview:_menu];
-
+- (IBAction)takePhotoAction:(id)sender{
+  [self showActionSheet];
 }
 
-- (void)AwesomeMenu:(AwesomeMenu *)menu didSelectIndex:(NSInteger)idx {
-
-  switch (idx) {
-    case 0: {
-      [_redSC moveThumbToIndex:0 animate:YES];
-      [self membersViewDownToUp];
-    }
-      break;
-    case 1: {
-      [self showActionSheet];
-    }
-      break;
-    default:
-      DLog(@"error!");
-      break;
-  }
-}
-
-
-#pragma mark -
-#pragma mark SPSegmentedControl
-- (void)segmentedControlChangedValue:(SVSegmentedControl *)segmentedControl {
-
+- (IBAction)showPicAction:(id)sender{
   [self removeAllAnnotations];
-  if (segmentedControl.selectedIndex == SHOWTEAMER) {
-    //设置显示所有队友
-    _isShowTeamers = TRUE;
-    [self membersViewDownToUp];
-    [self sendMyLocationQuartz];
+  _isShowTeamers = FALSE;
+  [self updatePhotoAnnotation];
+  [self membersViewDownToUp];
+}
 
-  } else if (segmentedControl.selectedIndex == SHOWSELF) {
-    //设置不显示
-    _isShowTeamers = FALSE;
-    [self membersViewUpToDown];
-  } else {
-    _isShowTeamers = FALSE;
-    [self updatePhotoAnnotation];
-    [self membersViewUpToDown];
-  }
+- (IBAction)showMySelfAction:(id)sender{
+  [self removeAllAnnotations];
+  //设置不显示
+  _isShowTeamers = FALSE;
+  [self membersViewDownToUp];
+}
+
+- (IBAction)showTeamerAction:(id)sender{
+  [self removeAllAnnotations];
+  //设置显示所有队友
+  _isShowTeamers = TRUE;
+  [self membersViewUpToDown];
+  [self sendMyLocationQuartz];
 }
 
 #pragma mark -

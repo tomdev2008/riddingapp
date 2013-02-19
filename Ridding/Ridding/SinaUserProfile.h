@@ -25,4 +25,6 @@
 
 
 @property (nonatomic) BOOL isSelected;
+
+- (NSString*)avatorUrlStr;
 @end

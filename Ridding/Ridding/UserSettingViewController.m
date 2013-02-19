@@ -88,7 +88,7 @@
     return 3;//推荐、帮助、升级
   }
   if (section == 1) {
-    return 2;//退出,注销
+    return 1;//退出,注销
   }
   return 0;
 }
@@ -117,7 +117,7 @@
         cell.textLabel.text = @"登录";
       }
     } else {
-      cell.textLabel.text = @"升级成为会员";
+   //   cell.textLabel.text = @"升级成为会员";
     }
   }
   cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 20, 20);
@@ -181,9 +181,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [prefs removeObjectForKey:kStaticInfo_totalDistance];
   [prefs removeObjectForKey:kStaticInfo_sourceType];
   [prefs removeObjectForKey:kStaticInfo_backgroundUrl];
-  [prefs removeObjectForKey:kStaticInfo_apnsToken];
   [prefs removeObjectForKey:kStaticInfo_riddingCount];
   [prefs removeObjectForKey:kStaticInfo_nickname];
+  [prefs removeObjectForKey:kRecomApp];
   [RiddingAppDelegate popAllNavgation];
 
   PublicViewController *publicViewController = [[PublicViewController alloc] init];
@@ -198,11 +198,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)updateToVIP {
 
-  NSURL *url = [NSURL URLWithString:@"taobao://item.taobao.com/item.htm?id=12688928896"];
+  NSURL *url = [NSURL URLWithString:@"taobao://item.taobao.com/item.htm?id=17949300076"];
   if ([[UIApplication sharedApplication] canOpenURL:url]) {
     [[UIApplication sharedApplication] openURL:url];
   } else {
-    url = [NSURL URLWithString:[NSString stringWithFormat:@"http://item.taobao.com/item.htm?id=12688928896"]];
+    url = [NSURL URLWithString:[NSString stringWithFormat:@"http://item.taobao.com/item.htm?id=17949300076"]];
     [[UIApplication sharedApplication] openURL:url];
   }
 }

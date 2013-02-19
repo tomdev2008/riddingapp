@@ -7,7 +7,7 @@
 //
 
 #import "BasicObject.h"
-
+#define keyMapFix @"mapfix"
 @interface MapFix : BasicObject
 
 @property (nonatomic) double latitude;

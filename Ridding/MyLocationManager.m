@@ -29,7 +29,7 @@ static MyLocationManager *manager = nil;
   if (self) {
     _myLocationManager = [[CLLocationManager alloc] init];
     [_myLocationManager setDelegate:self];
-    [_myLocationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    [_myLocationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
     if ([CLLocationManager headingAvailable]) {
       _myLocationManager.headingFilter = 5;
     }
@@ -56,8 +56,8 @@ static MyLocationManager *manager = nil;
            fromLocation:(CLLocation *)oldLocation {
 
   RequestUtil *requestUtil = [[RequestUtil alloc] init];
-  NSDictionary *myLocationDic = [requestUtil getMapFix:_myLocationManager.location.coordinate.latitude longtitude:_myLocationManager.location.coordinate.longitude];
-  MapFix *mapFix = [[MapFix alloc] initWithJSONDic:[myLocationDic objectForKey:@"mapfix"]];
+  NSDictionary *myLocationDic = [requestUtil getMapFix:(CGFloat) _myLocationManager.location.coordinate.latitude longtitude:(CGFloat) _myLocationManager.location.coordinate.longitude];
+  MapFix *mapFix = [[MapFix alloc] initWithJSONDic:[myLocationDic objectForKey:keyMapFix]];
 
   CLLocation *location;
   if (mapFix.realLatitude && mapFix.realLongtitude) {
@@ -81,11 +81,13 @@ static MyLocationManager *manager = nil;
       myLocation.longtitude = location.coordinate.longitude;
       myLocation.location = [[CLLocation alloc] initWithLatitude:myLocation.latitude longitude:myLocation.longtitude];
       _block(myLocation);
-      dispatch_async(dispatch_get_main_queue(), ^{
-        [_myLocationManager stopUpdatingLocation];
-      });
+      [_myLocationManager stopUpdatingLocation];
     }
     [geoCoder cancelGeocode];
   }];
+}
+
+- (void)stopUpdateLocation{
+  [_myLocationManager stopUpdatingLocation];
 }
 @end

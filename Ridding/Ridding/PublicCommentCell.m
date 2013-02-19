@@ -40,6 +40,8 @@
  
   _descLabel.lineBreakMode = UILineBreakModeWordWrap;
   _descLabel.numberOfLines = 0;
+  
+  _separatorLine.image=[UIIMAGE_FROMPNG(@"qqnr_pd_comment_line") stretchableImageWithLeftCapWidth:17 topCapHeight:0];
 
 
   [super awakeFromNib];

@@ -9,12 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h> 
 
-@interface PhotoAnnotation : NSObject <MKAnnotation> {
+@interface PhotoAnnotation : NSObject <MKAnnotation>{
   CLLocationDegrees _latitude;
   CLLocationDegrees _longitude;
 }
 
-@property (nonatomic, retain) UIImage *image;
 @property (nonatomic) int index;
 
 - (id)initWithLatitude:(CLLocationDegrees)latitude

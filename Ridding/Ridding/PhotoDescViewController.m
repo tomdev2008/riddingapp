@@ -12,7 +12,7 @@
 #import "MyLocationManager.h"
 #import "SVProgressHUD.h"
 #import "SinaApiRequestUtil.h"
-#import "NSString+TomAddition.h"
+#import "NSString+Addition.h"
 #import "NSDate+Addition.h"
 
 @interface PhotoDescViewController () {
@@ -39,12 +39,14 @@
   
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   
+  [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_dl_navbar_icon_create") forState:UIControlStateNormal];
+  [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_dl_navbar_icon_create") forState:UIControlStateHighlighted];
+  [self.barView.rightButton setHidden:NO];
   
-  [self.barView.rightButton setTitle:@"确定" forState:UIControlStateNormal];
-  self.barView.rightButton.hidden = NO;
-  [self.barView.leftButton setTitle:@"取消" forState:UIControlStateNormal];
-  [self.barView.leftButton setTitle:@"取消" forState:UIControlStateHighlighted];
-  self.barView.leftButton.hidden = NO;
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
+  [self.barView.leftButton setHidden:NO];
+  
   self.barView.titleLabel.text = @"照片描述";
 
   self.imageView.image = [_riddingPicture imageFromLocal];
@@ -101,17 +103,21 @@
 
 - (void)rightBtnClicked:(id)sender {
 
+  if([_textView.text isEqualToString:@"给照片加段描述吧 ^_^"]){
+    [SVProgressHUD showErrorWithStatus:@"没有描述噢~" duration:1.0];
+    return;
+  }
+  
+  
   QQNRServerTask *task = [[QQNRServerTask alloc] init];
   task.step = STEP_UPLOADDESC;
-  
-  
 
    NSDate *date = [self.timeLabel.text pd_yyyyMMddHHmmssDate];
   
   _riddingPicture.takePicDateL=(long long) [date timeIntervalSince1970] * 1000;
   _riddingPicture.pictureDescription=self.textView.text;
 
-  __block NSString *weiboDesc = [NSString stringWithFormat:@"\"%@\" 我的骑行旅程:%@。同步更新中。。。 我正在使用骑行者app:%@ @骑去哪儿", _riddingPicture.pictureDescription,_riddingName,QIQUNARHOME];
+  __block NSString *weiboDesc = [NSString stringWithFormat:@"\"%@\" 我的骑行旅程:%@。同步更新中。。。 正在使用骑行者app:%@ @骑去哪儿", _riddingPicture.pictureDescription,_riddingName,QIQUNARHOME];
   __block BOOL isSyncSina = _syncSina;
   [task setDataProcessBlock:(BlockProcessLastTaskData) ^(NSDictionary *dic) {
     RiddingPicture *picture = [dic objectForKey:kFileClientServerUpload_RiddingPicture];
@@ -144,7 +150,11 @@
 }
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-   [_datePicker hideDatePicker];
+  
+  if([_textView.text isEqualToString:@"给照片加段描述吧 ^_^"]){
+    _textView.text=@"";
+  }
+  [_datePicker hideDatePicker];
   return TRUE;
 }
 

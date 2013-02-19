@@ -36,9 +36,11 @@
 
 #define QIQUNARHOME @"http://qiqunar.com.cn"
 
-#define sendMyLocationTime @"10"
+#define sendMyLocationTime 10.0
+#define showRightViewTime 5.0
 #define YouMenAppKey @"4fb3ce805270152b53000128"
 #define MY_BANNER_UNIT_ID @"a151069f9007f3a"
+#define WeatherOnlineKey @"a0303031de124838131702"
 
 #ifdef DEBUG
 #   define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
@@ -66,7 +68,7 @@
 #define ColorGreen @"1fb1a6"
 #define ColorBlue @"5cc1de"
 #define ColorTextColor @"FFFFFF"
-#define lineColor @"0048ff"
+#define lineColor @"1ec88f"
 #define kColor_pickerViewBarTint    [UIColor colorWithWhite:128/255.0 alpha:1.0]
 #define LeftBarMoveWidth 260
 

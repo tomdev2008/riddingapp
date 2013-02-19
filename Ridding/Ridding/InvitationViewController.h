@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import "SinaUserProfile.h"
-
-@interface InvitationViewController : BasicViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate> {
+#import "InvitationViewCell.h"
+@interface InvitationViewController : BasicViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate,InvitationViewCellDelegate> {
   long long _riddingId;
   NSMutableArray *_nowUser;
   NSMutableDictionary *_originUser;
@@ -19,9 +19,7 @@
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *atableView;
-@property (nonatomic, retain) IBOutlet UIButton *searchButton;
 @property (nonatomic, retain) IBOutlet UITextField *searchField;
-@property (nonatomic, retain) IBOutlet UIButton *backButton;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingId:(long long)riddingId nowTeamers:(NSArray *)nowTeamers;

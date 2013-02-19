@@ -10,7 +10,8 @@
 #import "UIColor+XMin.h"
 #import "SinaApiRequestUtil.h"
 #import "SVProgressHUD.h"
-
+#import "InvitationViewCell.h"
+#import "Utilities.h"
 @implementation InvitationViewController
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingId:(long long)riddingId nowTeamers:(NSArray *)nowTeamers {
 
@@ -40,10 +41,17 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 
-  [self.atableView setBackgroundColor:[UIColor getColor:@"5F5F5F"]];
-  UIColor *color = [UIColor colorWithPatternImage:[UIImage imageNamed:@"I分割线.png"]];
-  [self.atableView setSeparatorColor:color];
-  [self.atableView reloadData];
+  self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
+//  [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_dl_navbar_icon_create") forState:UIControlStateNormal];
+//  [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_dl_navbar_icon_create") forState:UIControlStateHighlighted];
+//  [self.barView.rightButton setHidden:YES];
+  
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
+  [self.barView.leftButton setHidden:NO];
+
+  [self.barView.titleLabel setText:@"添加队员"];
+
   [super viewDidLoad];
 }
 
@@ -80,21 +88,8 @@
   });
 }
 
-- (IBAction)searchButtonClicked:(id)sender {
-
-  if (_isSearching) {
-    _isSearching = FALSE;
-    [self.searchButton setImage:[UIImage imageNamed:@"search2.png"] forState:UIControlStateNormal];
-    [self.searchButton setImage:[UIImage imageNamed:@"search1.png"] forState:UIControlStateHighlighted];
-    [self.searchField resignFirstResponder];
-    [self.atableView reloadData];
-  }
-}
-
-//点击返回
-- (IBAction)backButtonClicked:(id)sender {
-
-  [SVProgressHUD showWithStatus:@"请稍候"];
+- (void)leftBtnClicked:(id)sender{
+  [SVProgressHUD showWithStatus:@"添加中，请稍候"];
   NSMutableArray *returnUsers = [[NSMutableArray alloc] init];
   for (User *user in _nowUser) {
     if (user.isSelected) {
@@ -113,9 +108,14 @@
   });
 
 }
+- (void)rightBtnClicked:(id)sender{
+  
+  [super rightBtnClicked:sender];
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 
+  [_sinaUsers removeAllObjects];
   [textField setEnabled:NO];
   [textField resignFirstResponder];
   [SVProgressHUD show];
@@ -144,7 +144,6 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 
-  [_sinaUsers removeAllObjects];
   NSArray *tempArray = [_nowUser copy];
   for (User *user in tempArray) {
     if (!user.isSelected) {
@@ -152,8 +151,7 @@
     }
   }
   _isSearching = TRUE;
-  [self.searchButton setImage:[UIImage imageNamed:@"searchFinish1.png"] forState:UIControlStateNormal];
-  [self.searchButton setImage:[UIImage imageNamed:@"searchFinish2.png"] forState:UIControlStateHighlighted];
+  [self.barView.rightButton setHidden:NO];
   [textField setText:@""];
   [self.atableView reloadData];
   return YES;
@@ -175,7 +173,7 @@
 //table的委托实现
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  return 44.0;
+  return 56;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -188,37 +186,34 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  static NSString *kCellID = @"cellID";
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
-  if (cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyle) UITableViewStylePlain reuseIdentifier:kCellID];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  }
+  
+  InvitationViewCell *cell = (InvitationViewCell *) [Utilities cellByClassName:@"InvitationViewCell" inNib:@"InvitationViewCell" forTableView:self.atableView];
   SinaUserProfile *userProfile;
   if (_isSearching) {
     userProfile = [_sinaUsers objectAtIndex:indexPath.row];
   } else {
     userProfile = [_nowUser objectAtIndex:indexPath.row];
   }
-  cell.textLabel.text = userProfile.screen_name;
-  if (userProfile.isSelected) {
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
-  } else {
-    cell.accessoryType = UITableViewCellAccessoryNone;
+  cell.delegate=self;
+  if (cell != nil) {
+    [cell initWithSinaUser:userProfile index:indexPath.row];
   }
-
   return cell;
 }
 
 /**
  * 点击选择某用户时
  **/
-- (void)      tableView:(UITableView *)tableView
-didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  
+  
+}
 
+- (void)checkBtnClick:(InvitationViewCell*)cell{
+  
   if (_isSearching) {
-    if ([_sinaUsers count] >= indexPath.row) {
-      SinaUserProfile *userProflie = [_sinaUsers objectAtIndex:indexPath.row];
+    if ([_sinaUsers count] >= cell.index) {
+      SinaUserProfile *userProflie = [_sinaUsers objectAtIndex: cell.index];
       if (userProflie.isSelected) {
         [_nowUser removeObject:userProflie];
         userProflie.isSelected = FALSE;
@@ -227,9 +222,12 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         [_nowUser addObject:userProflie];
       }
     }
+    _isSearching = FALSE;
+    [self.searchField resignFirstResponder];
+    self.searchField.text=@"";
   } else {
-    if ([_nowUser count] >= indexPath.row) {
-      SinaUserProfile *userProflie = [_nowUser objectAtIndex:indexPath.row];
+    if ([_nowUser count] >=  cell.index) {
+      SinaUserProfile *userProflie = [_nowUser objectAtIndex: cell.index];
       if (userProflie.isSelected) {
         userProflie.isSelected = FALSE;
       } else {

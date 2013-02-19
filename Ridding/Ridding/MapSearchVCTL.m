@@ -7,7 +7,8 @@
 //
 
 #import "MapSearchVCTL.h"
-
+#import "MapSearchCell.h"
+#import "Utilities.h"
 @interface MapSearchVCTL ()
 
 @end
@@ -31,7 +32,7 @@
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
   [self.barView.leftButton setHidden:NO];
-  [self.barView.titleLabel setText:@"位置搜索"];
+  [self.barView.titleLabel setText:@"地理位置搜索"];
 
 }
 
@@ -60,15 +61,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MapSearchVCTL"];
-  if (cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyle) UITableViewStylePlain reuseIdentifier:@"MapSearchVCTL"];
-    cell.accessoryType = UITableViewCellAccessoryNone;
-  }
+  MapSearchCell *cell = (MapSearchCell *) [Utilities cellByClassName:@"MapSearchCell" inNib:@"MapSearchCell" forTableView:self.tv];
   CLPlacemark *mark = [_placemarks objectAtIndex:indexPath.row];
-  cell.textLabel.text = mark.name;
-  cell.textLabel.font = [UIFont systemFontOfSize:13];
- 
+  if (cell != nil) {
+    [cell initView:mark.name];
+  }
   return cell;
 }
 

@@ -24,38 +24,25 @@
 
 - (UserView *)init {
   //添加头像
-
   _avatorBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-  _avatorBtn.frame = CGRectMake(10, 8, 60, 60);
-  _avatorBtn.layer.cornerRadius = 6.0;
+  _avatorBtn.frame = CGRectMake(10, 8, 35, 35);
+  _avatorBtn.layer.cornerRadius = 2.0;
   _avatorBtn.clipsToBounds = YES;
-
+  _avatorBtn.layer.borderColor=[[UIColor whiteColor]CGColor];
+  _avatorBtn.layer.borderWidth=2.0;
+  
   NSURL *url = [QiNiuUtils getUrlBySizeToUrl:_avatorBtn.frame.size url:self.user.bavatorUrl type:QINIUMODE_DESHORT];
   [_avatorBtn setImageWithURL:url placeholderImage:UIIMAGE_DEFAULT_USER_AVATOR];
   [_avatorBtn addTarget:self action:@selector(avatorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
   [self addSubview:_avatorBtn];
 
   //添加名牌
-  _brandView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 70, 70, 18)];
   if ([StaticInfo getSinglton].user.userId == self.user.userId) {
-    _brandView.image = [UIImage imageNamed:@"userBrand.png"];
   } else if (self.user.status == 1) {
-    _brandView.image = [UIImage imageNamed:@"userBrand.png"];
   } else {
-    _brandView.image = [UIImage imageNamed:@"userBrandOffline.png"];
   }
 
-  [self addSubview:_brandView];
 
-  //添加标签
-  _label = [[UILabel alloc] initWithFrame:CGRectMake(5, 70, 70, 18)];
-  _label.text = self.user.name;
-  _label.textAlignment = UITextAlignmentCenter;
-  [_label setBackgroundColor:[UIColor clearColor]];
-  _label.textColor = [UIColor whiteColor];
-  _label.font = [UIFont fontWithName:@"Arial" size:12];
-
-  [self addSubview:_label];
 
   //添加删除按钮，初始隐藏
   if ([StaticInfo getSinglton].user.isLeader && self.user.userId != [StaticInfo getSinglton].user.userId) {
@@ -74,11 +61,8 @@
 
   self.user.status = status;
   if ([StaticInfo getSinglton].user.userId == self.user.userId) {
-    _brandView.image = [UIImage imageNamed:@"userBrand.png"];
   } else if (status == 1) {
-    _brandView.image = [UIImage imageNamed:@"userBrand.png"];
   } else {
-    _brandView.image = [UIImage imageNamed:@"userBrandOffline.png"];
   }
 }
 
@@ -96,9 +80,6 @@
 //点击删除
 - (void)deleteBtnClick:(id)sender {
 
-  if (_brandView.hidden == TRUE) {
-    return;
-  }
   if ([self.delegate respondsToSelector:@selector(deleteBtnClick:)]) {
     [self.delegate deleteBtnClick:self];
   }

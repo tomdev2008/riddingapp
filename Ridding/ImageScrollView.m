@@ -125,7 +125,6 @@
   CGFloat yScale = boundsSize.height / picture.height;  // the scale needed to perfectly fit the image height-wise
   CGFloat minScale = MIN(xScale, yScale);
 
-
   CGSize size = CGSizeMake(minScale * picture.width, minScale * picture.height);
   NSURL *url = [QiNiuUtils getUrlBySizeToUrl:size url:picture.photoUrl type:QINIUMODE_DESHORT];
   if (![[SDWebImageManager sharedManager] imageWithURL:url]) {
@@ -137,8 +136,12 @@
     [SVProgressHUD dismiss];
   }];
 
-
-  imageView.frame = CGRectMake(0, 0, size.width, size.height);
+  if(picture.width<=0||picture.height<=0){
+    imageView.frame = CGRectMake(0, 0, 300, 300);
+  }else{
+    imageView.frame = CGRectMake(0, 0, size.width, size.height);
+  }
+  
 
 }
 

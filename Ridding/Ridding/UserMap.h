@@ -11,21 +11,19 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "BasicViewController.h"
-#import "AwesomeMenu.h"
 #import "StaticInfo.h"
-#import "SVSegmentedControl.h"
 #import "Ridding.h"
 #import "UserView.h"
-
+#import "AnnotationPhotoView.h"
 enum SHOWTYPE {
   SHOWTEAMER = 0,
   SHOWSELF = 1,
   SHOWPHOTO = 2,
 };
 
-@interface UserMap : BasicViewController <CLLocationManagerDelegate, MKAnnotation, MKMapViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate, AwesomeMenuDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UserViewDelegate> {
+@interface UserMap : BasicViewController <CLLocationManagerDelegate, MKAnnotation, MKMapViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UserViewDelegate,AnnotationPhotoViewDelegate> {
   StaticInfo *_staticInfo;
-  UIColor *_line_color;
+  
   BOOL _isShowTeamers;
   BOOL _isUserTapViewOut;
   BOOL _isAnimationing;
@@ -39,18 +37,16 @@ enum SHOWTYPE {
   MKAnnotationView *_showingAnnotationView;
 
   NSTimer *_sendMyLocationTimer;
+  
 
   BOOL _routesInited;
   BOOL _zooming;
   BOOL _userInited;
   MKAnnotationView *myLocationAnnotationView;
   User *_toUser;
-  UIImage *_showingImage;
   BOOL _isMyRidding;
   BOOL _isFromCamera;
   NSMutableArray *_photoArray;
-  AwesomeMenu *_menu;
-  SVSegmentedControl *_redSC;
   int _onlineUserCount;
 }
 
@@ -59,15 +55,9 @@ enum SHOWTYPE {
 @property (nonatomic, retain) NSMutableArray *routes;
 @property (nonatomic, strong) NSMutableArray *userArray;
 
-@property (nonatomic, retain) IBOutlet UILabel *distanceLabel;
-@property (nonatomic, retain) IBOutlet UILabel *toDistanceLabel;
-@property (nonatomic, strong) IBOutlet UIView *distanceSpeedView;
-
-@property (nonatomic, retain) IBOutlet UIButton *showLocationButton;
-@property (nonatomic, retain) IBOutlet UIButton *zoomInButton;
-@property (nonatomic, retain) IBOutlet UIButton *zoomOutButton;
 @property (nonatomic, retain) IBOutlet UIScrollView *userScrollView;
 @property (nonatomic, retain) IBOutlet UILabel *userOnlineLabel;
+@property (nonatomic, retain) IBOutlet UIView *rightView;
 
 - (id)initWithUser:(User *)toUser ridding:(Ridding *)ridding;
 

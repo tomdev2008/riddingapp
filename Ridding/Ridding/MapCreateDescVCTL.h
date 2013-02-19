@@ -23,7 +23,6 @@
 @property (nonatomic, retain) IBOutlet UITextField *beginLocationTV;
 @property (nonatomic, retain) IBOutlet UITextField *endLocationTV;
 @property (nonatomic, retain) IBOutlet UILabel *totalDistanceLB;
-@property (nonatomic, retain) IBOutlet UIImageView *mapImageView;
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) IBOutlet UIImageView *lineImageView;
 

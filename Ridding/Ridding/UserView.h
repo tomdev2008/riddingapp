@@ -12,16 +12,14 @@
 @class UserView;
 
 @protocol UserViewDelegate <NSObject>
-- (void)avatorBtnClick:(UserView *)userView; //声明协议方法
-- (void)deleteBtnClick:(UserView *)userView; //声明协议方法
+- (void)avatorBtnClick:(UserView *)userView; 
+- (void)deleteBtnClick:(UserView *)userView; 
 @end
 
 @interface UserView : UIView {
+  
   UIButton *_avatorBtn;
   UIButton *_deleteBtn;
-  UILabel *_label;
-  UIImageView *_brandView;
-
 }
 @property (nonatomic, assign) id <UserViewDelegate> delegate;
 @property (nonatomic, retain) User *user;

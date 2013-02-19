@@ -10,8 +10,9 @@
 #import "StaticInfo.h"
 #import "BasicNeedLoginViewController.h"
 #import "MapCreateVCTL.h"
-
-@interface UserSettingViewController : BasicNeedLoginViewController <UITableViewDelegate, UITableViewDataSource, QQNRSourceLoginViewControllerDelegate, RiddingViewControllerDelegate> {
+#import "GADSearchBannerView.h"
+#import "GADSearchRequest.h"
+@interface UserSettingViewController : BasicNeedLoginViewController <UITableViewDelegate, UITableViewDataSource, QQNRSourceLoginViewControllerDelegate, RiddingViewControllerDelegate,GADBannerViewDelegate> {
   StaticInfo *staticInfo;
 }
 @property (nonatomic, retain) IBOutlet UITableView *uiTableView;

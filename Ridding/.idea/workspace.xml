@@ -39,23 +39,146 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/3part/imageUtilities/UIImage+Utilities.h" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/3part/imageUtilities/UIImage+Utilities.m" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding.xcodeproj/project.xcworkspace/xcuserdata/apple.xcuserdatad/UserInterfaceState.xcuserstate" afterPath="$PROJECT_DIR$/Ridding.xcodeproj/project.xcworkspace/xcuserdata/apple.xcuserdatad/UserInterfaceState.xcuserstate" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIAuthenticationDialog.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIAuthenticationDialog.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIAuthenticationDialog.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIAuthenticationDialog.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASICacheDelegate.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASICacheDelegate.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDataCompressor.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDataCompressor.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDataCompressor.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDataCompressor.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDataDecompressor.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDataDecompressor.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDataDecompressor.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDataDecompressor.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDownloadCache.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDownloadCache.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDownloadCache.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIDownloadCache.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIFormDataRequest.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIFormDataRequest.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIFormDataRequest.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIFormDataRequest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIHTTPRequest.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIHTTPRequest.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIHTTPRequest.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIHTTPRequest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIHTTPRequestConfig.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIHTTPRequestConfig.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIHTTPRequestDelegate.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIHTTPRequestDelegate.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIInputStream.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIInputStream.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIInputStream.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIInputStream.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASINetworkQueue.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASINetworkQueue.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASINetworkQueue.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASINetworkQueue.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIWebPageRequest/ASIWebPageRequest.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIWebPageRequest/ASIWebPageRequest.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIWebPageRequest/ASIWebPageRequest.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/ASIWebPageRequest/ASIWebPageRequest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesCDNRequest.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesCDNRequest.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesCDNRequest.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesCDNRequest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainer.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainer.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainer.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainer.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainerRequest.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainerRequest.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainerRequest.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainerRequest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainerXMLParserDelegate.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainerXMLParserDelegate.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainerXMLParserDelegate.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesContainerXMLParserDelegate.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesObject.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesObject.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesObject.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesObject.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesObjectRequest.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesObjectRequest.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesObjectRequest.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesObjectRequest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesRequest.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesRequest.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesRequest.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/CloudFiles/ASICloudFilesRequest.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/Reachability/Reachability.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/Reachability/Reachability.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/Reachability/Reachability.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/Reachability/Reachability.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASINSXMLParserCompat.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASINSXMLParserCompat.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3Bucket.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3Bucket.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3Bucket.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3Bucket.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3BucketObject.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3BucketObject.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3BucketObject.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3BucketObject.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3BucketRequest.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3BucketRequest.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3BucketRequest.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3BucketRequest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3ObjectRequest.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3ObjectRequest.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3ObjectRequest.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3ObjectRequest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3Request.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3Request.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3Request.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3Request.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3ServiceRequest.h" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3ServiceRequest.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3ServiceRequest.m" afterPath="$PROJECT_DIR$/3part/ASIHttpRequest/S3/ASIS3ServiceRequest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/AVCam/AVCamCaptureManager.h" afterPath="$PROJECT_DIR$/3part/AVCam/AVCamCaptureManager.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/AVCam/AVCamCaptureManager.m" afterPath="$PROJECT_DIR$/3part/AVCam/AVCamCaptureManager.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/AVCam/AVCamRecorder.h" afterPath="$PROJECT_DIR$/3part/AVCam/AVCamRecorder.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/AVCam/AVCamRecorder.m" afterPath="$PROJECT_DIR$/3part/AVCam/AVCamRecorder.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/AVCam/AVCamUtilities.m" afterPath="$PROJECT_DIR$/3part/AVCam/AVCamUtilities.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/AwesomeMenu/AwesomeMenu.h" afterPath="$PROJECT_DIR$/3part/AwesomeMenu/AwesomeMenu.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/AwesomeMenu/AwesomeMenu.m" afterPath="$PROJECT_DIR$/3part/AwesomeMenu/AwesomeMenu.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/AwesomeMenu/AwesomeMenuItem.h" afterPath="$PROJECT_DIR$/3part/AwesomeMenu/AwesomeMenuItem.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/AwesomeMenu/AwesomeMenuItem.m" afterPath="$PROJECT_DIR$/3part/AwesomeMenu/AwesomeMenuItem.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/BlurModal/RNBlurModalView.h" afterPath="$PROJECT_DIR$/3part/BlurModal/RNBlurModalView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/BlurModal/RNBlurModalView.m" afterPath="$PROJECT_DIR$/3part/BlurModal/RNBlurModalView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/GTMNSString+HTML.m" afterPath="$PROJECT_DIR$/3part/Categories/GTMNSString+HTML.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/NSIndexPath+RG_Utilities.h" afterPath="$PROJECT_DIR$/3part/Categories/NSIndexPath+RG_Utilities.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/NSIndexPath+RG_Utilities.m" afterPath="$PROJECT_DIR$/3part/Categories/NSIndexPath+RG_Utilities.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/NSString+MD5Addition.h" afterPath="$PROJECT_DIR$/3part/Categories/NSString+MD5Addition.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/NSString+MD5Addition.m" afterPath="$PROJECT_DIR$/3part/Categories/NSString+MD5Addition.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/NSString+TomAddition.h" afterPath="$PROJECT_DIR$/3part/Categories/NSString+TomAddition.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/NSString+TomAddition.m" afterPath="$PROJECT_DIR$/3part/Categories/NSString+TomAddition.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/EGO/EGORefreshTableHeaderView.h" afterPath="$PROJECT_DIR$/3part/EGO/EGORefreshTableHeaderView.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/EGO/EGORefreshTableHeaderView.m" afterPath="$PROJECT_DIR$/3part/EGO/EGORefreshTableHeaderView.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/EGO/UP_EGORefreshTableHeaderView.h" afterPath="$PROJECT_DIR$/3part/EGO/UP_EGORefreshTableHeaderView.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/EGO/UP_EGORefreshTableHeaderView.m" afterPath="$PROJECT_DIR$/3part/EGO/UP_EGORefreshTableHeaderView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoBrowserDataSource.h" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoBrowserDataSource.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoBrowserGlobal.h" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoBrowserGlobal.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoBrowserGlobal.m" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoBrowserGlobal.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoScrollViewController.h" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoScrollViewController.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoScrollViewController.m" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoScrollViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoView.h" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoView.m" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTPhotoView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbView.h" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbView.m" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbsView.h" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbsView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbsView.m" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbsView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbsViewController.h" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbsViewController.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbsViewController.m" afterPath="$PROJECT_DIR$/3part/KTPhotoBrowser/KTThumbsViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDImageCache.h" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDImageCache.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDImageCache.m" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDImageCache.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDImageCacheDelegate.h" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDImageCacheDelegate.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageCompat.h" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageCompat.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageDecoder.h" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageDecoder.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageDecoder.m" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageDecoder.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageDownloader.h" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageDownloader.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageDownloader.m" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageDownloader.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageDownloaderDelegate.h" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageDownloaderDelegate.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageManager.h" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageManager.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageManager.m" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageManager.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageManagerDelegate.h" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDWebImageManagerDelegate.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDWebImagePrefetcher.h" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDWebImagePrefetcher.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/SDWebImagePrefetcher.m" afterPath="$PROJECT_DIR$/3part/SDWebImage/SDWebImagePrefetcher.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/UIButton+WebCache.m" afterPath="$PROJECT_DIR$/3part/SDWebImage/UIButton+WebCache.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SDWebImage/UIImageView+WebCache.m" afterPath="$PROJECT_DIR$/3part/SDWebImage/UIImageView+WebCache.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SVSegmentedControl/SVSegmentedControl.h" afterPath="$PROJECT_DIR$/3part/SVSegmentedControl/SVSegmentedControl.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SVSegmentedControl/SVSegmentedControl.m" afterPath="$PROJECT_DIR$/3part/SVSegmentedControl/SVSegmentedControl.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SVSegmentedControl/SVSegmentedThumb.m" afterPath="$PROJECT_DIR$/3part/SVSegmentedControl/SVSegmentedThumb.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SWSnapsshotStack/SWSnapshotStackView.h" afterPath="$PROJECT_DIR$/3part/SWSnapsshotStack/SWSnapshotStackView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/SWSnapsshotStack/SWSnapshotStackView.m" afterPath="$PROJECT_DIR$/3part/SWSnapsshotStack/SWSnapshotStackView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Time Scroller/TimeScroller.h" afterPath="$PROJECT_DIR$/3part/Time Scroller/TimeScroller.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Time Scroller/TimeScroller.m" afterPath="$PROJECT_DIR$/3part/Time Scroller/TimeScroller.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/YLProgressBar/ARCMacro.h" afterPath="$PROJECT_DIR$/3part/YLProgressBar/ARCMacro.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/YLProgressBar/YLBackgroundView.h" afterPath="$PROJECT_DIR$/3part/YLProgressBar/YLBackgroundView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/YLProgressBar/YLBackgroundView.m" afterPath="$PROJECT_DIR$/3part/YLProgressBar/YLBackgroundView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/YLProgressBar/YLProgressBar.h" afterPath="$PROJECT_DIR$/3part/YLProgressBar/YLProgressBar.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/YLProgressBar/YLProgressBar.m" afterPath="$PROJECT_DIR$/3part/YLProgressBar/YLProgressBar.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/callOutMapKit/BasicMapAnnotation.h" afterPath="$PROJECT_DIR$/3part/callOutMapKit/BasicMapAnnotation.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/callOutMapKit/BasicMapAnnotation.m" afterPath="$PROJECT_DIR$/3part/callOutMapKit/BasicMapAnnotation.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/callOutMapKit/CalloutMapAnnotation.h" afterPath="$PROJECT_DIR$/3part/callOutMapKit/CalloutMapAnnotation.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/callOutMapKit/CalloutMapAnnotation.m" afterPath="$PROJECT_DIR$/3part/callOutMapKit/CalloutMapAnnotation.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/callOutMapKit/CalloutMapAnnotationView.h" afterPath="$PROJECT_DIR$/3part/callOutMapKit/CalloutMapAnnotationView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/callOutMapKit/CalloutMapAnnotationView.m" afterPath="$PROJECT_DIR$/3part/callOutMapKit/CalloutMapAnnotationView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/multiLabelColor/DetailTextView.h" afterPath="$PROJECT_DIR$/3part/multiLabelColor/DetailTextView.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/multiLabelColor/DetailTextView.m" afterPath="$PROJECT_DIR$/3part/multiLabelColor/DetailTextView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BasicBar.h" afterPath="$PROJECT_DIR$/BasicBar.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BasicBar.m" afterPath="$PROJECT_DIR$/BasicBar.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BasicTableViewController.h" afterPath="$PROJECT_DIR$/BasicTableViewController.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BasicTableViewController.m" afterPath="$PROJECT_DIR$/BasicTableViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EndAnnotation.h" afterPath="$PROJECT_DIR$/EndAnnotation.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EndAnnotation.m" afterPath="$PROJECT_DIR$/EndAnnotation.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Entitlements.plist" afterPath="$PROJECT_DIR$/Entitlements.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GTMBase64.h" afterPath="$PROJECT_DIR$/GTMBase64.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GTMBase64.m" afterPath="$PROJECT_DIR$/GTMBase64.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GTMDefines.h" afterPath="$PROJECT_DIR$/GTMDefines.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapAnnotation.h" afterPath="$PROJECT_DIR$/MapAnnotation.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapAnnotation.m" afterPath="$PROJECT_DIR$/MapAnnotation.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapListCell.h" afterPath="$PROJECT_DIR$/MapListCell.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapListCell.m" afterPath="$PROJECT_DIR$/MapListCell.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapUtil.h" afterPath="$PROJECT_DIR$/MapUtil.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapUtil.m" afterPath="$PROJECT_DIR$/MapUtil.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/NSObject+SBJson.m" afterPath="$PROJECT_DIR$/NSObject+SBJson.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PhotoAnnotation.h" afterPath="$PROJECT_DIR$/PhotoAnnotation.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PhotoAnnotation.m" afterPath="$PROJECT_DIR$/PhotoAnnotation.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RequestUtil.h" afterPath="$PROJECT_DIR$/RequestUtil.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RequestUtil.m" afterPath="$PROJECT_DIR$/RequestUtil.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ResponseCodeCheck.h" afterPath="$PROJECT_DIR$/ResponseCodeCheck.h" />
@@ -77,8 +200,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/LandingViewController.m" afterPath="$PROJECT_DIR$/Ridding/LandingViewController.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/PhotoDescViewController.h" afterPath="$PROJECT_DIR$/Ridding/PhotoDescViewController.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/PhotoDescViewController.m" afterPath="$PROJECT_DIR$/Ridding/PhotoDescViewController.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/PhotoUploadBlurView.h" afterPath="$PROJECT_DIR$/Ridding/PhotoUploadBlurView.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/PhotoUploadBlurView.m" afterPath="$PROJECT_DIR$/Ridding/PhotoUploadBlurView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/PhotoDescViewController.xib" afterPath="$PROJECT_DIR$/Ridding/PhotoDescViewController.xib" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/QQNRFeedHeaderView.h" afterPath="$PROJECT_DIR$/Ridding/QQNRFeedHeaderView.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/QQNRFeedHeaderView.m" afterPath="$PROJECT_DIR$/Ridding/QQNRFeedHeaderView.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/QQNRFeedTableCell.h" afterPath="$PROJECT_DIR$/Ridding/QQNRFeedTableCell.h" />
@@ -119,14 +241,56 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RiddingLocationDao.m" afterPath="$PROJECT_DIR$/RiddingLocationDao.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RiddingPicture.h" afterPath="$PROJECT_DIR$/RiddingPicture.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RiddingPicture.m" afterPath="$PROJECT_DIR$/RiddingPicture.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonParser.h" afterPath="$PROJECT_DIR$/SBJsonParser.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonParser.m" afterPath="$PROJECT_DIR$/SBJsonParser.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamParser.h" afterPath="$PROJECT_DIR$/SBJsonStreamParser.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamParser.m" afterPath="$PROJECT_DIR$/SBJsonStreamParser.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamParserAccumulator.m" afterPath="$PROJECT_DIR$/SBJsonStreamParserAccumulator.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamParserAdapter.h" afterPath="$PROJECT_DIR$/SBJsonStreamParserAdapter.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamParserAdapter.m" afterPath="$PROJECT_DIR$/SBJsonStreamParserAdapter.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamParserState.h" afterPath="$PROJECT_DIR$/SBJsonStreamParserState.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamParserState.m" afterPath="$PROJECT_DIR$/SBJsonStreamParserState.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamWriter.h" afterPath="$PROJECT_DIR$/SBJsonStreamWriter.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamWriter.m" afterPath="$PROJECT_DIR$/SBJsonStreamWriter.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamWriterAccumulator.h" afterPath="$PROJECT_DIR$/SBJsonStreamWriterAccumulator.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamWriterAccumulator.m" afterPath="$PROJECT_DIR$/SBJsonStreamWriterAccumulator.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamWriterState.h" afterPath="$PROJECT_DIR$/SBJsonStreamWriterState.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonStreamWriterState.m" afterPath="$PROJECT_DIR$/SBJsonStreamWriterState.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonTokeniser.h" afterPath="$PROJECT_DIR$/SBJsonTokeniser.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonTokeniser.m" afterPath="$PROJECT_DIR$/SBJsonTokeniser.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonUTF8Stream.h" afterPath="$PROJECT_DIR$/SBJsonUTF8Stream.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonUTF8Stream.m" afterPath="$PROJECT_DIR$/SBJsonUTF8Stream.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonWriter.h" afterPath="$PROJECT_DIR$/SBJsonWriter.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SBJsonWriter.m" afterPath="$PROJECT_DIR$/SBJsonWriter.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SFHFKeychainUtils.h" afterPath="$PROJECT_DIR$/SFHFKeychainUtils.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SFHFKeychainUtils.m" afterPath="$PROJECT_DIR$/SFHFKeychainUtils.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SinaApiRequestUtil.h" afterPath="$PROJECT_DIR$/SinaApiRequestUtil.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SinaApiRequestUtil.m" afterPath="$PROJECT_DIR$/SinaApiRequestUtil.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StartAnnotation.h" afterPath="$PROJECT_DIR$/StartAnnotation.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StartAnnotation.m" afterPath="$PROJECT_DIR$/StartAnnotation.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UIColor+XMin.h" afterPath="$PROJECT_DIR$/UIColor+XMin.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UIColor+XMin.m" afterPath="$PROJECT_DIR$/UIColor+XMin.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UIImage+UIImage_Retina4.h" afterPath="$PROJECT_DIR$/UIImage+UIImage_Retina4.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UIImage+UIImage_Retina4.m" afterPath="$PROJECT_DIR$/UIImage+UIImage_Retina4.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UserAnnotation.h" afterPath="$PROJECT_DIR$/UserAnnotation.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UserAnnotation.m" afterPath="$PROJECT_DIR$/UserAnnotation.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Utilities.h" afterPath="$PROJECT_DIR$/Utilities.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Utilities.m" afterPath="$PROJECT_DIR$/Utilities.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBAuthorize.h" afterPath="$PROJECT_DIR$/WBAuthorize.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBAuthorize.m" afterPath="$PROJECT_DIR$/WBAuthorize.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBAuthorizeWebView.h" afterPath="$PROJECT_DIR$/WBAuthorizeWebView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBAuthorizeWebView.m" afterPath="$PROJECT_DIR$/WBAuthorizeWebView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBEngine.h" afterPath="$PROJECT_DIR$/WBEngine.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBEngine.m" afterPath="$PROJECT_DIR$/WBEngine.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBLogInAlertView.h" afterPath="$PROJECT_DIR$/WBLogInAlertView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBLogInAlertView.m" afterPath="$PROJECT_DIR$/WBLogInAlertView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBRequest.h" afterPath="$PROJECT_DIR$/WBRequest.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBRequest.m" afterPath="$PROJECT_DIR$/WBRequest.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBSDKGlobal.h" afterPath="$PROJECT_DIR$/WBSDKGlobal.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBSendView.h" afterPath="$PROJECT_DIR$/WBSendView.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBSendView.m" afterPath="$PROJECT_DIR$/WBSendView.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBUtil.h" afterPath="$PROJECT_DIR$/WBUtil.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WBUtil.m" afterPath="$PROJECT_DIR$/WBUtil.m" />
     </list>
     <ignored path="Ridding.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -146,35 +310,17 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_IPHONE_85036VTSA4S" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="UserMap.m" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/UserMap.m">
+      <file leaf-file-name="PublicCommentVCTL.h" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Ridding/PublicCommentVCTL.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="119" column="12" selection-start="3644" selection-end="3644" vertical-scroll-proportion="0.0">
+            <state line="30" column="55" selection-start="843" selection-end="843" vertical-scroll-proportion="0.64285713">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CreateAnnotationView.m" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/CreateAnnotationView.m">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="80" selection-start="1987" selection-end="1987" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MapSearchVCTL.m" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/MapSearchVCTL.m">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="51" selection-start="1963" selection-end="1963" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MapCreateDescVCTL.m" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/MapCreateDescVCTL.m">
+      <file leaf-file-name="PublicDetailViewController.h" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.h">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
@@ -182,53 +328,55 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="QQNRFeedViewController.m" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/QQNRFeedViewController.m">
+      <file leaf-file-name="PublicLinkWebViewController.h" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/PublicLinkWebViewController.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="19" selection-start="544" selection-end="544" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#85#119#0" expanded="true" />
-                <marker date="1359732485000" expanded="true" signature="524:18644" placeholder="..." />
-                <marker date="1359732485000" expanded="true" signature="7628:8232" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="8326:8712" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="8769:9375" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="9441:9473" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="9538:9542" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="9636:9777" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="9806:11284" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="10089:11269" placeholder="^{...}" />
-                <marker date="1359732485000" expanded="true" signature="11386:11676" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="11771:13708" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="12092:12412" placeholder="^{...}" />
-                <marker date="1359732485000" expanded="true" signature="12301:12404" placeholder="^{...}" />
-                <marker date="1359732485000" expanded="true" signature="12603:12985" placeholder="^{...}" />
-                <marker date="1359732485000" expanded="true" signature="12728:12977" placeholder="^{...}" />
-                <marker date="1359732485000" expanded="true" signature="13765:13864" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="13916:14601" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="14703:15316" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="14786:15312" placeholder="^{...}" />
-                <marker date="1359732485000" expanded="true" signature="15083:15306" placeholder="^{...}" />
-                <marker date="1359732485000" expanded="true" signature="15362:15431" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="15487:15559" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="15594:15741" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="15827:15867" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="15955:16031" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="16069:16284" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="16401:16644" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="16733:16778" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="16877:17128" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="17245:18250" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="18304:18559" placeholder="{...}" />
-                <marker date="1359732485000" expanded="true" signature="18608:18642" placeholder="{...}" />
-              </folding>
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="JSONKit.m" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/3part/qiniu/JSONKit/JSONKit.m">
+      <file leaf-file-name="PublicViewController.h" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/PublicViewController.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="732" column="4" selection-start="26472" selection-end="26472" vertical-scroll-proportion="0.3622449">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PublicViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/PublicViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PublicLinkWebViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/PublicLinkWebViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PublicDetailViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="336" column="11" selection-start="9769" selection-end="9769" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PublicCommentVCTL.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/PublicCommentVCTL.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -243,28 +391,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserMap.h" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/UserMap.h">
+      <file leaf-file-name="MapCreateVCTL.h" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/MapCreateVCTL.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="2" selection-start="470" selection-end="470" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PublicDetailViewController.m" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.m">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="336" column="11" selection-start="10046" selection-end="10046" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RequestUtil.m" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RequestUtil.m">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="203" column="10" selection-start="10223" selection-end="10223" vertical-scroll-proportion="0.0">
+            <state line="26" column="32" selection-start="725" selection-end="725" vertical-scroll-proportion="-9.230769">
               <folding />
             </state>
           </provider>
@@ -287,11 +417,14 @@
         <option value="$PROJECT_DIR$/Ridding/PublicViewController.m" />
         <option value="$PROJECT_DIR$/Ridding/PublicDetailViewController.m" />
         <option value="$PROJECT_DIR$/Ridding/QQNRFeedViewController.m" />
-        <option value="$PROJECT_DIR$/Ridding/MapCreateDescVCTL.m" />
         <option value="$PROJECT_DIR$/Ridding/MapSearchVCTL.m" />
         <option value="$PROJECT_DIR$/Ridding/CreateAnnotationView.m" />
         <option value="$PROJECT_DIR$/Ridding/InvitationViewController.m" />
         <option value="$PROJECT_DIR$/3part/qiniu/JSONKit/JSONKit.m" />
+        <option value="$PROJECT_DIR$/MyLocationManager.m" />
+        <option value="$PROJECT_DIR$/Ridding/MapCreateDescVCTL.m" />
+        <option value="$PROJECT_DIR$/Ridding/MapCreateDescVCTL.h" />
+        <option value="$PROJECT_DIR$/Ridding/MapCreateVCTL.m" />
       </list>
     </option>
   </component>
@@ -326,6 +459,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="DirectoryView.Xcode" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -367,6 +501,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Public" />
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -508,7 +660,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="DirectoryView.Xcode" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -584,9 +735,9 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32961783" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20922832" sideWeight="0.88535035" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20922832" sideWeight="0.67038214" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -653,134 +804,53 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/RequestUtil.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="38" selection-start="933" selection-end="933" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SinaApiRequestUtil.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="92" column="29" selection-start="3502" selection-end="3502" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SinaApiRequestUtil.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="26" selection-start="1136" selection-end="1136" vertical-scroll-proportion="0.35738832">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RequestUtil.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="203" column="10" selection-start="10223" selection-end="10223" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QQNRServerTaskQueue.m">
+    <entry file="file://$PROJECT_DIR$/PhotoAnnotation.m">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QQNRServerTask.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="105" selection-end="105" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/UserMap.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="2" selection-start="470" selection-end="470" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/UserMap.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="119" column="12" selection-start="3644" selection-end="3644" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="336" column="11" selection-start="10046" selection-end="10046" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/PublicViewController.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="24" selection-start="107" selection-end="107" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/QQNRFeedViewController.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="19" selection-start="544" selection-end="544" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#85#119#0" expanded="true" />
-            <marker date="1359732485000" expanded="true" signature="524:18644" placeholder="..." />
-            <marker date="1359732485000" expanded="true" signature="7628:8232" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="8326:8712" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="8769:9375" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="9441:9473" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="9538:9542" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="9636:9777" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="9806:11284" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="10089:11269" placeholder="^{...}" />
-            <marker date="1359732485000" expanded="true" signature="11386:11676" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="11771:13708" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="12092:12412" placeholder="^{...}" />
-            <marker date="1359732485000" expanded="true" signature="12301:12404" placeholder="^{...}" />
-            <marker date="1359732485000" expanded="true" signature="12603:12985" placeholder="^{...}" />
-            <marker date="1359732485000" expanded="true" signature="12728:12977" placeholder="^{...}" />
-            <marker date="1359732485000" expanded="true" signature="13765:13864" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="13916:14601" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="14703:15316" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="14786:15312" placeholder="^{...}" />
-            <marker date="1359732485000" expanded="true" signature="15083:15306" placeholder="^{...}" />
-            <marker date="1359732485000" expanded="true" signature="15362:15431" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="15487:15559" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="15594:15741" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="15827:15867" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="15955:16031" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="16069:16284" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="16401:16644" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="16733:16778" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="16877:17128" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="17245:18250" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="18304:18559" placeholder="{...}" />
-            <marker date="1359732485000" expanded="true" signature="18608:18642" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/MapCreateDescVCTL.m">
+    <entry file="file://$PROJECT_DIR$/QQNRMyLocation.m">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/MapSearchVCTL.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="51" selection-start="1963" selection-end="1963" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Ridding/CreateAnnotationView.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="80" selection-start="1987" selection-end="1987" vertical-scroll-proportion="0.0">
+        <state line="65" column="80" selection-start="2003" selection-end="2003" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/MapCreateDescVCTL.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="171" column="31" selection-start="5540" selection-end="5540" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#81#110#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/MapCreateDescVCTL.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="12" selection-start="346" selection-end="346" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/MapCreateVCTL.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="500" column="2" selection-start="16474" selection-end="16474" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/MapCreateVCTL.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="32" selection-start="725" selection-end="725" vertical-scroll-proportion="-9.230769">
           <folding />
         </state>
       </provider>
@@ -792,9 +862,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/3part/qiniu/JSONKit/JSONKit.m">
+    <entry file="file://$PROJECT_DIR$/Ridding/PublicCommentVCTL.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="732" column="4" selection-start="26472" selection-end="26472" vertical-scroll-proportion="0.3622449">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="336" column="11" selection-start="9769" selection-end="9769" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/PublicLinkWebViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/PublicViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/PublicViewController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/PublicLinkWebViewController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/PublicCommentVCTL.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="55" selection-start="843" selection-end="843" vertical-scroll-proportion="0.64285713">
           <folding />
         </state>
       </provider>

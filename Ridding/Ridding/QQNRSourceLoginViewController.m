@@ -11,7 +11,6 @@
 #import "UIColor+XMin.h"
 #import "SVProgressHUD.h"
 
-#define kRecomApp @"recomApp"
 
 @interface QQNRSourceLoginViewController ()
 
@@ -33,9 +32,9 @@
   [super viewDidLoad];
   self.barView.titleLabel.text = @"登录";
   
-  [self.barView.leftButton setTitle:@"取消" forState:UIControlStateNormal];
-  [self.barView.leftButton setTitle:@"取消" forState:UIControlStateHighlighted];
-  self.barView.leftButton.hidden = NO;
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
+  [self.barView.leftButton setHidden:NO];
   
   NSString *OAuthUrl = [NSString stringWithFormat:@"%@/bind/mobilesinabind/", QIQUNARHOME];
   NSString *url = [[NSString alloc] initWithString:OAuthUrl];

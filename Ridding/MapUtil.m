@@ -234,12 +234,12 @@ static MapUtil *mapUtil = nil;
 
 
 //对经纬度的array画线
-- (void)update_route_view:(MKMapView *)mapView to:(UIImageView *)route_view line_color:(UIColor *)line_color routes:(NSArray *)routes {
+- (void)update_route_view:(MKMapView *)mapView to:(UIImageView *)route_view line_color:(UIColor *)line_color routes:(NSArray *)routes width:(CGFloat)width{
 
   CGContextRef context = CGBitmapContextCreate(nil, route_view.frame.size.width, route_view.frame.size.height, 8, 4 * route_view.frame.size.width, CGColorSpaceCreateDeviceRGB(), kCGImageAlphaPremultipliedLast);
   CGContextSetStrokeColorWithColor(context, line_color.CGColor);
   CGContextSetRGBFillColor(context, 0.0, 0.0, 1.0, 1.0);
-  CGContextSetLineWidth(context, 5.0);
+  CGContextSetLineWidth(context, width);
   for (int i = 0; i < routes.count; i++) {
     CLLocation *location_ = [routes objectAtIndex:i];
     CGPoint point = [mapView convertCoordinate:location_.coordinate toPointToView:route_view];

@@ -40,7 +40,7 @@
   [dropPin addTarget:self action:@selector(handleLongPress:)];
   dropPin.minimumPressDuration = 0.3;
   [self.mapView addGestureRecognizer:dropPin];
-
+  
   self.searchField.returnKeyType = UIReturnKeyGo;
 
   _locationViews = [[NSMutableArray alloc] init];
@@ -148,7 +148,7 @@
 //地图移动结束后的操作
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
 
-  [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:line_color routes:_routes];
+  [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:line_color routes:_routes width:5.0];
   self.route_view.hidden = NO;
   [self.route_view setNeedsDisplay];
 }
@@ -166,7 +166,6 @@
     [pinView setCanShowCallout:YES];
     [pinView setDraggable:NO];
     pinView.delegate = self;
-    pinView.annotation = annotation;
     MyAnnotation *myAnnotation=(MyAnnotation*)annotation;
     switch (myAnnotation.type) {
       case MyAnnotationType_BEGIN:
@@ -225,8 +224,8 @@
   _nowAnnotation.type=type;
   [self addNewAnnotation];
   LocationView *locationView = [[LocationView alloc] initWithFrame:CGRectMake([_locationViews count] * viewWidth, 0, viewWidth, viewHeight)];
-  locationView.latitude = _nowAnnotation.coordinate.latitude;
-  locationView.longtitude = _nowAnnotation.coordinate.longitude;
+  locationView.latitude = (CGFloat) _nowAnnotation.coordinate.latitude;
+  locationView.longtitude = (CGFloat) _nowAnnotation.coordinate.longitude;
   locationView.totalLocation = _nowAnnotation.title;
   locationView.annotation = _nowAnnotation;
   locationView.userInteractionEnabled = YES;
@@ -320,10 +319,15 @@
     [SVProgressHUD show];
     CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
     [geoCoder geocodeAddressString:textField.text completionHandler:^(NSArray *placemarks, NSError *error) {
-      MapSearchVCTL *searchVCTL = [[MapSearchVCTL alloc] initWithNibName:@"MapSearchVCTL" bundle:nil placemarks:placemarks];
-      searchVCTL.delegate = self;
-      [self.navigationController pushViewController:searchVCTL animated:YES];
-      [SVProgressHUD dismiss];
+      if([placemarks count]==0){
+        [SVProgressHUD showErrorWithStatus:@"找不到地址!" duration:1.0];
+      }else{
+        MapSearchVCTL *searchVCTL = [[MapSearchVCTL alloc] initWithNibName:@"MapSearchVCTL" bundle:nil placemarks:placemarks];
+        searchVCTL.delegate = self;
+        [self.navigationController pushViewController:searchVCTL animated:YES];
+        [SVProgressHUD dismiss];
+
+      }
     }];
   }
   [textField resignFirstResponder];
@@ -451,7 +455,7 @@
       _routes = [[MapUtil getSinglton] decodePolyLineArray:_ridding.map.mapPoint];
       dispatch_async(dispatch_get_main_queue(), ^{
         if (self) {
-          [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:line_color routes:_routes];
+          [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:line_color routes:_routes width:5.0];
           if ([_routes count] > 0) {
             [[MapUtil getSinglton] center_map:self.mapView routes:_routes];
             _succCreate = TRUE;

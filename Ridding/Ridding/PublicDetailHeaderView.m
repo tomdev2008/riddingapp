@@ -37,7 +37,7 @@
     avatorBgView.image=UIIMAGE_FROMPNG(@"qqnr_photo_bg");
     [self addSubview:avatorBgView];
 
-    UILabel *riddingNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 10, 250, 30)];
+    UILabel *riddingNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 10, 250, 30)];
     riddingNameLabel.textColor = [UIColor whiteColor];
     riddingNameLabel.textAlignment = UITextAlignmentLeft;
     riddingNameLabel.text = _ridding.riddingName;
@@ -45,7 +45,7 @@
     riddingNameLabel.font = [UIFont systemFontOfSize:20];
     [self addSubview:riddingNameLabel];
 
-    UILabel *createLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 50, 75, 15)];
+    UILabel *createLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 50, 75, 15)];
     createLabel.textColor = [UIColor whiteColor];
     createLabel.textAlignment = UITextAlignmentLeft;
     createLabel.text = _ridding.createTimeStr;
@@ -81,8 +81,10 @@
     _route_view.layer.borderWidth = 5.0;
     [_mapView setShowsUserLocation:NO];
     _mapView.delegate = self;
+    
     [_mapView setZoomEnabled:NO];
     [_mapView setScrollEnabled:NO];
+    
     if (_isMyHome && ![_ridding isEnd]) {
       UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapViewTap:)];
       _mapView.userInteractionEnabled = YES;
@@ -150,7 +152,7 @@
     }
     dispatch_async(dispatch_get_main_queue(), ^{
       [[MapUtil getSinglton] center_map:_mapView routes:_routes];
-      [[MapUtil getSinglton] update_route_view:_mapView to:_route_view line_color:[UIColor getColor:lineColor] routes:_routes];
+      [[MapUtil getSinglton] update_route_view:_mapView to:_route_view line_color:[UIColor getColor:lineColor] routes:_routes width:3.0];
     });
   });
 }
@@ -163,7 +165,7 @@
 //地图移动结束后的操作
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
 
-  [[MapUtil getSinglton] update_route_view:_mapView to:_route_view line_color:[UIColor getColor:lineColor] routes:_routes];
+  [[MapUtil getSinglton] update_route_view:_mapView to:_route_view line_color:[UIColor getColor:lineColor] routes:_routes width:3.0];
   _route_view.hidden = NO;
   [_route_view setNeedsDisplay];
 }

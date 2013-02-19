@@ -7,7 +7,7 @@
 //
 
 #import "QQNRFeedViewController.h"
-
+#import "MyLocationManager.h"
 #define moveSpeed 0.5
 
 @implementation RiddingAppDelegate
@@ -104,6 +104,7 @@
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
   NSString *dt = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+  NSLog(@"%@",dt);
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   [prefs setObject:dt forKey:kStaticInfo_apnsToken];
 }

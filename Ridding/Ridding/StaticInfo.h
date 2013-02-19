@@ -18,6 +18,7 @@
 #define kStaticInfo_backgroundUrl @"backgroundUrl"
 #define kStaticInfo_totalDistance @"totalDistance"
 
+#define kRecomApp @"recomApp"
 #define kStaticInfo_nickname @"nickname"
 #define kStaticInfo_riddingCount @"riddingCount"
 #define kStaticInfo_apnsToken @"apnsToken"

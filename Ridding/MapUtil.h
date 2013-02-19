@@ -26,7 +26,7 @@
 - (void)center_map:(MKMapView *)mapView routes:(NSArray *)routes;
 
 //更新地图，画线
-- (void)update_route_view:(MKMapView *)mapView to:(UIImageView *)route_view line_color:(UIColor *)line_color routes:(NSArray *)routes;
+- (void)update_route_view:(MKMapView *)mapView to:(UIImageView *)route_view line_color:(UIColor *)line_color routes:(NSArray *)routes width:(CGFloat)width;
 
 //对google得到的内容做反编译，声称经纬度的点
 - (NSMutableArray *)decodePolyLine:(NSMutableString *)encoded;

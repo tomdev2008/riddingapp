@@ -420,6 +420,17 @@
 
 }
 
+- (NSDictionary *)weatherRequest:(NSString*)latitudeLongitude{
+  
+  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://free.worldweatheronline.com/feed/weather.ashx?format=json&num_of_days=1&key=%@&q=%@",WeatherOnlineKey,latitudeLongitude]];
+  
+  ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest startSynchronous];
+  NSString *apiResponse = [asiRequest responseString];
+  return [[apiResponse JSONValue] objectForKey:@"data"];
+
+}
+
 /**
  * 检查返回的code是否正确
  **/

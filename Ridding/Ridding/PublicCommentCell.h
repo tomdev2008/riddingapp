@@ -33,6 +33,7 @@
 @property (nonatomic,retain) IBOutlet UILabel *descLabel;
 @property (nonatomic,retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic,retain) IBOutlet UIButton *callBackBtn;
+@property (nonatomic,retain) IBOutlet UIImageView *separatorLine;
 
 @property (nonatomic, assign) id <PublicCommentCellDelegate> delegate;
 

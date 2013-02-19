@@ -1,5 +1,5 @@
 //
-//  NSDate+TomAddition.m
+//  NSDate+Addition.m
 //
 //  Created by Chen Jianfei on 2/11/11.
 //  Copyright 2011 Fakastudio. All rights reserved.

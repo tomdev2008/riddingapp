@@ -8,7 +8,7 @@
 
 #import "SinaApiRequestUtil.h"
 #import "ASIFormDataRequest.h"
-#import "NSString+TomAddition.h"
+#import "NSString+Addition.h"
 
 static SinaApiRequestUtil *sinaApiRequestUtil = nil;
 

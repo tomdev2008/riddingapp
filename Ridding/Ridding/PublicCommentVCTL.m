@@ -7,7 +7,7 @@
 //
 
 #import "PublicCommentVCTL.h"
-#import "NSString+TomAddition.h"
+#import "NSString+Addition.h"
 #import "Utilities.h"
 #import "SVProgressHUD.h"
 #import "QQNRFeedViewController.h"
