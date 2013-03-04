@@ -86,7 +86,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  if (indexPath.row<6) {
+  if (indexPath.row<5) {
     UserSettingCell *cell = (UserSettingCell *) [Utilities cellByClassName:@"UserSettingCell" inNib:@"UserSettingCell" forTableView:self.uiTableView];
     if ([indexPath row] == 0) {
       [cell initView:@"给个好评吧"];
@@ -98,11 +98,12 @@
       [cell initView:@"创建骑行活动教程"];
     } else if ([indexPath row] == 4) {
       [cell initView:@"活动路线教程"];
-    } else if ([indexPath row] == 5) {
-      [cell initView:@"升级"];
     }
+//    else if ([indexPath row] == 5) {
+//      [cell initView:@"升级"];
+//    }
     return cell;
-  } else if (indexPath.row == 6) {
+  } else if (indexPath.row == 5) {
     UserLoginCell *loginCell = (UserLoginCell *) [Utilities cellByClassName:@"UserLoginCell" inNib:@"UserLoginCell" forTableView:self.uiTableView];
     loginCell.delegate=self;
     if ([[RiddingAppDelegate shareDelegate] canLogin]) {
@@ -122,7 +123,7 @@
 - (void)      tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  if (indexPath.row<6) {
+  if (indexPath.row<5) {
     if ([indexPath row] == 0) {
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStoreComment]];
 
@@ -151,10 +152,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
       [imageView setImage:[UIImage retina4ImageNamed:@"qqnr_dl_first_bg" type:@"png"] forState:UIControlStateNormal];
       [imageView addTarget:self action:@selector(imageViewCilck:) forControlEvents:UIControlEventTouchUpInside];
       [self.view addSubview:imageView];
-    } else if ([indexPath row] == 5){
-      [self updateToVIP];
     }
-  } 
+//    else if ([indexPath row] == 5){
+//      [self updateToVIP];
+//    }
+  }
   [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
