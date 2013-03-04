@@ -7,7 +7,6 @@
 //
 
 #import "QQNRServerTask.h"
-#import "RequestUtil.h"
 #import "BWStatusBarOverlay.h"
 
 @implementation QQNRServerTask
@@ -23,7 +22,6 @@
     case STEP_UPLOADDESC: {
       RiddingPicture *riddingPicture = [self.paramDic objectForKey:kFileClientServerUpload_RiddingPicture];
       RequestUtil *requestUtil = [[RequestUtil alloc] init];
-      [BWStatusBarOverlay dismiss];
       BOOL succ = [requestUtil uploadRiddingPhoto:riddingPicture];
       if (succ) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kSuccUploadPictureNotification object:self];
@@ -42,13 +40,13 @@
 
 - (void)updateUIWhenTaskBegin {
 
-  [BWStatusBarOverlay showLoadingWithMessage:@"开始执行" animated:YES];
+  [BWStatusBarOverlay showLoadingWithMessage:@"上传图片开始" animated:YES];
 
 }
 
 - (void)main {
 
-  [self performSelectorOnMainThread:@selector(updateUIWhenTaskBegin) withObject:nil waitUntilDone:NO];
+ 
 
   if (self.dependencies && self.queueDelegate) {
     NSDictionary *dic = [self.queueDelegate lastTaskServerResponseJSON];
@@ -68,8 +66,7 @@
   if (self.taskDelegate) {
     [self.taskDelegate serverTask:self errorWithServerJSON:nil];
   }
-  [BWStatusBarOverlay setMessage:@"失败" animated:NO];
-  [BWStatusBarOverlay dismiss];
+  [BWStatusBarOverlay dismissAnimated:YES];
 }
 
 - (void)fileClientServerUploadOneFileSuccess:(NSDictionary *)info {
@@ -99,9 +96,8 @@
 
 - (void)updateStatusBarWithUploadPhotoStatus {
 
-  [BWStatusBarOverlay setProgress:1 animated:YES];
-  [BWStatusBarOverlay setMessage:@"成功" animated:YES];
-  [BWStatusBarOverlay dismiss];
+ 
+  [BWStatusBarOverlay dismissAnimated:YES];
   return;
 }
 

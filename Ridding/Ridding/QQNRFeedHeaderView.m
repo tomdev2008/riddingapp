@@ -31,7 +31,7 @@
     frameView.image=UIIMAGE_FROMPNG(@"qqnr_photo_bg");
     [self addSubview:frameView];
 
-    UILabel *userName = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2-50, self.frame.size.height*0.6 , 100, 30)];
+    UILabel *userName = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2-100, self.frame.size.height*0.6 , 200, 30)];
     userName.textAlignment = UITextAlignmentCenter;
     userName.textColor = [UIColor whiteColor];
     userName.backgroundColor = [UIColor clearColor];
@@ -48,10 +48,10 @@
     _mileStone.shadowColor = [UIColor blackColor];
     _mileStone.shadowOffset = CGSizeMake(0.0, 1.0);
     _mileStone.font = [UIFont fontWithName:@"Arial" size:12];
-    _mileStone.text = [NSString stringWithFormat:@"总距离:%@", [user getTotalDistanceToKm]];
+    _mileStone.text = [NSString stringWithFormat:@"总行程:%@", [user getTotalDistanceToKm]];
     [self addSubview:_mileStone];
 
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(90, 20, 140, 140)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     view.backgroundColor = [UIColor clearColor];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backGroundViewClick:)];
     view.userInteractionEnabled = YES;

@@ -51,13 +51,13 @@
   if (!self.isMyFeedHome) {
 
     _useBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _useBtn.frame = CGRectMake(190, 8, 32, 25);
+    _useBtn.frame = CGRectMake(190, 4, 32, 32);
     [_useBtn addTarget:self action:@selector(useClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.barView addSubview:_useBtn];
 
     _careBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_careBtn addTarget:self action:@selector(careClick:) forControlEvents:UIControlEventTouchUpInside];
-    _careBtn.frame = CGRectMake(230, 8, 32, 25);
+    _careBtn.frame = CGRectMake(230, 4, 32, 32);
     [self.barView addSubview:_careBtn];
 
     [self.barView.titleLabel removeFromSuperview];
@@ -66,10 +66,10 @@
   }
 
   _commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-  _commentBtn.frame = CGRectMake(270, 8, 32, 25);
+  _commentBtn.frame = CGRectMake(270, 4, 32, 32);
   [_commentBtn addTarget:self action:@selector(commentAdd:) forControlEvents:UIControlEventTouchUpInside];
-  [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment") forState:UIControlStateNormal];
-  [_commentBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_hl") forState:UIControlStateHighlighted];
+  [_commentBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment") forState:UIControlStateNormal];
+  [_commentBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_hl") forState:UIControlStateHighlighted];
   [self.barView addSubview:_commentBtn];
 
   
@@ -215,7 +215,7 @@
   } else {
     height = picture.height * 1.0 / picture.width * width;
   }
-  viewHeight += height + 43;
+  viewHeight += height + 20;
   viewHeight += PublicDetailCellDefaultDownSpace;
   return viewHeight;
 
@@ -305,7 +305,7 @@
 }
 
 - (void)likeClick:(id)sender {
-
+  [MobClick event:@"2013022503"];
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
   if (![delegate canLogin]) {
     [self showLoginAlertView];
@@ -316,7 +316,7 @@
 }
 
 - (void)careClick:(id)sender {
-
+  [MobClick event:@"2013022502"];
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
   if (![delegate canLogin]) {
     [self showLoginAlertView];
@@ -327,7 +327,7 @@
 }
 
 - (void)useClick:(id)sender {
-
+  [MobClick event:@"2013022501"];
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
   if (![delegate canLogin]) {
     [self showLoginAlertView];
@@ -336,7 +336,7 @@
   NSDictionary *dic = [self.requestUtil useRidding:_ridding.riddingId];
   [self updateRidding:dic];
   if (dic) {
-    UIAlertView *view = [[UIAlertView alloc] initWithTitle:@"恭喜恭喜" message:@"骑行活动创建成功,去看看吧!" delegate:self cancelButtonTitle:@"待会儿去" otherButtonTitles:@"走起!", nil];
+    UIAlertView *view = [[UIAlertView alloc] initWithTitle:@"恭喜恭喜" message:@"骑行活动创建成功,去看看吧!" delegate:self cancelButtonTitle:@"待会儿吧" otherButtonTitles:@"走起!", nil];
     [view show];
   }
 }
@@ -382,22 +382,22 @@
 - (void)resetActionBtn {
   
   if (_ridding.nowUserUsed) {
-    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_join_disable") forState:UIControlStateNormal];
-    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_join_disable") forState:UIControlStateHighlighted];
+    [_useBtn setImage:UIIMAGE_FROMPNG(@"qqnr_join_disable") forState:UIControlStateNormal];
+    [_useBtn setImage:UIIMAGE_FROMPNG(@"qqnr_join_disable") forState:UIControlStateHighlighted];
     [_useBtn setEnabled:NO];
   } else {
     [_useBtn setEnabled:YES];
-    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_join") forState:UIControlStateNormal];
-    [_useBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_join_hl") forState:UIControlStateHighlighted];
+    [_useBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_join") forState:UIControlStateNormal];
+    [_useBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_join_hl") forState:UIControlStateHighlighted];
   }
   if (_ridding.nowUserCared) {
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_care_disable") forState:UIControlStateNormal];
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_care_disable") forState:UIControlStateHighlighted];
+    [_careBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_care_h2") forState:UIControlStateNormal];
+    [_careBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_care_h2") forState:UIControlStateHighlighted];
     [_careBtn setEnabled:NO];
   } else {
     [_careBtn setEnabled:YES];
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_care") forState:UIControlStateNormal];
-    [_careBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_pd_care_hl") forState:UIControlStateHighlighted];
+    [_careBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_care") forState:UIControlStateNormal];
+    [_careBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_care_hl") forState:UIControlStateHighlighted];
   }
 
 }
@@ -429,7 +429,7 @@
 }
 
 - (void)deletePicture:(PublicDetailCell *)view index:(int)index {
-  
+  [MobClick event:@"2013022504"];
   RiddingPicture *picture=(RiddingPicture*)[_cellArray objectAtIndex:index];
   if(![StaticInfo getSinglton].user||picture.user.userId!=[StaticInfo getSinglton].user.userId){
     return;

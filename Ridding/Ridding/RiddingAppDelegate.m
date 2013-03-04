@@ -6,8 +6,7 @@
 //  Copyright 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "QQNRFeedViewController.h"
-#import "MyLocationManager.h"
+#import "LandingViewController.h"
 #define moveSpeed 0.5
 
 @implementation RiddingAppDelegate
@@ -18,38 +17,48 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
   [MobClick startWithAppkey:YouMenAppKey reportPolicy:REALTIME channelId:nil];
-  [MobClick checkUpdate];
+  [MobClick updateOnlineConfig];
   [[ResponseCodeCheck getSinglton] checkConnect];
-
+  
   //检查网络
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   [self setUserInfo];
-
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  if([prefs boolForKey:kStaticInfo_StartApp]){
+    [[UIApplication sharedApplication] setStatusBarHidden:NO
+                                            withAnimation:UIStatusBarAnimationNone];
+  }
   self.rootViewController = [[PublicViewController alloc] init];
-
+  
   self.navController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
-
+  
   self.navController.navigationBar.hidden = YES;
   self.window.rootViewController = self.navController;
-
-
+  
+  
   self.leftViewController = [[BasicLeftViewController alloc] init];
   self.leftViewController.view.frame = CGRectMake(0, 20, SCREEN_WIDTH, SCREEN_HEIGHT);
-
+  
   [self.window addSubview:self.leftViewController.view];
   [self.window addSubview:self.navController.view];
-
+  
   [self.window makeKeyAndVisible];
   
+  
+  if(![prefs boolForKey:kStaticInfo_StartApp]){
+    LandingViewController *landingViewController=[[LandingViewController alloc]init];
+    [self.rootViewController presentModalViewController:landingViewController animated:NO];
+    [prefs setBool:YES forKey:kStaticInfo_StartApp];
+  }
   // Let the device know we want to receive push notifications
 	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
 	 (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-
+  
   return YES;
 }
 
 - (void)setUserInfo {
-
+  
   StaticInfo *staticInfo = [StaticInfo getSinglton];
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   staticInfo.user.userId = [[prefs stringForKey:kStaticInfo_userId] longLongValue];
@@ -65,9 +74,9 @@
 }
 
 - (BOOL)canLogin {
-
+  
   StaticInfo *staticInfo = [StaticInfo getSinglton];
-
+  
   if (staticInfo.logined) {
     return TRUE;
   }
@@ -102,9 +111,8 @@
 
 //iPhone 从APNs服务器获取deviceToken后回调此方法
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-
+  
   NSString *dt = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-  NSLog(@"%@",dt);
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   [prefs setObject:dt forKey:kStaticInfo_apnsToken];
 }
@@ -114,7 +122,7 @@
 }
 
 + (RiddingAppDelegate *)shareDelegate {
-
+  
   return (RiddingAppDelegate *) [[UIApplication sharedApplication] delegate];
 }
 
@@ -127,10 +135,10 @@
 
 //进入后台
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-
+  
   if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
     // Stop normal location updates and start significant location change updates for battery efficiency.
-
+    
   }
   else {
     NSLog(@"Significant location change monitoring is not available.");
@@ -139,10 +147,10 @@
 
 //回到前台
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-
+  
   if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
     // Stop normal location updates and start significant location change updates for battery efficiency.
-
+    
   }
 }
 
@@ -162,34 +170,34 @@
 
 
 + (void)moveMidNavgation {
-
+  
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
-
+  
   //往左移动
   [UIView animateWithDuration:moveSpeed animations:^{
     delegate.navController.view.frame = CGRectMake(LeftBarMoveWidth,
-        delegate.navController.view.frame.origin.y,
-        delegate.navController.view.frame.size.width,
-        delegate.navController.view.frame.size.height);
-
+                                                   delegate.navController.view.frame.origin.y,
+                                                   delegate.navController.view.frame.size.width,
+                                                   delegate.navController.view.frame.size.height);
+    
   }
                    completion:^(BOOL finish) {
                      ((BasicViewController *) delegate.navController.visibleViewController).position = POSITION_MID;
                      [delegate.leftViewController showShadow];
                    }];
-
+  
 }
 
 + (void)moveLeftNavgation {
-
+  
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
   //往左移动
   [UIView animateWithDuration:moveSpeed animations:^{
     delegate.navController.view.frame = CGRectMake(0,
-        delegate.navController.view.frame.origin.y,
-        delegate.navController.view.frame.size.width,
-        delegate.navController.view.frame.size.height);
-
+                                                   delegate.navController.view.frame.origin.y,
+                                                   delegate.navController.view.frame.size.width,
+                                                   delegate.navController.view.frame.size.height);
+    
   }
                    completion:^(BOOL finish) {
                      ((BasicViewController *) delegate.navController.visibleViewController).position = POSITION_LEFT;
@@ -197,24 +205,24 @@
 }
 
 + (void)moveRightNavgation {
-
+  
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
   //往右移动
   [UIView animateWithDuration:moveSpeed animations:^{
     delegate.navController.view.frame = CGRectMake(SCREEN_WIDTH,
-        delegate.navController.view.frame.origin.y,
-        delegate.navController.view.frame.size.width,
-        delegate.navController.view.frame.size.height);
-
+                                                   delegate.navController.view.frame.origin.y,
+                                                   delegate.navController.view.frame.size.width,
+                                                   delegate.navController.view.frame.size.height);
+    
   }
                    completion:^(BOOL finish) {
                      ((BasicViewController *) delegate.navController.visibleViewController).position = POSITION_RIGHT;
-
+                     
                    }];
 }
 
 + (void)popAllNavgation {
-
+  
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
   [delegate.navController popToRootViewControllerAnimated:NO];
   [delegate.navController popViewControllerAnimated:NO];

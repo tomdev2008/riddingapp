@@ -256,7 +256,7 @@
   ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
-  DLog(@"apiResponse%@", apiResponse);
+
   NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
   return [responseDic objectForKey:@"data"];
 
@@ -278,7 +278,7 @@
   ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest addRequestHeader:@"authToken" value:self.staticInfo.user.authToken];
   NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-  NSLog(@"%lld",riddingPicture.takePicDateL);
+  
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, SAFESTR(riddingPicture.fileKey), @"filekey");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, DOUBLE2NUM(riddingPicture.latitude), @"latitude");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, DOUBLE2NUM(riddingPicture.longtitude), @"longtitude");
@@ -291,6 +291,7 @@
   [asiRequest appendPostData:data];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
+  NSLog(@"%@ %@",apiResponse,dic);
   NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
   if ([[responseDic objectForKey:@"code"] intValue] == 1) {
     return TRUE;

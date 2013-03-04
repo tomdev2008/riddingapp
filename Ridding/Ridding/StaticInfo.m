@@ -5,7 +5,8 @@
 //  Created by zys on 12-3-27.
 //  Copyright 2012年 __MyCompanyName__. All rights reserved.
 //
-
+#define kRecomApp @"recomApp"
+#define kMapCreateTips @"createTips"
 static StaticInfo *staticInfo = nil;
 
 @implementation StaticInfo
@@ -24,6 +25,7 @@ static StaticInfo *staticInfo = nil;
     plistSavePath = [documentsDirectory stringByAppendingPathComponent:@"staticInfo.plist"];
     logined = false;
     [self initSqlDB];
+    _routesDic=[[NSMutableDictionary alloc]init];
   }
 
   return self;
@@ -108,4 +110,12 @@ static StaticInfo *staticInfo = nil;
 }
 
 
+- (NSString*)kRecomAppKey{
+  
+  return kRecomApp;
+}
+- (NSString*)kMapCreateTipsKey{
+  
+  return [NSString stringWithFormat:@"%lld_%@",self.user.userId,kMapCreateTips];
+}
 @end

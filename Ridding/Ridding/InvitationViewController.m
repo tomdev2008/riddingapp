@@ -7,10 +7,8 @@
 //
 
 #import "InvitationViewController.h"
-#import "UIColor+XMin.h"
 #import "SinaApiRequestUtil.h"
 #import "SVProgressHUD.h"
-#import "InvitationViewCell.h"
 #import "Utilities.h"
 @implementation InvitationViewController
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingId:(long long)riddingId nowTeamers:(NSArray *)nowTeamers {
@@ -238,5 +236,10 @@
   [self.atableView reloadData];
 }
 
+
+- (IBAction)cancelBtn:(id)sender{
+  
+  [self.searchField resignFirstResponder];
+}
 
 @end

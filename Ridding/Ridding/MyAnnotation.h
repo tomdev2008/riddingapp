@@ -20,7 +20,6 @@ typedef enum MyAnnotationType {
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *subtitle;
 @property (nonatomic, copy) NSString *city;
-@property (nonatomic) BOOL checked;
 @property (nonatomic) MyAnnotationType type;
 
 - (id)initWithLocation:(CLLocationCoordinate2D)coord;

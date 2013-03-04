@@ -7,7 +7,7 @@
 //
 
 #import "LandingViewController.h"
-
+#import "UIImage+UIImage_Retina4.h"
 @implementation LandingViewController
 @synthesize imageList;
 @synthesize imageSwipeViewController;
@@ -55,23 +55,20 @@
 - (void)viewDidLoad {
 
   [super viewDidLoad];
-  UIImage *img1 = [UIImage imageNamed:@"help1.png"];
-  UIImage *img2 = [UIImage imageNamed:@"help2.png"];
-  UIImage *img3 = [UIImage imageNamed:@"help3.png"];
+  
+  UIImage *img1 = [UIImage retina4ImageNamed:@"screenshot1" type:@"png"] ;
+  UIImage *img2 = [UIImage retina4ImageNamed:@"screenshot2" type:@"png"] ;
+  UIImage *img3 = [UIImage retina4ImageNamed:@"screenshot3" type:@"png"] ;
+  UIImage *img4 = [UIImage retina4ImageNamed:@"screenshot4" type:@"png"] ;
+  UIImage *img5 = [UIImage retina4ImageNamed:@"screenshot5" type:@"png"] ;
 
-  NSArray *imgArray = [NSArray arrayWithObjects:img1, img2, img3, nil];
-  imageSwipeViewController = [[ImageSwipeViewController alloc] initWithFrameRect:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) ImageArray:imgArray];
+  NSArray *imgArray = [NSArray arrayWithObjects:img1, img2, img3,img4,img5, nil];
+  imageSwipeViewController = [[ImageSwipeViewController alloc] initWithFrameRect:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT+20) ImageArray:imgArray];
   imageSwipeViewController.delegate = self;
-  CGFloat height = SCREEN_HEIGHT;
-  UIImageView *startButton = [[UIImageView alloc] initWithFrame:CGRectMake(900, height * 1.0 / 2.0 - (25 / 2), 25, 25)];
-  startButton.image = [UIImage imageNamed:@"bf.png"];
 
-  startButton.userInteractionEnabled = YES;
-  UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(startApp:)];
-  [startButton addGestureRecognizer:singleTap];
-
+ 
+ 
   [self.view addSubview:imageSwipeViewController.view];
-  [imageSwipeViewController.scrollView addSubview:startButton];
 
 }
 
@@ -89,9 +86,10 @@
 }
 
 - (void)startApp:(UIGestureRecognizer *)gestureRecognizer {
-
+  [[UIApplication sharedApplication] setStatusBarHidden:NO
+                                          withAnimation:UIStatusBarAnimationNone];
   [self dismissModalViewControllerAnimated:NO];
-
+  
 }
 #pragma mark - imageSwipeViewController delegate
 - (void)startApp {

@@ -13,8 +13,8 @@
 
 #define PublicDetailCellDefaultSpace 4
 #define PublicDetailCellDefaultDownSpace 10
-#define PublicDetailCellOriginX 20
-#define PublicDetailCellWidth 280
+#define PublicDetailCellOriginX 15
+#define PublicDetailCellWidth 290
 @class PublicDetailCell;
 
 @protocol PublicDetailCellDelegate <NSObject>

@@ -41,7 +41,7 @@ typedef enum _SOURCETYPE {
 @property (nonatomic) double latitude;
 @property (nonatomic) double longtitude;
 @property (nonatomic, copy) NSString *backGroundUrl;
-
+@property (nonatomic, copy) NSString *graySAvatorUrl;
 
 //选好友的时候用到
 @property (nonatomic) BOOL isSelected;

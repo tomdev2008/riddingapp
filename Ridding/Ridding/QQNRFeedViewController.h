@@ -33,10 +33,13 @@
   BOOL _isLoadOld;
   BOOL _isFromLeft;
   CGFloat _preHeight;
+  GADSearchBannerView *_bannerView;
 }
 
 @property (nonatomic, retain) IBOutlet TouchEnabledTableView *tv;
 
+@property (nonatomic, retain) IBOutlet UIImageView *lineView;
+@property (nonatomic, retain) IBOutlet UIView *nothingView;
 @property (nonatomic) BOOL isMyFeedHome;
 
 

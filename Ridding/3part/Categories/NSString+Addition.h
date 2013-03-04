@@ -55,4 +55,6 @@
 - (NSString *)changeMMToM;
 
 - (NSString *)urlEncode;
+
+- (NSString *)trim;
 @end

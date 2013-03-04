@@ -29,6 +29,7 @@
   BOOL _isMyHome;
   UILabel *_adLabel;
   UIImageView *_adImageView;
+  UIButton *_goBtn;
 }
 
 @property (nonatomic, assign) id <PublicDetailHeaderDelegate> delegate;

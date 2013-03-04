@@ -254,6 +254,7 @@ static MapUtil *mapUtil = nil;
   CGImageRef image = CGBitmapContextCreateImage(context);
   UIImage *uiImage = [UIImage imageWithCGImage:image];
   if (uiImage) {
+
     [route_view setImage:uiImage];
   }
   CGImageRelease(image);

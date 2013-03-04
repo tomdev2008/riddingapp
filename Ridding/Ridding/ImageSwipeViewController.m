@@ -63,6 +63,7 @@
   scrollView.pagingEnabled = YES;
   scrollView.contentSize = CGSizeMake(viewSize.size.width * pageCount, viewSize.size.height);
   scrollView.showsHorizontalScrollIndicator = NO;
+  scrollView.bounces=NO;
   scrollView.showsVerticalScrollIndicator = NO;
   scrollView.scrollsToTop = NO;
   scrollView.delegate = self;
@@ -79,15 +80,17 @@
     [scrollView addSubview:imgView];
   }
   [self.view addSubview:scrollView];
-  float pageControlWidth = pageCount * 10.0f + 50.f;
-  float pagecontrolHeight = 20.0f;
-  pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake((viewSize.size.width - pageControlWidth) / 2, viewSize.size.height - pagecontrolHeight, pageControlWidth, pagecontrolHeight)];
-  pageControl.currentPage = 1;
-  pageControl.numberOfPages = pageCount;
-  [pageControl setBackgroundColor:[UIColor darkGrayColor]];
-  [pageControl setAlpha:0.8];
-  [pageControl setUserInteractionEnabled:NO];
-  [self.view addSubview:pageControl];
+  
+  _startBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+  
+  _startBtn.frame=CGRectMake(100, SCREEN_HEIGHT-60, 122, 32);
+  [_startBtn setImage:UIIMAGE_FROMPNG(@"screenshot_button_start") forState:UIControlStateNormal];
+  
+  [_startBtn addTarget:self action:@selector(startApp) forControlEvents:UIControlEventTouchUpInside];
+  _startBtn.hidden=YES;
+  _startBtn.alpha=0.0;
+  [self.view addSubview:_startBtn];
+
 
 }
 
@@ -95,11 +98,24 @@
 
   CGFloat pageWidth = scrollView.frame.size.width;
   int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-  pageControl.currentPage = page;
-  if (page == 2 && scrollView.contentOffset.x > page * SCREEN_WIDTH + 80) {
-    if (self.delegate && [self.delegate performSelector:@selector(startApp)]) {
-      [self.delegate startApp];
-    }
+  if(page==4&&_startBtn.hidden==YES){
+    
+    _startBtn.hidden=NO;
+    [UIView animateWithDuration:1.0 animations:^{
+      _startBtn.alpha=1.0;
+    }];
+  }
+  if(page!=4){
+    
+    _startBtn.hidden=YES;
+    _startBtn.alpha=0.0;
+  }
+  
+}
+
+- (void)startApp{
+  if (self.delegate) {
+    [self.delegate startApp];
   }
 }
 

@@ -42,14 +42,13 @@
 
 - (void)viewDidLoad {
 
-  [super viewDidLoad];
-  self.barView.titleLabel.text = _toUser.name;
+  self.canMoveLeft=YES;
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   self.tv.backgroundColor = [UIColor clearColor];
-
+  
   if (_isFromLeft) {
     [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
-    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateHighlighted];
+    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list_hl") forState:UIControlStateHighlighted];
     self.hasLeftView = TRUE;
   }else{
     [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
@@ -60,12 +59,18 @@
   [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_main_refresh") forState:UIControlStateNormal];
   [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_main_refresh_hl") forState:UIControlStateHighlighted];
   [self.barView.rightButton setHidden:NO];
+  
+  [self.barView.titleLabel removeFromSuperview];
+  
+  UIImageView *imageView=[[UIImageView alloc]initWithFrame:CGRectMake(120, 8, 80, 28)];
+  imageView.image=UIIMAGE_FROMPNG(@"qqnr_toolbar_logo");
+  [self.barView addSubview:imageView];
 
   _backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, SCREEN_STATUS_BAR, SCREEN_WIDTH, QQNRFeedHeaderView_Default_Height)];
   NSURL *url = [QiNiuUtils getUrlByWidthToUrl:_backgroundImageView.frame.size.width url:_toUser.backGroundUrl type:QINIUMODE_DEDEFAULT];
   
-  [_backgroundImageView setImageWithURL:url placeholderImage:UIIMAGE_FROMPNG(@"qqnr_main_pic")];
-  _backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+  [_backgroundImageView setImageWithURL:url placeholderImage:UIIMAGE_FROMFILE(@"qqnr_main_pic", @"jpg")];
+  _backgroundImageView.contentMode = UIViewContentModeCenter;
   _backgroundImageView.clipsToBounds = YES;
   [self.view addSubview:_backgroundImageView];
 
@@ -80,14 +85,6 @@
   _isLoadOld = FALSE;
   _dataSource = [[NSMutableArray alloc] init];
   
-  GADSearchBannerView *bannerView = [[GADSearchBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(GAD_SIZE_320x50) origin:CGPointMake(0, SCREEN_HEIGHT- 50)];
-  bannerView.adUnitID = MY_BANNER_UNIT_ID;
-  bannerView.rootViewController = self;
-  [self.view addSubview:bannerView];
-  GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
-  [adRequest setQuery:@"sport"];
-  [bannerView loadRequest:[adRequest request]];
-
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(succAddRidding:)
                                                name:kSuccAddRiddingNotification object:nil];
@@ -97,6 +94,21 @@
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(succAddFriends:)
                                                name:kSuccAddFriendsNotification object:nil];
+  [super viewDidLoad];
+}
+
+- (void)showAd{
+  if(!_bannerView){
+    _bannerView = [[GADSearchBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(GAD_SIZE_320x50) origin:CGPointMake(0, SCREEN_HEIGHT- 50)];
+    _bannerView.adUnitID = MY_BANNER_UNIT_ID;
+    _bannerView.rootViewController = self;
+    [self.view addSubview:_bannerView];
+    GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
+    [adRequest setQuery:@"sport"];
+    [_bannerView loadRequest:[adRequest request]];
+  }
+
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -104,11 +116,12 @@
   [super viewDidAppear:animated];
   if (!self.didAppearOnce) {
     self.didAppearOnce = TRUE;
+    self.tv.scrollEnabled=NO;
     [self download];
     if ([[ResponseCodeCheck getSinglton] isWifi]) {
       NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-
-      if (_isMyFeedHome &&[StaticInfo getSinglton].user.nowRiddingCount >= 3 && ![prefs objectForKey:@"recomComment"]) {
+      
+      if (_isMyFeedHome &&[StaticInfo getSinglton].user.nowRiddingCount >= 3 && ![prefs boolForKey:@"recomComment"]) {
         UIAlertView *alert = nil;
         if ([StaticInfo getSinglton].user.nowRiddingCount >= 10) {
           alert = [[UIAlertView alloc] initWithTitle:@"喜欢这款骑行应用吗?"
@@ -123,8 +136,12 @@
                                    otherButtonTitles:@"还不错噢", nil];
         }
         [alert show];
-        [prefs setObject:@"" forKey:@"recomComment"];
+        [prefs setBool:YES forKey:@"recomComment"];
+        [prefs synchronize];
       }
+    }
+    if([StaticInfo getSinglton].user.nowRiddingCount==0){
+      [self.lineView removeFromSuperview];
     }
   }
 }
@@ -158,7 +175,7 @@
       if (!_isLoadOld) {
         [_dataSource removeAllObjects];
         _isTheEnd = FALSE;
-      } else {
+      } else{
         [self doneLoadingTableViewData];
       }
       [self doUpdate:array];
@@ -168,33 +185,33 @@
         [_ego setHidden:NO];
       }
       if ([_dataSource count] == 0&&_isMyFeedHome) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"开始骑行之旅"
-                                                        message:@"您的骑行之旅还没有骑行活动吗?^_^"
-                                                       delegate:self cancelButtonTitle:@"取消"
-                                              otherButtonTitles:@"去创建一个", nil];
-        [alert show];
+        [self.nothingView setHidden:NO];
+        [self.lineView setHidden:YES];
+        [_ego setHidden:YES];
+        [self.view bringSubviewToFront:self.nothingView];
+        [_bannerView removeFromSuperview];
+      }else{
+        [self.nothingView setHidden:YES];
+        [self.lineView setHidden:NO];
+        [self showAd];
       }
       [self.tv reloadData];
       [self downLoadMapRoutes];
+      self.tv.scrollEnabled=YES;
       [SVProgressHUD dismiss];
       _isLoading = FALSE;
     });
   });
 }
 
+
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 
-  if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"去创建一个"]) {
-    MapCreateVCTL *mapCreate = [[MapCreateVCTL alloc] init];
-    [self.navigationController popToRootViewControllerAnimated:NO];
-    RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
-    [delegate.navController pushViewController:mapCreate animated:YES];
-
-  } else if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"还不错噢"]) {
+  if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"还不错噢"]||[[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"这就去"]) {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
-  } else if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"这就去"]) {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
-  }
+    [MobClick event:@"2013022506"];
+  } 
 }
 
 
@@ -253,8 +270,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  QQNRFeedTableCell *cell = (QQNRFeedTableCell *) [Utilities cellByClassName:@"QQNRFeedTableCell" inNib:@"QQNRFeedTableCell" forTableView:self.tv];
-  if(cell){
+  UITableViewCell *uiTableViewCell=[Utilities cellByClassName:@"QQNRFeedTableCell" inNib:@"QQNRFeedTableCell" forTableView:self.tv];
+  if(uiTableViewCell){
+    QQNRFeedTableCell *cell = (QQNRFeedTableCell *)uiTableViewCell;
     cell.backgroundColor = [UIColor clearColor];
     cell.delegate = self;
     cell.userInteractionEnabled = YES;
@@ -266,6 +284,7 @@
     [cell initContentView:ridding];
     return cell;
   }
+  
   return nil;
 }
 
@@ -314,7 +333,7 @@
 
 
 - (void)downLoadMapRoutes {
-
+  
   NSArray *cellArray = [self.tv visibleCells];
   if (cellArray) {
     for (int i=0;i<[cellArray count];i++) {
@@ -327,26 +346,31 @@
       q = dispatch_queue_create("drawRoutes", NULL);
       dispatch_async(q, ^{
         Ridding *ridding = [_dataSource objectAtIndex:cell.index];
-        int count = [RiddingLocationDao getRiddingLocationCount:ridding.riddingId];
-        if (count > 0) {
-          NSArray *routeArray = [RiddingLocationDao getRiddingLocations:ridding.riddingId beginWeight:0];
-          for (RiddingLocation *location in routeArray) {
-            CLLocation *loc = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longtitude];
-            [routes addObject:loc];
+        NSArray *tempRoutes=(NSArray*)[[StaticInfo getSinglton].routesDic objectForKey:LONGLONG2NUM(ridding.riddingId)];
+        [routes addObjectsFromArray:tempRoutes];
+        if(!routes||[routes count]==0){
+          int count = [RiddingLocationDao getRiddingLocationCount:ridding.riddingId];
+          if (count > 0) {
+            NSArray *routeArray = [RiddingLocationDao getRiddingLocations:ridding.riddingId beginWeight:0];
+            for (RiddingLocation *location in routeArray) {
+              CLLocation *loc = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longtitude];
+              [routes addObject:loc];
+            }
+          } else {
+            //如果数据库中存在，那么取数据库中的地图路径，如果不存在，http去请求服务器。
+            //数据库中取出是mapTaps或者points
+            NSMutableDictionary *map_dic = [self.requestUtil getMapMessage:ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
+            Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:keyMap]];
+            NSArray *array = map.mapPoint;
+            [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
+            [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:array]];
+            [RiddingLocationDao setRiddingLocationToDB:routes riddingId:ridding.riddingId];
           }
-        } else {
-          //如果数据库中存在，那么取数据库中的地图路径，如果不存在，http去请求服务器。
-          //数据库中取出是mapTaps或者points
-          NSMutableDictionary *map_dic = [self.requestUtil getMapMessage:ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
-          Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:keyMap]];
-          NSArray *array = map.mapPoint;
-          [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
-          [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:array]];
-          [RiddingLocationDao setRiddingLocationToDB:routes riddingId:ridding.riddingId];
+          [[StaticInfo getSinglton].routesDic setObject:routes forKey:LONGLONG2NUM(ridding.riddingId)];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
           if(cell){
-            [cell drawRoutes:routes];
+            [cell drawRoutes:routes riddingId:ridding.riddingId];
           }
         });
       });
@@ -358,23 +382,30 @@
 #pragma mark (ActionSheet)
 - (void)longPressOnCell:(UILongPressGestureRecognizer *)gestureRecognize {
 
-  if (_isShowingSheet) {
+  if (gestureRecognize.state == UIGestureRecognizerStateBegan){
     return;
   }
-  [MobClick event:@"2012111909"];
-  _isShowingSheet = TRUE;
-  if ([gestureRecognize.view isKindOfClass:[QQNRFeedTableCell class]]) {
-    QQNRFeedTableCell *cell = (QQNRFeedTableCell *) gestureRecognize.view;
-    [self showActionSheet:cell];
+  if (gestureRecognize.state == UIGestureRecognizerStateEnded) {
+    if ([gestureRecognize.view isKindOfClass:[QQNRFeedTableCell class]]) {
+      if (_isShowingSheet) {
+        return;
+      }
+      _isShowingSheet = TRUE;
+      [MobClick event:@"2012111909"];
+      QQNRFeedTableCell *cell = (QQNRFeedTableCell *) gestureRecognize.view;
+      [self showActionSheet:cell];
+      
+    }
   }
+
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 
   NSString *str = [actionSheet buttonTitleAtIndex:buttonIndex];
-
+  _isShowingSheet=FALSE;
   Ridding *ridding = [_dataSource objectAtIndex:_selectedCell.index];
-  if ([str isEqualToString:@"完成活动"]) {
+  if ([str isEqualToString:@"活动已经完成"]) {
     [MobClick event:@"2012070206"];
     [SVProgressHUD show];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -387,7 +418,7 @@
         [SVProgressHUD dismiss];
       });
     });
-  } else if ([str isEqualToString:@"退出"]) {
+  } else if ([str isEqualToString:@"删除活动"]||[str isEqualToString:@"退出活动"]) {
     [MobClick event:@"2012070207"];
     [SVProgressHUD show];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -396,24 +427,27 @@
         if (returnCode == kServerSuccessCode) {
           [_dataSource removeObject:ridding];
           [self.tv reloadData];
-          [SVProgressHUD showSuccessWithStatus:@"退出成功" duration:1.0];
+          if([Ridding isLeader:ridding.userRole]){
+            [SVProgressHUD showSuccessWithStatus:@"删除成功" duration:1.0];
+          }else{
+            [SVProgressHUD showSuccessWithStatus:@"退出成功" duration:1.0];
+          }
         }
-        
       });
     });
-  } else if ([str isEqualToString:@"相机"]) {
+  } else if ([str isEqualToString:@"拍摄新照片"]) {
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     [imagePicker setDelegate:self];
     imagePicker.videoQuality = UIImagePickerControllerQualityTypeLow;
     [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
     [self presentModalViewController:imagePicker animated:YES];
-  } else if ([str isEqualToString:@"本地相册"]) {
+  } else if ([str isEqualToString:@"从照片库选择"]) {
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     [imagePicker setDelegate:self];
     [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
     [self presentModalViewController:imagePicker animated:YES];
   }
-  _isShowingSheet = FALSE;
+  
   return;
 }
 
@@ -430,10 +464,11 @@
     _selectedCell = cell;
     UIActionSheet *showSheet = nil;
     Ridding *ridding = [_dataSource objectAtIndex:cell.index];
+    NSString *title=[NSString stringWithFormat:@"需要对骑行活动:\"%@\"做操作吗?",ridding.riddingName];
     if ([Ridding isLeader:ridding.userRole] && ![ridding isEnd]) {
-      showSheet = [[UIActionSheet alloc] initWithTitle:@"操作" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"完成活动" otherButtonTitles:@"退出", nil];
+      showSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"活动已经完成" otherButtonTitles:@"删除活动", nil];
     } else if (![ridding isEnd]) {
-      showSheet = [[UIActionSheet alloc] initWithTitle:@"操作" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"退出" otherButtonTitles:nil];
+        showSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"退出活动" otherButtonTitles:nil];
     } else {
       return;
     }
@@ -496,6 +531,13 @@
   [self presentModalViewController:tutorialViewController animated:YES];
 }
 
+- (IBAction)createRidding:(id)sender {
+  
+  MapCreateVCTL *mapCreate = [[MapCreateVCTL alloc] init];
+  [self.navigationController popToRootViewControllerAnimated:NO];
+  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+  [delegate.navController pushViewController:mapCreate animated:YES];
+}
 
 #pragma mark - MapCreateVCTL delegate
 - (void)finishCreate:(MapCreateVCTL *)controller ridding:(Ridding *)ridding {
@@ -517,8 +559,8 @@
   if(!_isMyFeedHome){
     return;
   }
-  
-  UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"选择照片来源" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"相机" otherButtonTitles:@"本地相册", nil];
+  [MobClick event:@"2013022507"];
+  UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"您希望如何设置您的封面?" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"拍摄新照片" otherButtonTitles:@"从照片库选择", nil];
   actionSheet.delegate = self;
   [actionSheet showInView:self.view];
 }
@@ -547,7 +589,9 @@
 
   QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
   [queue addTask:task withDependency:NO];
+  [MobClick event:@"2013022508"];
   [picker dismissModalViewControllerAnimated:YES];
+  
 }
 
 - (void)succUpdateBackground:(NSNotification *)noti {

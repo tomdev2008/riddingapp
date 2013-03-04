@@ -6,9 +6,7 @@
 //
 //
 
-#import "PublicViewController.h"
 #import "QQNRFeedViewController.h"
-#import "RiddingAppDelegate.h"
 #import "UserSettingViewController.h"
 #import "SVProgressHUD.h"
 #import "BasicLeftHeadView.h"
@@ -87,12 +85,12 @@
       break;
     case 2: {
       cell.titleLabel.text = @"骑行广场";
-      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_myridding");
+      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_pd");
     }
       break;
     case 3: {
       cell.titleLabel.text = @"推荐给骑友";
-      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_myridding");
+      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_recommend");
       
     }
     default:
@@ -138,8 +136,9 @@
 }
 
 - (void)showShare {
+  
   if([MFMessageComposeViewController canSendText]){
-		
+		[MobClick event:@"2013022101"];
     MFMessageComposeViewController *smsComposer = [[MFMessageComposeViewController alloc] init];
 		
     smsComposer.body = [NSString stringWithFormat:@"我下载了一款骑行应用叫\"骑行者\",非常不错！以后出去骑车就靠它了。可以画路线,添加队友,追踪队友位置,还能拍照记录行程。赶紧下一个去!给你链接:%@",linkAppStore];
@@ -176,7 +175,9 @@
 }
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
-  
+  if(result==MessageComposeResultSent){
+    [MobClick event:@"2013022102"];
+  }
 	[self dismissModalViewControllerAnimated:YES];
   [self restoreViewLocation];
 }

@@ -34,7 +34,7 @@
     [settingBtn setImage:UIIMAGE_FROMPNG(@"qqnr_ln_setting") forState:UIControlStateNormal];
     [settingBtn setImage:UIIMAGE_FROMPNG(@"qqnr_ln_setting_hl") forState:UIControlStateHighlighted];
     [settingBtn addTarget:self action:@selector(settingBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    settingBtn.showsTouchWhenHighlighted = YES;
+    
     [self addSubview:settingBtn];
   }
   return self;

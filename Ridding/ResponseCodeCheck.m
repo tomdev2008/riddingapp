@@ -6,7 +6,6 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "ResponseCodeCheck.h"
 #import "Reachability.h"
 
 static ResponseCodeCheck *responseCodeCheck = nil;

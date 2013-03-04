@@ -105,8 +105,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/NSIndexPath+RG_Utilities.m" afterPath="$PROJECT_DIR$/3part/Categories/NSIndexPath+RG_Utilities.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/NSString+MD5Addition.h" afterPath="$PROJECT_DIR$/3part/Categories/NSString+MD5Addition.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/NSString+MD5Addition.m" afterPath="$PROJECT_DIR$/3part/Categories/NSString+MD5Addition.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/NSString+TomAddition.h" afterPath="$PROJECT_DIR$/3part/Categories/NSString+TomAddition.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/Categories/NSString+TomAddition.m" afterPath="$PROJECT_DIR$/3part/Categories/NSString+TomAddition.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/EGO/EGORefreshTableHeaderView.h" afterPath="$PROJECT_DIR$/3part/EGO/EGORefreshTableHeaderView.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/EGO/EGORefreshTableHeaderView.m" afterPath="$PROJECT_DIR$/3part/EGO/EGORefreshTableHeaderView.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/3part/EGO/UP_EGORefreshTableHeaderView.h" afterPath="$PROJECT_DIR$/3part/EGO/UP_EGORefreshTableHeaderView.h" />
@@ -231,6 +229,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserMap.xib" afterPath="$PROJECT_DIR$/Ridding/UserMap.xib" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserSettingViewController.h" afterPath="$PROJECT_DIR$/Ridding/UserSettingViewController.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserSettingViewController.m" afterPath="$PROJECT_DIR$/Ridding/UserSettingViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserSettingViewController.xib" afterPath="$PROJECT_DIR$/Ridding/UserSettingViewController.xib" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserView.h" afterPath="$PROJECT_DIR$/Ridding/UserView.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/UserView.m" afterPath="$PROJECT_DIR$/Ridding/UserView.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ridding/main.m" afterPath="$PROJECT_DIR$/Ridding/main.m" />
@@ -307,20 +306,29 @@
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_IPHONE_85036VTSA4S" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_IPHONE_C39H3D3UDT9Y" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PublicCommentVCTL.h" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Ridding/PublicCommentVCTL.h">
+      <file leaf-file-name="RiddingAppDelegate.m" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Ridding/RiddingAppDelegate.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="55" selection-start="843" selection-end="843" vertical-scroll-proportion="0.64285713">
+            <state line="8" column="0" selection-start="138" selection-end="138" vertical-scroll-proportion="0.1904762">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PublicDetailViewController.h" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.h">
+      <file leaf-file-name="UserSettingViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/UserSettingViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="0" selection-start="209" selection-end="209" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserInfoViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/UserInfoViewController.m">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
@@ -328,19 +336,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PublicLinkWebViewController.h" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/PublicLinkWebViewController.h">
+      <file leaf-file-name="UserMap.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/UserMap.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="10" column="0" selection-start="172" selection-end="172" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PublicViewController.h" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/PublicViewController.h">
+      <file leaf-file-name="InvitationViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/InvitationViewController.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="9" column="0" selection-start="187" selection-end="187" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -367,7 +375,7 @@
       <file leaf-file-name="PublicDetailViewController.m" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="336" column="11" selection-start="9769" selection-end="9769" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -376,25 +384,16 @@
       <file leaf-file-name="PublicCommentVCTL.m" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Ridding/PublicCommentVCTL.m">
           <provider selected="true" editor-type-id="text-editor">
+            <state line="192" column="48" selection-start="5309" selection-end="5309" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PhotoDescViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Ridding/PhotoDescViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InvitationViewController.m" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/InvitationViewController.m">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="198" column="72" selection-start="6073" selection-end="6073" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MapCreateVCTL.h" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Ridding/MapCreateVCTL.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="32" selection-start="725" selection-end="725" vertical-scroll-proportion="-9.230769">
               <folding />
             </state>
           </provider>
@@ -410,21 +409,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/RequestUtil.m" />
-        <option value="$PROJECT_DIR$/QQNRServerTask.m" />
-        <option value="$PROJECT_DIR$/Ridding/UserMap.h" />
-        <option value="$PROJECT_DIR$/Ridding/UserMap.m" />
-        <option value="$PROJECT_DIR$/Ridding/PublicViewController.m" />
-        <option value="$PROJECT_DIR$/Ridding/PublicDetailViewController.m" />
         <option value="$PROJECT_DIR$/Ridding/QQNRFeedViewController.m" />
         <option value="$PROJECT_DIR$/Ridding/MapSearchVCTL.m" />
         <option value="$PROJECT_DIR$/Ridding/CreateAnnotationView.m" />
-        <option value="$PROJECT_DIR$/Ridding/InvitationViewController.m" />
         <option value="$PROJECT_DIR$/3part/qiniu/JSONKit/JSONKit.m" />
         <option value="$PROJECT_DIR$/MyLocationManager.m" />
         <option value="$PROJECT_DIR$/Ridding/MapCreateDescVCTL.m" />
         <option value="$PROJECT_DIR$/Ridding/MapCreateDescVCTL.h" />
+        <option value="$PROJECT_DIR$/QQNRServerTask.m" />
+        <option value="$PROJECT_DIR$/ResponseCodeCheck.m" />
+        <option value="$PROJECT_DIR$/RequestUtil.h" />
+        <option value="$PROJECT_DIR$/BasicLeftViewController.m" />
         <option value="$PROJECT_DIR$/Ridding/MapCreateVCTL.m" />
+        <option value="$PROJECT_DIR$/Ridding/InvitationViewController.m" />
+        <option value="$PROJECT_DIR$/Ridding/UserMap.m" />
+        <option value="$PROJECT_DIR$/Ridding/UserSettingViewController.m" />
+        <option value="$PROJECT_DIR$/Ridding/RiddingAppDelegate.m" />
       </list>
     </option>
   </component>
@@ -482,7 +482,57 @@
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="SINASDK" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Supporting Files" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Setting" />
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -536,6 +586,24 @@
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Picture" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="mapCreate" />
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
             </PATH_ELEMENT>
@@ -559,6 +627,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ridding" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Basic" />
               <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodePBXReferenceNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -731,13 +817,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="722" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32961783" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20922832" sideWeight="0.67038214" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20922832" sideWeight="0.67038214" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -746,6 +831,7 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32961783" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -804,74 +890,65 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/PhotoAnnotation.m">
+    <entry file="file://$PROJECT_DIR$/Ridding/FirstAnnotation.m">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QQNRMyLocation.m">
+    <entry file="file://$PROJECT_DIR$/Ridding/FirstAnnotationView.m">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/CreateAnnotationView.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="80" selection-start="2003" selection-end="2003" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Ridding/MapCreateDescVCTL.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="171" column="31" selection-start="5540" selection-end="5540" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#81#110#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/MapCreateDescVCTL.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="12" selection-start="346" selection-end="346" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/MapCreateVCTL.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="500" column="2" selection-start="16474" selection-end="16474" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/MapCreateVCTL.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="32" selection-start="725" selection-end="725" vertical-scroll-proportion="-9.230769">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/InvitationViewController.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="198" column="72" selection-start="6073" selection-end="6073" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/PublicCommentVCTL.m">
+    <entry file="file://$PROJECT_DIR$/Ridding/MapCreateInfo.m">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/MapCreateVCTL.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="0" selection-start="319" selection-end="319" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/MapSearchVCTL.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/PhotoDescViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/PublicCommentVCTL.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="192" column="48" selection-start="5309" selection-end="5309" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="336" column="11" selection-start="9769" selection-end="9769" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -890,30 +967,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/PublicViewController.h">
+    <entry file="file://$PROJECT_DIR$/Ridding/InvitationViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="187" selection-end="187" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/UserMap.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="172" selection-end="172" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ridding/UserInfoViewController.m">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/PublicLinkWebViewController.h">
+    <entry file="file://$PROJECT_DIR$/Ridding/UserSettingViewController.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="10" column="0" selection-start="209" selection-end="209" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/PublicDetailViewController.h">
+    <entry file="file://$PROJECT_DIR$/Ridding/RiddingAppDelegate.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Ridding/PublicCommentVCTL.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="55" selection-start="843" selection-end="843" vertical-scroll-proportion="0.64285713">
+        <state line="8" column="0" selection-start="138" selection-end="138" vertical-scroll-proportion="0.1904762">
           <folding />
         </state>
       </provider>

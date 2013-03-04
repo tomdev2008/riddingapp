@@ -7,7 +7,13 @@
 //
 
 @implementation File
-
+- (id)init{
+  self=[super init];
+  if(self){
+    
+  }
+  return self;
+}
 
 - (void)saveImageToLocal:(UIImage *)image {
 

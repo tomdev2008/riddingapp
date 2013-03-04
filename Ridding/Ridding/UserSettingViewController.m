@@ -8,9 +8,10 @@
 
 #import "UserSettingViewController.h"
 #import "UMFeedback.h"
-#import "UIColor+XMin.h"
 #import "SinaApiRequestUtil.h"
-
+#import "UserSettingCell.h"
+#import "Utilities.h"
+#import "UIImage+UIImage_Retina4.h"
 @implementation UserSettingViewController
 @synthesize uiTableView = _uiTableView;
 @synthesize staticInfo;
@@ -26,14 +27,15 @@
 
 - (void)viewDidLoad {
 
-  [super viewDidLoad];
+  self.canMoveLeft=YES;
   self.hasLeftView = TRUE;
 
 
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateHighlighted];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list_hl") forState:UIControlStateHighlighted];
   [self.barView.leftButton setHidden:NO];
-
+  
+  [self.barView.titleLabel setText:@"设置"];
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   self.uiTableView.backgroundColor=[UIColor clearColor];
   
@@ -44,6 +46,7 @@
   GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
   [adRequest setQuery:@"sport"];
   [bannerView loadRequest:[adRequest request]];
+  [super viewDidLoad];
 
 }
 
@@ -76,60 +79,50 @@
   return @"";
 }
 
-//指定有多少个分区(Section)，默认为1
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-
-  return 3;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-  if (section == 0) {
-    return 3;//推荐、帮助、升级
-  }
-  if (section == 1) {
-    return 1;//退出,注销
-  }
-  return 0;
+  return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  static NSString *kCellID = @"CellID";
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
-  if (cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID];
-  }
-  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  if ([indexPath section] == 0) {
+  if (indexPath.row<6) {
+    UserSettingCell *cell = (UserSettingCell *) [Utilities cellByClassName:@"UserSettingCell" inNib:@"UserSettingCell" forTableView:self.uiTableView];
     if ([indexPath row] == 0) {
-      cell.textLabel.text = @"喜欢这款应用吗?";
+      [cell initView:@"给个好评吧"];
     } else if ([indexPath row] == 1) {
-      cell.textLabel.text = @"骑行者反馈";
+      [cell initView:@"骑行者反馈"];
     } else if ([indexPath row] == 2) {
-      cell.textLabel.text = @"查看新版本!有惊喜!";
+      [cell initView:@"查看新版本"];
+    } else if ([indexPath row] == 3) {
+      [cell initView:@"创建骑行活动教程"];
+    } else if ([indexPath row] == 4) {
+      [cell initView:@"活动路线教程"];
+    } else if ([indexPath row] == 5) {
+      [cell initView:@"升级"];
     }
-  } else if ([indexPath section] == 1) {
-    if ([indexPath row] == 0) {
-      if ([[RiddingAppDelegate shareDelegate] canLogin]) {
-        cell.textLabel.text = @"退出";
-      } else {
-        cell.textLabel.text = @"登录";
-      }
+    return cell;
+  } else if (indexPath.row == 6) {
+    UserLoginCell *loginCell = (UserLoginCell *) [Utilities cellByClassName:@"UserLoginCell" inNib:@"UserLoginCell" forTableView:self.uiTableView];
+    loginCell.delegate=self;
+    if ([[RiddingAppDelegate shareDelegate] canLogin]) {
+      
+      [loginCell initView:FALSE];
     } else {
-   //   cell.textLabel.text = @"升级成为会员";
+      
+      [loginCell initView:TRUE];
     }
+    return loginCell;
   }
-  cell.imageView.frame = CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 20, 20);
-  cell.textLabel.textColor = [UIColor getColor:@"303030"];
-  cell.textLabel.font = [UIFont systemFontOfSize:14];
-  return cell;
+  //   cell.textLabel.text = @"升级成为会员";
+  return nil;
+  
 }
 
 - (void)      tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  if ([indexPath section] == 0) {
+  if (indexPath.row<6) {
     if ([indexPath row] == 0) {
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStoreComment]];
 
@@ -143,19 +136,31 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     } else if ([indexPath row] == 2) {
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
 
-    }
-  } else if ([indexPath section] == 1) {
-    if ([indexPath row] == 0) {
-      if ([[RiddingAppDelegate shareDelegate] canLogin]) {
-        [self quitButtonClick];
-      } else {
-        [self presentLoginView];
-      }
-    } else {
+    } else if ([indexPath row] == 3){
+      
+      UIButton *imageView=[UIButton buttonWithType:UIButtonTypeCustom];
+      imageView.frame=CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+      [imageView setImage:[UIImage retina4ImageNamed:@"qqnr_mapcreate_help_bg" type:@"png"] forState:UIControlStateNormal];
+      [imageView addTarget:self action:@selector(imageViewCilck:) forControlEvents:UIControlEventTouchUpInside];
+      [self.view addSubview:imageView];
+      
+    } else if ([indexPath row] == 4){
+      
+      UIButton *imageView=[UIButton buttonWithType:UIButtonTypeCustom];
+      imageView.frame=CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+      [imageView setImage:[UIImage retina4ImageNamed:@"qqnr_dl_first_bg" type:@"png"] forState:UIControlStateNormal];
+      [imageView addTarget:self action:@selector(imageViewCilck:) forControlEvents:UIControlEventTouchUpInside];
+      [self.view addSubview:imageView];
+    } else if ([indexPath row] == 5){
       [self updateToVIP];
     }
-  }
+  } 
   [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+- (void)imageViewCilck:(id)sender{
+  UIView *view=(UIView*)sender;
+  [view removeFromSuperview];
 }
 
 
@@ -183,7 +188,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [prefs removeObjectForKey:kStaticInfo_backgroundUrl];
   [prefs removeObjectForKey:kStaticInfo_riddingCount];
   [prefs removeObjectForKey:kStaticInfo_nickname];
-  [prefs removeObjectForKey:kRecomApp];
+  [prefs removeObjectForKey:[staticInfo kRecomAppKey]];
   [RiddingAppDelegate popAllNavgation];
 
   PublicViewController *publicViewController = [[PublicViewController alloc] init];
@@ -198,11 +203,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)updateToVIP {
 
-  NSURL *url = [NSURL URLWithString:@"taobao://item.taobao.com/item.htm?id=17949300076"];
+  NSURL *url = [NSURL URLWithString:online_taobao_link_weather];
   if ([[UIApplication sharedApplication] canOpenURL:url]) {
     [[UIApplication sharedApplication] openURL:url];
   } else {
-    url = [NSURL URLWithString:[NSString stringWithFormat:@"http://item.taobao.com/item.htm?id=17949300076"]];
+    url = [NSURL URLWithString:online_taobao_url_weather];
     [[UIApplication sharedApplication] openURL:url];
   }
 }
@@ -218,12 +223,24 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark Table Delegate Methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  return 44;
+  return 50;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
            editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
 
   return UITableViewCellEditingStyleNone;
+}
+
+
+- (void)btnClick:(UserLoginCell*)cell{
+  
+  if ([[RiddingAppDelegate shareDelegate] canLogin]) {
+    [self quitButtonClick];
+  } else {
+    [self presentLoginView];
+  }
+
+  
 }
 @end

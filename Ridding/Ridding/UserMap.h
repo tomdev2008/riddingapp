@@ -48,6 +48,8 @@ enum SHOWTYPE {
   BOOL _isFromCamera;
   NSMutableArray *_photoArray;
   int _onlineUserCount;
+  UILabel *_teamerLabel;
+  UIImageView *_teamerView;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
@@ -56,8 +58,15 @@ enum SHOWTYPE {
 @property (nonatomic, strong) NSMutableArray *userArray;
 
 @property (nonatomic, retain) IBOutlet UIScrollView *userScrollView;
-@property (nonatomic, retain) IBOutlet UILabel *userOnlineLabel;
 @property (nonatomic, retain) IBOutlet UIView *rightView;
+
+@property (nonatomic, retain) IBOutlet UIButton *takePhotoBtn;
+@property (nonatomic, retain) IBOutlet UIButton *mySelfBtn;
+@property (nonatomic, retain) IBOutlet UIButton *photoBtn;
+@property (nonatomic, retain) IBOutlet UIButton *teamerBtn;
+
+@property (nonatomic, retain) IBOutlet UIImageView *btnBgView;
+
 
 - (id)initWithUser:(User *)toUser ridding:(Ridding *)ridding;
 

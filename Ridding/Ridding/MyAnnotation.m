@@ -15,7 +15,6 @@
   self = [super init];
   if (self) {
     self.coordinate = coord;
-    self.checked = FALSE;
   }
   return self;
 }

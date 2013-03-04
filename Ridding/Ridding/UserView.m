@@ -31,25 +31,18 @@
   _avatorBtn.layer.borderColor=[[UIColor whiteColor]CGColor];
   _avatorBtn.layer.borderWidth=2.0;
   
-  NSURL *url = [QiNiuUtils getUrlBySizeToUrl:_avatorBtn.frame.size url:self.user.bavatorUrl type:QINIUMODE_DESHORT];
-  [_avatorBtn setImageWithURL:url placeholderImage:UIIMAGE_DEFAULT_USER_AVATOR];
   [_avatorBtn addTarget:self action:@selector(avatorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
   [self addSubview:_avatorBtn];
 
-  //添加名牌
-  if ([StaticInfo getSinglton].user.userId == self.user.userId) {
-  } else if (self.user.status == 1) {
-  } else {
-  }
-
-
+  [self changeStatus:self.user.status];
+  
 
   //添加删除按钮，初始隐藏
   if ([StaticInfo getSinglton].user.isLeader && self.user.userId != [StaticInfo getSinglton].user.userId) {
     _deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _deleteBtn.frame = CGRectMake(0, 0, 24, 24);
-    [_deleteBtn setImage:UIIMAGE_FROMPNG(@"close") forState:UIControlStateNormal];
-    [_deleteBtn setImage:UIIMAGE_FROMPNG(@"close") forState:UIControlStateHighlighted];
+    [_deleteBtn setImage:UIIMAGE_FROMPNG(@"qqnr_dl_button_delete") forState:UIControlStateNormal];
+    [_deleteBtn setImage:UIIMAGE_FROMPNG(@"qqnr_dl_button_delete") forState:UIControlStateHighlighted];
     [_deleteBtn addTarget:self action:@selector(deleteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     _deleteBtn.hidden = YES;
     [self addSubview:_deleteBtn];
@@ -60,10 +53,19 @@
 - (void)changeStatus:(int)status {
 
   self.user.status = status;
+  NSURL *url =nil;
   if ([StaticInfo getSinglton].user.userId == self.user.userId) {
-  } else if (status == 1) {
+    url=  [QiNiuUtils getUrlBySizeToUrl:_avatorBtn.frame.size url:self.user.savatorUrl type:QINIUMODE_DESHORT];
+    [_avatorBtn setEnabled:YES];
+  } else if (self.user.status == 1) {
+    url=  [QiNiuUtils getUrlBySizeToUrl:_avatorBtn.frame.size url:self.user.savatorUrl type:QINIUMODE_DESHORT];
+    [_avatorBtn setEnabled:YES];
   } else {
+    url=  [QiNiuUtils getUrlBySizeToUrl:_avatorBtn.frame.size url:self.user.graySAvatorUrl type:QINIUMODE_DESHORT];
+    [_avatorBtn setEnabled:NO];
   }
+  [_avatorBtn setImageWithURL:url placeholderImage:UIIMAGE_DEFAULT_USER_AVATOR];
+  
 }
 
 
@@ -85,7 +87,6 @@
   }
 
 }
-
 
 - (void)showDeleteBtn {
 

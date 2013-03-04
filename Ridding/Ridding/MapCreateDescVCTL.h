@@ -25,6 +25,9 @@
 @property (nonatomic, retain) IBOutlet UILabel *totalDistanceLB;
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) IBOutlet UIImageView *lineImageView;
+@property (nonatomic, retain) IBOutlet UIButton *syncSinaBtn;
+@property (nonatomic, retain) IBOutlet UIImageView *separatorLine1;
+@property (nonatomic, retain) IBOutlet UIImageView *separatorLine2;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil ridding:(Ridding *)ridding;

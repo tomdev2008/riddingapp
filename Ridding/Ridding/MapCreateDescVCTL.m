@@ -46,13 +46,16 @@
   self.beginLocationTV.text = _ridding.map.beginLocation;
   self.endLocationTV.text = _ridding.map.endLocation;
   
-  self.totalDistanceLB.text = [NSString stringWithFormat:@"总行程:%@", [_ridding.map totalDistanceToKm]];
+  self.totalDistanceLB.text = [NSString stringWithFormat:@"%@", [_ridding.map totalDistanceToKm]];
 
   self.nameField.returnKeyType = UIReturnKeyGo;
 
-  
-  _isSyncSina = TRUE;
+  self.separatorLine1.image=[UIIMAGE_FROMPNG(@"qqnr_pd_comment_line") stretchableImageWithLeftCapWidth:17 topCapHeight:0];
+  self.separatorLine2.image=[UIIMAGE_FROMPNG(@"qqnr_pd_comment_line") stretchableImageWithLeftCapWidth:17 topCapHeight:0];
+  _isSyncSina = FALSE;
 
+  _lineImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
+  _lineImageView.layer.borderWidth = 5.0;
   NSMutableArray *routes = [[NSMutableArray alloc] init];
   [[MapUtil getSinglton] calculate_routes_from:_ridding.map.mapTaps map:_ridding.map];
   [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:_ridding.map.mapPoint]];
@@ -141,6 +144,12 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 
+  if(textField==self.nameField){
+    if([self.nameField.text isEqualToString:@"添加活动名称"]){
+      self.nameField.text=@"";
+    }
+  }
+
   return YES;
 }
 
@@ -154,9 +163,6 @@
   UIView *view = (UIView *) sender;
   if (view != self.nameField) {
     [self.nameField resignFirstResponder];
-    if([self.nameField.text isEqualToString:@"添加活动名称"]){
-      self.nameField.text=@"";
-    }
   }
   if (view != self.beginLocationTV) {
     [self.beginLocationTV resignFirstResponder];
@@ -171,6 +177,19 @@
   NSMutableString *text = [textField.text mutableCopy];
   [text replaceCharactersInRange:range withString:string];
   return [text length] <= 12;
+}
+
+- (IBAction)syncSinaBtn:(id)sender{
+  
+  if(_isSyncSina){
+    
+    _isSyncSina=FALSE;
+    [self.syncSinaBtn setImage:UIIMAGE_FROMPNG(@"qqnr_createmap_sina_disable") forState:UIControlStateNormal];
+  }else{
+    
+    _isSyncSina=TRUE;
+    [self.syncSinaBtn setImage:UIIMAGE_FROMPNG(@"qqnr_createmap_sina") forState:UIControlStateNormal];
+  }
 }
 #pragma mark -
 #pragma mark UITextViewDelegate
@@ -193,9 +212,8 @@
         } completion:^(BOOL completed) {
     }];
   }
-
-
 }
+
 
 #pragma mark -
 #pragma mark QQNRServerTask Delegate

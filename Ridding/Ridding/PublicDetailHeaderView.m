@@ -75,24 +75,30 @@
     [self addSubview:iconImage];
     [self addSubview:distanceLabel];
 
-    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(15, 85, 280, 140)];
-    _route_view = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80, 290, 150)];
+    _mapView = [[MKMapView alloc] initWithFrame:CGRectMake(20, 85, 280, 140)];
+    _route_view = [[UIImageView alloc] initWithFrame:CGRectMake(15, 80, 290, 150)];
     _route_view.layer.borderColor = [[UIColor whiteColor] CGColor];
     _route_view.layer.borderWidth = 5.0;
+    _route_view.userInteractionEnabled=YES;
+    UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(mapViewTap:)];
+    [_route_view addGestureRecognizer:gesture];
+    
+    if (_isMyHome) {
+      _goBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+      [_goBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_showMap") forState:UIControlStateNormal];
+      _goBtn.frame=CGRectMake(132, 127, 56, 56);
+      [_goBtn addTarget:self action:@selector(mapViewTap:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
     [_mapView setShowsUserLocation:NO];
     _mapView.delegate = self;
     
     [_mapView setZoomEnabled:NO];
     [_mapView setScrollEnabled:NO];
-    
-    if (_isMyHome && ![_ridding isEnd]) {
-      UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mapViewTap:)];
-      _mapView.userInteractionEnabled = YES;
-      [_mapView addGestureRecognizer:tapGesture];
-    }
 
     [self addSubview:_mapView];
     [self addSubview:_route_view];
+    [self addSubview:_goBtn];
     _routes = [[NSMutableArray alloc] init];
     [self drawRoutes];
     
@@ -100,21 +106,7 @@
     mapBottomView.image=UIIMAGE_FROMPNG(@"qqnr_pd_map_bg");
     [self addSubview:mapBottomView];
 
-    
-    if(_ridding.aPublic.adContentType==1){
-      [_adImageView removeFromSuperview];
-      _adLabel =[[UILabel alloc]initWithFrame:CGRectMake(_route_view.frame.origin.x, mapBottomView.frame.origin.y+mapBottomView.frame.size.height+10, 290, 30)];
-      _adLabel.backgroundColor=[UIColor clearColor];
-      _adLabel.textColor=[UIColor whiteColor];
-      _adLabel.text=_ridding.aPublic.linkText;
-      _adLabel.userInteractionEnabled=YES;
-      UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(linkTap:)];
-      [_adLabel addGestureRecognizer:gesture];
-      [self addSubview:_adLabel];
-    }
-    
     if(_ridding.aPublic.adContentType==2){
-      [_adLabel removeFromSuperview];
       _adImageView=[[UIImageView alloc]initWithFrame:CGRectMake(_route_view.frame.origin.x, mapBottomView.frame.origin.y+mapBottomView.frame.size.height+10, 290, 50)];
       NSURL *url=[NSURL URLWithString:_ridding.aPublic.linkImageUrl];
       [_adImageView setImageWithURL:url placeholderImage:nil];
@@ -123,6 +115,24 @@
       UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(linkTap:)];
       [_adImageView addGestureRecognizer:gesture];
     }
+    
+    if(_ridding.aPublic.adContentType==1){
+      UIImageView *imageView=[[UIImageView alloc]initWithFrame:CGRectMake(_route_view.frame.origin.x, mapBottomView.frame.origin.y+mapBottomView.frame.size.height+10+3, 290, 36)];
+      imageView.image=UIIMAGE_FROMPNG(@"qqnr_pd_ad");
+      [self addSubview:imageView];
+      
+      _adLabel =[[UILabel alloc]initWithFrame:CGRectMake(_route_view.frame.origin.x+40, mapBottomView.frame.origin.y+mapBottomView.frame.size.height+10, 250, 30)];
+      _adLabel.backgroundColor=[UIColor clearColor];
+      _adLabel.textColor=[UIColor whiteColor];
+      _adLabel.text=_ridding.aPublic.linkText;
+      _adLabel.font=[UIFont systemFontOfSize:14];
+      _adLabel.userInteractionEnabled=YES;
+      UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(linkTap:)];
+      [_adLabel addGestureRecognizer:gesture];
+      [self addSubview:_adLabel];
+    }
+    
+
     
   }
   return self;
@@ -133,42 +143,69 @@
   dispatch_queue_t q;
   q = dispatch_queue_create("drawRoutes", NULL);
   dispatch_async(q, ^{
-    NSArray *routeArray = [RiddingLocationDao getRiddingLocations:_ridding.riddingId beginWeight:0];
-    if ([routeArray count] > 0) {
-      for (RiddingLocation *location in routeArray) {
-        CLLocation *loc = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longtitude];
-        [_routes addObject:loc];
+    NSArray *tempRoutes=(NSArray*)[[StaticInfo getSinglton].routesDic objectForKey:LONGLONG2NUM(_ridding.riddingId)];
+    [_routes addObjectsFromArray:tempRoutes];
+    if(!_routes||[_routes count]==0){
+      NSArray *routeArray = [RiddingLocationDao getRiddingLocations:_ridding.riddingId beginWeight:0];
+      if ([routeArray count] > 0) {
+        for (RiddingLocation *location in routeArray) {
+          CLLocation *loc = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longtitude];
+          [_routes addObject:loc];
+        }
+      } else {
+        //如果数据库中存在，那么取数据库中的地图路径，如果不存在，http去请求服务器。
+        //数据库中取出是mapTaps或者points
+        RequestUtil *requestUtil = [[RequestUtil alloc] init];
+        NSMutableDictionary *map_dic = [requestUtil getMapMessage:_ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
+        Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:keyMap]];
+        NSArray *array = map.mapPoint;
+        [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
+        _routes = [[MapUtil getSinglton] decodePolyLineArray:array];
+        [RiddingLocationDao setRiddingLocationToDB:_routes riddingId:_ridding.riddingId];
       }
-    } else {
-      //如果数据库中存在，那么取数据库中的地图路径，如果不存在，http去请求服务器。
-      //数据库中取出是mapTaps或者points
-      RequestUtil *requestUtil = [[RequestUtil alloc] init];
-      NSMutableDictionary *map_dic = [requestUtil getMapMessage:_ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
-      Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:keyMap]];
-      NSArray *array = map.mapPoint;
-      [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
-      _routes = [[MapUtil getSinglton] decodePolyLineArray:array];
-      [RiddingLocationDao setRiddingLocationToDB:_routes riddingId:_ridding.riddingId];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
       [[MapUtil getSinglton] center_map:_mapView routes:_routes];
-      [[MapUtil getSinglton] update_route_view:_mapView to:_route_view line_color:[UIColor getColor:lineColor] routes:_routes width:3.0];
+      UIImage *image=[self imageFromLocal:_ridding.riddingId];
+      if(image){
+        _route_view.image=image;
+      }else{
+        [[MapUtil getSinglton] update_route_view:_mapView to:_route_view line_color:[UIColor getColor:lineColor] routes:_routes width:3.0];
+        [self saveToLocal:_ridding.riddingId];
+      }
     });
   });
 }
 
-- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
-
-  _route_view.hidden = YES;
+- (void)saveToLocal:(long long)riddingId{
+  
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+  //set image
+  NSString *savePath= [[paths objectAtIndex:0] stringByAppendingPathComponent:
+                       [NSString stringWithFormat:@"b_%lld.png",riddingId]];
+  NSFileManager *manager = [NSFileManager defaultManager];
+  if (savePath&&![manager fileExistsAtPath:savePath]) {
+    //save pic
+    [UIImagePNGRepresentation(_route_view.image) writeToFile:savePath atomically:YES];
+  }
 }
 
-//地图移动结束后的操作
-- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
-
-  [[MapUtil getSinglton] update_route_view:_mapView to:_route_view line_color:[UIColor getColor:lineColor] routes:_routes width:3.0];
-  _route_view.hidden = NO;
-  [_route_view setNeedsDisplay];
+- (UIImage*)imageFromLocal:(long long)riddingId{
+  
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+  //set image
+  NSString *picPath=[[paths objectAtIndex:0] stringByAppendingPathComponent:
+                     [NSString stringWithFormat:@"b_%lld.png",riddingId]];
+  NSFileManager *manager = [NSFileManager defaultManager];
+  if (![manager fileExistsAtPath:picPath]) {
+    return nil;
+  }
+  NSData *data=[NSData dataWithContentsOfFile:picPath];
+  
+  return [UIImage imageWithData:data];
 }
+
+
 
 - (void)mapViewTap:(UIGestureRecognizer *)gesture {
 

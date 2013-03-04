@@ -10,6 +10,7 @@
 
 @interface Utilities : NSObject
 
++ (CGFloat)deviceVersion;
 
 + (BOOL)isIphone4S;
 
@@ -24,4 +25,6 @@
 + (void)alertInstant:(NSString *)message isError:(BOOL)isError;
 
 + (NSString *)appVersion;
+
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)targetSize ;
 @end

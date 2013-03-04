@@ -29,6 +29,7 @@ static QQNRServerTaskQueue *sharedQueue = nil;
   @synchronized (self) {
     if (sharedQueue == nil) {
       sharedQueue = [[self alloc] init];
+      sharedQueue.lastTaskServerResponseJSON=[[NSMutableDictionary alloc]init];
     }
   }
   return sharedQueue;

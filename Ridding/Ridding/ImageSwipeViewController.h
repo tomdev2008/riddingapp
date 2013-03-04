@@ -17,7 +17,7 @@
 @interface ImageSwipeViewController : UIViewController <UIScrollViewDelegate> {
   CGRect viewSize;
   UIScrollView *scrollView;
-  UIPageControl *pageControl;
+  UIButton *_startBtn;
   NSArray *imageArray;
 }
 

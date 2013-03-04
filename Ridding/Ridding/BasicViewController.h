@@ -28,6 +28,7 @@ typedef enum _POSITION {
 
 @property (nonatomic, retain) IBOutlet BasicBar *barView;
 @property (nonatomic) BOOL hasLeftView;
+@property (nonatomic) BOOL canMoveLeft;
 @property (nonatomic) POSITION position;
 @property (nonatomic, retain) RequestUtil *requestUtil;
 @property (nonatomic) BOOL didAppearOnce;

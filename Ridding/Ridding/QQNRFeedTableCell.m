@@ -53,9 +53,45 @@
   }
 }
 
-- (void)drawRoutes:(NSArray *)routes {
+- (void)drawRoutes:(NSArray *)routes riddingId:(long long)riddingId{
+  
+  UIImage *image=[self imageFromLocal:riddingId];
   [[MapUtil getSinglton] center_map:_mapView routes:routes];
-  [[MapUtil getSinglton] update_route_view:_mapView to:_mapLineView line_color:[UIColor getColor:lineColor] routes:routes width:3.0];
+  if(image){
+    _mapLineView.image=image;
+  }else{
+    [[MapUtil getSinglton] update_route_view:_mapView to:_mapLineView line_color:[UIColor getColor:lineColor] routes:routes width:3.0];
+    [self saveToLocal:riddingId];
+  }
+  
+}
+
+- (void)saveToLocal:(long long)riddingId{
+
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+  //set image
+  NSString *savePath= [[paths objectAtIndex:0] stringByAppendingPathComponent:
+                       [NSString stringWithFormat:@"s_%lld.png",riddingId]];
+  NSFileManager *manager = [NSFileManager defaultManager];
+  if (savePath&&![manager fileExistsAtPath:savePath]) {
+    //save pic
+    [UIImagePNGRepresentation(_mapLineView.image) writeToFile:savePath atomically:YES];
+  }
+}
+
+- (UIImage*)imageFromLocal:(long long)riddingId{
+  
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+  //set image
+  NSString *picPath=[[paths objectAtIndex:0] stringByAppendingPathComponent:
+                     [NSString stringWithFormat:@"s_%lld.png",riddingId]];
+  NSFileManager *manager = [NSFileManager defaultManager];
+  if (![manager fileExistsAtPath:picPath]) {
+    return nil;
+  }
+  NSData *data=[NSData dataWithContentsOfFile:picPath];
+  
+  return [UIImage imageWithData:data];
 }
 
 - (IBAction)leaderViewTap:(id)selector {

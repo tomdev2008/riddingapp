@@ -43,9 +43,9 @@
   self = [super initWithCoder:aDecoder];
   if (self) {
     // Initialization code
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 6, 142, 27)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 6, 140, 27)];
     _titleLabel.textColor = [UIColor whiteColor];
-    _titleLabel.font = [UIFont boldSystemFontOfSize:17];
+    _titleLabel.font = [UIFont boldSystemFontOfSize:20];
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.textAlignment = UITextAlignmentCenter;
     _titleLabel.shadowColor = [UIColor getColor:@"047359"];
@@ -54,18 +54,16 @@
     [self addSubview:_titleLabel];
 
     _leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _leftButton.frame = CGRectMake(0, 6, 64, 31);
+    _leftButton.frame = CGRectMake(0, 0, 64, 40);
     [_leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     _leftButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
-    _leftButton.showsTouchWhenHighlighted = YES;
     [_leftButton addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_leftButton];
 
     _rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _rightButton.frame = CGRectMake(255, 6, 64, 31);
+    _rightButton.frame = CGRectMake(255, 0, 64, 40);
     _rightButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
-    _rightButton.showsTouchWhenHighlighted = YES;
     [_rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [_rightButton addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];

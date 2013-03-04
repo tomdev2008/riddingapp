@@ -32,12 +32,12 @@
 
 - (void)viewDidLoad {
 
-  [super viewDidLoad];
+  self.canMoveLeft=YES;
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   
   [self.barView.titleLabel setText:@"骑行广场"];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateHighlighted];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list_hl") forState:UIControlStateHighlighted];
   
   _dataSource = [[NSMutableArray alloc] init];
   _endUpdateTime = -1;
@@ -53,7 +53,7 @@
 
   [self addTableHeader];
   [self addTableFooter];
-
+  [super viewDidLoad];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

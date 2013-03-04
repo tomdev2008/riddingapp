@@ -25,7 +25,7 @@
 
 @optional
 - (void)asyncReturnDic:(NSDictionary *)dic; //声明协议方法
-- (void)asyncReturnArray:(NSArray *)array; //声明协议方法
+
 @end
 
 @interface RequestUtil : NSObject <ASIHTTPRequestDelegate> {

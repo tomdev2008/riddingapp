@@ -78,6 +78,7 @@
 - (void)addCommentToServer:(NSString *)text {
 
   dispatch_async(dispatch_queue_create("download", NULL), ^{
+    
     Comment *comment = [[Comment alloc] init];
     comment.replyId = _replyId;
     if (_replyId == 0) {
@@ -85,7 +86,7 @@
     } else {
       comment.commentType = COMMENTTYPE_REPLY;
     }
-    comment.text = text;
+    comment.text = [text trim];
     comment.usePicUrl = @"";
     comment.riddingId = _ridding.riddingId;
     comment.userId = [StaticInfo getSinglton].user.userId;
@@ -356,11 +357,10 @@
   [_tContainerView addSubview:_textView];
   
   _tSendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-  _tSendBtn.frame = CGRectMake(_tContainerView.frame.size.width - 35, 15, 24, 24);
+  _tSendBtn.frame = CGRectMake(_tContainerView.frame.size.width - 35, 0, 24, 54);
   _tSendBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
   [_tSendBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_tabbar_sent") forState:UIControlStateNormal];
   [_tSendBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_tabbar_sent_hl") forState:UIControlStateHighlighted];
-  _tSendBtn.showsTouchWhenHighlighted=YES;
   [_tSendBtn addTarget:self action:@selector(sendBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
 
   

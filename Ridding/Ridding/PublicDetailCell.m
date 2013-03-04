@@ -116,10 +116,10 @@
   [_imageView setImageWithURL:url placeholderImage:nil];
 
   if (!_imageBGView) {
-    _imageBGView = [[UIImageView alloc] initWithFrame:CGRectMake(_imageView.frame.origin.x - 10, _imageView.frame.origin.y - 10, _imageView.frame.size.width + 20, _imageView.frame.size.height + 22)];
+    _imageBGView = [[UIImageView alloc] initWithFrame:CGRectMake(_imageView.frame.origin.x - 8, _imageView.frame.origin.y - 5, _imageView.frame.size.width + 16, _imageView.frame.size.height + 19)];
 
   } else {
-    _imageBGView.frame = CGRectMake(_imageView.frame.origin.x - 10, _imageView.frame.origin.y - 10, _imageView.frame.size.width + 20, _imageView.frame.size.height + 22);
+    _imageBGView.frame = CGRectMake(_imageView.frame.origin.x - 8, _imageView.frame.origin.y - 5, _imageView.frame.size.width + 16, _imageView.frame.size.height + 19);
   }
   _imageBGView.image = [UIIMAGE_FROMPNG(@"qqnr_pd_picbg") stretchableImageWithLeftCapWidth:50 topCapHeight:50];
 
@@ -240,7 +240,7 @@
 }
 
 - (void)showDeleteAction:(UIGestureRecognizer *)gestureRecognizer  {
-  
+
   if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
     if (self.delegate){
       [self.delegate deletePicture:self index:_index];

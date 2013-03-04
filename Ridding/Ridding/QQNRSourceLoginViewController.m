@@ -42,7 +42,7 @@
   [self.web loadRequest:loginRequest];
   _sendWeiBo = FALSE;
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  if (![prefs boolForKey:kRecomApp]) {
+  if (![prefs boolForKey:[[StaticInfo getSinglton] kRecomAppKey] ]) {
     [self setFollowView];
   }
 
@@ -100,7 +100,8 @@
     staticInfo.user.sourceType = SOURCE_SINA;//新浪微博
 
     NSDictionary *profileDic = [self.requestUtil getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType];
-
+    
+  
     User *user = [[User alloc] initWithJSONDic:[profileDic objectForKey:keyUser]];
     user.userId = staticInfo.user.userId;
     user.authToken = staticInfo.user.authToken;
@@ -123,17 +124,16 @@
     [prefs synchronize];
 
     staticInfo.logined = true;
-    [[SinaApiRequestUtil getSinglton] friendShip:@"骑去哪儿网" accessUserId:riddingappuid];
+    [[SinaApiRequestUtil getSinglton] friendShip:riddingappsinaname accessUserId:riddingappuid];
 
     [self.requestUtil sendApns];
 
     if (_sendWeiBo) {
-      [[SinaApiRequestUtil getSinglton] sendLoginRidding:[NSString stringWithFormat:@"我刚刚下载了#骑行者#,在这里推荐给热爱骑行的好友们。@骑去哪儿网 下载地址:%@", downLoadPath]];
+      [MobClick event:@"2013022505"];
+      [[SinaApiRequestUtil getSinglton] sendLoginRidding:[NSString stringWithFormat:@"我刚刚下载了#骑行者#,在这里推荐给热爱骑行的好友们。@%@ 下载地址:%@",riddingappsinaname, downLoadPath]];
 
-    } else {
-      [MobClick event:@"2012111906"];
-    }
-    [prefs setBool:TRUE forKey:kRecomApp];
+    } 
+    [prefs setBool:TRUE forKey:[staticInfo kRecomAppKey]];
 
     [SVProgressHUD dismiss];
 

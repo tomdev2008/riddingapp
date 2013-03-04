@@ -25,10 +25,7 @@
   [UIView setAnimationDuration:0.35];
 
   [self.barView.titleLabel setText:@""];
-  [self.barView.leftButton setTitle:@"" forState:UIControlStateNormal];
-  [self.barView.leftButton setTitle:@"" forState:UIControlStateHighlighted];
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
+
   self.barView.alpha = 0.0;
 
   [UIView commitAnimations];
@@ -107,7 +104,10 @@
 
   [self.view bringSubviewToFront:self.barView];
 
-
+  [self.barView.leftButton setTitle:@"" forState:UIControlStateNormal];
+  [self.barView.leftButton setTitle:@"" forState:UIControlStateHighlighted];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
   // Step 2: prepare to tile content
 
   _recycledPages = [[NSMutableSet alloc] init];

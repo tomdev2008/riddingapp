@@ -17,10 +17,14 @@
 #define kStaticInfo_sourceType @"sourceType"
 #define kStaticInfo_backgroundUrl @"backgroundUrl"
 #define kStaticInfo_totalDistance @"totalDistance"
+#define kStaticInfo_StartApp  @"startApp"
+#define kStaticInfo_First_myRidding  @"First_myRidding"
+#define kStaticInfo_First_mapCreate  @"First_mapCreate"
+#define kStaticInfo_Ios5Tips         @"Ios5Tips"
+#define kStaticInfo_Ios5Tips_ShowPhoto         @"Ios5Tips_ShowPhoto"
 
-#define kRecomApp @"recomApp"
 #define kStaticInfo_nickname @"nickname"
-#define kStaticInfo_riddingCount @"riddingCount"
+#define kStaticInfo_riddingCount @"riddingcount"
 #define kStaticInfo_apnsToken @"apnsToken"
 #define kStaticInfo_logined @"logined"
 #define kStaticInfo_savatorUrl @"savatorUrl"
@@ -39,6 +43,7 @@
 @property (nonatomic, retain) NSString *plistSavePath;
 @property (nonatomic) bool logined;
 @property (nonatomic, strong) FMDatabase *sqlDB;
+@property (nonatomic, retain) NSMutableDictionary *routesDic;
 
 + (StaticInfo *)getSinglton;
 
@@ -47,5 +52,9 @@
 - (BOOL)saveToFile:(NSMutableDictionary *)withData;
 
 - (void)saveDistanceToUserDefault:(int)distance;
+
+- (NSString*)kMapCreateTipsKey;
+
+- (NSString*)kRecomAppKey;
 
 @end

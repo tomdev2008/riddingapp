@@ -83,7 +83,7 @@
   if (leftViewControllerDisabled && rightViewControllerDisabled) {
     return;
   }
-  if (!self.hasLeftView) {
+  if (!self.hasLeftView||!self.canMoveLeft) {
     return;
   }
   UITouch *touch = [touches anyObject];
@@ -95,7 +95,7 @@
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 
-  if (!self.hasLeftView) {
+  if (!self.hasLeftView||!self.canMoveLeft) {
     return;
   }
   UITouch *touch = [touches anyObject];
@@ -145,7 +145,7 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 
-  if (!self.hasLeftView) {
+  if (!self.hasLeftView||!self.canMoveLeft) {
     return;
   }
   if (leftViewControllerDisabled && rightViewControllerDisabled) {
@@ -229,10 +229,6 @@
 }
 #pragma mark requestUtil delegate
 - (void)asyncReturnDic:(NSDictionary *)dic {
-  //delegate实现
-}
-
-- (void)asyncReturnArray:(NSArray *)array {
   //delegate实现
 }
 

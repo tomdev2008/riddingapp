@@ -24,27 +24,15 @@
 #pragma mark - View lifecycle
 - (void)viewDidLoad {
 
-  [self.barView.leftButton setTitle:@"取消" forState:UIControlStateNormal];
-  [self.barView.leftButton setTitle:@"取消" forState:UIControlStateHighlighted];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
 
-
-  self.bgImageView.frame = CGRectMake(self.view.frame.origin.x, self.barView.frame.size.height, self.view.frame.size.width, SCREEN_HEIGHT_WITHOUT_STATUS_BAR);
+  [self.barView.titleLabel setText:@"登录"];
+  
+  self.bgImageView.frame = CGRectMake(self.view.frame.origin.x, self.barView.frame.size.height, self.view.frame.size.width, SCREEN_HEIGHT);
   RiddingAppDelegate *delegate = (RiddingAppDelegate *) [[UIApplication sharedApplication] delegate];
   [delegate setUserInfo];
-  self.bgImageView.image = [UIImage retina4ImageNamed:@"loginBg" type:@"png"];
-  self.loginBtn.backgroundColor = [UIColor getColor:@"f08313"];
-  self.loginBtn.layer.cornerRadius = 10;
-  self.loginBtn.layer.masksToBounds = YES;
-  UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sinalogo.png"]];
-  imageView.frame = CGRectMake(20, 0, 38, 38);
-  [self.loginBtn addSubview:imageView];
-  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(50, 0, 130, 38)];
-  label.textColor = [UIColor whiteColor];
-  label.backgroundColor = [UIColor clearColor];
-  label.text = @"新浪微博登录";
-  label.textAlignment = UITextAlignmentCenter;
-  label.font = [UIFont systemFontOfSize:15];
-  [self.loginBtn addSubview:label];
+
   [super viewDidLoad];
 }
 

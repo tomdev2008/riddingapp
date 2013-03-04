@@ -31,16 +31,23 @@
 #define downLoadPath @"https://itunes.apple.com/cn/app/qi-xing-zhe/id557123754?ls=1&mt=8"
 #define linkAppStore @"itms-apps://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=557123754"
 #define linkAppStoreComment @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=557123754"
-#define riddingappuid @"2672248903"
-#define imageHost @"http://images.qiqunar.com.cn"
+#define online_taobao_url_weather [MobClick getConfigParams:@"online_taobao_url_weather"]
 
-#define QIQUNARHOME @"http://qiqunar.com.cn"
+#define online_taobao_link_weather [MobClick getConfigParams:@"online_taobao_link_weather"]
 
-#define sendMyLocationTime 10.0
+#define riddingappuid [MobClick getConfigParams:@"online_riddingappuid"]
+
+#define riddingappsinaname [MobClick getConfigParams:@"online_riddingappsinaname"]
+
+#define imageHost  [MobClick getConfigParams:@"online_imageHost"]
+
+#define QIQUNARHOME [MobClick getConfigParams:@"online_QIQUNARHOME"] 
+
+#define sendMyLocationTime 30.0
 #define showRightViewTime 5.0
 #define YouMenAppKey @"4fb3ce805270152b53000128"
-#define MY_BANNER_UNIT_ID @"a151069f9007f3a"
-#define WeatherOnlineKey @"a0303031de124838131702"
+#define MY_BANNER_UNIT_ID [MobClick getConfigParams:@"online_MY_BANNER_UNIT_ID"]
+#define WeatherOnlineKey [MobClick getConfigParams:@"online_WeatherOnlineKey"]
 
 #ifdef DEBUG
 #   define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);

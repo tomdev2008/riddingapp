@@ -5,7 +5,7 @@
 //  Created by zys on 12-3-23.
 //  Copyright 2012年 __MyCompanyName__. All rights reserved.
 //
-
+#import "NSString+Addition.h"
 @implementation User
 - (id)init {
 
@@ -27,7 +27,7 @@
     self.sourceUserId = [[jsonDic objectForKey:@"sourceid"] longLongValue];
     self.totalDistance = [[jsonDic objectForKey:@"totaldistance"] intValue];
     self.sourceType = [[jsonDic objectForKey:@"sourcetype"] intValue];
-    self.nowRiddingCount = [[jsonDic objectForKey:@"nowriddingcount"] intValue];
+    self.nowRiddingCount = [[jsonDic objectForKey:@"riddingcount"] intValue];
     self.bavatorUrl = [jsonDic objectForKey:@"bavatorurl"];
     self.savatorUrl = [jsonDic objectForKey:@"savatorurl"];
     self.authToken = [jsonDic objectForKey:@"authtoken"];
@@ -38,6 +38,10 @@
     self.latitude = [[jsonDic objectForKey:@"latitude"] doubleValue];
     self.longtitude = [[jsonDic objectForKey:@"longtitude"] doubleValue];
     self.backGroundUrl = [jsonDic objectForKey:@"backgroundurl"];
+    self.graySAvatorUrl = [jsonDic objectForKey:@"graysavatorurl"];
+    if(![self.graySAvatorUrl pd_isNotEmptyString]){
+      self.graySAvatorUrl=self.savatorUrl;
+    }
   }
   return self;
 }
