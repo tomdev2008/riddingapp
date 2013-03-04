@@ -97,19 +97,6 @@
   [super viewDidLoad];
 }
 
-- (void)showAd{
-  if(!_bannerView){
-    _bannerView = [[GADSearchBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(GAD_SIZE_320x50) origin:CGPointMake(0, SCREEN_HEIGHT- 50)];
-    _bannerView.adUnitID = MY_BANNER_UNIT_ID;
-    _bannerView.rootViewController = self;
-    [self.view addSubview:_bannerView];
-    GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
-    [adRequest setQuery:@"sport"];
-    [_bannerView loadRequest:[adRequest request]];
-  }
-
-
-}
 
 - (void)viewDidAppear:(BOOL)animated {
 
@@ -189,11 +176,9 @@
         [self.lineView setHidden:YES];
         [_ego setHidden:YES];
         [self.view bringSubviewToFront:self.nothingView];
-        [_bannerView removeFromSuperview];
       }else{
         [self.nothingView setHidden:YES];
         [self.lineView setHidden:NO];
-        [self showAd];
       }
       [self.tv reloadData];
       [self downLoadMapRoutes];

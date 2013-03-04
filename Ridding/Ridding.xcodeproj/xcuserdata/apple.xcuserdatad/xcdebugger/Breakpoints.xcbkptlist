@@ -1506,8 +1506,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "239"
          endingLineNumber = "239"
-         landmarkName = "-addTableHeader"
-         landmarkType = "5">
+         landmarkName = "@implementation QQNRFeedViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -3300,7 +3300,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "536"
          endingLineNumber = "536"
-         landmarkName = "-createRidding:"
+         landmarkName = "-succAddRidding:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint

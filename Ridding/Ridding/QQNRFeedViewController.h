@@ -14,11 +14,9 @@
 #import "MapCreateVCTL.h"
 #import "MapCreateDescVCTL.h"
 #import "EGORefreshTableHeaderView.h"
-#import "GADSearchBannerView.h"
-#import "GADSearchRequest.h"
 
 @interface QQNRFeedViewController : BasicViewController <QQNRFeedTableCellDelegate, UP_EGORefreshTableHeaderDelegate, QQNRFeedHeaderViewDelegate, UIActionSheetDelegate,
-    UIImagePickerControllerDelegate, UINavigationControllerDelegate,GADBannerViewDelegate> {
+    UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
   long long _endCreateTime;
   NSMutableArray *_dataSource;
   // TimeScroller *_timeScroller;
@@ -33,7 +31,6 @@
   BOOL _isLoadOld;
   BOOL _isFromLeft;
   CGFloat _preHeight;
-  GADSearchBannerView *_bannerView;
 }
 
 @property (nonatomic, retain) IBOutlet TouchEnabledTableView *tv;

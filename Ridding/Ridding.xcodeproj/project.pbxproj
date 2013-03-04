@@ -873,7 +873,7 @@
 		1876EC751654F35200C1197D /* MyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnnotation.h; sourceTree = "<group>"; };
 		1876EC791654F3DB00C1197D /* CreateAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateAnnotationView.h; sourceTree = "<group>"; };
 		1876EC7A1654F3DB00C1197D /* CreateAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAnnotationView.m; sourceTree = "<group>"; };
-		1878B8A31516DF2D00985FC8 /* qiqunar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = qiqunar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1878B8A31516DF2D00985FC8 /* 骑行者Pro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "骑行者Pro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1878B8A71516DF2D00985FC8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1878B8A91516DF2D00985FC8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1878B8AB1516DF2D00985FC8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -2117,7 +2117,7 @@
 		1878B8A41516DF2D00985FC8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1878B8A31516DF2D00985FC8 /* qiqunar.app */,
+				1878B8A31516DF2D00985FC8 /* 骑行者Pro.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2636,7 +2636,7 @@
 			);
 			name = Ridding;
 			productName = Ridding;
-			productReference = 1878B8A31516DF2D00985FC8 /* qiqunar.app */;
+			productReference = 1878B8A31516DF2D00985FC8 /* 骑行者Pro.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -3293,8 +3293,8 @@
 		1878B8C31516DF2D00985FC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: zheng yisheng (F286NP9S62)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zheng yisheng (F286NP9S62)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: zheng yisheng";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zheng yisheng";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ridding/Ridding-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
@@ -3310,9 +3310,9 @@
 					"-lxml2",
 					"-ObjC",
 				);
-				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
+				PRODUCT_NAME = "骑行者Pro";
+				PROVISIONING_PROFILE = "B535CD73-A988-4C52-B547-56CB62E3022F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B535CD73-A988-4C52-B547-56CB62E3022F";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
@@ -3322,8 +3322,8 @@
 		1878B8C41516DF2D00985FC8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: zheng yisheng (F286NP9S62)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zheng yisheng (F286NP9S62)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: zheng yisheng";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zheng yisheng";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ridding/Ridding-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
@@ -3339,9 +3339,9 @@
 					"-lxml2",
 					"-ObjC",
 				);
-				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
+				PRODUCT_NAME = "骑行者Pro";
+				PROVISIONING_PROFILE = "B535CD73-A988-4C52-B547-56CB62E3022F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B535CD73-A988-4C52-B547-56CB62E3022F";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

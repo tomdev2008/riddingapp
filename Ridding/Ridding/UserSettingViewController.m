@@ -39,13 +39,6 @@
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   self.uiTableView.backgroundColor=[UIColor clearColor];
   
-  GADSearchBannerView *bannerView = [[GADSearchBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(GAD_SIZE_320x50) origin:CGPointMake(0, SCREEN_HEIGHT- 50)];
-  bannerView.adUnitID = MY_BANNER_UNIT_ID;
-  bannerView.rootViewController = self;
-  [self.view addSubview:bannerView];
-  GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
-  [adRequest setQuery:@"sport"];
-  [bannerView loadRequest:[adRequest request]];
   [super viewDidLoad];
 
 }

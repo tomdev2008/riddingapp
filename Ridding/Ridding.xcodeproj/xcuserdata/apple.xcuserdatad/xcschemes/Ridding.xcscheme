@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1878B8A21516DF2D00985FC8"
-               BuildableName = "qiqunar.app"
+               BuildableName = "&#39569;&#34892;&#32773;Pro.app"
                BlueprintName = "Ridding"
                ReferencedContainer = "container:Ridding.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1878B8A21516DF2D00985FC8"
-            BuildableName = "qiqunar.app"
+            BuildableName = "&#39569;&#34892;&#32773;Pro.app"
             BlueprintName = "Ridding"
             ReferencedContainer = "container:Ridding.xcodeproj">
          </BuildableReference>
@@ -68,7 +68,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1878B8A21516DF2D00985FC8"
-            BuildableName = "qiqunar.app"
+            BuildableName = "&#39569;&#34892;&#32773;Pro.app"
             BlueprintName = "Ridding"
             ReferencedContainer = "container:Ridding.xcodeproj">
          </BuildableReference>
