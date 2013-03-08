@@ -7,14 +7,17 @@
 //
 
 #import "LandingViewController.h"
+#import "MyLocationManager.h"
 #define moveSpeed 0.5
-
+@interface RiddingAppDelegate(){
+}
+@end;
 @implementation RiddingAppDelegate
 @synthesize window = _window;
 @synthesize rootViewController = _rootViewController;
 @synthesize navController = _navController;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
   
   [MobClick startWithAppkey:YouMenAppKey reportPolicy:REALTIME channelId:nil];
   [MobClick updateOnlineConfig];
@@ -53,7 +56,6 @@
   // Let the device know we want to receive push notifications
 	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
 	 (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-  
   return YES;
 }
 
@@ -108,7 +110,6 @@
   return FALSE;
 }
 
-
 //iPhone 从APNs服务器获取deviceToken后回调此方法
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
   
@@ -119,6 +120,8 @@
 
 //注册push功能失败 后 返回错误信息，执行相应的处理
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
+  
+  
 }
 
 + (RiddingAppDelegate *)shareDelegate {
@@ -138,7 +141,8 @@
   
   if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
     // Stop normal location updates and start significant location change updates for battery efficiency.
-    
+    [[[MyLocationManager getSingleton] myLocationManager] stopUpdatingLocation];
+    [[[MyLocationManager getSingleton] myLocationManager] startMonitoringSignificantLocationChanges];
   }
   else {
     NSLog(@"Significant location change monitoring is not available.");
@@ -148,19 +152,28 @@
 //回到前台
 - (void)applicationWillEnterForeground:(UIApplication *)application {
   
-  if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
-    // Stop normal location updates and start significant location change updates for battery efficiency.
-    
-  }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
   /*
    Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
    */
+  if ([CLLocationManager significantLocationChangeMonitoringAvailable])
+  {
+    // Stop significant location updates and start normal location updates again since the app is in the forefront.
+    [[[MyLocationManager getSingleton] myLocationManager] stopMonitoringSignificantLocationChanges];
+    [[[MyLocationManager getSingleton] myLocationManager] startUpdatingLocation];
+  }
+  else
+  {
+    NSLog(@"Significant location change monitoring is not available.");
+  }
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+  
+  [[[MyLocationManager getSingleton] myLocationManager] stopUpdatingLocation];
   /*
    Called when the application is about to terminate.
    Save data if appropriate.

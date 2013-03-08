@@ -26,6 +26,7 @@
 #import "MyLocationManager.h"
 #import "PhotoAnnotationView.h"
 #import "BasicPhotoAnnotation.h"
+#import "Weather.h"
 @interface UserMap ()
 
 @end
@@ -151,7 +152,9 @@
   if (!_routesInited) {
     [SVProgressHUD showWithStatus:@"初始化数据中"];
     //异步去画地图
-    [self drawRoutes];
+#warning asdf
+    [self drawMyRoutes];
+    //[self drawRoutes];
   }
 }
 
@@ -264,6 +267,25 @@
         if (_routesInited && _userInited) {
           [SVProgressHUD dismiss];
         }
+      }
+    });
+  });
+}
+
+
+//画路线
+- (void)drawMyRoutes {
+  
+  dispatch_queue_t q;
+  q = dispatch_queue_create("drawRoutes", NULL);
+  dispatch_async(q, ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (self) {
+        if([[[MyLocationManager getSingleton] locationArray]count]>0){
+          [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:[UIColor blackColor] routes:[[MyLocationManager getSingleton] locationArray] width:5.0];
+          [[MapUtil getSinglton] center_map:self.mapView routes:[[MyLocationManager getSingleton] locationArray]];
+        }
+         [SVProgressHUD dismiss];
       }
     });
   });
@@ -723,7 +745,8 @@
 //地图移动结束后的操作
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
 
-  [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:[UIColor getColor:lineColor]  routes:self.routes width:5.0];
+  [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:[UIColor blackColor] routes:[[MyLocationManager getSingleton] locationArray] width:5.0];
+#warning asdf
   self.route_view.hidden = NO;
   [self.route_view setNeedsDisplay];
 }
@@ -843,11 +866,11 @@
 
 #pragma mark - Button Responser IBAction
 - (IBAction)weatherBtnClick:(id)sender{
-//  for(NSString *taps in _ridding.map.mapTaps){
-//    NSDictionary *dic= [self.requestUtil weatherRequest:taps];
-//    NSArray *dateArray=[dic objectForKey:keyWeather];
-//    Weather *weather=[[Weather alloc]initWithJSONDic:[dateArray objectAtIndex:0]];
-//  }
+  for(NSString *taps in _ridding.map.mapTaps){
+    NSDictionary *dic= [self.requestUtil weatherRequest:taps];
+    NSArray *dateArray=[dic objectForKey:keyWeather];
+    Weather *weather=[[Weather alloc]initWithJSONDic:[dateArray objectAtIndex:0]];
+  }
 }
 
 - (IBAction)backBtnClick:(id)sender {

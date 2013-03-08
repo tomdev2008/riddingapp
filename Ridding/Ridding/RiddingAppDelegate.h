@@ -13,7 +13,7 @@
 #import "BasicLeftViewController.h"
 #import "User.h"
 
-@interface RiddingAppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate> {
+@interface RiddingAppDelegate : UIResponder <UIApplicationDelegate> {
   BOOL _canGetLocation;
 }
 
@@ -24,7 +24,6 @@
 @property (nonatomic, retain) BasicLeftViewController *leftViewController;
 
 @property (retain, nonatomic) UINavigationController *navController;
-
 
 + (RiddingAppDelegate *)shareDelegate;
 

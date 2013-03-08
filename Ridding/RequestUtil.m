@@ -269,6 +269,7 @@
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
   NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
+  NSLog(@"%@",responseDic);
   return [responseDic objectForKey:@"data"];
 }
 
@@ -430,6 +431,15 @@
   NSString *apiResponse = [asiRequest responseString];
   return [[apiResponse JSONValue] objectForKey:@"data"];
 
+}
+
+- (void)feedBack:(NSString*)appVersion iosVersion:(NSString*)iosVersion deviceVersion:(NSString*)deviceVersion userQQ:(NSString*)userQQ userEmail:(NSString*)userEmail description:(NSString*)description{
+  
+  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/user/%lld/feedback/?appversion=%@&iosversion=%@&deviceversion=%@&description=%@&qq=%@&mail=%@", QIQUNARHOME, self.staticInfo.user.userId,appVersion,iosVersion,deviceVersion,description,userQQ,userEmail]];
+  
+  ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest addRequestHeader:@"authToken" value:self.staticInfo.user.authToken];
+  [asiRequest startAsynchronous];
 }
 
 /**

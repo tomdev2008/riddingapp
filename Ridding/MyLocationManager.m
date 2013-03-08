@@ -18,6 +18,7 @@ static MyLocationManager *manager = nil;
   @synchronized (self) {
     if (manager == nil) {
       manager = [[self alloc] init]; // assignment not done here
+      
     }
   }
   return manager;
@@ -27,6 +28,7 @@ static MyLocationManager *manager = nil;
 
   self = [super init];
   if (self) {
+    self.locationArray=[[NSMutableArray alloc]init];
     _myLocationManager = [[CLLocationManager alloc] init];
     [_myLocationManager setDelegate:self];
     [_myLocationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
@@ -46,8 +48,10 @@ static MyLocationManager *manager = nil;
 #pragma mark locationManager delegate functions
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error {
-
-  _block(nil);
+  if(_block){
+    _block(nil);
+  }
+  
   [_myLocationManager stopUpdatingLocation];
 }
 
@@ -65,6 +69,13 @@ static MyLocationManager *manager = nil;
   } else {
     location = _myLocationManager.location;
   }
+  
+  if(count==3){
+    [self.locationArray addObject:location];
+    count=0;
+  }
+  count++;
+
   CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
   [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
     QQNRMyLocation *myLocation = [[QQNRMyLocation alloc] init];
@@ -80,14 +91,14 @@ static MyLocationManager *manager = nil;
       myLocation.latitude = location.coordinate.latitude;
       myLocation.longtitude = location.coordinate.longitude;
       myLocation.location = [[CLLocation alloc] initWithLatitude:myLocation.latitude longitude:myLocation.longtitude];
-      _block(myLocation);
+      if(_block){
+        _block(myLocation);
+        _block=nil;
+      }
       [_myLocationManager stopUpdatingLocation];
     }
     [geoCoder cancelGeocode];
   }];
 }
 
-- (void)stopUpdateLocation{
-  [_myLocationManager stopUpdatingLocation];
-}
 @end

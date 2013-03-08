@@ -44,6 +44,8 @@
 		181F4DED158A467900CFEA77 /* QQNRSourceLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 181F4DEB158A467900CFEA77 /* QQNRSourceLoginViewController.xib */; };
 		181FDCD615512F1F009FB9BE /* UserSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 181FDCD415512F1F009FB9BE /* UserSettingViewController.m */; };
 		181FDCD715512F1F009FB9BE /* UserSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 181FDCD515512F1F009FB9BE /* UserSettingViewController.xib */; };
+		1821015516E8ED72003B4AA4 /* FeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1821015316E8ED72003B4AA4 /* FeedBackViewController.m */; };
+		1821015616E8ED72003B4AA4 /* FeedBackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1821015416E8ED72003B4AA4 /* FeedBackViewController.xib */; };
 		1824CB801610C09E00C7826F /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1824CB7B1610C09E00C7826F /* libMobClickLibrary.a */; };
 		1824CB811610C09E00C7826F /* libUMFeedback.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1824CB7C1610C09E00C7826F /* libUMFeedback.a */; };
 		1824CB821610C09E00C7826F /* umFeedback.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1824CB7E1610C09E00C7826F /* umFeedback.bundle */; };
@@ -215,6 +217,8 @@
 		186C1FA516ADA3F500423D16 /* BasicLeftHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186C1FA416ADA3F500423D16 /* BasicLeftHeadView.m */; };
 		186C1FAC16ADA68700423D16 /* BasicLeftViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 186C1FAB16ADA68700423D16 /* BasicLeftViewCell.m */; };
 		1871CD2B1697122900C19543 /* UserRelation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1871CD2A1697122900C19543 /* UserRelation.m */; };
+		1874D2DE16E64CF30026E0A5 /* UserHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1874D2DC16E64CF30026E0A5 /* UserHelpViewController.m */; };
+		1874D2DF16E64CF30026E0A5 /* UserHelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1874D2DD16E64CF30026E0A5 /* UserHelpViewController.xib */; };
 		18769F3616399B9900B52652 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 18769F3516399B9900B52652 /* libz.1.2.5.dylib */; };
 		1876EC6A1654E8E000C1197D /* MapCreateVCTL.m in Sources */ = {isa = PBXBuildFile; fileRef = 1876EC681654E8E000C1197D /* MapCreateVCTL.m */; };
 		1876EC6B1654E8E000C1197D /* MapCreateVCTL.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1876EC691654E8E000C1197D /* MapCreateVCTL.xib */; };
@@ -609,6 +613,9 @@
 		181FDCD315512F1F009FB9BE /* UserSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserSettingViewController.h; sourceTree = "<group>"; };
 		181FDCD415512F1F009FB9BE /* UserSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserSettingViewController.m; sourceTree = "<group>"; };
 		181FDCD515512F1F009FB9BE /* UserSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserSettingViewController.xib; sourceTree = "<group>"; };
+		1821015216E8ED72003B4AA4 /* FeedBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedBackViewController.h; sourceTree = "<group>"; };
+		1821015316E8ED72003B4AA4 /* FeedBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedBackViewController.m; sourceTree = "<group>"; };
+		1821015416E8ED72003B4AA4 /* FeedBackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedBackViewController.xib; sourceTree = "<group>"; };
 		1824CB7B1610C09E00C7826F /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		1824CB7C1610C09E00C7826F /* libUMFeedback.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMFeedback.a; sourceTree = "<group>"; };
 		1824CB7D1610C09E00C7826F /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
@@ -866,6 +873,9 @@
 		186C1FAB16ADA68700423D16 /* BasicLeftViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicLeftViewCell.m; sourceTree = "<group>"; };
 		1871CD291697122900C19543 /* UserRelation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserRelation.h; sourceTree = "<group>"; };
 		1871CD2A1697122900C19543 /* UserRelation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserRelation.m; sourceTree = "<group>"; };
+		1874D2DB16E64CF30026E0A5 /* UserHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserHelpViewController.h; sourceTree = "<group>"; };
+		1874D2DC16E64CF30026E0A5 /* UserHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserHelpViewController.m; sourceTree = "<group>"; };
+		1874D2DD16E64CF30026E0A5 /* UserHelpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserHelpViewController.xib; sourceTree = "<group>"; };
 		18769F3516399B9900B52652 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		1876EC671654E8E000C1197D /* MapCreateVCTL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapCreateVCTL.h; sourceTree = "<group>"; };
 		1876EC681654E8E000C1197D /* MapCreateVCTL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapCreateVCTL.m; sourceTree = "<group>"; };
@@ -1797,6 +1807,12 @@
 				181FDCD315512F1F009FB9BE /* UserSettingViewController.h */,
 				181FDCD415512F1F009FB9BE /* UserSettingViewController.m */,
 				181FDCD515512F1F009FB9BE /* UserSettingViewController.xib */,
+				1874D2DB16E64CF30026E0A5 /* UserHelpViewController.h */,
+				1874D2DC16E64CF30026E0A5 /* UserHelpViewController.m */,
+				1874D2DD16E64CF30026E0A5 /* UserHelpViewController.xib */,
+				1821015216E8ED72003B4AA4 /* FeedBackViewController.h */,
+				1821015316E8ED72003B4AA4 /* FeedBackViewController.m */,
+				1821015416E8ED72003B4AA4 /* FeedBackViewController.xib */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -3011,6 +3027,8 @@
 				181A5FD716DCE2FF0098AC16 /* qqnr_join_disable.png in Resources */,
 				181A5FDA16DCF15E0098AC16 /* refresh.png in Resources */,
 				181A5FDB16DCF15E0098AC16 /* refresh@2x.png in Resources */,
+				1874D2DF16E64CF30026E0A5 /* UserHelpViewController.xib in Resources */,
+				1821015616E8ED72003B4AA4 /* FeedBackViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3206,6 +3224,8 @@
 				1845A32F16D64C440049E59C /* FirstAnnotationView.m in Sources */,
 				1845A33216D64E1F0049E59C /* FirstAnnotation.m in Sources */,
 				1845A33516D653FB0049E59C /* ShowTapAnnotation.m in Sources */,
+				1874D2DE16E64CF30026E0A5 /* UserHelpViewController.m in Sources */,
+				1821015516E8ED72003B4AA4 /* FeedBackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

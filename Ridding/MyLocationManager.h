@@ -13,17 +13,18 @@
 typedef void (^MyLocationBlock)(QQNRMyLocation *);
 
 
-@interface MyLocationManager : NSObject <CLLocationManagerDelegate>
+@interface MyLocationManager : NSObject <CLLocationManagerDelegate>{
+  int count;
+}
 
 @property (nonatomic, retain) CLLocationManager *myLocationManager;
 @property (nonatomic, copy) MyLocationBlock block;
+@property (nonatomic, retain) NSMutableArray *locationArray;
 
 
 + (id)getSingleton;
 
-
 - (void)startUpdateMyLocation:(MyLocationBlock)block;
 
-- (void)stopUpdateLocation;
 
 @end

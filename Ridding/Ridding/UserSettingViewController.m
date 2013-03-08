@@ -12,6 +12,8 @@
 #import "UserSettingCell.h"
 #import "Utilities.h"
 #import "UIImage+UIImage_Retina4.h"
+#import "UserHelpViewController.h"
+#import "FeedBackViewController.h"
 @implementation UserSettingViewController
 @synthesize uiTableView = _uiTableView;
 @synthesize staticInfo;
@@ -95,13 +97,10 @@
     } else if ([indexPath row] == 2) {
       [cell initView:@"查看新版本"];
     } else if ([indexPath row] == 3) {
-      [cell initView:@"创建骑行活动教程"];
+      [cell initView:@"新用户指南"];
     } else if ([indexPath row] == 4) {
-      [cell initView:@"活动路线教程"];
+      [cell initView:@"高级功能"];
     }
-//    else if ([indexPath row] == 5) {
-//      [cell initView:@"升级"];
-//    }
     return cell;
   } else if (indexPath.row == 5) {
     UserLoginCell *loginCell = (UserLoginCell *) [Utilities cellByClassName:@"UserLoginCell" inNib:@"UserLoginCell" forTableView:self.uiTableView];
@@ -115,7 +114,6 @@
     }
     return loginCell;
   }
-  //   cell.textLabel.text = @"升级成为会员";
   return nil;
   
 }
@@ -128,42 +126,25 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStoreComment]];
 
     } else if ([indexPath row] == 1) {
-      NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-      SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, LONGLONG2NUM(staticInfo.user.userId), @"userid");
-      SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, staticInfo.user.name, @"nickname");
-      [UMFeedback showFeedback:self withAppkey:@"4fb3ce805270152b53000128" dictionary:dic];
-      self.navigationController.navigationBarHidden = NO;
+      
+      FeedBackViewController *feedBackViewController=[[FeedBackViewController alloc]init];
+      [self.navigationController pushViewController:feedBackViewController animated:YES];
 
     } else if ([indexPath row] == 2) {
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
 
     } else if ([indexPath row] == 3){
       
-      UIButton *imageView=[UIButton buttonWithType:UIButtonTypeCustom];
-      imageView.frame=CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-      [imageView setImage:[UIImage retina4ImageNamed:@"qqnr_mapcreate_help_bg" type:@"png"] forState:UIControlStateNormal];
-      [imageView addTarget:self action:@selector(imageViewCilck:) forControlEvents:UIControlEventTouchUpInside];
-      [self.view addSubview:imageView];
-      
+      UserHelpViewController *helpController=[[UserHelpViewController alloc]init];
+      [self.navigationController pushViewController:helpController animated:YES];
     } else if ([indexPath row] == 4){
       
-      UIButton *imageView=[UIButton buttonWithType:UIButtonTypeCustom];
-      imageView.frame=CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-      [imageView setImage:[UIImage retina4ImageNamed:@"qqnr_dl_first_bg" type:@"png"] forState:UIControlStateNormal];
-      [imageView addTarget:self action:@selector(imageViewCilck:) forControlEvents:UIControlEventTouchUpInside];
-      [self.view addSubview:imageView];
+      [self updateToVIP];
     }
-//    else if ([indexPath row] == 5){
-//      [self updateToVIP];
-//    }
   }
   [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
-- (void)imageViewCilck:(id)sender{
-  UIView *view=(UIView*)sender;
-  [view removeFromSuperview];
-}
 
 
 - (void)quitButtonClick {

@@ -103,6 +103,8 @@
 
 - (NSDictionary *)weatherRequest:(NSString*)latitudeLongitude;
 
+- (void)feedBack:(NSString*)appVersion iosVersion:(NSString*)iosVersion deviceVersion:(NSString*)deviceVersion userQQ:(NSString*)userQQ userEmail:(NSString*)userEmail description:(NSString*)description;
+
 
 @end
 
