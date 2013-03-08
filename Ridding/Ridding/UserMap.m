@@ -998,18 +998,27 @@
 
   UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
   [imagePicker setDelegate:self];
-  if (buttonIndex == 0) {
-    [MobClick event:@"2012111904"];
-    _isFromCamera = YES;
-    imagePicker.videoQuality = UIImagePickerControllerQualityTypeLow;
-    [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-  } else if (buttonIndex == 1) {
-    _isFromCamera = NO;
-    [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-  } else {
-    return;
+  if(![_ridding isEnd]){
+    if (buttonIndex == 0) {
+      [MobClick event:@"2012111904"];
+      _isFromCamera = YES;
+      imagePicker.videoQuality = UIImagePickerControllerQualityTypeLow;
+      [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+    } else if (buttonIndex == 1) {
+      _isFromCamera = NO;
+      [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    }
+  }else{
+    if (buttonIndex == 0) {
+      _isFromCamera = NO;
+      [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    }
   }
-  [self presentModalViewController:imagePicker animated:YES];
+  if(imagePicker.sourceType==UIImagePickerControllerSourceTypePhotoLibrary||imagePicker.sourceType==UIImagePickerControllerSourceTypeCamera){
+    [self presentModalViewController:imagePicker animated:YES];
+  }
+  
+  
   return;
 
 }

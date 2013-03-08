@@ -82,7 +82,7 @@
   if (indexPath.row<5) {
     UserSettingCell *cell = (UserSettingCell *) [Utilities cellByClassName:@"UserSettingCell" inNib:@"UserSettingCell" forTableView:self.uiTableView];
     if ([indexPath row] == 0) {
-      [cell initView:@"给个好评吧"];
+      [cell initView:@"评价骑行者"];
     } else if ([indexPath row] == 1) {
       [cell initView:@"骑行者反馈"];
     } else if ([indexPath row] == 2) {
