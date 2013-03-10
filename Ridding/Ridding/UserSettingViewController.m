@@ -91,7 +91,7 @@
   if (indexPath.row<5) {
     UserSettingCell *cell = (UserSettingCell *) [Utilities cellByClassName:@"UserSettingCell" inNib:@"UserSettingCell" forTableView:self.uiTableView];
     if ([indexPath row] == 0) {
-      [cell initView:@"给个好评吧"];
+      [cell initView:@"评价骑行者"];
     } else if ([indexPath row] == 1) {
       [cell initView:@"骑行者反馈"];
     } else if ([indexPath row] == 2) {
@@ -99,7 +99,7 @@
     } else if ([indexPath row] == 3) {
       [cell initView:@"新用户指南"];
     } else if ([indexPath row] == 4) {
-      [cell initView:@"高级功能"];
+      [cell initView:@"推荐给骑友"];
     }
     return cell;
   } else if (indexPath.row == 5) {
@@ -127,7 +127,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     } else if ([indexPath row] == 1) {
       
-      FeedBackViewController *feedBackViewController=[[FeedBackViewController alloc]init];
+      FeedBackViewController *feedBackViewController=[[FeedBackViewController alloc]init:FALSE];
       [self.navigationController pushViewController:feedBackViewController animated:YES];
 
     } else if ([indexPath row] == 2) {
@@ -139,7 +139,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
       [self.navigationController pushViewController:helpController animated:YES];
     } else if ([indexPath row] == 4){
       
-      [self updateToVIP];
+      [self showShare];
+      //[self updateToVIP];
     }
   }
   [tableView deselectRowAtIndexPath:indexPath animated:NO];
@@ -225,5 +226,49 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   }
 
   
+}
+
+- (void)showShare {
+  
+  if([MFMessageComposeViewController canSendText]){
+		[MobClick event:@"2013022101"];
+    MFMessageComposeViewController *smsComposer = [[MFMessageComposeViewController alloc] init];
+		
+    smsComposer.body = [NSString stringWithFormat:@"我下载了一款骑行应用叫\"骑行者\",非常不错！以后出去骑车就靠它了。可以画路线,添加队友,追踪队友位置,还能拍照记录行程。赶紧下一个去!给你链接:%@",linkAppStore];
+    smsComposer.messageComposeDelegate = self;
+		
+    [self presentModalViewController:smsComposer animated:NO];
+  }
+  else{
+		
+		NSString *deviceType = [UIDevice currentDevice].model;
+		if([deviceType isEqualToString:@"iPhone"] ){
+			
+			// 老版本iphone
+			
+			ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
+      //	picker.peoplePickerDelegate = self;
+			
+			// Display only a person's phone, email, and birthdate
+			NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonPhoneProperty],
+                                 [NSNumber numberWithInt:kABPersonEmailProperty],
+                                 [NSNumber numberWithInt:kABPersonBirthdayProperty], nil];
+			
+			
+			picker.displayedProperties = displayedItems;
+			// Show the picker
+			[self presentModalViewController:picker animated:YES];
+			
+		}else {
+      [Utilities alertInstant:@"抱歉\n你没有发短信的功能哦" isError:YES];
+		}
+  }
+  
+}
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
+  if(result==MessageComposeResultSent){
+    [MobClick event:@"2013022102"];
+  }
+	[self dismissModalViewControllerAnimated:YES];
 }
 @end

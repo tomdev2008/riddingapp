@@ -8,6 +8,7 @@
 
 #import "LandingViewController.h"
 #import "MyLocationManager.h"
+#import "QQNRFeedViewController.h"
 #define moveSpeed 0.5
 @interface RiddingAppDelegate(){
 }
@@ -31,7 +32,16 @@
     [[UIApplication sharedApplication] setStatusBarHidden:NO
                                             withAnimation:UIStatusBarAnimationNone];
   }
-  self.rootViewController = [[PublicViewController alloc] init];
+  
+  if([self canLogin]){
+    
+    self.rootViewController= [[QQNRFeedViewController alloc]initWithUser:[StaticInfo getSinglton].user isFromLeft:YES];
+    
+  }else{
+    
+    self.rootViewController = [[PublicViewController alloc] init];
+  }
+  
   
   self.navController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
   

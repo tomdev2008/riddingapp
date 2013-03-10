@@ -197,7 +197,12 @@
     } else {
       _likeCountLabel.frame = CGRectMake(_imageViewDescView.frame.size.width - 20, _imageViewDescView.frame.size.height - 22, 10, 15);
     }
-    _likeCountLabel.text = INT2STR(self.info.likeCount);
+    if(self.info.likeCount>10){
+      _likeCountLabel.text = @"N";
+    }else{
+      _likeCountLabel.text = INT2STR(self.info.likeCount);
+    }
+    
 
     if (!_likeClickView) {
       _likeClickView = [[UIView alloc] initWithFrame:CGRectMake(_imageViewDescView.frame.size.width - likeViewWidth, 0, likeViewWidth, _imageViewDescView.frame.size.height)];
@@ -241,7 +246,7 @@
 
 - (void)showDeleteAction:(UIGestureRecognizer *)gestureRecognizer  {
 
-  if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+  if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
     if (self.delegate){
       [self.delegate deletePicture:self index:_index];
     }

@@ -42,6 +42,7 @@
 
 - (void)viewDidLoad {
 
+    [super viewDidLoad];
   self.canMoveLeft=YES;
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   self.tv.backgroundColor = [UIColor clearColor];
@@ -94,7 +95,7 @@
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(succAddFriends:)
                                                name:kSuccAddFriendsNotification object:nil];
-  [super viewDidLoad];
+
 }
 
 - (void)showAd{
@@ -383,19 +384,15 @@
 - (void)longPressOnCell:(UILongPressGestureRecognizer *)gestureRecognize {
 
   if (gestureRecognize.state == UIGestureRecognizerStateBegan){
-    return;
-  }
-  if (gestureRecognize.state == UIGestureRecognizerStateEnded) {
     if ([gestureRecognize.view isKindOfClass:[QQNRFeedTableCell class]]) {
-      if (_isShowingSheet) {
-        return;
-      }
-      _isShowingSheet = TRUE;
       [MobClick event:@"2012111909"];
       QQNRFeedTableCell *cell = (QQNRFeedTableCell *) gestureRecognize.view;
       [self showActionSheet:cell];
       
     }
+  }
+  if (gestureRecognize.state == UIGestureRecognizerStateEnded) {
+    return;
   }
 
 }
@@ -403,7 +400,6 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 
   NSString *str = [actionSheet buttonTitleAtIndex:buttonIndex];
-  _isShowingSheet=FALSE;
   Ridding *ridding = [_dataSource objectAtIndex:_selectedCell.index];
   if ([str isEqualToString:@"活动已经完成"]) {
     [MobClick event:@"2012070206"];
@@ -453,7 +449,6 @@
 
 - (void)actionSheetCancel:(UIActionSheet *)actionSheet {
 
-  _isShowingSheet = FALSE;
   [actionSheet setHidden:YES];
   [actionSheet removeFromSuperview];
 }
@@ -465,12 +460,23 @@
     UIActionSheet *showSheet = nil;
     Ridding *ridding = [_dataSource objectAtIndex:cell.index];
     NSString *title=[NSString stringWithFormat:@"需要对骑行活动:\"%@\"做操作吗?",ridding.riddingName];
-    if ([Ridding isLeader:ridding.userRole] && ![ridding isEnd]) {
-      showSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"活动已经完成" otherButtonTitles:@"删除活动", nil];
-    } else if (![ridding isEnd]) {
+    if(![ridding isEnd]){
+      if ([Ridding isLeader:ridding.userRole]){
+        
+          showSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"活动已经完成" otherButtonTitles:@"删除活动", nil];
+      }else{
+        
+         showSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"退出活动" otherButtonTitles:nil];
+      }
+    }else{
+      
+      if ([Ridding isLeader:ridding.userRole]){
+        
+        showSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除活动" otherButtonTitles:nil];
+      }else{
+        
         showSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"退出活动" otherButtonTitles:nil];
-    } else {
-      return;
+      }
     }
     showSheet.delegate = self;
     [showSheet showInView:self.view];

@@ -182,7 +182,7 @@
 
   Comment *comment = [_dataSource objectAtIndex:cell.index];
   _toUserId = comment.user.userId;
-  _replyId = comment.replyId;
+  _replyId = comment.dbId;
   _beginStr = [NSString stringWithFormat:@"回复%@:", comment.user.name];
   [_textView setText:_beginStr];
   [_textView becomeFirstResponder];

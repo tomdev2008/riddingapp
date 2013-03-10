@@ -15,7 +15,7 @@
 
 @protocol QQNRFeedTableCellDelegate <NSObject>
 - (void)leaderTap:(QQNRFeedTableCell *)cell;
-
+@optional
 - (void)statusTap:(QQNRFeedTableCell *)cell;
 
 @end

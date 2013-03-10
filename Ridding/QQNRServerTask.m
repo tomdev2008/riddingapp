@@ -19,15 +19,6 @@
       [[QQNRFileServerComm getSingleton] updatePhotoToQiNiu:[self.paramDic objectForKey:kFileClientServerUpload_RiddingPicture] target:self];
     }
       break;
-    case STEP_UPLOADDESC: {
-      RiddingPicture *riddingPicture = [self.paramDic objectForKey:kFileClientServerUpload_RiddingPicture];
-      RequestUtil *requestUtil = [[RequestUtil alloc] init];
-      BOOL succ = [requestUtil uploadRiddingPhoto:riddingPicture];
-      if (succ) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSuccUploadPictureNotification object:self];
-      }
-    }
-      break;
     case STEP_UPLOADBACKGROUNDPHOTO: {
       [self performSelectorOnMainThread:@selector(updateUIWhenTaskBegin) withObject:nil waitUntilDone:NO];
       [[QQNRFileServerComm getSingleton] updateFileToQiNiu:[self.paramDic objectForKey:kFileClientServerUpload_File] target:self];
@@ -48,10 +39,10 @@
 
  
 
-  if (self.dependencies && self.queueDelegate) {
+  if ([self.dependencies count]>0 && self.queueDelegate) {
     NSDictionary *dic = [self.queueDelegate lastTaskServerResponseJSON];
     //如果post的param为空，尝试传非空的block
-    if (dic) {
+    if (dic!=nil) {
       if (_dataProcessBlock) {
        self.paramDic = _dataProcessBlock(dic);
       }
@@ -78,6 +69,19 @@
   if (self.queueDelegate) {
     [self.queueDelegate setServerResponseJSON:info];
   }
+  if(self.step==STEP_UPLOADPHOTO){
+    
+    RiddingPicture *riddingPicture = [info objectForKey:kFileClientServerUpload_RiddingPicture];
+    RequestUtil *requestUtil = [[RequestUtil alloc] init];
+    BOOL succ = [requestUtil uploadRiddingPhoto:riddingPicture];
+    if (_dataProcessBlock) {
+      _dataProcessBlock(info);
+    }
+    if (succ) {
+      [[NSNotificationCenter defaultCenter] postNotificationName:kSuccUploadPictureNotification object:self];
+    }
+  }
+  
   if (self.step == STEP_UPLOADBACKGROUNDPHOTO) {
     RequestUtil *request = [[RequestUtil alloc] init];
     File *file = [info objectForKey:kFileClientServerUpload_File];

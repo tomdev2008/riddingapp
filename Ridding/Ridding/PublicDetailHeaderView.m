@@ -83,12 +83,12 @@
     UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(mapViewTap:)];
     [_route_view addGestureRecognizer:gesture];
     
-    if (_isMyHome) {
+    //if (_isMyHome) {
       _goBtn=[UIButton buttonWithType:UIButtonTypeCustom];
       [_goBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_showMap") forState:UIControlStateNormal];
       _goBtn.frame=CGRectMake(132, 127, 56, 56);
       [_goBtn addTarget:self action:@selector(mapViewTap:) forControlEvents:UIControlEventTouchUpInside];
-    }
+    //}
     
     [_mapView setShowsUserLocation:NO];
     _mapView.delegate = self;

@@ -283,4 +283,35 @@
 - (NSString *)trim{
   return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
+
+- (BOOL)isPureLong{
+  
+  NSScanner* scan = [NSScanner scannerWithString:self];
+  
+  long long val;
+  
+  return[scan scanLongLong:&val] && [scan isAtEnd];
+  
+}
+
+-(BOOL)isEmail
+
+{
+  
+  NSString *Regex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+  
+  NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", Regex];
+  
+  return [emailTest evaluateWithObject:self];
+  
+}
+
+- (BOOL)isContainStr:(NSString*)str{
+  NSRange range;
+  range = [self rangeOfString:str];
+  if (range.location == NSNotFound) {
+    return NO;
+  }
+  return YES;
+}
 @end

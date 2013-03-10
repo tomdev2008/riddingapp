@@ -12,7 +12,8 @@
 #import "BasicLeftHeadView.h"
 #import "BasicLeftViewCell.h"
 #import "Utilities.h"
-
+#import "RiddingNearByViewController.h"
+#import "FeedBackViewController.h"
 @interface BasicLeftViewController () {
 
 }
@@ -89,9 +90,15 @@
     }
       break;
     case 3: {
-      cell.titleLabel.text = @"推荐给骑友";
-      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_recommend");
       
+      cell.titleLabel.text = @"附近路线";
+      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_icon_line");
+      
+      break;
+    }case 4: {
+      cell.titleLabel.text = @"用户反馈";
+      cell.iconView.image = UIIMAGE_FROMPNG(@"qqnr_ln_recommend");
+      break;
     }
     default:
       break;
@@ -127,7 +134,10 @@
       [self showPublic];
       break;
     case 3:
-      [self showShare];
+      [self showNearBy];
+      break;
+    case 4:
+      [self showCallBack];
       break;
     default:
       break;
@@ -135,66 +145,60 @@
 
 }
 
-- (void)showShare {
+- (void)showCallBack{
   
-  if([MFMessageComposeViewController canSendText]){
-		[MobClick event:@"2013022101"];
-    MFMessageComposeViewController *smsComposer = [[MFMessageComposeViewController alloc] init];
-		
-    smsComposer.body = [NSString stringWithFormat:@"我下载了一款骑行应用叫\"骑行者\",非常不错！以后出去骑车就靠它了。可以画路线,添加队友,追踪队友位置,还能拍照记录行程。赶紧下一个去!给你链接:%@",linkAppStore];
-    smsComposer.messageComposeDelegate = self;
-		
+  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+  if ([delegate canLogin]) {
+    if (![self isShowingViewController:[FeedBackViewController class]]) {
+      [self moveRight];
+      //如果新浪成功，并且authtoken有效
+      FeedBackViewController *feedBack = [[FeedBackViewController alloc]init:YES];
+      [RiddingAppDelegate popAllNavgation];
+      [delegate.navController pushViewController:feedBack animated:NO];
+    }
+    [self restoreViewLocation];
+  } else {
     [self moveRight];
-    [self presentModalViewController:smsComposer animated:NO];
+    RiddingViewController *riddingViewController = [[RiddingViewController alloc] init];
+    riddingViewController.delegate = self;
+    [self presentModalViewController:riddingViewController animated:YES];
   }
-  else{
-		
-		NSString *deviceType = [UIDevice currentDevice].model;
-		if([deviceType isEqualToString:@"iPhone"] ){
-			
-			// 老版本iphone
-			
-			ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
-		//	picker.peoplePickerDelegate = self;
-			
-			// Display only a person's phone, email, and birthdate
-			NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonPhoneProperty],
-                                 [NSNumber numberWithInt:kABPersonEmailProperty],
-                                 [NSNumber numberWithInt:kABPersonBirthdayProperty], nil];
-			
-			
-			picker.displayedProperties = displayedItems;
-			// Show the picker
-			[self presentModalViewController:picker animated:YES];
-			
-		}else {
-      [Utilities alertInstant:@"抱歉\n你没有发短信的功能哦" isError:YES];
-		}
-  }
-
 }
-
-- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
-  if(result==MessageComposeResultSent){
-    [MobClick event:@"2013022102"];
-  }
-	[self dismissModalViewControllerAnimated:YES];
-  [self restoreViewLocation];
-}
-
 
 - (void)showSetting {
 
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
 
-  if (![self isShowingViewController:[UserSettingViewController class]]) {
-    [self moveRight];
-    UserSettingViewController *settingVCTL = [[UserSettingViewController alloc] init];
-    [RiddingAppDelegate popAllNavgation];
-    [delegate.navController pushViewController:settingVCTL animated:NO];
-  }
-  [self restoreViewLocation];
+    if (![self isShowingViewController:[UserSettingViewController class]]) {
+      [self moveRight];
+      UserSettingViewController *settingVCTL = [[UserSettingViewController alloc] init];
+      [RiddingAppDelegate popAllNavgation];
+      [delegate.navController pushViewController:settingVCTL animated:NO];
+    }
+    [self restoreViewLocation];
+ 
 
+}
+
+
+- (void)showNearBy {
+  
+  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+  if ([delegate canLogin]) {
+    if (![self isShowingViewController:[RiddingNearByViewController class]]) {
+      [self moveRight];
+      RiddingNearByViewController *nearByViewController=[[RiddingNearByViewController alloc]init];
+      [RiddingAppDelegate popAllNavgation];
+      [delegate.navController pushViewController:nearByViewController animated:NO];
+    }
+    [self restoreViewLocation];
+  }else{
+    [self moveRight];
+    RiddingViewController *riddingViewController = [[RiddingViewController alloc] init];
+    riddingViewController.delegate = self;
+    [self presentModalViewController:riddingViewController animated:YES];
+  }
+  
 }
 
 - (void)showUserFeed {

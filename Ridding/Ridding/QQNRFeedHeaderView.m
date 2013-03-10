@@ -41,7 +41,7 @@
     userName.text = user.name;
     [self addSubview:userName];
 
-    _mileStone = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2-50, userName.frame.origin.y + 20, 100, 30)];
+    _mileStone = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2-100, userName.frame.origin.y + 20, 200, 30)];
     _mileStone.textAlignment = UITextAlignmentCenter;
     _mileStone.textColor = [UIColor whiteColor];
     _mileStone.backgroundColor = [UIColor clearColor];

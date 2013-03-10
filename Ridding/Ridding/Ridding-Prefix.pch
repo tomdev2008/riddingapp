@@ -41,13 +41,14 @@
 
 #define imageHost  [MobClick getConfigParams:@"online_imageHost"]
 
-#define QIQUNARHOME [MobClick getConfigParams:@"online_QIQUNARHOME"] 
+#define QIQUNARHOME  [MobClick getConfigParams:@"online_QIQUNARHOME"] 
 
 #define sendMyLocationTime 30.0
 #define showRightViewTime 5.0
 #define YouMenAppKey @"4fb3ce805270152b53000128"
 #define MY_BANNER_UNIT_ID [MobClick getConfigParams:@"online_MY_BANNER_UNIT_ID"]
 #define WeatherOnlineKey [MobClick getConfigParams:@"online_WeatherOnlineKey"]
+#define WeatherOnlineUrl [MobClick getConfigParams:@"online_weather_online"]
 
 #ifdef DEBUG
 #   define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);

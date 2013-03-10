@@ -105,7 +105,7 @@
 
 - (void)feedBack:(NSString*)appVersion iosVersion:(NSString*)iosVersion deviceVersion:(NSString*)deviceVersion userQQ:(NSString*)userQQ userEmail:(NSString*)userEmail description:(NSString*)description;
 
-
+- (NSArray*)getRiddingNearBy:(double)latitude longitude:(double)longitude limit:(int)limit offset:(int)offset;
 @end
 
 

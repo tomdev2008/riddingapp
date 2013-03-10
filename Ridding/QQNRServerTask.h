@@ -15,7 +15,6 @@ typedef NSMutableDictionary *(^BlockProcessLastTaskData)(NSDictionary *);
 
 typedef enum TASKSTEP_ {
   STEP_UPLOADPHOTO,
-  STEP_UPLOADDESC,
   STEP_UPLOADBACKGROUNDPHOTO,
 } TASKSTEP;
 

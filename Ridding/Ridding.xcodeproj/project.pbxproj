@@ -316,6 +316,17 @@
 		18860A371629C71100904CB9 /* CalloutMapAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18860A341629C71100904CB9 /* CalloutMapAnnotationView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1887723B16BE999F00DD9CC5 /* qqnr_pd_comment_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 1887723916BE999F00DD9CC5 /* qqnr_pd_comment_line.png */; };
 		1887723C16BE999F00DD9CC5 /* qqnr_pd_comment_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1887723A16BE999F00DD9CC5 /* qqnr_pd_comment_line@2x.png */; };
+		1888C1C716EC59AE0027CF8A /* RiddingNearByViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1888C1C516EC59AE0027CF8A /* RiddingNearByViewController.m */; };
+		1888C1C816EC59AE0027CF8A /* RiddingNearByViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1888C1C616EC59AE0027CF8A /* RiddingNearByViewController.xib */; };
+		1888C1CF16EC9E6A0027CF8A /* qqnr_feedback_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 1888C1C916EC9E6A0027CF8A /* qqnr_feedback_button.png */; };
+		1888C1D016EC9E6A0027CF8A /* qqnr_feedback_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1888C1CA16EC9E6A0027CF8A /* qqnr_feedback_button@2x.png */; };
+		1888C1D116EC9E6A0027CF8A /* qqnr_feedback_contact.png in Resources */ = {isa = PBXBuildFile; fileRef = 1888C1CB16EC9E6A0027CF8A /* qqnr_feedback_contact.png */; };
+		1888C1D216EC9E6A0027CF8A /* qqnr_feedback_contact@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1888C1CC16EC9E6A0027CF8A /* qqnr_feedback_contact@2x.png */; };
+		1888C1D316EC9E6A0027CF8A /* qqnr_feedback_content.png in Resources */ = {isa = PBXBuildFile; fileRef = 1888C1CD16EC9E6A0027CF8A /* qqnr_feedback_content.png */; };
+		1888C1D416EC9E6A0027CF8A /* qqnr_feedback_content@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1888C1CE16EC9E6A0027CF8A /* qqnr_feedback_content@2x.png */; };
+		1888C1D716ECC3210027CF8A /* WeatherAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1888C1D616ECC3210027CF8A /* WeatherAnnotation.m */; };
+		1888C1DA16ECDAA60027CF8A /* qqnr_ln_icon_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 1888C1D816ECDAA60027CF8A /* qqnr_ln_icon_line.png */; };
+		1888C1DB16ECDAA60027CF8A /* qqnr_ln_icon_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1888C1D916ECDAA60027CF8A /* qqnr_ln_icon_line@2x.png */; };
 		188C8D8216B43AC6001504F7 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 188C8D7816B43AC6001504F7 /* FMDatabase.m */; };
 		188C8D8316B43AC6001504F7 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 188C8D7A16B43AC6001504F7 /* FMDatabaseAdditions.m */; };
 		188C8D8416B43AC6001504F7 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 188C8D7C16B43AC6001504F7 /* FMDatabasePool.m */; };
@@ -1011,6 +1022,19 @@
 		18860A341629C71100904CB9 /* CalloutMapAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalloutMapAnnotationView.m; sourceTree = "<group>"; };
 		1887723916BE999F00DD9CC5 /* qqnr_pd_comment_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qqnr_pd_comment_line.png; sourceTree = "<group>"; };
 		1887723A16BE999F00DD9CC5 /* qqnr_pd_comment_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qqnr_pd_comment_line@2x.png"; sourceTree = "<group>"; };
+		1888C1C416EC59AE0027CF8A /* RiddingNearByViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiddingNearByViewController.h; sourceTree = "<group>"; };
+		1888C1C516EC59AE0027CF8A /* RiddingNearByViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiddingNearByViewController.m; sourceTree = "<group>"; };
+		1888C1C616EC59AE0027CF8A /* RiddingNearByViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RiddingNearByViewController.xib; sourceTree = "<group>"; };
+		1888C1C916EC9E6A0027CF8A /* qqnr_feedback_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qqnr_feedback_button.png; sourceTree = "<group>"; };
+		1888C1CA16EC9E6A0027CF8A /* qqnr_feedback_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qqnr_feedback_button@2x.png"; sourceTree = "<group>"; };
+		1888C1CB16EC9E6A0027CF8A /* qqnr_feedback_contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qqnr_feedback_contact.png; sourceTree = "<group>"; };
+		1888C1CC16EC9E6A0027CF8A /* qqnr_feedback_contact@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qqnr_feedback_contact@2x.png"; sourceTree = "<group>"; };
+		1888C1CD16EC9E6A0027CF8A /* qqnr_feedback_content.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qqnr_feedback_content.png; sourceTree = "<group>"; };
+		1888C1CE16EC9E6A0027CF8A /* qqnr_feedback_content@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qqnr_feedback_content@2x.png"; sourceTree = "<group>"; };
+		1888C1D516ECC3210027CF8A /* WeatherAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherAnnotation.h; sourceTree = "<group>"; };
+		1888C1D616ECC3210027CF8A /* WeatherAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherAnnotation.m; sourceTree = "<group>"; };
+		1888C1D816ECDAA60027CF8A /* qqnr_ln_icon_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qqnr_ln_icon_line.png; sourceTree = "<group>"; };
+		1888C1D916ECDAA60027CF8A /* qqnr_ln_icon_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qqnr_ln_icon_line@2x.png"; sourceTree = "<group>"; };
 		188C8D7716B43AC6001504F7 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		188C8D7816B43AC6001504F7 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		188C8D7916B43AC6001504F7 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -1483,6 +1507,14 @@
 		18388610161853B1007D1FCA /* image */ = {
 			isa = PBXGroup;
 			children = (
+				1888C1D816ECDAA60027CF8A /* qqnr_ln_icon_line.png */,
+				1888C1D916ECDAA60027CF8A /* qqnr_ln_icon_line@2x.png */,
+				1888C1C916EC9E6A0027CF8A /* qqnr_feedback_button.png */,
+				1888C1CA16EC9E6A0027CF8A /* qqnr_feedback_button@2x.png */,
+				1888C1CB16EC9E6A0027CF8A /* qqnr_feedback_contact.png */,
+				1888C1CC16EC9E6A0027CF8A /* qqnr_feedback_contact@2x.png */,
+				1888C1CD16EC9E6A0027CF8A /* qqnr_feedback_content.png */,
+				1888C1CE16EC9E6A0027CF8A /* qqnr_feedback_content@2x.png */,
 				181A5FD816DCF15E0098AC16 /* refresh.png */,
 				181A5FD916DCF15E0098AC16 /* refresh@2x.png */,
 				181A5FD416DCE2FF0098AC16 /* qqnr_join_disable@2x.png */,
@@ -2173,6 +2205,7 @@
 		1878B8AD1516DF2D00985FC8 /* Ridding */ = {
 			isa = PBXGroup;
 			children = (
+				1888C1C316EC59980027CF8A /* NearBy */,
 				1838875916185670007D1FCA /* Ridding */,
 				186790211670DE0500BE2950 /* meta */,
 				1876EC661654E8BC00C1197D /* mapCreate */,
@@ -2270,6 +2303,8 @@
 				187FD80416D292F400889917 /* InvitationViewCell.h */,
 				187FD80516D292F400889917 /* InvitationViewCell.m */,
 				187FD80716D2930500889917 /* InvitationViewCell.xib */,
+				1888C1D516ECC3210027CF8A /* WeatherAnnotation.h */,
+				1888C1D616ECC3210027CF8A /* WeatherAnnotation.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -2333,6 +2368,16 @@
 			);
 			name = callOutMapKit;
 			path = 3part/callOutMapKit;
+			sourceTree = "<group>";
+		};
+		1888C1C316EC59980027CF8A /* NearBy */ = {
+			isa = PBXGroup;
+			children = (
+				1888C1C416EC59AE0027CF8A /* RiddingNearByViewController.h */,
+				1888C1C516EC59AE0027CF8A /* RiddingNearByViewController.m */,
+				1888C1C616EC59AE0027CF8A /* RiddingNearByViewController.xib */,
+			);
+			name = NearBy;
 			sourceTree = "<group>";
 		};
 		188C8D7616B43AC6001504F7 /* FMDB */ = {
@@ -3029,6 +3074,15 @@
 				181A5FDB16DCF15E0098AC16 /* refresh@2x.png in Resources */,
 				1874D2DF16E64CF30026E0A5 /* UserHelpViewController.xib in Resources */,
 				1821015616E8ED72003B4AA4 /* FeedBackViewController.xib in Resources */,
+				1888C1C816EC59AE0027CF8A /* RiddingNearByViewController.xib in Resources */,
+				1888C1CF16EC9E6A0027CF8A /* qqnr_feedback_button.png in Resources */,
+				1888C1D016EC9E6A0027CF8A /* qqnr_feedback_button@2x.png in Resources */,
+				1888C1D116EC9E6A0027CF8A /* qqnr_feedback_contact.png in Resources */,
+				1888C1D216EC9E6A0027CF8A /* qqnr_feedback_contact@2x.png in Resources */,
+				1888C1D316EC9E6A0027CF8A /* qqnr_feedback_content.png in Resources */,
+				1888C1D416EC9E6A0027CF8A /* qqnr_feedback_content@2x.png in Resources */,
+				1888C1DA16ECDAA60027CF8A /* qqnr_ln_icon_line.png in Resources */,
+				1888C1DB16ECDAA60027CF8A /* qqnr_ln_icon_line@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3226,6 +3280,8 @@
 				1845A33516D653FB0049E59C /* ShowTapAnnotation.m in Sources */,
 				1874D2DE16E64CF30026E0A5 /* UserHelpViewController.m in Sources */,
 				1821015516E8ED72003B4AA4 /* FeedBackViewController.m in Sources */,
+				1888C1C716EC59AE0027CF8A /* RiddingNearByViewController.m in Sources */,
+				1888C1D716ECC3210027CF8A /* WeatherAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3313,8 +3369,8 @@
 		1878B8C31516DF2D00985FC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: zheng yisheng (F286NP9S62)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zheng yisheng (F286NP9S62)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: zheng yisheng";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zheng yisheng";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ridding/Ridding-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
@@ -3331,8 +3387,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
+				PROVISIONING_PROFILE = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
@@ -3342,8 +3398,8 @@
 		1878B8C41516DF2D00985FC8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: zheng yisheng (F286NP9S62)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zheng yisheng (F286NP9S62)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: zheng yisheng";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zheng yisheng";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ridding/Ridding-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
@@ -3360,8 +3416,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
+				PROVISIONING_PROFILE = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "94A65F23-0D45-43B0-A6EC-E3C87EA40554";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

@@ -19,7 +19,7 @@
 
 @property (retain, nonatomic) UIWindow *window;
 
-@property (retain, nonatomic) PublicViewController *rootViewController;
+@property (retain, nonatomic) UIViewController *rootViewController;
 
 @property (nonatomic, retain) BasicLeftViewController *leftViewController;
 

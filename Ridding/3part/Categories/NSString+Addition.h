@@ -57,4 +57,10 @@
 - (NSString *)urlEncode;
 
 - (NSString *)trim;
+
+- (BOOL)isPureLong;
+
+-(BOOL)isEmail;
+
+- (BOOL)isContainStr:(NSString*)str;
 @end

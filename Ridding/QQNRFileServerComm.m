@@ -24,7 +24,7 @@ static QQNRFileServerComm *qqnrFileServerComm = nil;
 }
 
 - (void)updatePhotoToQiNiu:(RiddingPicture *)riddingPicture target:(id <QQNRFileClientServerUploadProtocol>)target {
-
+  
   NSString *fileName = [self getFileName:riddingPicture.width height:riddingPicture.height];
 
   NSFileManager *manager = [NSFileManager defaultManager];

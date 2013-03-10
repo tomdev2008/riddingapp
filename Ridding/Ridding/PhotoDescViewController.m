@@ -108,30 +108,29 @@
     return;
   }
   
-  
   QQNRServerTask *task = [[QQNRServerTask alloc] init];
-  task.step = STEP_UPLOADDESC;
-
-   NSDate *date = [self.timeLabel.text pd_yyyyMMddHHmmssDate];
+  task.step = STEP_UPLOADPHOTO;
   
+  NSDate *date = [self.timeLabel.text pd_yyyyMMddHHmmssDate];
   _riddingPicture.takePicDateL=(long long) [date timeIntervalSince1970] * 1000;
   _riddingPicture.pictureDescription=self.textView.text;
-
-  __block NSString *weiboDesc = [NSString stringWithFormat:@"\"%@\" 我的骑行旅程:%@。同步更新中。。。 正在使用骑行者app:%@  @%@", _riddingPicture.pictureDescription,_riddingName,QIQUNARHOME,riddingappsinaname];
+  NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:_riddingPicture, kFileClientServerUpload_RiddingPicture, nil];
+  task.paramDic = dic;
+  
+  __block NSString *weiboDesc = [NSString stringWithFormat:@"\"%@\" 我的骑行旅程:%@。同步更新中。。。 正在使用骑行者:%@  @%@", _riddingPicture.pictureDescription,_riddingName,QIQUNARHOME,riddingappsinaname];
   __block BOOL isSyncSina = _syncSina;
   [task setDataProcessBlock:(BlockProcessLastTaskData) ^(NSDictionary *dic) {
     RiddingPicture *picture = [dic objectForKey:kFileClientServerUpload_RiddingPicture];
-    _riddingPicture.fileKey = picture.fileKey;
-    NSMutableDictionary *paramDic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:_riddingPicture, kFileClientServerUpload_RiddingPicture, nil];
-  
+    
     if (isSyncSina) {
       SinaApiRequestUtil *sinaRequest = [[SinaApiRequestUtil alloc] init];
       [sinaRequest sendWeiBo:weiboDesc url:[NSString stringWithFormat:@"%@%@", imageHost, picture.fileKey] latitude:_riddingPicture.latitude longtitude:_riddingPicture.longtitude];
     }
-    return paramDic;
+    
   }];
+  
   QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
-  [queue addTask:task withDependency:YES];
+  [queue addTask:task withDependency:NO];
   [self dismissModalViewControllerAnimated:YES];
 }
 

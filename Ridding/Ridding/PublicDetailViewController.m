@@ -128,23 +128,24 @@
   [SVProgressHUD showWithStatus:@"加载中"];
   dispatch_async(dispatch_queue_create("downLoad", NULL), ^{
     NSArray *serverArray = [self.requestUtil getUploadedPhoto:_ridding.riddingId limit:pageSize lastUpdateTime:_lastUpdateTime];
-    if ([serverArray count] > 0) {
-      NSMutableArray *mulArray = [[NSMutableArray alloc] init];
-      for (NSDictionary *dic in serverArray) {
-        RiddingPicture *picture = [[RiddingPicture alloc] initWithJSONDic:[dic objectForKey:keyRiddingPicture]];
-        if (!_extDateStr || ![_extDateStr isEqualToString:picture.takePicDateStr]) {
-          picture.isFirstPic = TRUE;
-          _extDateStr = picture.takePicDateStr;
-        } else {
-          picture.isFirstPic = FALSE;
-        }
-        [mulArray addObject:picture];
-      }
-      [_cellArray addObjectsFromArray:mulArray];
-    }
-    RiddingPicture *picture = (RiddingPicture *) [_cellArray lastObject];
-    _lastUpdateTime = picture.createTime;
     dispatch_async(dispatch_get_main_queue(), ^{
+      if ([serverArray count] > 0) {
+        NSMutableArray *mulArray = [[NSMutableArray alloc] init];
+        for (NSDictionary *dic in serverArray) {
+          RiddingPicture *picture = [[RiddingPicture alloc] initWithJSONDic:[dic objectForKey:keyRiddingPicture]];
+          if (!_extDateStr || ![_extDateStr isEqualToString:picture.takePicDateStr]) {
+            picture.isFirstPic = TRUE;
+            _extDateStr = picture.takePicDateStr;
+          } else {
+            picture.isFirstPic = FALSE;
+          }
+          [mulArray addObject:picture];
+        }
+        [_cellArray addObjectsFromArray:mulArray];
+      }
+      RiddingPicture *picture = (RiddingPicture *) [_cellArray lastObject];
+      _lastUpdateTime = picture.createTime;
+      
       if ([serverArray count] < pageSize) {
         _isTheEnd = TRUE;
         [_ego setHidden:YES];
@@ -324,6 +325,7 @@
   }
   NSDictionary *dic = [self.requestUtil careRidding:_ridding.riddingId];
   [self updateRidding:dic];
+  [SVProgressHUD showSuccessWithStatus:@"关注成功" duration:0.5];
 }
 
 - (void)useClick:(id)sender {
@@ -458,10 +460,9 @@
 #pragma mark - PublicDetailHeaderView delegate
 - (void)mapViewTap:(PublicDetailHeaderView *)view {
 
-  if (self.isMyFeedHome) {
-    UserMap *map = [[UserMap alloc] initWithUser:_toUser ridding:_ridding];
+    UserMap *map = [[UserMap alloc] initWithUser:_toUser ridding:_ridding isMyFeedHome:_isMyFeedHome];
     [self.navigationController pushViewController:map animated:YES];
-  }
+  
 }
 
 - (void)avatorClick:(PublicDetailHeaderView *)view {

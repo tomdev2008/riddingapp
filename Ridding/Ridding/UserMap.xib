@@ -60,7 +60,7 @@
 						<string key="NSFrame">{{0, 44}, {320, 365}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="631115415"/>
+						<reference key="NSNextKeyView"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="732322722">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -340,14 +340,11 @@
 								<reference key="IBUIHighlightedTitleColor" ref="905884339"/>
 								<reference key="IBUINormalTitleColor" ref="905884339"/>
 								<reference key="IBUINormalTitleShadowColor" ref="534048832"/>
-								<object class="NSCustomResource" key="IBUIHighlightedImage">
+								<object class="NSCustomResource" key="IBUIHighlightedImage" id="748686551">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">qqnr_map_tabbar_icon_single_hl.png</string>
 								</object>
-								<object class="NSCustomResource" key="IBUINormalImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">qqnr_map_tabbar_icon_single.png</string>
-								</object>
+								<reference key="IBUINormalImage" ref="748686551"/>
 								<reference key="IBUIFontDescription" ref="149859651"/>
 								<reference key="IBUIFont" ref="414570596"/>
 							</object>
@@ -462,6 +459,38 @@
 						<reference key="destination" ref="771659156"/>
 					</object>
 					<int key="connectionID">160</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">bottomToolBar</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="715240670"/>
+					</object>
+					<int key="connectionID">161</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">photoBtn</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="855888007"/>
+					</object>
+					<int key="connectionID">166</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">teamerBtn</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="266816432"/>
+					</object>
+					<int key="connectionID">167</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">mySelfBtn</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="916626322"/>
+					</object>
+					<int key="connectionID">168</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -731,7 +760,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<real value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<real value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -759,7 +788,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">160</int>
+			<int key="maxID">169</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -848,6 +877,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>bottomToolBar</string>
 							<string>btnBgView</string>
 							<string>mapView</string>
 							<string>mySelfBtn</string>
@@ -860,6 +890,7 @@
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIView</string>
 							<string>UIImageView</string>
 							<string>MKMapView</string>
 							<string>UIButton</string>
@@ -875,6 +906,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>bottomToolBar</string>
 							<string>btnBgView</string>
 							<string>mapView</string>
 							<string>mySelfBtn</string>
@@ -887,6 +919,10 @@
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">bottomToolBar</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">btnBgView</string>
 								<string key="candidateClassName">UIImageView</string>
@@ -953,7 +989,6 @@
 				<string>qqnr_map_searchbar_icon_location_hl.png</string>
 				<string>qqnr_map_tabbar_icon_member.png</string>
 				<string>qqnr_map_tabbar_icon_member_hl.png</string>
-				<string>qqnr_map_tabbar_icon_single.png</string>
 				<string>qqnr_map_tabbar_icon_single_hl.png</string>
 				<string>qqnr_map_tabbar_icon_takepic.png</string>
 				<string>qqnr_map_tabbar_iconbackground_hl.png</string>
@@ -971,7 +1006,6 @@
 				<string>{30, 30}</string>
 				<string>{30, 30}</string>
 				<string>{30, 30}</string>
-				<string>{34, 25}</string>
 				<string>{34, 25}</string>
 				<string>{34, 25}</string>
 				<string>{34, 25}</string>

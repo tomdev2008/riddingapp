@@ -15,8 +15,10 @@
 #import "UIImageView+WebCache.h"
 #import "MapUtil.h"
 #import "Utilities.h"
+#import "QiNiuUtils.h"
 #import "StartAnnotation.h"
 #import "EndAnnotation.h"
+#import "WeatherAnnotation.h"
 #import "UIImage+UIImage_Retina4.h"
 #import "InvitationViewController.h"
 #import "QQNRServerTaskQueue.h"
@@ -47,12 +49,13 @@
   [super didReceiveMemoryWarning];
 }
 
-- (id)initWithUser:(User *)toUser ridding:(Ridding *)ridding {
+- (id)initWithUser:(User *)toUser ridding:(Ridding *)ridding isMyFeedHome:(BOOL)isMyFeedHome{
 
   self = [super init];
   if (self) {
     _toUser = toUser;
     _ridding = ridding;
+    _isMyFeedHome=isMyFeedHome;
   }
   return self;
 }
@@ -66,7 +69,7 @@
   if ([StaticInfo getSinglton].user.userId == _toUser.userId) {
     _isMyRidding = TRUE;
   }
-  if (_isMyRidding) {
+  if (_isMyRidding&&_isMyFeedHome) {
     [self myLocationQuartz];
   }
   self.mapView.userInteractionEnabled=YES;
@@ -94,30 +97,39 @@
   distanceLabel.shadowColor = [UIColor getColor:@"4cd1c5"];
   distanceLabel.shadowOffset = CGSizeMake(0, 1.0);
   [self.barView addSubview:distanceLabel];
+  
+  if(_isMyFeedHome){
+    _teamerView=[[UIImageView alloc]initWithFrame:CGRectMake(250, 10, 25, 25)];
+    _teamerView.image=UIIMAGE_FROMPNG(@"qqnr_map_narbar_icon_onlinemember");
+    _teamerView.hidden=YES;
+    [self.barView addSubview:_teamerView];
+    
+    _teamerLabel =[[UILabel alloc]initWithFrame:CGRectMake(280, 8, 40, 25)];
+    _teamerLabel.hidden=YES;
+    _teamerLabel.textColor=[UIColor getColor:@"005c4e"];
+    _teamerLabel.backgroundColor=[UIColor clearColor];
+    _teamerLabel.font=[UIFont systemFontOfSize:18];
+    _teamerLabel.shadowColor = [UIColor getColor:@"4cd1c5"];
+    _teamerLabel.shadowOffset = CGSizeMake(0, 1.0);
+    [self.barView addSubview:_teamerLabel];
 
-  _teamerView=[[UIImageView alloc]initWithFrame:CGRectMake(250, 10, 25, 25)];
-  _teamerView.image=UIIMAGE_FROMPNG(@"qqnr_map_narbar_icon_onlinemember");
-  _teamerView.hidden=YES;
-  [self.barView addSubview:_teamerView];
-  
-  _teamerLabel =[[UILabel alloc]initWithFrame:CGRectMake(280, 8, 40, 25)];
-  _teamerLabel.hidden=YES;
-  _teamerLabel.textColor=[UIColor getColor:@"005c4e"];
-  _teamerLabel.backgroundColor=[UIColor clearColor];
-  _teamerLabel.font=[UIFont systemFontOfSize:18];
-  _teamerLabel.shadowColor = [UIColor getColor:@"4cd1c5"];
-  _teamerLabel.shadowOffset = CGSizeMake(0, 1.0);
-  [self.barView addSubview:_teamerLabel];
-  
-  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  if(![prefs boolForKey:kStaticInfo_First_myRidding]){
-    UIButton *imageView=[UIButton buttonWithType:UIButtonTypeCustom];
-    imageView.frame=CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    [imageView setImage:[UIImage retina4ImageNamed:@"qqnr_dl_first" type:@"png"] forState:UIControlStateNormal];
-    [imageView addTarget:self action:@selector(imageViewCilck:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:imageView];
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    if(![prefs boolForKey:kStaticInfo_First_myRidding]){
+      UIButton *imageView=[UIButton buttonWithType:UIButtonTypeCustom];
+      imageView.frame=CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+      [imageView setImage:[UIImage retina4ImageNamed:@"qqnr_dl_first" type:@"png"] forState:UIControlStateNormal];
+      [imageView addTarget:self action:@selector(imageViewCilck:) forControlEvents:UIControlEventTouchUpInside];
+      [self.view addSubview:imageView];
+    }
+
+  }else{
+    [_bottomToolBar removeFromSuperview];
+    [_rightView removeFromSuperview];
+    _mapView.frame=CGRectMake(_mapView.frame.origin.x, _mapView.frame.origin.y, _mapView.frame.size.width, SCREEN_HEIGHT-_mapView.frame.origin.y);
+    _route_view.frame=CGRectMake(_route_view.frame.origin.x, _route_view.frame.origin.y, _route_view.frame.size.width, SCREEN_HEIGHT-_route_view.frame.origin.y);
   }
-  _photoArray = [[NSMutableArray alloc] init];
+    
+   _photoArray = [[NSMutableArray alloc] init];
   [super viewDidLoad];
 }
 
@@ -130,18 +142,21 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 
-  [_sendMyLocationTimer fire];
+  if(_isMyFeedHome){
+    [_sendMyLocationTimer fire];
+  }
   [super viewDidAppear:animated];
   dispatch_async(dispatch_queue_create("download", NULL), ^{
     dispatch_async(dispatch_get_main_queue(), ^{
       [self download];
     });
   });
+  
 }
 
 - (void)download {
 
-  if (!_userInited && _isMyRidding) {
+  if (!_userInited && _isMyRidding&&_isMyFeedHome) {
     [SVProgressHUD showWithStatus:@"初始化数据中"];
     //异步去加载用户
     [self removeAllUserView];
@@ -152,15 +167,16 @@
   if (!_routesInited) {
     [SVProgressHUD showWithStatus:@"初始化数据中"];
     //异步去画地图
-#warning asdf
-    [self drawMyRoutes];
-    //[self drawRoutes];
+    [self drawRoutes];
   }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 
-  [_sendMyLocationTimer invalidate];
+  if(_isMyFeedHome){
+    [_sendMyLocationTimer invalidate];
+  }
+  
   [super viewWillDisappear:animated];
 }
 
@@ -272,24 +288,6 @@
   });
 }
 
-
-//画路线
-- (void)drawMyRoutes {
-  
-  dispatch_queue_t q;
-  q = dispatch_queue_create("drawRoutes", NULL);
-  dispatch_async(q, ^{
-    dispatch_async(dispatch_get_main_queue(), ^{
-      if (self) {
-        if([[[MyLocationManager getSingleton] locationArray]count]>0){
-          [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:[UIColor blackColor] routes:[[MyLocationManager getSingleton] locationArray] width:5.0];
-          [[MapUtil getSinglton] center_map:self.mapView routes:[[MyLocationManager getSingleton] locationArray]];
-        }
-         [SVProgressHUD dismiss];
-      }
-    });
-  });
-}
 
 
 
@@ -745,15 +743,14 @@
 //地图移动结束后的操作
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
 
-  [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:[UIColor blackColor] routes:[[MyLocationManager getSingleton] locationArray] width:5.0];
-#warning asdf
+  [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:[UIColor getColor:lineColor] routes:_routes width:5.0];
   self.route_view.hidden = NO;
   [self.route_view setNeedsDisplay];
 }
 
 //选中某个annotation时
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-  [self deselectAllAnnotations];
+
   //添加点击弹出图
   if ([view.annotation isKindOfClass:[BasicPhotoAnnotation class]]) {
     [self removeAllCalloutAnnotations];
@@ -814,6 +811,24 @@
     return customPinView;
   }
   
+  if ([annotation isKindOfClass:[WeatherAnnotation class]]){
+    
+    MKAnnotationView *customPinView = [[MKAnnotationView alloc]
+                                       initWithAnnotation:annotation reuseIdentifier:@"WeatherAnnotationIdentifier"];
+    
+    [customPinView setCanShowCallout:YES]; //很重要，运行点击弹出标签
+    customPinView.draggable = NO;
+    WeatherAnnotation *weatherAnnotation = (WeatherAnnotation *) annotation;
+    UIImageView *headImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    headImage.image=weatherAnnotation.headImage;
+    customPinView.leftCalloutAccessoryView = headImage; //设置最左边的头像
+    
+    customPinView.image = UIIMAGE_FROMPNG(@"qqnr_map_icon_member");
+    customPinView.opaque = YES;
+    return customPinView;
+
+  }
+  
   if ([annotation isKindOfClass:[BasicPhotoAnnotation class]]) {
     
     MKAnnotationView *pinView = (MKAnnotationView*)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"PhotoAnnotationIdentifier"];
@@ -867,9 +882,24 @@
 #pragma mark - Button Responser IBAction
 - (IBAction)weatherBtnClick:(id)sender{
   for(NSString *taps in _ridding.map.mapTaps){
-    NSDictionary *dic= [self.requestUtil weatherRequest:taps];
-    NSArray *dateArray=[dic objectForKey:keyWeather];
-    Weather *weather=[[Weather alloc]initWithJSONDic:[dateArray objectAtIndex:0]];
+    dispatch_queue_t q;
+    q = dispatch_queue_create("didFinishPickingMediaWithInfo", NULL);
+    dispatch_async(q, ^{
+      NSArray *splits = [taps componentsSeparatedByString:@","];
+      NSDictionary *dic= [self.requestUtil weatherRequest:taps];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        NSArray *dateArray=[dic objectForKey:keyWeather];
+        Weather *weather=[[Weather alloc]initWithJSONDic:[dateArray objectAtIndex:0]];
+        WeatherAnnotation *weatherAnnotation =[[WeatherAnnotation alloc]init];
+        NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:[weather urlFromUrl]]];
+        weatherAnnotation.headImage =[UIImage imageWithData:data];
+        weatherAnnotation.coordinate=CLLocationCoordinate2DMake([[splits objectAtIndex:0]doubleValue], [[splits objectAtIndex:1]doubleValue]);
+        weatherAnnotation.subtitle=[weather subTitle];
+        weatherAnnotation.title=[weather weatherDescStr];
+        [self.mapView addAnnotation:weatherAnnotation];
+        [self.mapView selectAnnotation:weatherAnnotation animated:YES];
+      });
+    });
   }
 }
 
@@ -953,6 +983,7 @@
   [self checkShowIOS5Tips];
   [MobClick event:@"2013022509"];
   [self doAnimate:sender];
+  [_photoBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_photo_hl") forState:UIControlStateNormal];
   [self removeAllAnnotations];
   _isShowTeamers = FALSE;
   _teamerLabel.hidden=YES;
@@ -975,7 +1006,9 @@
 
 - (IBAction)showMySelfAction:(id)sender{
   [MobClick event:@"2013022510"];
+
   [self doAnimate:sender];
+  [_mySelfBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_single_hl") forState:UIControlStateNormal];
   [self removeAllAnnotations];
   _teamerLabel.hidden=YES;
   _teamerView.hidden=YES;
@@ -987,6 +1020,7 @@
 - (IBAction)showTeamerAction:(id)sender{
   [MobClick event:@"2013022511"];
   [self doAnimate:sender];
+  [_teamerBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_member_hl") forState:UIControlStateNormal];
   [self removeAllAnnotations];
   //设置显示所有队友
   _isShowTeamers = TRUE;
@@ -996,7 +1030,9 @@
 
 
 - (void)doAnimate:(id)sender{
-  
+  [_mySelfBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_single") forState:UIControlStateNormal];
+  [_photoBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_photo") forState:UIControlStateNormal];
+  [_teamerBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_member") forState:UIControlStateNormal];
   [UIView animateWithDuration:0.3 animations:^{
     
     self.btnBgView.frame=((UIView*)sender).frame;
@@ -1021,20 +1057,21 @@
 
   UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
   [imagePicker setDelegate:self];
-  if (buttonIndex == 0) {
+  NSString *str = [actionSheet buttonTitleAtIndex:buttonIndex];
+  if ([str isEqualToString:@"从照片库选择"]) {
+    _isFromCamera = NO;
+    [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+  }else if([str isEqualToString:@"拍摄新照片"]){
     [MobClick event:@"2012111904"];
     _isFromCamera = YES;
     imagePicker.videoQuality = UIImagePickerControllerQualityTypeLow;
     [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-  } else if (buttonIndex == 1) {
-    _isFromCamera = NO;
-    [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-  } else {
+
+  }else{
     return;
   }
   [self presentModalViewController:imagePicker animated:YES];
   return;
-
 }
 
 - (void)actionSheetCancel:(UIActionSheet *)actionSheet {
@@ -1067,15 +1104,9 @@
       width = CGImageGetWidth([newImage CGImage]);
       height = CGImageGetHeight([newImage CGImage]);
     }
-    QQNRServerTask *task = [[QQNRServerTask alloc] init];
-    task.step = STEP_UPLOADPHOTO;
+   
     RiddingPicture *picture = [[RiddingPicture alloc] initWithRidding:(int) width height:(int) height ridding:_ridding];;
     [picture saveImageToLocal:newImage];
-
-    NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:picture, kFileClientServerUpload_RiddingPicture, nil];
-    task.paramDic = dic;
-    QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
-    [queue addTask:task withDependency:NO];
 
     dispatch_async(dispatch_get_main_queue(), ^{
       [picker dismissModalViewControllerAnimated:NO];

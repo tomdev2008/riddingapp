@@ -27,6 +27,7 @@ enum SHOWTYPE {
   BOOL _isShowTeamers;
   BOOL _isUserTapViewOut;
   BOOL _isAnimationing;
+  BOOL _isMyFeedHome;
 
   CGPoint beginPoint;
 
@@ -67,8 +68,10 @@ enum SHOWTYPE {
 
 @property (nonatomic, retain) IBOutlet UIImageView *btnBgView;
 
+@property (nonatomic, retain) IBOutlet UIView *bottomToolBar;
 
-- (id)initWithUser:(User *)toUser ridding:(Ridding *)ridding;
+
+- (id)initWithUser:(User *)toUser ridding:(Ridding *)ridding isMyFeedHome:(BOOL)isMyFeedHome;
 
 //Button响应方法
 //-(IBAction)showLocationButtonClicked:(id)sender;

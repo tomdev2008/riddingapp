@@ -21,13 +21,11 @@
     UIImagePickerControllerDelegate, UINavigationControllerDelegate,GADBannerViewDelegate> {
   long long _endCreateTime;
   NSMutableArray *_dataSource;
-  // TimeScroller *_timeScroller;
   UP_EGORefreshTableHeaderView *_ego;
   User *_toUser;
   QQNRFeedHeaderView *_FHV;
   QQNRFeedTableCell *_selectedCell;
   UIImageView *_backgroundImageView;
-  BOOL _isShowingSheet;
   BOOL _isTheEnd;
   BOOL _isLoading;
   BOOL _isLoadOld;

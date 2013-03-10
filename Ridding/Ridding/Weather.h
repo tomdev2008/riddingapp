@@ -12,9 +12,10 @@
 
 @property (nonatomic) int tempMaxC;
 @property (nonatomic) int tempMinC;
-@property (nonatomic) NSMutableArray *weatherDesc;
+@property (nonatomic) NSMutableArray *weatherIconUrls;
 @property (nonatomic) int windspeedKmph;
 @property (nonatomic,copy) NSString *winddirection;
+@property (nonatomic,copy) NSString *url;
 
 
 - (NSString*)weatherDescStr;
@@ -22,4 +23,8 @@
 - (NSString*) windspeedKmphStr;
 
 - (NSString*)winddirectionStr;
+
+- (NSString*)urlFromUrl;
+
+- (NSString*)subTitle;
 @end

@@ -263,13 +263,17 @@
 }
 
 - (NSArray *)getUploadedPhoto:(long long)riddingId limit:(int)limit lastUpdateTime:(long long)lastUpdateTime {
-
-  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/uploaded/?limit=%d&lastupdatetime=%lld", QIQUNARHOME, riddingId, limit, lastUpdateTime]];
+  
+  NSURL *url ;
+  if(self.staticInfo.user.userId>0){
+      url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/uploaded/?limit=%d&lastupdatetime=%lld&userId=%lld", QIQUNARHOME, riddingId, limit, lastUpdateTime,self.staticInfo.user.userId]];
+  }else{
+      url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/uploaded/?limit=%d&lastupdatetime=%lld", QIQUNARHOME, riddingId, limit, lastUpdateTime]];
+  }
   ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
   NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
-  NSLog(@"%@",responseDic);
   return [responseDic objectForKey:@"data"];
 }
 
@@ -292,7 +296,7 @@
   [asiRequest appendPostData:data];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
-  NSLog(@"%@ %@",apiResponse,dic);
+
   NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
   if ([[responseDic objectForKey:@"code"] intValue] == 1) {
     return TRUE;
@@ -430,6 +434,19 @@
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
   return [[apiResponse JSONValue] objectForKey:@"data"];
+
+}
+
+- (NSArray*)getRiddingNearBy:(double)latitude longitude:(double)longitude limit:(int)limit offset:(int)offset{
+  
+  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/user/%lld/nearBy/ridding/?latitude=%f&longitude=%f&limit=%d&offset=%d&type=%d", QIQUNARHOME, self.staticInfo.user.userId,latitude,longitude,limit,offset,1]];
+  
+  ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest startSynchronous];
+  NSString *apiResponse = [asiRequest responseString];
+  NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
+
+  return [responseDic objectForKey:@"data"];
 
 }
 
