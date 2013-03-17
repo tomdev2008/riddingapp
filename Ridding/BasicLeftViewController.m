@@ -14,6 +14,7 @@
 #import "Utilities.h"
 #import "RiddingNearByViewController.h"
 #import "FeedBackViewController.h"
+#import "MapCreateChoiceVCTL.h"
 @interface BasicLeftViewController () {
 
 }
@@ -171,7 +172,7 @@
 
     if (![self isShowingViewController:[UserSettingViewController class]]) {
       [self moveRight];
-      UserSettingViewController *settingVCTL = [[UserSettingViewController alloc] init];
+      UserSettingViewController *settingVCTL = [[UserSettingViewController alloc] initWithLeftView:YES];
       [RiddingAppDelegate popAllNavgation];
       [delegate.navController pushViewController:settingVCTL animated:NO];
     }
@@ -230,6 +231,7 @@
     if (![self isShowingViewController:[MapCreateVCTL class]]) {
       self.shadowImageView.hidden = YES;
       [self moveRight];
+
       MapCreateVCTL *mapCreateVCTL = [[MapCreateVCTL alloc] init];
       [delegate.navController pushViewController:mapCreateVCTL animated:NO];
     }
@@ -240,6 +242,23 @@
     riddingViewController.delegate = self;
     [self presentModalViewController:riddingViewController animated:YES];
   }
+//接下去版本
+//  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+//  if ([delegate canLogin]) {
+//    if (![self isShowingViewController:[MapCreateChoiceVCTL class]]) {
+//      self.shadowImageView.hidden = YES;
+//      [self moveRight];
+//      
+//      MapCreateChoiceVCTL *mapCreateChoiceVCTL = [[MapCreateChoiceVCTL alloc] init];
+//      [delegate.navController pushViewController:mapCreateChoiceVCTL animated:NO];
+//    }
+//    [self restoreViewLocation];
+//  } else {
+//    [self moveRight];
+//    RiddingViewController *riddingViewController = [[RiddingViewController alloc] init];
+//    riddingViewController.delegate = self;
+//    [self presentModalViewController:riddingViewController animated:YES];
+//  }
 }
 
 - (void)showPublic {

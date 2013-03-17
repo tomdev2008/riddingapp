@@ -54,8 +54,11 @@
   _locationViews = [[NSMutableArray alloc] init];
   _ridding = [[Ridding alloc] init];
 
+  self.hasLeftView = true;
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list_hl") forState:UIControlStateHighlighted];
+  
+ 
   [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_dl_navbar_icon_create_disable") forState:UIControlStateNormal];
   [self.barView.rightButton setImage:UIIMAGE_FROMPNG(@"qqnr_dl_navbar_icon_create_disable") forState:UIControlStateHighlighted];
   [self.barView.rightButton setEnabled:NO];
@@ -65,7 +68,7 @@
   self.positionsView.image=[UIIMAGE_FROMPNG(@"qqnr_pd_comment_tabbar_bg") stretchableImageWithLeftCapWidth:1 topCapHeight:0];
 
   _isUpdate=FALSE;
-  self.hasLeftView = TRUE;
+
  
   if(![prefs boolForKey:kStaticInfo_First_mapCreate]){
     UIButton *imageView=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -116,7 +119,9 @@
 }
 
 - (void)leftBtnClicked:(id)sender{
+  
   [self.searchField resignFirstResponder];
+  
   [super leftBtnClicked:sender];
 }
 
@@ -128,7 +133,7 @@
     self.barView.rightButton.enabled = YES;
     return;
   }
-  MapCreateDescVCTL *descVCTL = [[MapCreateDescVCTL alloc] initWithNibName:@"MapCreateDescVCTL" bundle:nil ridding:_ridding];
+  MapCreateDescVCTL *descVCTL = [[MapCreateDescVCTL alloc] initWithNibName:@"MapCreateDescVCTL" bundle:nil ridding:_ridding isShortPath:NO];
   [self.navigationController pushViewController:descVCTL animated:YES];
   self.barView.rightButton.enabled = YES;
   self.didAppearOnce=NO;
@@ -565,6 +570,7 @@
       [locationArray addObject:[NSString stringWithFormat:@"%f,%f", view.latitude, view.longtitude]];
     }
   }
+  _ridding.riddingType=RiddingType_FarAway;
   _ridding.map.midLocations = nameArray;
   _ridding.map.beginLocation = ((LocationView *) [_locationViews objectAtIndex:0]).totalLocation;
   _ridding.map.endLocation = ((LocationView *) [_locationViews lastObject]).totalLocation;

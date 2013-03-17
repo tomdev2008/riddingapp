@@ -11,6 +11,7 @@
 #import "TutorialViewController.h"
 #import "SVProgressHUD.h"
 #import "Utilities.h"
+#import "RiddingPictureDao.h"
 #import "QQNRServerTaskQueue.h"
 #import "PublicDetailViewController.h"
 #import "QiNiuUtils.h"
@@ -122,28 +123,43 @@
     if ([[ResponseCodeCheck getSinglton] isWifi]) {
       NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
       
-      if (_isMyFeedHome &&[StaticInfo getSinglton].user.nowRiddingCount >= 3 && ![prefs boolForKey:@"recomComment"]) {
+      if (_isMyFeedHome &&[StaticInfo getSinglton].user.nowRiddingCount >= 2 && ![prefs boolForKey:@"recomComment"]) {
         UIAlertView *alert = nil;
         if ([StaticInfo getSinglton].user.nowRiddingCount >= 10) {
-          alert = [[UIAlertView alloc] initWithTitle:@"喜欢这款骑行应用吗?"
-                                             message:@"你已经是老玩家咯,希望得到您的好评"
-                                            delegate:self cancelButtonTitle:@"我再玩玩看"
-                                   otherButtonTitles:@"这就去", nil];
+          alert = [[UIAlertView alloc] initWithTitle:@"我们需要你"
+                                             message:QIQUNARGood2
+                                            delegate:self cancelButtonTitle:@"无情的拒绝"
+                                   otherButtonTitles:@"嗯!", nil];
 
         } else {
-          alert = [[UIAlertView alloc] initWithTitle:@"喜欢这款骑行应用吗?"
-                                             message:@"玩了这么久，觉得这款应用如何?"
-                                            delegate:self cancelButtonTitle:@"我再玩玩看"
-                                   otherButtonTitles:@"还不错噢", nil];
+          alert = [[UIAlertView alloc] initWithTitle:@"我们需要你"
+                                             message:QIQUNARGood1
+                                            delegate:self cancelButtonTitle:@"无情的拒绝"
+                                   otherButtonTitles:@"嗯!", nil];
         }
         [alert show];
         [prefs setBool:YES forKey:@"recomComment"];
         [prefs synchronize];
+      }else{
+        [self checkUploadPhoto];
       }
     }
     if([StaticInfo getSinglton].user.nowRiddingCount==0){
       [self.lineView removeFromSuperview];
     }
+    
+  }
+}
+
+
+- (void)checkUploadPhoto{
+  int count=[RiddingPictureDao getRiddingPictureCount];
+  if(count>0){
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"图片上传"
+                                       message:[NSString stringWithFormat:@"您还有%d张相片没有上传",count]
+                                      delegate:self cancelButtonTitle:@"暂时不上传"
+                             otherButtonTitles:@"现在上传", nil];
+    [alert show];
   }
 }
 
@@ -209,10 +225,12 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 
-  if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"还不错噢"]||[[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"这就去"]) {
+  if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"嗯!"]) {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
     [MobClick event:@"2013022506"];
-  } 
+  } else if([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"现在上传"]){
+    [RiddingPicture uploadRiddingPictureFromLocal];
+  }
 }
 
 
@@ -549,7 +567,7 @@
 - (void)finishCreate:(MapCreateVCTL *)controller ridding:(Ridding *)ridding {
 
   [controller dismissModalViewControllerAnimated:NO];
-  MapCreateDescVCTL *descVCTL = [[MapCreateDescVCTL alloc] initWithNibName:@"MapCreateDescVCTL" bundle:nil ridding:ridding];
+  MapCreateDescVCTL *descVCTL = [[MapCreateDescVCTL alloc] initWithNibName:@"MapCreateDescVCTL" bundle:nil ridding:ridding isShortPath:NO];
 
   [self presentModalViewController:descVCTL animated:YES];
 }

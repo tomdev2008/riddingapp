@@ -7,8 +7,8 @@
 //
 
 #import "QQNRServerTask.h"
-#import "BWStatusBarOverlay.h"
-
+#import "RiddingPictureDao.h"
+#import "FDStatusBarNotifierView.h"
 @implementation QQNRServerTask
 
 - (void)taskMain {
@@ -31,7 +31,9 @@
 
 - (void)updateUIWhenTaskBegin {
 
-  [BWStatusBarOverlay showLoadingWithMessage:@"上传图片开始" animated:YES];
+  FDStatusBarNotifierView *barView=[[FDStatusBarNotifierView alloc]initWithMessage:@"照片上传中。"];
+   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+  [barView showInWindow:delegate.window];
 
 }
 
@@ -57,7 +59,10 @@
   if (self.taskDelegate) {
     [self.taskDelegate serverTask:self errorWithServerJSON:nil];
   }
-  [BWStatusBarOverlay dismissAnimated:YES];
+  FDStatusBarNotifierView *barView=[[FDStatusBarNotifierView alloc]initWithMessage:@"上传失败"];
+  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+  barView.timeOnScreen=1.0;
+  [barView showInWindow:delegate.window];
 }
 
 - (void)fileClientServerUploadOneFileSuccess:(NSDictionary *)info {
@@ -78,6 +83,10 @@
       _dataProcessBlock(info);
     }
     if (succ) {
+      if(riddingPicture.dbId>0){
+        
+        [RiddingPictureDao deleteRiddingPicture:riddingPicture.dbId];
+      }
       [[NSNotificationCenter defaultCenter] postNotificationName:kSuccUploadPictureNotification object:self];
     }
   }
@@ -100,8 +109,10 @@
 
 - (void)updateStatusBarWithUploadPhotoStatus {
 
- 
-  [BWStatusBarOverlay dismissAnimated:YES];
+  FDStatusBarNotifierView *barView=[[FDStatusBarNotifierView alloc]initWithMessage:@"上传成功"];
+  RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
+  barView.timeOnScreen=1.0;
+  [barView showInWindow:delegate.window];
   return;
 }
 

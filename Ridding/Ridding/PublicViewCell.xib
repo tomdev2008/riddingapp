@@ -206,6 +206,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBUISelectionStyle">0</int>
 				<reference key="IBUIContentView" ref="195909891"/>
+				<string key="IBUIReuseIdentifier">PublicViewCellIdentifier</string>
 				<real value="180" key="IBUIRowHeight"/>
 			</object>
 		</array>

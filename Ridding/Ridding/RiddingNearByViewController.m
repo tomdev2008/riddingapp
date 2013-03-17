@@ -165,11 +165,7 @@
     QQNRFeedTableCell *cell = (QQNRFeedTableCell *)uiTableViewCell;
     cell.backgroundColor = [UIColor clearColor];
     cell.delegate = self;
-    cell.userInteractionEnabled = YES;
     cell.index = indexPath.row;
-    UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOnCell:)];
-    [cell addGestureRecognizer:longPressRecognizer];
-    
     Ridding *ridding = [_dataSource objectAtIndex:indexPath.row];
     [cell initContentView:ridding];
     return cell;
@@ -335,6 +331,9 @@
   });
 }
 
+- (void)statusTap:(QQNRFeedTableCell *)cell{
+  
+}
 
 
 @end

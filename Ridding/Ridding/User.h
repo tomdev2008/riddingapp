@@ -24,7 +24,7 @@ typedef enum _SOURCETYPE {
 @property (nonatomic, retain) UIImage *avatorImage;
 @property (nonatomic, retain) NSString *accessToken;
 @property (nonatomic, retain) UserAnnotation *annotation;
-@property (nonatomic, retain) NSString *name;
+@property (nonatomic, copy) NSString *name;
 @property (nonatomic) long long userId;
 @property (nonatomic, retain) NSString *bavatorUrl;
 @property (nonatomic, retain) NSString *savatorUrl;
@@ -42,6 +42,8 @@ typedef enum _SOURCETYPE {
 @property (nonatomic) double longtitude;
 @property (nonatomic, copy) NSString *backGroundUrl;
 @property (nonatomic, copy) NSString *graySAvatorUrl;
+@property (nonatomic, copy) NSString *taobaoCode;
+
 
 //选好友的时候用到
 @property (nonatomic) BOOL isSelected;

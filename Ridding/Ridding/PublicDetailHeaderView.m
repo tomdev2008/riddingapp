@@ -10,6 +10,7 @@
 #import "UIImageView+WebCache.h"
 #import "UIColor+XMin.h"
 #import "MapUtil.h"
+#import "Utilities.h"
 #import "RiddingLocationDao.h"
 #import "UIButton+WebCache.h"
 
@@ -21,6 +22,8 @@
 
   self = [super initWithFrame:frame];
   if (self) {
+    
+    CGFloat height=0;
     _ridding = ridding;
     _isMyHome = isMyHome;
     self.backgroundColor = [UIColor clearColor];
@@ -83,12 +86,10 @@
     UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(mapViewTap:)];
     [_route_view addGestureRecognizer:gesture];
     
-    //if (_isMyHome) {
-      _goBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-      [_goBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_showMap") forState:UIControlStateNormal];
-      _goBtn.frame=CGRectMake(132, 127, 56, 56);
-      [_goBtn addTarget:self action:@selector(mapViewTap:) forControlEvents:UIControlEventTouchUpInside];
-    //}
+    _goBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    [_goBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_showMap") forState:UIControlStateNormal];
+    _goBtn.frame=CGRectMake(132, 127, 56, 56);
+    [_goBtn addTarget:self action:@selector(mapViewTap:) forControlEvents:UIControlEventTouchUpInside];
     
     [_mapView setShowsUserLocation:NO];
     _mapView.delegate = self;
@@ -106,6 +107,8 @@
     mapBottomView.image=UIIMAGE_FROMPNG(@"qqnr_pd_map_bg");
     [self addSubview:mapBottomView];
 
+    height = mapBottomView.frame.origin.y+mapBottomView.frame.size.height;
+    
     if(_ridding.aPublic.adContentType==2){
       _adImageView=[[UIImageView alloc]initWithFrame:CGRectMake(_route_view.frame.origin.x, mapBottomView.frame.origin.y+mapBottomView.frame.size.height+10, 290, 50)];
       NSURL *url=[NSURL URLWithString:_ridding.aPublic.linkImageUrl];
@@ -114,6 +117,8 @@
       _adImageView.userInteractionEnabled=YES;
       UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(linkTap:)];
       [_adImageView addGestureRecognizer:gesture];
+      
+      height = _adImageView.frame.origin.y+_adImageView.frame.size.height;
     }
     
     if(_ridding.aPublic.adContentType==1){
@@ -130,9 +135,10 @@
       UITapGestureRecognizer *gesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(linkTap:)];
       [_adLabel addGestureRecognizer:gesture];
       [self addSubview:_adLabel];
+      
+      height = _adLabel.frame.origin.y+_adLabel.frame.size.height;
     }
     
-
     
   }
   return self;

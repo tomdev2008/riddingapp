@@ -40,13 +40,16 @@
     self.commentCount = [[jsonDic objectForKey:@"commentcount"] intValue];
     self.useCount = [[jsonDic objectForKey:@"usecount"] intValue];
     self.careCount = [[jsonDic objectForKey:@"carecount"] intValue];
-    self.isSyncSina = [[jsonDic objectForKey:@"issyncsina"] intValue];
 
     self.nowUserLiked = [[jsonDic objectForKey:@"nowuserliked"] boolValue];
     self.nowUserCared = [[jsonDic objectForKey:@"nowusercared"] boolValue];
     self.nowUserUsed = [[jsonDic objectForKey:@"nowuserused"] boolValue];
     
     self.aPublic=[[Public alloc]initWithJSONDic:[jsonDic objectForKey:keyPublic]];
+    
+    self.riddingType=[[jsonDic objectForKey:@"riddingtype"] intValue];
+    
+    self.isGps =[[jsonDic objectForKey:@"isgps"]intValue];
     
     NSArray *array = [jsonDic objectForKey:@"riddingpictures"];
     
@@ -79,10 +82,5 @@
     return TRUE;
   }
   return FALSE;
-}
-
-- (BOOL)syncSina {
-
-  return _isSyncSina > 0;
 }
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "UserSettingCell.h"
-
+#import "UIColor+XMin.h"
 @implementation UserSettingCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -27,8 +27,8 @@
 }
 
 - (void)awakeFromNib{
-  self.separatorLine.image=[UIIMAGE_FROMPNG(@"qqnr_pd_comment_line") stretchableImageWithLeftCapWidth:17 topCapHeight:0];
   
+  self.separatorLine.image=[UIIMAGE_FROMPNG(@"qqnr_pd_comment_line") stretchableImageWithLeftCapWidth:17 topCapHeight:0];
   [super awakeFromNib];
 }
 

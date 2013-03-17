@@ -7,22 +7,24 @@
 //
 
 #import "UserSettingViewController.h"
+#import "PhotoSyncViewController.h"
 #import "UMFeedback.h"
 #import "SinaApiRequestUtil.h"
 #import "UserSettingCell.h"
+#import "VipSettingViewController.h"
+#import "UIColor+XMin.h"
 #import "Utilities.h"
 #import "UIImage+UIImage_Retina4.h"
 #import "UserHelpViewController.h"
 #import "FeedBackViewController.h"
 @implementation UserSettingViewController
-@synthesize uiTableView = _uiTableView;
 @synthesize staticInfo;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-
-  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-  if (self) {
+- (id)initWithLeftView:(BOOL)hasLeftView{
+  self=[super init];
+  if(self){
     staticInfo = [StaticInfo getSinglton];
+    self.hasLeftView=hasLeftView;
   }
   return self;
 }
@@ -30,25 +32,23 @@
 - (void)viewDidLoad {
 
   self.canMoveLeft=YES;
-  self.hasLeftView = TRUE;
-
-
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
-  [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list_hl") forState:UIControlStateHighlighted];
+  [super viewDidLoad];
+  if(self.hasLeftView){
+    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list") forState:UIControlStateNormal];
+    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_list_hl") forState:UIControlStateHighlighted];
+  }else{
+    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
+    [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
+  }
+ 
   [self.barView.leftButton setHidden:NO];
   
   [self.barView.titleLabel setText:@"设置"];
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   self.uiTableView.backgroundColor=[UIColor clearColor];
+  self.uiTableView.backgroundView.alpha=0;
+  self.uiTableView.separatorColor=[UIColor getColor:@"838788"];
   
-  GADSearchBannerView *bannerView = [[GADSearchBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(GAD_SIZE_320x50) origin:CGPointMake(0, SCREEN_HEIGHT- 50)];
-  bannerView.adUnitID = MY_BANNER_UNIT_ID;
-  bannerView.rootViewController = self;
-  [self.view addSubview:bannerView];
-  GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
-  [adRequest setQuery:@"sport"];
-  [bannerView loadRequest:[adRequest request]];
-  [super viewDidLoad];
 
 }
 
@@ -75,72 +75,152 @@
 }
 #pragma mark -
 #pragma mark UITableView data source and delegate methods
-//每个section显示的标题
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+  
+  UIView* myView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 60)];
+  myView.backgroundColor = [UIColor clearColor];
+  UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 90, 22)];
+  titleLabel.textColor=[UIColor getColor:@"A9A9A9"];
+  titleLabel.font=[UIFont boldSystemFontOfSize:17];
+  titleLabel.backgroundColor = [UIColor clearColor];
+  if(section==0){
+    titleLabel.text= @"功能";
+  }else if(section==1){
+    titleLabel.text= @"关于骑行者";
+  }else if(section==2){
+    titleLabel.text= @"推荐";
+  }
+  [myView addSubview:titleLabel];
+  return myView;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+  return 30;
+}
 
-  return @"";
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+  return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-  return 6;
+  if(section==0){
+    return 2;
+  }else if(section==1){
+    return 4;
+  }else if(section==2){
+    return 1;
+  }else{
+    return 1;
+  }
+  return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  
+  if(indexPath.section<=2){
+    static NSString *SimpleTableIdentifier = @"UserSettingIdentifier";
+    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:SimpleTableIdentifier];
+    if (cell == nil) {
+      cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                    reuseIdentifier: SimpleTableIdentifier];
+    }
+    cell.backgroundColor=[UIColor getColor:@"D1D1D1"];
+    cell.textLabel.textColor=[UIColor getColor:@"363636"];
+    cell.textLabel.font=[UIFont systemFontOfSize:16];
+    UIImageView *imageView=[[UIImageView alloc]init];
+    imageView.image=UIIMAGE_FROMPNG(@"qqnr_system_icon");
+    cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+    [cell.accessoryView addSubview:imageView];
+    
+    if(indexPath.section==0){
+      
+      if(indexPath.row==0){
+        cell.textLabel.text=@"拍照设置";
+      }else{
+        cell.textLabel.text=@"高级功能";
+      }
+    }else if(indexPath.section==1){
+      if(indexPath.row==0){
+        cell.textLabel.text=@"新用户指南";
+        
+      }else if(indexPath.row==1){
+        cell.textLabel.text=@"评价骑行者";
+        
+      }else if(indexPath.row==2){
+        cell.textLabel.text=@"骑行者反馈";
+      }else{
+        cell.textLabel.text=@"查看新版本";
+      }
+    }else if(indexPath.section==2){
+      
+      if(indexPath.row==0){
+        cell.textLabel.text=@"推荐给骑友";
+      }
+    }
+      return cell;
+  }else{
+    
+    if(indexPath.row==0){
+      UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                    reuseIdentifier: @"btnIdentifier"];
+      cell.selectionStyle=UITableViewCellSelectionStyleNone;
+      cell.backgroundColor=[UIColor clearColor];
+      cell.backgroundView=[[UIView alloc]init];
+      UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
+      [cell.contentView addSubview:btn];
+      
+      btn.frame=CGRectMake(20, 0, 258, 34);
+      [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+      if ([[RiddingAppDelegate shareDelegate] canLogin]) {
+        [btn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_system_logout") forState:UIControlStateNormal];
+        [btn setTitle:@"退出" forState:UIControlStateNormal];
 
-  if (indexPath.row<5) {
-    UserSettingCell *cell = (UserSettingCell *) [Utilities cellByClassName:@"UserSettingCell" inNib:@"UserSettingCell" forTableView:self.uiTableView];
-    if ([indexPath row] == 0) {
-      [cell initView:@"评价骑行者"];
-    } else if ([indexPath row] == 1) {
-      [cell initView:@"骑行者反馈"];
-    } else if ([indexPath row] == 2) {
-      [cell initView:@"查看新版本"];
-    } else if ([indexPath row] == 3) {
-      [cell initView:@"新用户指南"];
-    } else if ([indexPath row] == 4) {
-      [cell initView:@"推荐给骑友"];
+      } else {
+        [btn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_system_login") forState:UIControlStateNormal];
+        [btn setTitle:@"登录" forState:UIControlStateNormal];
+      }
+      return cell;
     }
-    return cell;
-  } else if (indexPath.row == 5) {
-    UserLoginCell *loginCell = (UserLoginCell *) [Utilities cellByClassName:@"UserLoginCell" inNib:@"UserLoginCell" forTableView:self.uiTableView];
-    loginCell.delegate=self;
-    if ([[RiddingAppDelegate shareDelegate] canLogin]) {
-      
-      [loginCell initView:FALSE];
-    } else {
-      
-      [loginCell initView:TRUE];
-    }
-    return loginCell;
   }
   return nil;
-  
 }
 
 - (void)      tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  if (indexPath.row<5) {
-    if ([indexPath row] == 0) {
-      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStoreComment]];
-
-    } else if ([indexPath row] == 1) {
+  if(indexPath.section==0){
+    if(indexPath.row==0){
       
-      FeedBackViewController *feedBackViewController=[[FeedBackViewController alloc]init:FALSE];
-      [self.navigationController pushViewController:feedBackViewController animated:YES];
-
-    } else if ([indexPath row] == 2) {
-      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
-
-    } else if ([indexPath row] == 3){
+      PhotoSyncViewController *photoSync=[[PhotoSyncViewController alloc]init];
+      [self.navigationController pushViewController:photoSync animated:YES];
+    }else{
+      [self updateToVIP];
+    }
+  }else if(indexPath.section==1){
+    if(indexPath.row==0){
       
       UserHelpViewController *helpController=[[UserHelpViewController alloc]init];
       [self.navigationController pushViewController:helpController animated:YES];
-    } else if ([indexPath row] == 4){
       
+    }else if(indexPath.row==1){
+     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStoreComment]];
+      
+    }else if(indexPath.row==2){
+      FeedBackViewController *feedBackViewController=[[FeedBackViewController alloc]init:FALSE];
+      [self.navigationController pushViewController:feedBackViewController animated:YES];
+    }else{
+       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
+    }
+  }else if(indexPath.section==2){
+    
+    if(indexPath.row==0){
       [self showShare];
-      //[self updateToVIP];
+    }
+  }else{
+    
+    if(indexPath.row==0){
+     
+      
     }
   }
   [tableView deselectRowAtIndexPath:indexPath animated:NO];
@@ -186,14 +266,15 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (void)updateToVIP {
-
-  NSURL *url = [NSURL URLWithString:online_taobao_link_weather];
-  if ([[UIApplication sharedApplication] canOpenURL:url]) {
-    [[UIApplication sharedApplication] openURL:url];
+  
+  
+  if ([[RiddingAppDelegate shareDelegate] canLogin]) {
+    VipSettingViewController *vipSetting=[[VipSettingViewController alloc]init];
+    [self.navigationController pushViewController:vipSetting animated:YES];
   } else {
-    url = [NSURL URLWithString:online_taobao_url_weather];
-    [[UIApplication sharedApplication] openURL:url];
+    [self presentLoginView];
   }
+
 }
 
 #pragma mark - RiddingViewController delegate
@@ -217,15 +298,13 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 
-- (void)btnClick:(UserLoginCell*)cell{
+- (void)btnClick:(id)sender{
   
   if ([[RiddingAppDelegate shareDelegate] canLogin]) {
     [self quitButtonClick];
   } else {
     [self presentLoginView];
   }
-
-  
 }
 
 - (void)showShare {

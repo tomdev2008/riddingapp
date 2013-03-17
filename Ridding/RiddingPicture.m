@@ -6,6 +6,9 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
+#import "RiddingPictureDao.h"
+#import "QQNRServerTask.h"
+#import "QQNRServerTaskQueue.h"
 @implementation RiddingPicture
 
 - (id)init {
@@ -56,4 +59,19 @@
   return self;
 }
 
+
++ (void)uploadRiddingPictureFromLocal{
+  
+  NSArray *array=[RiddingPictureDao getRiddingPictures];
+  if(array!=nil&&[array count]>0){
+    for(RiddingPicture *riddingPicture in array){
+      QQNRServerTask *task = [[QQNRServerTask alloc] init];
+      task.step = STEP_UPLOADPHOTO;
+      NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:riddingPicture, kFileClientServerUpload_RiddingPicture, nil];
+      task.paramDic = dic;
+      QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
+      [queue addTask:task withDependency:NO];
+    }
+  }
+}
 @end

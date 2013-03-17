@@ -17,11 +17,15 @@
 #define kStaticInfo_sourceType @"sourceType"
 #define kStaticInfo_backgroundUrl @"backgroundUrl"
 #define kStaticInfo_totalDistance @"totalDistance"
+#define kStaticInfo_taobaoCode    @"taobaoCode"
 #define kStaticInfo_StartApp  @"startApp"
 #define kStaticInfo_First_myRidding  @"First_myRidding"
 #define kStaticInfo_First_mapCreate  @"First_mapCreate"
 #define kStaticInfo_Ios5Tips         @"Ios5Tips"
 #define kStaticInfo_Ios5Tips_ShowPhoto         @"Ios5Tips_ShowPhoto"
+#define kStaticInfo_SaveInWifi       @"SaveInWifi"
+#define kStaticInfo_SaveInWifiTips       @"SaveInWifiTips"
+
 
 #define kStaticInfo_nickname @"nickname"
 #define kStaticInfo_riddingCount @"riddingcount"

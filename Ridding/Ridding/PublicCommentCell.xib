@@ -171,7 +171,7 @@
 								<string key="NSFrame">{{175, 9}, {82, 14}}</string>
 								<reference key="NSSuperview" ref="626335670"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="304149961"/>
+								<reference key="NSNextKeyView" ref="483831995"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="575927838"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -215,7 +215,7 @@
 								<string key="NSFrame">{{0, 78}, {320, 2}}</string>
 								<reference key="NSSuperview" ref="626335670"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="483831995"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -226,6 +226,7 @@
 								<string key="NSFrame">{{290, 30}, {20, 20}}</string>
 								<reference key="NSSuperview" ref="626335670"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="304149961"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -268,6 +269,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<int key="IBUISelectionStyle">0</int>
 				<reference key="IBUIContentView" ref="626335670"/>
+				<string key="IBUIReuseIdentifier">PublicCommentCellIdentifier</string>
 				<real value="80" key="IBUIRowHeight"/>
 			</object>
 		</array>

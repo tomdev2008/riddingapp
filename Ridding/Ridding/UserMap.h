@@ -14,6 +14,7 @@
 #import "StaticInfo.h"
 #import "Ridding.h"
 #import "UserView.h"
+#import "ShowListView.h"
 #import "AnnotationPhotoView.h"
 enum SHOWTYPE {
   SHOWTEAMER = 0,
@@ -21,7 +22,7 @@ enum SHOWTYPE {
   SHOWPHOTO = 2,
 };
 
-@interface UserMap : BasicViewController <CLLocationManagerDelegate, MKAnnotation, MKMapViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UserViewDelegate,AnnotationPhotoViewDelegate> {
+@interface UserMap : BasicViewController <CLLocationManagerDelegate, MKAnnotation, MKMapViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UserViewDelegate,AnnotationPhotoViewDelegate,ShowListViewDelegate> {
   StaticInfo *_staticInfo;
   
   BOOL _isShowTeamers;
@@ -51,6 +52,7 @@ enum SHOWTYPE {
   int _onlineUserCount;
   UILabel *_teamerLabel;
   UIImageView *_teamerView;
+  ShowListView *_showListView;
 }
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
@@ -63,7 +65,7 @@ enum SHOWTYPE {
 
 @property (nonatomic, retain) IBOutlet UIButton *takePhotoBtn;
 @property (nonatomic, retain) IBOutlet UIButton *mySelfBtn;
-@property (nonatomic, retain) IBOutlet UIButton *photoBtn;
+@property (nonatomic, retain) IBOutlet UIButton *moreBtn;
 @property (nonatomic, retain) IBOutlet UIButton *teamerBtn;
 
 @property (nonatomic, retain) IBOutlet UIImageView *btnBgView;

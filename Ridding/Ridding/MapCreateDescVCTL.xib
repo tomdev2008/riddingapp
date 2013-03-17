@@ -304,11 +304,10 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">拍摄照片同步发送微博</string>
+						<string key="IBUIText">是否只在wifi状态下上传照片</string>
 						<reference key="IBUITextColor" ref="36707549"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
-						<int key="IBUITextAlignment">2</int>
 						<reference key="IBUIFontDescription" ref="505273097"/>
 						<reference key="IBUIFont" ref="576705552"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>

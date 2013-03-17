@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "Ridding.h"
 #import <MapKit/MapKit.h>
-
 @class PublicDetailHeaderView;
 
 @protocol PublicDetailHeaderDelegate <NSObject>
@@ -30,6 +29,7 @@
   UILabel *_adLabel;
   UIImageView *_adImageView;
   UIButton *_goBtn;
+   
 }
 
 @property (nonatomic, assign) id <PublicDetailHeaderDelegate> delegate;

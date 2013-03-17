@@ -34,4 +34,7 @@
 @property (nonatomic) int likeCount;
 
 - (RiddingPicture *)initWithRidding:(int)width height:(int)height ridding:(Ridding *)ridding;
+
+
++ (void)uploadRiddingPictureFromLocal;
 @end

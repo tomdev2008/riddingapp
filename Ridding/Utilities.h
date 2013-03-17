@@ -22,6 +22,8 @@
 
 + (UITableViewCell *)cellByClassName:(NSString *)className inNib:(NSString *)nibName forTableView:(UITableView *)tableView;
 
++ (UIView *)viewByClassName:(NSString *)className inNib:(NSString *)nibName ;
+
 + (void)alertInstant:(NSString *)message isError:(BOOL)isError;
 
 + (NSString *)appVersion;

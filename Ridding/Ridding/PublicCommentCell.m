@@ -10,6 +10,7 @@
 #import "QiNiuUtils.h"
 #import "UIButton+WebCache.h"
 #import "UIColor+XMin.h"
+#import "UILabel+Addition.h"
 #define MPCommentCellDefaultSpace 10.0f
 
 @implementation PublicCommentCell
@@ -30,7 +31,7 @@
   
   _nameLabel.textColor = [UIColor getColor:ColorTextColor];
   _nameLabel.lineBreakMode = UILineBreakModeWordWrap;
-  
+  [_dateLabel alignTop];
   _dateLabel.textColor = [UIColor getColor:ColorTextColor];
 
   [_callBackBtn setImage:UIIMAGE_FROMPNG(@"qqnr_pd_comment_reply") forState:UIControlStateNormal];

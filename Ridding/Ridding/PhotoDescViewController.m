@@ -14,7 +14,7 @@
 #import "SinaApiRequestUtil.h"
 #import "NSString+Addition.h"
 #import "NSDate+Addition.h"
-
+#import "RiddingPictureDao.h"
 @interface PhotoDescViewController () {
   NSString *_riddingName;
 }
@@ -25,9 +25,8 @@
 @synthesize imageView = _imageView;
 @synthesize textView = _textView;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingPicture:(RiddingPicture *)riddingPicture isSyncSina:(BOOL)isSyncSina riddingName:(NSString *)riddingName {
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingPicture:(RiddingPicture *)riddingPicture riddingName:(NSString *)riddingName {
 
-  _syncSina = isSyncSina;
   _riddingPicture = riddingPicture;
   _riddingName = riddingName;
   return [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -103,36 +102,49 @@
 
 - (void)rightBtnClicked:(id)sender {
 
-  if([_textView.text isEqualToString:@"给照片加段描述吧 ^_^"]){
+  if([_textView.text isEqualToString:@"给照片加段描述吧 ^_^"]||[_textView.text isEqualToString:@""]){
     [SVProgressHUD showErrorWithStatus:@"没有描述噢~" duration:1.0];
     return;
   }
-  
-  QQNRServerTask *task = [[QQNRServerTask alloc] init];
-  task.step = STEP_UPLOADPHOTO;
-  
   NSDate *date = [self.timeLabel.text pd_yyyyMMddHHmmssDate];
   _riddingPicture.takePicDateL=(long long) [date timeIntervalSince1970] * 1000;
   _riddingPicture.pictureDescription=self.textView.text;
-  NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:_riddingPicture, kFileClientServerUpload_RiddingPicture, nil];
-  task.paramDic = dic;
   
-  __block NSString *weiboDesc = [NSString stringWithFormat:@"\"%@\" 我的骑行旅程:%@。同步更新中。。。 正在使用骑行者:%@  @%@", _riddingPicture.pictureDescription,_riddingName,QIQUNARHOME,riddingappsinaname];
-  __block BOOL isSyncSina = _syncSina;
-  [task setDataProcessBlock:(BlockProcessLastTaskData) ^(NSDictionary *dic) {
-    RiddingPicture *picture = [dic objectForKey:kFileClientServerUpload_RiddingPicture];
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  [prefs setBool:YES forKey:kStaticInfo_SaveInWifi];
+  [prefs synchronize];
+  if([prefs boolForKey:kStaticInfo_SaveInWifi]&&![[ResponseCodeCheck getSinglton] isWifi]){
     
-    if (isSyncSina) {
-      SinaApiRequestUtil *sinaRequest = [[SinaApiRequestUtil alloc] init];
-      [sinaRequest sendWeiBo:weiboDesc url:[NSString stringWithFormat:@"%@%@", imageHost, picture.fileKey] latitude:_riddingPicture.latitude longtitude:_riddingPicture.longtitude];
+    [RiddingPictureDao addRiddingPicture:_riddingPicture];
+    
+    if(![prefs boolForKey:kStaticInfo_SaveInWifiTips]){
+      UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"小提示" message:@"您当前处于非wifi状态下，照片已经保存到本地，在wifi状态下会继续为您上传" delegate:self cancelButtonTitle:@"好的,知道了" otherButtonTitles:@"不再提示",nil];
+      [alertView show];
     }
+
+  }else{
     
-  }];
+    QQNRServerTask *task = [[QQNRServerTask alloc] init];
+    task.step = STEP_UPLOADPHOTO;
+    
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:_riddingPicture, kFileClientServerUpload_RiddingPicture, nil];
+    task.paramDic = dic;
+    QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
+    [queue addTask:task withDependency:NO];
+  }
   
-  QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
-  [queue addTask:task withDependency:NO];
   [self dismissModalViewControllerAnimated:YES];
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  
+  if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"不再提示"]) {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setBool:YES forKey:kStaticInfo_SaveInWifiTips];
+    [prefs synchronize];
+  }
+}
+
 
 - (IBAction)otherClick:(id)sender {
 

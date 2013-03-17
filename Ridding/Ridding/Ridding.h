@@ -21,6 +21,11 @@ typedef enum _RIDDINGACTION {
   RIDDINGACTION_LIKEPICTURE = 4,
 } RIDDINGACTION;
 
+typedef enum _RiddingType {
+  RiddingType_FarAway = 0,
+  RiddingType_ShortAway = 10,
+} RiddingType;
+
 
 @interface Ridding : BasicObject {
 
@@ -28,6 +33,7 @@ typedef enum _RIDDINGACTION {
 
 @property (nonatomic) long long riddingId;
 @property (nonatomic) int riddingStatus;
+@property (nonatomic) RiddingType type;
 @property (nonatomic) int userCount;
 @property (nonatomic, copy) NSString *riddingName;
 @property (nonatomic, retain) User *leaderUser;
@@ -42,7 +48,7 @@ typedef enum _RIDDINGACTION {
 @property (nonatomic, retain) NSMutableArray *riddingPictures;
 @property (nonatomic) int isPublic;
 @property (nonatomic) int isRecom;
-@property (nonatomic) int isSyncSina;
+@property (nonatomic) int isGps;
 
 
 @property (nonatomic) int likeCount;
@@ -61,5 +67,5 @@ typedef enum _RIDDINGACTION {
 
 + (BOOL)isLeader:(int)userRole;
 
-- (BOOL)syncSina;
+
 @end

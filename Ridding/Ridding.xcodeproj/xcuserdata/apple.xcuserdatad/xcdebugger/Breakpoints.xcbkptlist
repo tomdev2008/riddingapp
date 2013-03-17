@@ -255,13 +255,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RiddingPictureDao.m"
-         timestampString = "376072312.511978"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "37"
-         endingLineNumber = "37"
-         landmarkName = "-addRiddingPicture:"
-         landmarkType = "5">
+         startingLineNumber = "90"
+         endingLineNumber = "90">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -1501,11 +1499,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Ridding/QQNRFeedViewController.m"
-         timestampString = "384597950.349766"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "240"
-         endingLineNumber = "240"
+         startingLineNumber = "258"
+         endingLineNumber = "258"
          landmarkName = "-addTableHeader"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1566,13 +1564,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RiddingPictureDao.m"
-         timestampString = "376116449.827995"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "93"
-         endingLineNumber = "93"
-         landmarkName = "-deleteRiddingPicture:userId:dbId:"
-         landmarkType = "5">
+         startingLineNumber = "146"
+         endingLineNumber = "146">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -1736,13 +1732,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RiddingPictureDao.m"
-         timestampString = "376116449.827995"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "107"
-         endingLineNumber = "107"
-         landmarkName = "-getNextDbId:userId:"
-         landmarkType = "5">
+         startingLineNumber = "160"
+         endingLineNumber = "160">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -1762,13 +1756,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RiddingPictureDao.m"
-         timestampString = "376116449.827995"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "101"
-         endingLineNumber = "101"
-         landmarkName = "-updateRiddingPictureText:dbId:"
-         landmarkType = "5">
+         startingLineNumber = "154"
+         endingLineNumber = "154">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -1788,13 +1780,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RiddingPictureDao.m"
-         timestampString = "376072312.511978"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "70"
-         endingLineNumber = "70"
-         landmarkName = "-getRiddingPicture:userId:"
-         landmarkType = "5">
+         startingLineNumber = "123"
+         endingLineNumber = "123">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -1864,37 +1854,22 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RiddingPictureDao.m"
-         timestampString = "376116449.827995"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "75"
-         endingLineNumber = "75"
-         landmarkName = "-getRiddingPicture:userId:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Ridding/PublicDetailViewController.m"
-         timestampString = "384588086.757109"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "166"
-         endingLineNumber = "166"
-         landmarkName = "@implementation PublicDetailViewController"
-         landmarkType = "3">
+         startingLineNumber = "128"
+         endingLineNumber = "128">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Ridding/UserMap.m"
-         timestampString = "384618966.00054"
+         timestampString = "385188708.377129"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1148"
-         endingLineNumber = "1148">
+         startingLineNumber = "1200"
+         endingLineNumber = "1200">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -1966,13 +1941,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RiddingPictureDao.m"
-         timestampString = "376072312.511978"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "48"
-         endingLineNumber = "48"
-         landmarkName = "-addRiddingPicture:"
-         landmarkType = "5">
+         startingLineNumber = "101"
+         endingLineNumber = "101">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -1992,39 +1965,33 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RiddingPictureDao.m"
-         timestampString = "376072312.511978"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "46"
-         endingLineNumber = "46"
-         landmarkName = "-addRiddingPicture:"
-         landmarkType = "5">
+         startingLineNumber = "99"
+         endingLineNumber = "99">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RiddingPictureDao.m"
-         timestampString = "376116449.827995"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "83"
-         endingLineNumber = "83"
-         landmarkName = "-getMaxRiddingPictureId:userId:"
-         landmarkType = "5">
+         startingLineNumber = "136"
+         endingLineNumber = "136">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RiddingPictureDao.m"
-         timestampString = "376116449.827995"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "82"
-         endingLineNumber = "82"
-         landmarkName = "-getMaxRiddingPictureId:userId:"
-         landmarkType = "5">
+         startingLineNumber = "135"
+         endingLineNumber = "135">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -2083,33 +2050,33 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Ridding/UserMap.m"
-         timestampString = "384618966.00054"
+         timestampString = "385188708.377129"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1181"
-         endingLineNumber = "1181">
+         startingLineNumber = "1233"
+         endingLineNumber = "1233">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Ridding/UserMap.m"
-         timestampString = "384618966.00054"
+         timestampString = "385188708.377129"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1140"
-         endingLineNumber = "1140">
+         startingLineNumber = "1192"
+         endingLineNumber = "1192">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "BasicLeftViewController.m"
-         timestampString = "384621492.923079"
+         timestampString = "384870409.883842"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "217"
-         endingLineNumber = "217"
+         startingLineNumber = "218"
+         endingLineNumber = "218"
          landmarkName = "-showUserFeed"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2118,11 +2085,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Ridding/RiddingAppDelegate.m"
-         timestampString = "384618661.545064"
+         timestampString = "385231400.11823"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "271"
-         endingLineNumber = "271">
+         startingLineNumber = "311"
+         endingLineNumber = "311">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -2219,58 +2186,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "RequestUtil.m"
-         timestampString = "377965972.752597"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "64"
-         endingLineNumber = "64"
-         landmarkName = "-getUserMaps:createTime:userId:isLarger:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Ridding/PublicDetailViewController.m"
-         timestampString = "384588086.757109"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "164"
-         endingLineNumber = "164"
-         landmarkName = "-didReceiveMemoryWarning"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Ridding/PublicDetailViewController.m"
-         timestampString = "384588086.757109"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "236"
-         endingLineNumber = "236"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "RequestUtil.m"
-         timestampString = "377965972.752597"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "60"
-         endingLineNumber = "60"
-         landmarkName = "@implementation RequestUtil"
-         landmarkType = "3">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "3part/EGO/EGORefreshTableHeaderView.m"
          timestampString = "376665209.163526"
          startingColumnNumber = "9223372036854775807"
@@ -2278,19 +2193,6 @@
          startingLineNumber = "214"
          endingLineNumber = "214"
          landmarkName = "-egoRefreshScrollViewDidEndDragging:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Ridding/ActivityInfo.m"
-         timestampString = "376749428.159213"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "26"
-         endingLineNumber = "26"
-         landmarkName = "-initWithJSONDic:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -2337,11 +2239,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Ridding/Ridding.m"
-         timestampString = "381914517.87007"
+         timestampString = "384969590.355581"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "75"
-         endingLineNumber = "75"
+         startingLineNumber = "78"
+         endingLineNumber = "78"
          landmarkName = "@implementation Ridding"
          landmarkType = "3">
       </FileBreakpoint>
@@ -2441,11 +2343,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Ridding/UserMap.m"
-         timestampString = "384618966.00054"
+         timestampString = "385188708.377129"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1136"
-         endingLineNumber = "1136">
+         startingLineNumber = "1188"
+         endingLineNumber = "1188">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -2569,11 +2471,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "BasicLeftViewController.m"
-         timestampString = "384621492.923079"
+         timestampString = "384870409.883842"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "212"
-         endingLineNumber = "212"
+         startingLineNumber = "213"
+         endingLineNumber = "213"
          landmarkName = "-showUserFeed"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2621,11 +2523,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Ridding/QQNRSourceLoginViewController.m"
-         timestampString = "383490465.103166"
+         timestampString = "385231034.973105"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "207"
-         endingLineNumber = "207"
+         startingLineNumber = "208"
+         endingLineNumber = "208"
          landmarkName = "-segmentedControlChangedValue:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2634,11 +2536,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "BasicLeftViewController.m"
-         timestampString = "384621492.923079"
+         timestampString = "384870409.883842"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "264"
-         endingLineNumber = "264"
+         startingLineNumber = "283"
+         endingLineNumber = "283"
          landmarkName = "-didClickLogin:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -2699,25 +2601,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Ridding/PublicDetailViewController.m"
-         timestampString = "381760465.271139"
+         timestampString = "385048259.8999"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "114"
-         endingLineNumber = "114"
+         startingLineNumber = "115"
+         endingLineNumber = "115"
          landmarkName = "-downLoadRiddingAction"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Ridding/PublicViewController.m"
-         timestampString = "383420886.851183"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "88"
-         endingLineNumber = "88"
-         landmarkName = "-download"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -2738,11 +2627,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Ridding/UserMap.m"
-         timestampString = "384618966.00054"
+         timestampString = "385188708.377129"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1171"
-         endingLineNumber = "1171">
+         startingLineNumber = "1223"
+         endingLineNumber = "1223">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -2755,19 +2644,6 @@
          startingLineNumber = "128"
          endingLineNumber = "128"
          landmarkName = "-displayImage:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Ridding/UserMap.m"
-         timestampString = "384618966.00054"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "470"
-         endingLineNumber = "470"
-         landmarkName = "-removeAllAnnotations"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -2788,7 +2664,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RequestUtil.m"
-         timestampString = "384606578.430284"
+         timestampString = "384969590.355581"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "399"
@@ -2827,7 +2703,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RequestUtil.m"
-         timestampString = "384606578.430284"
+         timestampString = "384969590.355581"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "401"
@@ -2853,7 +2729,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RequestUtil.m"
-         timestampString = "384606578.430284"
+         timestampString = "384969590.355581"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "409"
@@ -3087,11 +2963,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Ridding/QQNRFeedViewController.m"
-         timestampString = "384597950.349766"
+         timestampString = "384703763.881912"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "542"
-         endingLineNumber = "542"
+         startingLineNumber = "560"
+         endingLineNumber = "560"
          landmarkName = "-createRidding:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -3100,24 +2976,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "QQNRServerTask.m"
-         timestampString = "384587341.411625"
+         timestampString = "384969590.355581"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "104"
-         endingLineNumber = "104"
-         landmarkName = "-updateStatusBarWithUploadPhotoStatus"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "QQNRServerTask.m"
-         timestampString = "384587341.411625"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "42"
-         endingLineNumber = "42"
+         startingLineNumber = "44"
+         endingLineNumber = "44"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>

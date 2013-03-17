@@ -14,7 +14,6 @@
 @interface PhotoDescViewController : BasicViewController <QQNRDatePickerDelegate,UITextViewDelegate> {
   QQNRDatePicker *_datePicker;
   RiddingPicture *_riddingPicture;
-  BOOL _syncSina;
 }
 
 @property (nonatomic, retain) IBOutlet SWSnapshotStackView *imageView;
@@ -22,6 +21,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *locationLabel;
 @property (nonatomic, retain) IBOutlet UILabel *timeLabel;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingPicture:(RiddingPicture *)riddingPicture isSyncSina:(BOOL)isSyncSina riddingName:(NSString *)riddingName;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil riddingPicture:(RiddingPicture *)riddingPicture riddingName:(NSString *)riddingName;
 
 @end

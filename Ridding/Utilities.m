@@ -78,6 +78,18 @@
   return cell;
 }
 
++ (UIView *)viewByClassName:(NSString *)className inNib:(NSString *)nibName {
+  
+  NSArray *nib = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
+  Class cellClass = NSClassFromString(className);
+  for (id oneObject in nib) {
+    if ([oneObject isMemberOfClass:cellClass]) {
+      return oneObject;
+    }
+  }
+  return nil;
+}
+
 + (void)alertInstant:(NSString *)message isError:(BOOL)isError {
 
   //	UIImage *image = UIIMAGE_FROMPNG(@"btn_xiaoxi");

@@ -120,6 +120,7 @@
     [prefs setObject:LONGLONG2NUM(staticInfo.user.sourceUserId) forKey:kStaticInfo_accessUserId];
     [prefs setInteger:staticInfo.user.nowRiddingCount forKey:kStaticInfo_riddingCount];
     [prefs setObject:INT2NUM(staticInfo.user.totalDistance) forKey:kStaticInfo_totalDistance];
+    [prefs setObject:staticInfo.user.taobaoCode forKey:kStaticInfo_taobaoCode];
 //    [prefs setBool:YES forKey:kStaticInfo_logined];
     [prefs synchronize];
 

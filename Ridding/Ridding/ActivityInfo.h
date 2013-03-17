@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "BasicObject.h"
 #import "Ridding.h"
-
+#import "Public.h"
 typedef enum _ActivityInfoType {
   ActivityInfoType_Going = 0,
   ActivityInfoType_Recom = 1,
@@ -20,8 +20,7 @@ typedef enum _ActivityInfoType {
 }
 
 @property (nonatomic, retain) Ridding *ridding;
-@property (nonatomic) int weight;
-@property (nonatomic, copy) NSString *firstPicUrl;
+
 
 
 @end

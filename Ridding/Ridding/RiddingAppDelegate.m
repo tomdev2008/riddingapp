@@ -9,8 +9,13 @@
 #import "LandingViewController.h"
 #import "MyLocationManager.h"
 #import "QQNRFeedViewController.h"
+#import "RiddingPictureDao.h"
+#import "Gps.h"
+#import "GpsDao.h"
 #define moveSpeed 0.5
 @interface RiddingAppDelegate(){
+  
+  
 }
 @end;
 @implementation RiddingAppDelegate
@@ -18,13 +23,13 @@
 @synthesize rootViewController = _rootViewController;
 @synthesize navController = _navController;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {  
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
   [MobClick startWithAppkey:YouMenAppKey reportPolicy:REALTIME channelId:nil];
   [MobClick updateOnlineConfig];
   [[ResponseCodeCheck getSinglton] checkConnect];
-  
-  //检查网络
+ 
+   //检查网络
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   [self setUserInfo];
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -32,6 +37,13 @@
     [[UIApplication sharedApplication] setStatusBarHidden:NO
                                             withAnimation:UIStatusBarAnimationNone];
   }
+  
+//  if(!_backGroundLocationManager){
+//    _backGroundLocationManager=[[CLLocationManager alloc]init];
+//    _backGroundLocationManager.delegate=self;
+//    _backGroundLocationManager.distanceFilter=50.0f;
+//    [_backGroundLocationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+//  }
   
   if([self canLogin]){
     
@@ -41,7 +53,7 @@
     
     self.rootViewController = [[PublicViewController alloc] init];
   }
-  
+
   
   self.navController = [[UINavigationController alloc] initWithRootViewController:self.rootViewController];
   
@@ -78,6 +90,7 @@
   staticInfo.user.sourceUserId = [[prefs stringForKey:kStaticInfo_accessUserId] longLongValue];
   staticInfo.user.accessToken = [prefs stringForKey:kStaticInfo_accessToken];
   staticInfo.user.sourceType = [prefs integerForKey:kStaticInfo_sourceType];
+  staticInfo.user.taobaoCode= [prefs stringForKey:kStaticInfo_taobaoCode];
   staticInfo.user.backGroundUrl = [prefs stringForKey:kStaticInfo_backgroundUrl];
   staticInfo.user.totalDistance = [prefs integerForKey:kStaticInfo_totalDistance];
   staticInfo.user.name = [prefs objectForKey:kStaticInfo_nickname];
@@ -120,12 +133,19 @@
   return FALSE;
 }
 
+
+
+
 //iPhone 从APNs服务器获取deviceToken后回调此方法
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
   
   NSString *dt = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   [prefs setObject:dt forKey:kStaticInfo_apnsToken];
+  if([StaticInfo getSinglton].logined){
+    RequestUtil *requestUtil=[[RequestUtil alloc]init];
+    [requestUtil sendApns];
+  }
 }
 
 //注册push功能失败 后 返回错误信息，执行相应的处理
@@ -148,15 +168,17 @@
 
 //进入后台
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-  
-  if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
-    // Stop normal location updates and start significant location change updates for battery efficiency.
-    [[[MyLocationManager getSingleton] myLocationManager] stopUpdatingLocation];
-    [[[MyLocationManager getSingleton] myLocationManager] startMonitoringSignificantLocationChanges];
-  }
-  else {
-    NSLog(@"Significant location change monitoring is not available.");
-  }
+//  if([StaticInfo getSinglton].logined&&self.nowRiddingId){
+//    
+//    if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
+//      // Stop normal location updates and start significant location change updates for battery efficiency.
+//      [_backGroundLocationManager startUpdatingLocation];
+//      [_backGroundLocationManager startMonitoringSignificantLocationChanges];
+//    }
+//    else {
+//      NSLog(@"Significant location change monitoring is not available.");
+//    }
+//  }
 }
 
 //回到前台
@@ -168,27 +190,47 @@
   /*
    Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
    */
-  if ([CLLocationManager significantLocationChangeMonitoringAvailable])
-  {
-    // Stop significant location updates and start normal location updates again since the app is in the forefront.
-    [[[MyLocationManager getSingleton] myLocationManager] stopMonitoringSignificantLocationChanges];
-    [[[MyLocationManager getSingleton] myLocationManager] startUpdatingLocation];
-  }
-  else
-  {
-    NSLog(@"Significant location change monitoring is not available.");
-  }
+//  if([StaticInfo getSinglton].logined&&self.nowRiddingId){
+//    if ([CLLocationManager significantLocationChangeMonitoringAvailable])
+//    {
+//      // Stop significant location updates and start normal location updates again since the app is in the forefront.
+//      [_backGroundLocationManager stopMonitoringSignificantLocationChanges];
+//      [_backGroundLocationManager stopUpdatingLocation];
+//    }
+//    else
+//    {
+//      NSLog(@"Significant location change monitoring is not available.");
+//    }
+//  }
+
 
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
   
-  [[[MyLocationManager getSingleton] myLocationManager] stopUpdatingLocation];
+//  if(_backGroundLocationManager){
+//    [_backGroundLocationManager stopUpdatingLocation];
+//    [_backGroundLocationManager stopMonitoringSignificantLocationChanges];
+//  }
+
   /*
    Called when the application is about to terminate.
    Save data if appropriate.
    See also applicationDidEnterBackground:.
    */
+}
+
+#pragma mark locationManager delegate functions
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error {
+  
+ // [_backGroundLocationManager stopUpdatingLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation {
+  
 }
 
 

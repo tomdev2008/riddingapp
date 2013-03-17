@@ -12,6 +12,7 @@
 #import "UserMap.h"
 #import "QQNRImagesScrollVCTL.h"
 #import "SVProgressHUD.h"
+#import "Utilities.h"
 #import "QQNRFeedViewController.h"
 #import "PublicLinkWebViewController.h"
 #define pageSize 10
@@ -129,6 +130,9 @@
   dispatch_async(dispatch_queue_create("downLoad", NULL), ^{
     NSArray *serverArray = [self.requestUtil getUploadedPhoto:_ridding.riddingId limit:pageSize lastUpdateTime:_lastUpdateTime];
     dispatch_async(dispatch_get_main_queue(), ^{
+      if(_lastUpdateTime<0){
+        [_cellArray removeAllObjects];
+      }
       if ([serverArray count] > 0) {
         NSMutableArray *mulArray = [[NSMutableArray alloc] init];
         for (NSDictionary *dic in serverArray) {
@@ -200,25 +204,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-  RiddingPicture *picture = [_cellArray objectAtIndex:indexPath.row];
-  CGFloat viewHeight = PublicDetailCellDefaultSpace;
-  if (picture.isFirstPic) {
-    viewHeight += 20;  // datelabel
-    viewHeight += 5;//间距
-  }
-  CGFloat width = PublicDetailCellWidth;
-  CGFloat height;
-  if (picture.width == 0 || picture.height == 0) {
-    height = PublicDetailCellWidth;
-  } else if (picture.width / picture.height > 1) {
-    height = picture.height * 1.0 / picture.width * width;
-  } else {
-    height = picture.height * 1.0 / picture.width * width;
-  }
-  viewHeight += height + 20;
-  viewHeight += PublicDetailCellDefaultDownSpace;
-  return viewHeight;
+  
+  RiddingPicture *picture=[_cellArray objectAtIndex:indexPath.row];
+  return [PublicDetailCell heightForCell:picture];
 
 }
 
@@ -229,19 +217,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  static NSString *kCellID = @"CellID";
-  PublicDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID];
-  RiddingPicture *picture = [_cellArray objectAtIndex:indexPath.row];
-  if (cell == nil) {
-    cell = [[PublicDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellID info:picture isMyFeedHome:self.isMyFeedHome];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.delegate = self;
-  }
-  cell.info = picture;
-  cell.index = indexPath.row;
-
-  [cell initContentView];
-
+  PublicDetailCell *cell = (PublicDetailCell*)[Utilities cellByClassName:@"PublicDetailCell" inNib:@"PublicDetailCell" forTableView:tableView];
+   RiddingPicture *picture = [_cellArray objectAtIndex:indexPath.row];
+  cell.delegate=self;
+  [cell initWithInfo:picture isMyFeedHome:_isMyFeedHome index:indexPath.row];
   return cell;
 }
 
@@ -484,7 +463,6 @@
 - (void)succUploadPicture:(NSNotification *)note {
   
   if([self.navigationController visibleViewController]==self){
-    [_cellArray removeAllObjects];
     _lastUpdateTime = -1;
     [self downLoad];
   }

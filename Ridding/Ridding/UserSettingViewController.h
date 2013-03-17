@@ -10,17 +10,17 @@
 #import "StaticInfo.h"
 #import "BasicNeedLoginViewController.h"
 #import "MapCreateVCTL.h"
-#import "GADSearchBannerView.h"
-#import "GADSearchRequest.h"
-#import "UserLoginCell.h"
+
 #import <MessageUI/MessageUI.h>
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
-@interface UserSettingViewController : BasicNeedLoginViewController <UITableViewDelegate, UITableViewDataSource, QQNRSourceLoginViewControllerDelegate, RiddingViewControllerDelegate,GADBannerViewDelegate,UserLoginCellDelegate,MFMessageComposeViewControllerDelegate> {
+@interface UserSettingViewController : BasicNeedLoginViewController <UITableViewDelegate, UITableViewDataSource, QQNRSourceLoginViewControllerDelegate, RiddingViewControllerDelegate,MFMessageComposeViewControllerDelegate> {
   StaticInfo *staticInfo;
 }
 @property (nonatomic, retain) IBOutlet UITableView *uiTableView;
 @property (nonatomic, retain) StaticInfo *staticInfo;
 
+
+- (id)initWithLeftView:(BOOL)hasLeftView;
 
 @end

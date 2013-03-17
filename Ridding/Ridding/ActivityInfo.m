@@ -12,7 +12,7 @@
 
   self = [super init];
   if (self) {
-    self.ridding = [[Ridding alloc] init];
+    _ridding = [[Ridding alloc] init];
   }
   return self;
 }
@@ -22,9 +22,7 @@
 
   self = [super init];
   if (self) {
-    self.ridding = [[Ridding alloc] initWithJSONDic:[jsonDic objectForKey:keyRidding]];
-    self.weight = [[jsonDic objectForKey:@"weight"] intValue];
-    self.firstPicUrl = [jsonDic objectForKey:@"firstpicurl"];
+    _ridding = [[Ridding alloc] initWithJSONDic:[jsonDic objectForKey:keyRidding]];
   }
   return self;
 

@@ -321,14 +321,14 @@
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, SAFESTR(ridding.map.cityName), @"cityname");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, SAFESTR(ridding.map.fileKey), @"urlkey");
   SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(ridding.isPublic), @"ispublic");
-  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(ridding.isSyncSina), @"issyncsina");
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, INT2NUM(ridding.riddingType), @"riddingtype");
 
   NSData *data = [[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
   [asiRequest appendPostData:data];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
   NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
-  DLog(@"responseDic%@", responseDic);
+  
   return [responseDic objectForKey:@"data"];
 }
 
@@ -457,6 +457,25 @@
   ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest addRequestHeader:@"authToken" value:self.staticInfo.user.authToken];
   [asiRequest startAsynchronous];
+}
+
+- (void)updateGpsSync:(int)sync riddingId:(long long)riddingId{
+  
+  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/wifiSync/?yes=%d&type=1", QIQUNARHOME,riddingId,self.staticInfo.user.userId,sync]];
+  
+  ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest addRequestHeader:@"authToken" value:self.staticInfo.user.authToken];
+  [asiRequest startAsynchronous];
+}
+
+- (NSArray*)getUserPays:(int)typeId{
+  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/user/%lld/userPay/?typeId=%d", QIQUNARHOME, self.staticInfo.user.userId,typeId]];
+  
+  ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest startSynchronous];
+  NSString *apiResponse = [asiRequest responseString];
+  NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
+  return [responseDic objectForKey:@"data"];
 }
 
 /**

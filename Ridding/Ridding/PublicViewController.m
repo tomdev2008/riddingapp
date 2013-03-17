@@ -79,6 +79,7 @@
   }
   _isLoading = TRUE;
   [SVProgressHUD showWithStatus:@"加载中"];
+  
   dispatch_async(dispatch_queue_create("download", NULL), ^{
     NSArray *serverArray = [self.requestUtil getRiddingPublicList:_endUpdateTime limit:dataLimit isLarger:0 type:_type weight:_endWeight];
     if (!_isLoadOld) {
@@ -110,7 +111,7 @@
     }
     if (_type == ActivityInfoType_Recom) {
       ActivityInfo *info = (ActivityInfo *) [_dataSource lastObject];
-      _endWeight = info.weight;
+      _endWeight = info.ridding.aPublic.weight;
     } else {
       ActivityInfo *info = (ActivityInfo *) [_dataSource lastObject];
       _endUpdateTime = info.ridding.createTime;

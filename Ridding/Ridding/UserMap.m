@@ -14,9 +14,13 @@
 #import "RiddingLocation.h"
 #import "UIImageView+WebCache.h"
 #import "MapUtil.h"
+#import "MapFix.h"
 #import "Utilities.h"
+#import "GpsDao.h"
+#import "Gps.h"
 #import "QiNiuUtils.h"
 #import "StartAnnotation.h"
+#import "UserSettingViewController.h"
 #import "EndAnnotation.h"
 #import "WeatherAnnotation.h"
 #import "UIImage+UIImage_Retina4.h"
@@ -66,6 +70,7 @@
   _routes = [[NSMutableArray alloc] init];
   self.hasLeftView = FALSE;
   _isMyRidding = FALSE;
+    [super viewDidLoad];
   if ([StaticInfo getSinglton].user.userId == _toUser.userId) {
     _isMyRidding = TRUE;
   }
@@ -125,12 +130,12 @@
   }else{
     [_bottomToolBar removeFromSuperview];
     [_rightView removeFromSuperview];
-    _mapView.frame=CGRectMake(_mapView.frame.origin.x, _mapView.frame.origin.y, _mapView.frame.size.width, SCREEN_HEIGHT-_mapView.frame.origin.y);
-    _route_view.frame=CGRectMake(_route_view.frame.origin.x, _route_view.frame.origin.y, _route_view.frame.size.width, SCREEN_HEIGHT-_route_view.frame.origin.y);
+    _mapView.frame=CGRectMake(_mapView.frame.origin.x, _mapView.frame.origin.y, _mapView.frame.size.width, self.view.frame.size.height-_mapView.frame.origin.y);
+    _route_view.frame=CGRectMake(_mapView.frame.origin.x, _mapView.frame.origin.y, _mapView.frame.size.width, self.view.frame.size.height-_mapView.frame.origin.y);
   }
     
    _photoArray = [[NSMutableArray alloc] init];
-  [super viewDidLoad];
+
 }
 
 - (void)imageViewCilck:(id)sender{
@@ -272,7 +277,7 @@
       }
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-      if (self) {
+      if (self&&self.routes) {
         [[MapUtil getSinglton] update_route_view:self.mapView to:self.route_view line_color:[UIColor getColor:lineColor] routes:self.routes width:5.0];
         [[MapUtil getSinglton] center_map:self.mapView routes:self.routes];
         CLLocation *startLocation = [self.routes objectAtIndex:0];
@@ -589,6 +594,7 @@
   }
   [self removeAllCalloutAnnotations];
   [self deselectAllAnnotations];
+  _showListView.hidden=YES;
 }
 
 
@@ -823,7 +829,7 @@
     headImage.image=weatherAnnotation.headImage;
     customPinView.leftCalloutAccessoryView = headImage; //设置最左边的头像
     
-    customPinView.image = UIIMAGE_FROMPNG(@"qqnr_map_icon_member");
+    customPinView.image = UIIMAGE_FROMPNG(@"qqnr_map_icon_weather");
     customPinView.opaque = YES;
     return customPinView;
 
@@ -880,29 +886,6 @@
 }
 
 #pragma mark - Button Responser IBAction
-- (IBAction)weatherBtnClick:(id)sender{
-  for(NSString *taps in _ridding.map.mapTaps){
-    dispatch_queue_t q;
-    q = dispatch_queue_create("didFinishPickingMediaWithInfo", NULL);
-    dispatch_async(q, ^{
-      NSArray *splits = [taps componentsSeparatedByString:@","];
-      NSDictionary *dic= [self.requestUtil weatherRequest:taps];
-      dispatch_async(dispatch_get_main_queue(), ^{
-        NSArray *dateArray=[dic objectForKey:keyWeather];
-        Weather *weather=[[Weather alloc]initWithJSONDic:[dateArray objectAtIndex:0]];
-        WeatherAnnotation *weatherAnnotation =[[WeatherAnnotation alloc]init];
-        NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:[weather urlFromUrl]]];
-        weatherAnnotation.headImage =[UIImage imageWithData:data];
-        weatherAnnotation.coordinate=CLLocationCoordinate2DMake([[splits objectAtIndex:0]doubleValue], [[splits objectAtIndex:1]doubleValue]);
-        weatherAnnotation.subtitle=[weather subTitle];
-        weatherAnnotation.title=[weather weatherDescStr];
-        [self.mapView addAnnotation:weatherAnnotation];
-        [self.mapView selectAnnotation:weatherAnnotation animated:YES];
-      });
-    });
-  }
-}
-
 - (IBAction)backBtnClick:(id)sender {
 
   if (self) {
@@ -968,8 +951,8 @@
   [self.mySelfBtn setBackgroundImage:nil forState:UIControlStateHighlighted];
   [self.teamerBtn setBackgroundImage:nil forState:UIControlStateNormal];
   [self.teamerBtn setBackgroundImage:nil forState:UIControlStateHighlighted];
-  [self.photoBtn setBackgroundImage:nil forState:UIControlStateNormal];
-  [self.photoBtn setBackgroundImage:nil forState:UIControlStateHighlighted];
+  [self.moreBtn setBackgroundImage:nil forState:UIControlStateNormal];
+  [self.moreBtn setBackgroundImage:nil forState:UIControlStateHighlighted];
 }
 
 - (IBAction)takePhotoAction:(id)sender{
@@ -979,17 +962,19 @@
   [self showActionSheet];
 }
 
-- (IBAction)showPicAction:(id)sender{
-  [self checkShowIOS5Tips];
-  [MobClick event:@"2013022509"];
-  [self doAnimate:sender];
-  [_photoBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_photo_hl") forState:UIControlStateNormal];
-  [self removeAllAnnotations];
-  _isShowTeamers = FALSE;
-  _teamerLabel.hidden=YES;
-  _teamerView.hidden=YES;
-  [self updatePhotoAnnotation];
-  [self membersViewDownToUp];
+- (IBAction)moreAction:(id)sender{
+  
+  [self showMoreView];
+}
+
+- (void)showMoreView{
+  if(!_showListView){
+    _showListView=(ShowListView*)[Utilities viewByClassName:@"ShowListView" inNib:@"ShowListView"];
+    _showListView.delegate=self;
+    _showListView.frame=CGRectMake(140, SCREEN_HEIGHT_WITHOUT_STATUS_BAR-150, 185, 150);
+    [self.view addSubview:_showListView];
+  }
+  _showListView.hidden=NO;
 }
 
 - (void)checkShowIOS5Tips{
@@ -1000,13 +985,13 @@
       [view show];
       [prefs setBool:YES forKey:kStaticInfo_Ios5Tips_ShowPhoto];
     }
-    
   }
 }
 
 - (IBAction)showMySelfAction:(id)sender{
   [MobClick event:@"2013022510"];
 
+  [_showListView reset];
   [self doAnimate:sender];
   [_mySelfBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_single_hl") forState:UIControlStateNormal];
   [self removeAllAnnotations];
@@ -1019,6 +1004,7 @@
 
 - (IBAction)showTeamerAction:(id)sender{
   [MobClick event:@"2013022511"];
+  [_showListView reset];
   [self doAnimate:sender];
   [_teamerBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_member_hl") forState:UIControlStateNormal];
   [self removeAllAnnotations];
@@ -1031,12 +1017,9 @@
 
 - (void)doAnimate:(id)sender{
   [_mySelfBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_single") forState:UIControlStateNormal];
-  [_photoBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_photo") forState:UIControlStateNormal];
+  [_moreBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_more") forState:UIControlStateNormal];
   [_teamerBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_member") forState:UIControlStateNormal];
-  [UIView animateWithDuration:0.3 animations:^{
-    
-    self.btnBgView.frame=((UIView*)sender).frame;
-  }];
+  self.btnBgView.frame=((UIView*)sender).frame;
 }
 #pragma mark -
 #pragma mark takePhotoActionSheet
@@ -1110,7 +1093,7 @@
 
     dispatch_async(dispatch_get_main_queue(), ^{
       [picker dismissModalViewControllerAnimated:NO];
-      PhotoDescViewController *descVCTL = [[PhotoDescViewController alloc] initWithNibName:@"PhotoDescViewController" bundle:nil riddingPicture:picture isSyncSina:[_ridding syncSina] riddingName:_ridding.riddingName];
+      PhotoDescViewController *descVCTL = [[PhotoDescViewController alloc] initWithNibName:@"PhotoDescViewController" bundle:nil riddingPicture:picture riddingName:_ridding.riddingName];
       [self presentModalViewController:descVCTL animated:NO];
     });
     
@@ -1123,5 +1106,76 @@
 }
 
 - (void) video: (NSString *) videoPath didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo {
+  
+  
+}
+
+#pragma ShowListViewDelegate 
+- (void)picClick:(ShowListView*)view{
+  
+  _showListView.hidden=YES;
+  [self checkShowIOS5Tips];
+  [MobClick event:@"2013022509"];
+  [self removeAllAnnotations];
+  _isShowTeamers = FALSE;
+  _teamerLabel.hidden=YES;
+  _teamerView.hidden=YES;
+  [self doAnimate:nil];
+  [_moreBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_more_hl") forState:UIControlStateNormal];
+  [self updatePhotoAnnotation];
+  [self membersViewDownToUp];
+}
+- (void)weatherClick:(ShowListView*)view{
+  
+  _showListView.hidden=YES;
+  
+  
+  [self removeAllAnnotations];
+  _isShowTeamers = FALSE;
+  _teamerLabel.hidden=YES;
+  _teamerView.hidden=YES;
+  [self doAnimate:nil];
+  [_moreBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_more_hl") forState:UIControlStateNormal];
+  [self weatherBtnClick];
+  [self membersViewDownToUp];
+  
+}
+- (void)settingClick:(ShowListView*)view{
+  
+  _showListView.hidden=YES;
+  UserSettingViewController *userSetting=[[UserSettingViewController alloc]initWithLeftView:NO];
+  userSetting.hasLeftView=NO;
+  [self.navigationController pushViewController:userSetting animated:YES];
+  
+}
+
+- (void)weatherBtnClick{
+  [SVProgressHUD showWithStatus:@"正在获取天气数据"];
+  __block int count=0;
+  __block int totalBlock=[_ridding.map.mapTaps count];
+  for(NSString *taps in _ridding.map.mapTaps){
+    dispatch_queue_t q;
+    q = dispatch_queue_create("didFinishPickingMediaWithInfo", NULL);
+    dispatch_async(q, ^{
+      NSArray *splits = [taps componentsSeparatedByString:@","];
+      NSDictionary *dic= [self.requestUtil weatherRequest:taps];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        NSArray *dateArray=[dic objectForKey:keyWeather];
+        Weather *weather=[[Weather alloc]initWithJSONDic:[dateArray objectAtIndex:0]];
+        WeatherAnnotation *weatherAnnotation =[[WeatherAnnotation alloc]init];
+        NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:[weather urlFromUrl]]];
+        weatherAnnotation.headImage =[UIImage imageWithData:data];
+        weatherAnnotation.coordinate=CLLocationCoordinate2DMake([[splits objectAtIndex:0]doubleValue], [[splits objectAtIndex:1]doubleValue]);
+        weatherAnnotation.subtitle=[weather subTitle];
+        weatherAnnotation.title=[weather weatherDescStr];
+        [self.mapView addAnnotation:weatherAnnotation];
+        [self.mapView selectAnnotation:weatherAnnotation animated:YES];
+        count++;
+        if(count==totalBlock){
+          [SVProgressHUD dismiss];
+        }
+      });
+    });
+  }
 }
 @end

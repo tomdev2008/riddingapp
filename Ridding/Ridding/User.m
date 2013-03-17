@@ -21,24 +21,25 @@
 
   self = [super init];
   if (self) {
-    self.accessToken = [jsonDic objectForKey:@"accesstoken"];
-    self.name = [jsonDic objectForKey:@"username"];
-    self.userId = [[jsonDic objectForKey:@"userid"] longLongValue];
-    self.sourceUserId = [[jsonDic objectForKey:@"sourceid"] longLongValue];
-    self.totalDistance = [[jsonDic objectForKey:@"totaldistance"] intValue];
-    self.sourceType = [[jsonDic objectForKey:@"sourcetype"] intValue];
-    self.nowRiddingCount = [[jsonDic objectForKey:@"riddingcount"] intValue];
-    self.bavatorUrl = [jsonDic objectForKey:@"bavatorurl"];
-    self.savatorUrl = [jsonDic objectForKey:@"savatorurl"];
-    self.authToken = [jsonDic objectForKey:@"authtoken"];
-    self.isLeader = [[jsonDic objectForKey:@"isleader"] boolValue];
-    self.userRole = [[jsonDic objectForKey:@"userrole"] intValue];
-    self.status = [[jsonDic objectForKey:@"status"] intValue];
-    self.timeBefore = [jsonDic objectForKey:@"timebefore"];
-    self.latitude = [[jsonDic objectForKey:@"latitude"] doubleValue];
-    self.longtitude = [[jsonDic objectForKey:@"longtitude"] doubleValue];
-    self.backGroundUrl = [jsonDic objectForKey:@"backgroundurl"];
-    self.graySAvatorUrl = [jsonDic objectForKey:@"graysavatorurl"];
+    _accessToken = [jsonDic objectForKey:@"accesstoken"];
+    _name = [jsonDic objectForKey:@"username"];
+    _userId = [[jsonDic objectForKey:@"userid"] longLongValue];
+    _sourceUserId = [[jsonDic objectForKey:@"sourceid"] longLongValue];
+    _totalDistance = [[jsonDic objectForKey:@"totaldistance"] intValue];
+    _sourceType = [[jsonDic objectForKey:@"sourcetype"] intValue];
+    _nowRiddingCount = [[jsonDic objectForKey:@"riddingcount"] intValue];
+    _bavatorUrl = [jsonDic objectForKey:@"bavatorurl"];
+    _savatorUrl = [jsonDic objectForKey:@"savatorurl"];
+    _authToken = [jsonDic objectForKey:@"authtoken"];
+    _isLeader = [[jsonDic objectForKey:@"isleader"] boolValue];
+    _userRole = [[jsonDic objectForKey:@"userrole"] intValue];
+    _status = [[jsonDic objectForKey:@"status"] intValue];
+    _timeBefore = [jsonDic objectForKey:@"timebefore"];
+    _latitude = [[jsonDic objectForKey:@"latitude"] doubleValue];
+    _longtitude = [[jsonDic objectForKey:@"longtitude"] doubleValue];
+    _backGroundUrl = [jsonDic objectForKey:@"backgroundurl"];
+    _graySAvatorUrl = [jsonDic objectForKey:@"graysavatorurl"];
+    _taobaoCode= [jsonDic objectForKey:@"taobaocode"];
     if(![self.graySAvatorUrl pd_isNotEmptyString]){
       self.graySAvatorUrl=self.savatorUrl;
     }
@@ -49,7 +50,7 @@
 
 - (NSString *)getTotalDistanceToKm {
 
-  float distance = self.totalDistance * 1.0 / 1000;
+  float distance = _totalDistance * 1.0 / 1000;
   return [NSString stringWithFormat:@"%0.2lf km", distance];
 }
 

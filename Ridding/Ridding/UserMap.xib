@@ -60,7 +60,7 @@
 						<string key="NSFrame">{{0, 44}, {320, 365}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="631115415"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="732322722">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -305,7 +305,6 @@
 								<string key="NSFrame">{{240, 0}, {80, 51}}</string>
 								<reference key="NSSuperview" ref="715240670"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -314,14 +313,11 @@
 								<reference key="IBUIHighlightedTitleColor" ref="905884339"/>
 								<reference key="IBUINormalTitleColor" ref="905884339"/>
 								<reference key="IBUINormalTitleShadowColor" ref="534048832"/>
-								<object class="NSCustomResource" key="IBUIHighlightedImage">
+								<object class="NSCustomResource" key="IBUIHighlightedImage" id="317193794">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">qqnr_map_tabbar_photo_hl.png</string>
+									<string key="NSResourceName">qqnr_map_tabbar_icon_more.png</string>
 								</object>
-								<object class="NSCustomResource" key="IBUINormalImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">qqnr_map_tabbar_photo.png</string>
-								</object>
+								<reference key="IBUINormalImage" ref="317193794"/>
 								<reference key="IBUIFontDescription" ref="149859651"/>
 								<reference key="IBUIFont" ref="414570596"/>
 							</object>
@@ -470,14 +466,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">photoBtn</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="855888007"/>
-					</object>
-					<int key="connectionID">166</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">teamerBtn</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="266816432"/>
@@ -491,6 +479,14 @@
 						<reference key="destination" ref="916626322"/>
 					</object>
 					<int key="connectionID">168</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">moreBtn</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="855888007"/>
+					</object>
+					<int key="connectionID">170</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -519,12 +515,12 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">showPicAction:</string>
+						<string key="label">moreAction:</string>
 						<reference key="source" ref="855888007"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">7</int>
 					</object>
-					<int key="connectionID">152</int>
+					<int key="connectionID">171</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -758,7 +754,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -788,7 +784,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">169</int>
+			<int key="maxID">171</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -873,6 +869,87 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">UserMap</string>
 					<string key="superclassName">BasicViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>backBtnClick:</string>
+							<string>moreAction:</string>
+							<string>showLocationButtonClicked:</string>
+							<string>showMySelfAction:</string>
+							<string>showTeamerAction:</string>
+							<string>takePhotoAction:</string>
+							<string>weatherBtnClick:</string>
+							<string>zoomInButtonClicked:</string>
+							<string>zoomOutButtonClicked:</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>backBtnClick:</string>
+							<string>moreAction:</string>
+							<string>showLocationButtonClicked:</string>
+							<string>showMySelfAction:</string>
+							<string>showTeamerAction:</string>
+							<string>takePhotoAction:</string>
+							<string>weatherBtnClick:</string>
+							<string>zoomInButtonClicked:</string>
+							<string>zoomOutButtonClicked:</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">backBtnClick:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">moreAction:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">showLocationButtonClicked:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">showMySelfAction:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">showTeamerAction:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">takePhotoAction:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">weatherBtnClick:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">zoomInButtonClicked:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">zoomOutButtonClicked:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
@@ -880,8 +957,8 @@
 							<string>bottomToolBar</string>
 							<string>btnBgView</string>
 							<string>mapView</string>
+							<string>moreBtn</string>
 							<string>mySelfBtn</string>
-							<string>photoBtn</string>
 							<string>rightView</string>
 							<string>route_view</string>
 							<string>takePhotoBtn</string>
@@ -909,8 +986,8 @@
 							<string>bottomToolBar</string>
 							<string>btnBgView</string>
 							<string>mapView</string>
+							<string>moreBtn</string>
 							<string>mySelfBtn</string>
-							<string>photoBtn</string>
 							<string>rightView</string>
 							<string>route_view</string>
 							<string>takePhotoBtn</string>
@@ -932,11 +1009,11 @@
 								<string key="candidateClassName">MKMapView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">mySelfBtn</string>
+								<string key="name">moreBtn</string>
 								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">photoBtn</string>
+								<string key="name">mySelfBtn</string>
 								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -989,11 +1066,10 @@
 				<string>qqnr_map_searchbar_icon_location_hl.png</string>
 				<string>qqnr_map_tabbar_icon_member.png</string>
 				<string>qqnr_map_tabbar_icon_member_hl.png</string>
+				<string>qqnr_map_tabbar_icon_more.png</string>
 				<string>qqnr_map_tabbar_icon_single_hl.png</string>
 				<string>qqnr_map_tabbar_icon_takepic.png</string>
 				<string>qqnr_map_tabbar_iconbackground_hl.png</string>
-				<string>qqnr_map_tabbar_photo.png</string>
-				<string>qqnr_map_tabbar_photo_hl.png</string>
 				<string>qqnr_map_tabbar_takepic_hl.png</string>
 				<string>qqnr_pd_comment_tabbar_bg.png</string>
 			</object>
@@ -1010,9 +1086,8 @@
 				<string>{34, 25}</string>
 				<string>{34, 25}</string>
 				<string>{34, 25}</string>
+				<string>{34, 25}</string>
 				<string>{80, 50}</string>
-				<string>{34, 25}</string>
-				<string>{34, 25}</string>
 				<string>{34, 25}</string>
 				<string>{320, 51}</string>
 			</object>
