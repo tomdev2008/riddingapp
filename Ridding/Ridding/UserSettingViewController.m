@@ -80,21 +80,28 @@
   [super viewDidAppear:animated];
   if(!self.didAppearOnce){
     self.didAppearOnce=YES;
+
     dispatch_queue_t q;
     q = dispatch_queue_create("tryBtnClickDisPatch", NULL);
     dispatch_async(q, ^{
       _count= [RiddingPictureDao getRiddingPictureCount];
+#ifdef isProVersion
+#else
       NSArray *array=[self.requestUtil getUserPays:-1];
-      dispatch_async(dispatch_get_main_queue(), ^{
-        if(array){
-          for(NSDictionary *dic in array){
-            UserPay *userPay=[[UserPay alloc]initWithJSONDic:[dic objectForKey:keyUserPay]];
-            [_userPays setObject:userPay forKey:INT2NUM(userPay.type)];
-          }
+      if(array){
+        for(NSDictionary *dic in array){
+          UserPay *userPay=[[UserPay alloc]initWithJSONDic:[dic objectForKey:keyUserPay]];
+          [_userPays setObject:userPay forKey:INT2NUM(userPay.type)];
         }
+      }
+#endif
+      dispatch_async(dispatch_get_main_queue(), ^{
+        
         [self.uiTableView reloadData];
       });
+      
     });
+
   }
 }
 
@@ -177,7 +184,12 @@
           descLabel.text=[NSString stringWithFormat:@"未上传(%d张)",_count];
         }
       }else{
+        
+#ifdef isProVersion
+        cell.textLabel.text=@"天气服务(专业版用户无需购买)";
+#else
         cell.textLabel.text=@"天气服务";
+#endif
         UserPay *userPay=[_userPays objectForKey:INT2NUM(UserPay_Weather)];
         if(userPay!=nil){
           if(userPay.status==UserPayStatus_Try||userPay.status==UserPayStatus_Valid){

@@ -100,6 +100,9 @@
 }
 
 - (void)showAd{
+  
+#ifdef isProVersion
+#else
   if(!_bannerView){
     _bannerView = [[GADSearchBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(GAD_SIZE_320x50) origin:CGPointMake(0, SCREEN_HEIGHT- 50)];
     _bannerView.adUnitID = MY_BANNER_UNIT_ID;
@@ -109,6 +112,7 @@
     [adRequest setQuery:@"sport"];
     [_bannerView loadRequest:[adRequest request]];
   }
+#endif
 
 
 }

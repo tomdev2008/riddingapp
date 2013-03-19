@@ -50,6 +50,9 @@
   self.uiTableView.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
   self.uiTableView.backgroundColor=[UIColor clearColor];
   
+  
+#ifdef isProVersion
+#else
   GADSearchBannerView *bannerView = [[GADSearchBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(GAD_SIZE_320x50) origin:CGPointMake(0, SCREEN_HEIGHT- 50)];
   bannerView.adUnitID = MY_BANNER_UNIT_ID;
   bannerView.rootViewController = self;
@@ -57,6 +60,7 @@
   GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
   [adRequest setQuery:@"sport"];
   [bannerView loadRequest:[adRequest request]];
+#endif
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(succUploadPicture:)
                                                name:kSuccUploadPictureNotification object:nil];

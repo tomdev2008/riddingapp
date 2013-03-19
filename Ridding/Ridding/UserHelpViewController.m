@@ -18,11 +18,11 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+  if (self) {
+    // Custom initialization
+  }
+  return self;
 }
 
 - (void)viewDidLoad
@@ -36,6 +36,9 @@
   self.view.backgroundColor = [UIColor colorWithPatternImage:UIIMAGE_FROMPNG(@"qqnr_bg")];
   self.uiTableView.backgroundColor=[UIColor clearColor];
   
+#ifdef isProVersion
+#else
+  
   GADSearchBannerView *bannerView = [[GADSearchBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(GAD_SIZE_320x50) origin:CGPointMake(0, SCREEN_HEIGHT- 50)];
   bannerView.adUnitID = MY_BANNER_UNIT_ID;
   bannerView.rootViewController = self;
@@ -43,15 +46,17 @@
   GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
   [adRequest setQuery:@"sport"];
   [bannerView loadRequest:[adRequest request]];
-
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+#endif
+  
+  
+  [super viewDidLoad];
+  // Do any additional setup after loading the view from its nib.
 }
 
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
 
 #pragma mark -
@@ -68,7 +73,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
+  
   UserSettingCell *cell = (UserSettingCell *) [Utilities cellByClassName:@"UserSettingCell" inNib:@"UserSettingCell" forTableView:self.uiTableView];
   if ([indexPath row] == 0) {
     [cell initView:@"创建骑行活动"];
@@ -97,7 +102,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.view addSubview:imageView];
   }
   [tableView deselectRowAtIndexPath:indexPath animated:NO];
-
+  
 }
 #pragma mark -
 #pragma mark Table Delegate Methods

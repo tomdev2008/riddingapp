@@ -1161,11 +1161,14 @@
 
 - (void)weatherBtnClick{
   [SVProgressHUD showWithStatus:@"正在获取天气数据"];
-  __block int count=0;
-  __block int totalBlock=[_ridding.map.mapTaps count];
+ 
+#ifdef isProVersion
+  [self getWeather];
+#else
   dispatch_queue_t q;
   q = dispatch_queue_create("didFinishPickingMediaWithInfo", NULL);
   dispatch_async(q, ^{
+    
     NSArray *array =[self.requestUtil getUserPays:UserPay_Weather];
     if([array count]>0){
       NSDictionary *dic=[array objectAtIndex:0];
@@ -1174,7 +1177,6 @@
         dispatch_async(dispatch_get_main_queue(), ^{
           BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"小提示" message:@"您的天气服务已过期,快去续费吧"];
           [alert setCancelButtonWithTitle:@"无情的拒绝" block:^(void) {
-            
           }];
           [alert addButtonWithTitle:@"继续买！" block:^{
             VipViewController *vip=[[VipViewController alloc]initWithUserPay:weatherUserPay];
@@ -1184,33 +1186,45 @@
           [SVProgressHUD dismiss];
         });
       }else{
-        for(NSString *taps in _ridding.map.mapTaps){
-          NSArray *splits = [taps componentsSeparatedByString:@","];
-          NSDictionary *dic= [self.requestUtil weatherRequest:taps];
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if(dic){
-              NSArray *dateArray=[dic objectForKey:keyWeather];
-              if([dateArray count]>0){
-                Weather *weather=[[Weather alloc]initWithJSONDic:[dateArray objectAtIndex:0]];
-                WeatherAnnotation *weatherAnnotation =[[WeatherAnnotation alloc]init];
-                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:[weather urlFromUrl]]];
-                weatherAnnotation.headImage =[UIImage imageWithData:data];
-                weatherAnnotation.coordinate=CLLocationCoordinate2DMake([[splits objectAtIndex:0]doubleValue], [[splits objectAtIndex:1]doubleValue]);
-                weatherAnnotation.subtitle=[weather subTitle];
-                weatherAnnotation.title=[weather weatherDescStr];
-                [self.mapView addAnnotation:weatherAnnotation];
-                [self.mapView selectAnnotation:weatherAnnotation animated:YES];
-              }
-            }
-            count++;
-            if(count==totalBlock){
-              [SVProgressHUD dismiss];
-            }
-          });
-        }
+        [self getWeather];
       }
     }else{
       [self toBuyWeather];
+    }
+  });
+  
+#endif
+}
+
+- (void)getWeather{
+  __block int count=0;
+  __block int totalBlock=[_ridding.map.mapTaps count];
+  dispatch_queue_t q;
+  q = dispatch_queue_create("didFinishPickingMediaWithInfo", NULL);
+  dispatch_async(q, ^{
+    for(NSString *taps in _ridding.map.mapTaps){
+      NSArray *splits = [taps componentsSeparatedByString:@","];
+      NSDictionary *dic= [self.requestUtil weatherRequest:taps];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        if(dic){
+          NSArray *dateArray=[dic objectForKey:keyWeather];
+          if([dateArray count]>0){
+            Weather *weather=[[Weather alloc]initWithJSONDic:[dateArray objectAtIndex:0]];
+            WeatherAnnotation *weatherAnnotation =[[WeatherAnnotation alloc]init];
+            NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:[weather urlFromUrl]]];
+            weatherAnnotation.headImage =[UIImage imageWithData:data];
+            weatherAnnotation.coordinate=CLLocationCoordinate2DMake([[splits objectAtIndex:0]doubleValue], [[splits objectAtIndex:1]doubleValue]);
+            weatherAnnotation.subtitle=[weather subTitle];
+            weatherAnnotation.title=[weather weatherDescStr];
+            [self.mapView addAnnotation:weatherAnnotation];
+            [self.mapView selectAnnotation:weatherAnnotation animated:YES];
+          }
+        }
+        count++;
+        if(count==totalBlock){
+          [SVProgressHUD dismiss];
+        }
+      });
     }
   });
 }
