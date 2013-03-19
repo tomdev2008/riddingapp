@@ -67,7 +67,7 @@
 
   self.separatorLine1.image=[UIIMAGE_FROMPNG(@"qqnr_pd_comment_line") stretchableImageWithLeftCapWidth:17 topCapHeight:0];
   self.separatorLine2.image=[UIIMAGE_FROMPNG(@"qqnr_pd_comment_line") stretchableImageWithLeftCapWidth:17 topCapHeight:0];
-  _isSyncWifi = FALSE;
+
 
   _lineImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
   _lineImageView.layer.borderWidth = 5.0;
@@ -202,18 +202,6 @@
   return [text length] <= 12;
 }
 
-- (IBAction)syncSinaBtn:(id)sender{
-  
-  if(_isSyncWifi){
-    
-    _isSyncWifi=FALSE;
-    [self.syncSinaBtn setImage:UIIMAGE_FROMPNG(@"qqnr_createmap_sina_disable") forState:UIControlStateNormal];
-  }else{
-    
-    _isSyncWifi=TRUE;
-    [self.syncSinaBtn setImage:UIIMAGE_FROMPNG(@"qqnr_createmap_sina") forState:UIControlStateNormal];
-  }
-}
 #pragma mark -
 #pragma mark UITextViewDelegate
 

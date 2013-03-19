@@ -16,7 +16,6 @@
   Ridding *_ridding;
   UIButton *_syncSinaBtn;
   BOOL _showingKeyBoard;
-  BOOL _isSyncWifi;
   BOOL _isShortPath;
 }
 
@@ -26,7 +25,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *totalDistanceLB;
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) IBOutlet UIImageView *lineImageView;
-@property (nonatomic, retain) IBOutlet UIButton *syncSinaBtn;
 @property (nonatomic, retain) IBOutlet UIImageView *separatorLine1;
 @property (nonatomic, retain) IBOutlet UIImageView *separatorLine2;
 
