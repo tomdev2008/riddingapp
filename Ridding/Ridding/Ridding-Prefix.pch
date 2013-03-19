@@ -17,7 +17,8 @@
 
 #endif
 
-//#define isProVersion 1
+//#define isProVersion 1  是否是专业版
+
 #define kFileClientServerUpload_RiddingPicture       @"FileClientServerUpload_riddingPicture"
 #define kFileClientServerUpload_Ridding              @"FileClientServerUpload_ridding"
 #define kFileClientServerUpload_File                 @"FileClientServerUpload_file"
