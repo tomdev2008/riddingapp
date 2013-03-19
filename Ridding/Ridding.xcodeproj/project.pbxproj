@@ -3823,8 +3823,8 @@
 		1878B8C31516DF2D00985FC8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: zheng yisheng (F286NP9S62)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zheng yisheng (F286NP9S62)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: zheng yisheng";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zheng yisheng";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ridding/Ridding-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
@@ -3841,8 +3841,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
+				PROVISIONING_PROFILE = "B535CD73-A988-4C52-B547-56CB62E3022F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B535CD73-A988-4C52-B547-56CB62E3022F";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
@@ -3852,8 +3852,8 @@
 		1878B8C41516DF2D00985FC8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: zheng yisheng (F286NP9S62)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zheng yisheng (F286NP9S62)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: zheng yisheng";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zheng yisheng";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ridding/Ridding-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
@@ -3870,8 +3870,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = qiqunar;
-				PROVISIONING_PROFILE = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "470CCA09-C89B-4AF8-9FE0-F7325A9F3E92";
+				PROVISIONING_PROFILE = "B535CD73-A988-4C52-B547-56CB62E3022F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B535CD73-A988-4C52-B547-56CB62E3022F";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
