@@ -60,7 +60,6 @@ static SinaApiRequestUtil *sinaApiRequestUtil = nil;
   [asiRequest setDefaultResponseEncoding:NSUTF8StringEncoding];
   [asiRequest startSynchronous];
   NSString *response = [asiRequest responseString];
- 
   [MobClick event:@"2012112001"];
   return [response JSONValue];
 

@@ -2690,19 +2690,6 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "SinaApiRequestUtil.m"
-         timestampString = "379008791.121824"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "62"
-         endingLineNumber = "62"
-         landmarkName = "-getAtUserList:type:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "SinaApiRequestUtil.m"
          timestampString = "379010144.300737"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"

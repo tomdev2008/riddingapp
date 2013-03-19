@@ -123,19 +123,28 @@
   dispatch_async(q, ^{
     [_sinaUsers removeAllObjects];
     NSArray *array = [[SinaApiRequestUtil getSinglton] getAtUserList:t type:0];
-    if (array && [array count] > 0) {
-      for (NSDictionary *dic in array) {
-        SinaUserProfile *userProfile = [[SinaUserProfile alloc] initWithJSONDic:dic];
-        if (![_originUser objectForKey:LONGLONG2NUM(userProfile.dbId)]) {
-          [_sinaUsers addObject:userProfile];
+    if([array isKindOfClass:[NSArray class]]){
+      if (array && [array count] > 0) {
+        for (NSDictionary *dic in array) {
+          SinaUserProfile *userProfile = [[SinaUserProfile alloc] initWithJSONDic:dic];
+          if (![_originUser objectForKey:LONGLONG2NUM(userProfile.dbId)]) {
+            [_sinaUsers addObject:userProfile];
+          }
         }
       }
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [self.atableView reloadData];
+        [textField setEnabled:YES];
+        [SVProgressHUD dismiss];
+      });
+    }else if([array isKindOfClass:[NSDictionary class]]){
+      NSDictionary *dic=(NSDictionary*)array;
+      if([[dic objectForKey:@"error_code"]intValue]>21300){
+         [SVProgressHUD showErrorWithStatus:@"认证失效，请重新登录" duration:1.0];
+      }
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self.atableView reloadData];
-      [textField setEnabled:YES];
-      [SVProgressHUD dismiss];
-    });
+
+ 
   });
   return YES;
 }
