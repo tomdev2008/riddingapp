@@ -99,7 +99,7 @@
     staticInfo.user.authToken = [dic objectForKey:kStaticInfo_authToken];
     staticInfo.user.sourceType = SOURCE_SINA;//新浪微博
 
-    NSDictionary *profileDic = [self.requestUtil getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType];
+    NSDictionary *profileDic = [self.requestUtil getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType needCheckRegister:NO];
     
   
     User *user = [[User alloc] initWithJSONDic:[profileDic objectForKey:keyUser]];

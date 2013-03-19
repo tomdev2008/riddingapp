@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
   
   [super viewDidLoad];
-  
+  [self.barView.titleLabel setText:@"外部网页"];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back") forState:UIControlStateNormal];
   [self.barView.leftButton setImage:UIIMAGE_FROMPNG(@"qqnr_back_hl") forState:UIControlStateHighlighted];
   self.barView.leftButton.hidden = NO;

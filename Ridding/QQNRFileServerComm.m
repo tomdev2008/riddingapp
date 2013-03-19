@@ -78,7 +78,7 @@ static QQNRFileServerComm *qqnrFileServerComm = nil;
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
     SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, ridding, kFileClientServerUpload_Ridding);
     [target fileClientServerUploadOneFileSuccess:dic];
-
+    
   } else {
     [target fileClientServerUploadOneFileError:nil];
   }

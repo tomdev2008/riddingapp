@@ -60,7 +60,7 @@
 
 - (NSDictionary *)deleteRiddingUser:(long long)riddingId deleteUserIds:(NSArray *)delteUserIds;
 
-- (NSDictionary *)getUserProfile:(long long)userId sourceType:(int)sourceType;
+- (NSDictionary *)getUserProfile:(long long)userId sourceType:(int)sourceType needCheckRegister:(BOOL)needCheckRegister;
 
 - (NSDictionary *)getMapFix:(CGFloat)latitude longtitude:(CGFloat)longtitude;
 
@@ -110,6 +110,8 @@
 - (void)updateGpsSync:(int)sync riddingId:(long long)riddingId;
 
 - (NSArray*)getUserPays:(int)typeId;
+
+- (NSDictionary *)tryUserPay:(int)typeId;
 @end
 
 

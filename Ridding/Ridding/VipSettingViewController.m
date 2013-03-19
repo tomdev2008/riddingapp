@@ -109,16 +109,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   if ([indexPath row] == 0) {
-    
-    VipViewController *vipView=[[VipViewController alloc]init];
+    UserPay *userPay=[_userPays objectForKey:INT2NUM(UserPay_Weather)];
+    VipViewController *vipView=[[VipViewController alloc]initWithUserPay:userPay];
     [self.navigationController pushViewController:vipView animated:YES];
-//    NSURL *url = [NSURL URLWithString:online_taobao_link_weather];
-//    if ([[UIApplication sharedApplication] canOpenURL:url]) {
-//      [[UIApplication sharedApplication] openURL:url];
-//    } else {
-//      url = [NSURL URLWithString:online_taobao_url_weather];
-//      [[UIApplication sharedApplication] openURL:url];
-//    }
+
   } else if ([indexPath row] == 1) {
     NSURL *url = [NSURL URLWithString:online_taobao_link_weather];
     if ([[UIApplication sharedApplication] canOpenURL:url]) {

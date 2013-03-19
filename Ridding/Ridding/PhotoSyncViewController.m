@@ -10,6 +10,7 @@
 #import "UserSettingCell.h"
 #import "Utilities.h"
 #import "RiddingPictureDao.h"
+#import "BlockAlertView.h"
 #import "SVSegmentedControl.h"
 #import "UIColor+XMin.h"
 #import "RiddingPicture.h"
@@ -26,6 +27,14 @@
         // Custom initialization
     }
     return self;
+}
+
+- (id)initWithCount:(int)count{
+  self=[super init];
+  if(self){
+    _count=count;
+  }
+  return self;
 }
 
 - (void)viewDidLoad
@@ -48,8 +57,12 @@
   GADSearchRequest *adRequest = [[GADSearchRequest alloc] init];
   [adRequest setQuery:@"sport"];
   [bannerView loadRequest:[adRequest request]];
-  _count=[RiddingPictureDao getRiddingPictureCount];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(succUploadPicture:)
+                                               name:kSuccUploadPictureNotification object:nil];
+  
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -96,11 +109,17 @@
     cell.textLabel.textAlignment=UITextAlignmentLeft;
     cell.textLabel.textColor=[UIColor whiteColor];
     cell.textLabel.text=@"只在wifi状态下上传照片?";
-    SVSegmentedControl *redSC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"否", @"是", nil]];
+    SVSegmentedControl *redSC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@" 否 ", @" 是 ", nil]];
     [redSC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
     redSC.crossFadeLabelsOnDrag = YES;
     redSC.thumb.tintColor = [UIColor getColor:ColorBlue];
-    redSC.selectedIndex = 0;
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    if([prefs objectForKey:kStaticInfo_SaveInWifi]){
+      redSC.selectedIndex = 1;
+    }else{
+      redSC.selectedIndex = 0;
+    }
+    
     [cell.contentView addSubview:redSC];
     redSC.center = CGPointMake(260, 25);
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
@@ -114,10 +133,13 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   
   if ([indexPath row] == 0) {
     if(_count>0){
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"图片上传"
-                                                      message:[NSString stringWithFormat:@"您还有%d张相片没有上传",_count]
-                                                     delegate:self cancelButtonTitle:@"暂时不上传"
-                                            otherButtonTitles:@"现在上传", nil];
+      BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"图片上传" message:[NSString stringWithFormat:@"您还有%d张相片没有上传",_count]];
+      [alert setCancelButtonWithTitle:@"暂时不上传" block:^(void) {
+        
+      }];
+      [alert addButtonWithTitle:@"现在上传" block:^{
+        [RiddingPicture uploadRiddingPictureFromLocal];
+      }];
       [alert show];
     }
 
@@ -150,13 +172,17 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   } else if (segmentedControl.selectedIndex == 1) {
     [prefs setBool:YES forKey:kStaticInfo_SaveInWifi];
   }
+   [prefs setBool:NO forKey:kStaticInfo_SaveInWifiTips];
+  [prefs synchronize];
+  [MobClick event:@"2013031906"];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+#pragma mark - MapCreateDescVCTL delegate
+- (void)succUploadPicture:(NSNotification *)note {
   
-  if([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"现在上传"]){
-    [RiddingPicture uploadRiddingPictureFromLocal];
-  }
+    _count= [RiddingPictureDao getRiddingPictureCount];
+    [self.uiTableView reloadData];
+  
 }
 
 @end

@@ -16,6 +16,8 @@
 #import <AddressBookUI/AddressBookUI.h>
 @interface UserSettingViewController : BasicNeedLoginViewController <UITableViewDelegate, UITableViewDataSource, QQNRSourceLoginViewControllerDelegate, RiddingViewControllerDelegate,MFMessageComposeViewControllerDelegate> {
   StaticInfo *staticInfo;
+    NSMutableDictionary *_userPays;
+  int _count;
 }
 @property (nonatomic, retain) IBOutlet UITableView *uiTableView;
 @property (nonatomic, retain) StaticInfo *staticInfo;

@@ -7,12 +7,20 @@
 //
 
 #import "BasicViewController.h"
-
-@interface VipViewController : BasicViewController
+#import "UserPay.h"
+@interface VipViewController : BasicViewController<UIScrollViewDelegate>{
+  UserPay *_userPay;
+}
 
 
 
 @property (nonatomic,retain) IBOutlet UIScrollView *scrollView;
-@property (nonatomic,retain) IBOutlet UITextField *taobaoCodeField;
+@property (nonatomic,retain) IBOutlet UITextView *taobaoCodeView;
 @property (nonatomic,retain) IBOutlet UILabel *descLabel;
+@property (nonatomic,retain) IBOutlet UIButton *tryBtn;
+@property (nonatomic,retain) IBOutlet UILabel *vipDescLabel;
+@property (nonatomic,retain) IBOutlet UILabel *dayLongLabel;
+
+
+- (id)initWithUserPay:(UserPay*)userPay;
 @end

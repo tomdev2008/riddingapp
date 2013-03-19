@@ -18,7 +18,7 @@
 #import "UIImageView+WebCache.h"
 #import "RiddingLocationDao.h"
 #import "MapUtil.h"
-
+#define chaBtn @"chaBtn"
 #define dataLimit 10
 
 @interface QQNRFeedViewController ()
@@ -123,21 +123,25 @@
     if ([[ResponseCodeCheck getSinglton] isWifi]) {
       NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
       
-      if (_isMyFeedHome &&[StaticInfo getSinglton].user.nowRiddingCount >= 2 && ![prefs boolForKey:@"recomComment"]) {
-        UIAlertView *alert = nil;
-        if ([StaticInfo getSinglton].user.nowRiddingCount >= 10) {
-          alert = [[UIAlertView alloc] initWithTitle:@"我们需要你"
-                                             message:QIQUNARGood2
-                                            delegate:self cancelButtonTitle:@"无情的拒绝"
-                                   otherButtonTitles:@"嗯!", nil];
-
+      if (_isMyFeedHome &&[StaticInfo getSinglton].user.nowRiddingCount >= 2 && ![prefs boolForKey:@"recomComment"]&&![prefs boolForKey:chaBtn]) {
+        
+        if ([StaticInfo getSinglton].user.nowRiddingCount >= 5) {
+          
+          [_evaluateBtn setImage:UIIMAGE_FROMPNG(@"qqnr_evaluate_view1") forState:UIControlStateNormal];
+          [_evaluateBtn setImage:UIIMAGE_FROMPNG(@"qqnr_evaluate_view1") forState:UIControlStateHighlighted];
+          
         } else {
-          alert = [[UIAlertView alloc] initWithTitle:@"我们需要你"
-                                             message:QIQUNARGood1
-                                            delegate:self cancelButtonTitle:@"无情的拒绝"
-                                   otherButtonTitles:@"嗯!", nil];
+          
+          [_evaluateBtn setImage:UIIMAGE_FROMPNG(@"qqnr_evaluate_view2") forState:UIControlStateNormal];
+          [_evaluateBtn setImage:UIIMAGE_FROMPNG(@"qqnr_evaluate_view2") forState:UIControlStateHighlighted];
+          
         }
-        [alert show];
+        _evaluateView.alpha=0.0;
+        _evaluateView.hidden=NO;
+        [UIView animateWithDuration:1.0 animations:^{
+          _evaluateView.alpha=1.0;
+        }];
+        [self.view bringSubviewToFront:_evaluateView];
         [prefs setBool:YES forKey:@"recomComment"];
         [prefs synchronize];
       }else{
@@ -226,8 +230,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 
   if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"嗯!"]) {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
-    [MobClick event:@"2013022506"];
+   
   } else if([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"现在上传"]){
     [RiddingPicture uploadRiddingPictureFromLocal];
   }
@@ -507,7 +510,7 @@
 
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     Ridding *ridding = [_dataSource objectAtIndex:cell.index];
-    NSDictionary *dic = [self.requestUtil getUserProfile:ridding.leaderUser.userId sourceType:SOURCE_SINA];
+    NSDictionary *dic = [self.requestUtil getUserProfile:ridding.leaderUser.userId sourceType:SOURCE_SINA needCheckRegister:NO];
     User *_user = [[User alloc] initWithJSONDic:[dic objectForKey:keyUser]];
     dispatch_async(dispatch_get_main_queue(), ^{
         QQNRFeedViewController *QQNRFVC = [[QQNRFeedViewController alloc] initWithUser:_user isFromLeft:FALSE];
@@ -561,6 +564,20 @@
   [self.navigationController popToRootViewControllerAnimated:NO];
   RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
   [delegate.navController pushViewController:mapCreate animated:YES];
+}
+
+- (IBAction)evaluateBtnClick:(id)sender
+{
+  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStore]];
+  [MobClick event:@"2013022506"];
+}
+
+- (IBAction)chaBtnClick:(id)sender
+{
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  [prefs setBool:YES forKey:chaBtn];
+  [_evaluateView removeFromSuperview];
+
 }
 
 #pragma mark - MapCreateVCTL delegate
@@ -630,5 +647,8 @@
 
   self.didAppearOnce = FALSE;
 }
+
+
+
 
 @end

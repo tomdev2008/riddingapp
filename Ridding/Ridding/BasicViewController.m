@@ -66,7 +66,8 @@
 }
 
 - (void)viewDidUnload {
-
+  
+  self.requestUtil.delegate=nil;
   [super viewDidUnload];
   // Release any retained subviews of the main view.
   // e.g. self.myOutlet = nil;
@@ -262,9 +263,11 @@
   } else if (code == -310) {
     return @"每个人只有一次机会噢";
   } else if (code == -311) {
-    return @"对于自己的活动无法执行";
+    return @"不能对自己的活动操作噢";
   } else if (code == -444) {
     return @"登陆信息失效，请重新登陆";
+  } else if (code == -5001) {
+    return @"使用失败";
   }
   [MobClick event:@"2012112002"];
   return @"操作失败";
@@ -278,13 +281,16 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+  
   self.requestUtil.delegate=self;
   [super viewDidAppear:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
-  [super viewDidDisappear:animated];
+  
   self.requestUtil.delegate=nil;
+  [super viewDidDisappear:animated];
+  
 }
 
 @end

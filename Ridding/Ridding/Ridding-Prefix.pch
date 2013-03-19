@@ -46,6 +46,9 @@
 #define QIQUNARGood1  [MobClick getConfigParams:@"online_good1"] 
 #define QIQUNARGood2  [MobClick getConfigParams:@"online_good2"] 
 
+#define TaobaoCodeDesc  [MobClick getConfigParams:@"online_taobaoCodeDesc"] 
+
+
 #define sendMyLocationTime 30.0
 #define showRightViewTime 5.0
 #define YouMenAppKey @"4fb3ce805270152b53000128"

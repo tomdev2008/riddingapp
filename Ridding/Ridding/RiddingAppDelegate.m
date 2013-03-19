@@ -11,6 +11,7 @@
 #import "QQNRFeedViewController.h"
 #import "RiddingPictureDao.h"
 #import "Gps.h"
+#import "Utilities.h"
 #import "GpsDao.h"
 #define moveSpeed 0.5
 @interface RiddingAppDelegate(){
@@ -74,11 +75,27 @@
     LandingViewController *landingViewController=[[LandingViewController alloc]init];
     [self.rootViewController presentModalViewController:landingViewController animated:NO];
     [prefs setBool:YES forKey:kStaticInfo_StartApp];
+    
   }
+  [self firstInit];
+  
   // Let the device know we want to receive push notifications
 	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
 	 (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
   return YES;
+}
+
+- (void)firstInit{
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  NSString *version=[Utilities appVersion];
+  //如果是当前版本的第一次登陆
+  if(![prefs boolForKey:version]){
+    
+    [prefs setBool:YES forKey:kStaticInfo_SaveInWifi];
+    [prefs synchronize];
+    
+  }
+
 }
 
 - (void)setUserInfo {
@@ -106,7 +123,7 @@
     return TRUE;
   }
   RequestUtil *requestUtil = [[RequestUtil alloc] init];
-  NSDictionary *userProfileDic = [requestUtil getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType];
+  NSDictionary *userProfileDic = [requestUtil getUserProfile:staticInfo.user.userId sourceType:staticInfo.user.sourceType needCheckRegister:YES];
   User *user = [[User alloc] initWithJSONDic:[userProfileDic objectForKey:keyUser]];
   //如果新浪成功，并且authtoken有效
   if (staticInfo.user.accessToken != nil && userProfileDic != nil) {
@@ -116,6 +133,7 @@
     staticInfo.user.totalDistance = user.totalDistance;
     staticInfo.user.nowRiddingCount = user.nowRiddingCount;
     staticInfo.user.backGroundUrl = user.backGroundUrl;
+    staticInfo.user.taobaoCode=user.taobaoCode;
     staticInfo.logined = TRUE;
     return TRUE;
   }

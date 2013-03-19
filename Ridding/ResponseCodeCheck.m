@@ -7,7 +7,7 @@
 //
 
 #import "Reachability.h"
-
+#import "BlockAlertView.h"
 static ResponseCodeCheck *responseCodeCheck = nil;
 
 @implementation ResponseCodeCheck
@@ -38,11 +38,13 @@ static ResponseCodeCheck *responseCodeCheck = nil;
 
   NetworkStatus networkStatus = [Reachability reachabilityForInternetConnection].currentReachabilityStatus;
   if (networkStatus == NotReachable) {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"网络连接失败"
-                                                    message:@"请检查网络，是否已连接网络?"
-                                                   delegate:self cancelButtonTitle:@"确定"
-                                          otherButtonTitles:nil];
+    BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"网络连接失败" message:@"请检查网络，是否已连接网络?"];
+    [alert setCancelButtonWithTitle:@"确定" block:^(void) {
+      
+    }];
+
     [alert show];
+
     staticInfo.canConnect = NO;
     return false;
   } else if (networkStatus == ReachableViaWWAN) {

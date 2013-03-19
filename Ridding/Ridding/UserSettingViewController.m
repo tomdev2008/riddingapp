@@ -14,9 +14,12 @@
 #import "VipSettingViewController.h"
 #import "UIColor+XMin.h"
 #import "Utilities.h"
+#import "RiddingPictureDao.h"
 #import "UIImage+UIImage_Retina4.h"
 #import "UserHelpViewController.h"
 #import "FeedBackViewController.h"
+#import "UserPay.h"
+#import "VipViewController.h"
 @implementation UserSettingViewController
 @synthesize staticInfo;
 
@@ -48,7 +51,11 @@
   self.uiTableView.backgroundColor=[UIColor clearColor];
   self.uiTableView.backgroundView.alpha=0;
   self.uiTableView.separatorColor=[UIColor getColor:@"838788"];
+  _userPays=[[NSMutableDictionary alloc]init];
   
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(succUploadPicture:)
+                                               name:kSuccUploadPictureNotification object:nil];
 
 }
 
@@ -67,6 +74,28 @@
 - (void)viewWillDisappear:(BOOL)animated {
 
   [super viewWillDisappear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+  [super viewDidAppear:animated];
+  if(!self.didAppearOnce){
+    self.didAppearOnce=YES;
+    dispatch_queue_t q;
+    q = dispatch_queue_create("tryBtnClickDisPatch", NULL);
+    dispatch_async(q, ^{
+      _count= [RiddingPictureDao getRiddingPictureCount];
+      NSArray *array=[self.requestUtil getUserPays:-1];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        if(array){
+          for(NSDictionary *dic in array){
+            UserPay *userPay=[[UserPay alloc]initWithJSONDic:[dic objectForKey:keyUserPay]];
+            [_userPays setObject:userPay forKey:INT2NUM(userPay.type)];
+          }
+        }
+        [self.uiTableView reloadData];
+      });
+    });
+  }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -131,13 +160,32 @@
     imageView.image=UIIMAGE_FROMPNG(@"qqnr_system_icon");
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     [cell.accessoryView addSubview:imageView];
+    UILabel *descLabel=[[UILabel alloc]initWithFrame:CGRectMake(180, 15, 80, 20)];
+    descLabel.textColor=[UIColor getColor:@"363636"];
+    descLabel.backgroundColor=[UIColor clearColor];
+    descLabel.font=[UIFont systemFontOfSize:14];
+    descLabel.textAlignment=UITextAlignmentRight;
+    descLabel.text=@"";
+    [cell.contentView addSubview:descLabel];
     
     if(indexPath.section==0){
       
       if(indexPath.row==0){
         cell.textLabel.text=@"拍照设置";
+        
+        if(_count>0){
+          descLabel.text=[NSString stringWithFormat:@"未上传(%d张)",_count];
+        }
       }else{
-        cell.textLabel.text=@"高级功能";
+        cell.textLabel.text=@"天气服务";
+        UserPay *userPay=[_userPays objectForKey:INT2NUM(UserPay_Weather)];
+        if(userPay!=nil){
+          if(userPay.status==UserPayStatus_Try||userPay.status==UserPayStatus_Valid){
+            descLabel.text=[NSString stringWithFormat:@"剩余%d天",userPay.extdatelong];
+          }else if(userPay.status==UserPayStatus_Invalid){
+            descLabel.text=@"已过期";
+          }
+        }
       }
     }else if(indexPath.section==1){
       if(indexPath.row==0){
@@ -147,6 +195,7 @@
         cell.textLabel.text=@"评价骑行者";
         
       }else if(indexPath.row==2){
+        
         cell.textLabel.text=@"骑行者反馈";
       }else{
         cell.textLabel.text=@"查看新版本";
@@ -191,7 +240,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   if(indexPath.section==0){
     if(indexPath.row==0){
       
-      PhotoSyncViewController *photoSync=[[PhotoSyncViewController alloc]init];
+      PhotoSyncViewController *photoSync=[[PhotoSyncViewController alloc]initWithCount:_count];
       [self.navigationController pushViewController:photoSync animated:YES];
     }else{
       [self updateToVIP];
@@ -206,6 +255,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkAppStoreComment]];
       
     }else if(indexPath.row==2){
+      [MobClick event:@"2013031907"];
       FeedBackViewController *feedBackViewController=[[FeedBackViewController alloc]init:FALSE];
       [self.navigationController pushViewController:feedBackViewController animated:YES];
     }else{
@@ -269,8 +319,12 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   
   
   if ([[RiddingAppDelegate shareDelegate] canLogin]) {
-    VipSettingViewController *vipSetting=[[VipSettingViewController alloc]init];
-    [self.navigationController pushViewController:vipSetting animated:YES];
+    UserPay *userPay=[_userPays objectForKey:INT2NUM(UserPay_Weather)];
+    VipViewController *vipView=[[VipViewController alloc]initWithUserPay:userPay];
+    [self.navigationController pushViewController:vipView animated:YES];
+
+//    VipSettingViewController *vipSetting=[[VipSettingViewController alloc]init];
+//    [self.navigationController pushViewController:vipSetting animated:YES];
   } else {
     [self presentLoginView];
   }
@@ -349,5 +403,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [MobClick event:@"2013022102"];
   }
 	[self dismissModalViewControllerAnimated:YES];
+}
+
+
+#pragma mark - MapCreateDescVCTL delegate
+- (void)succUploadPicture:(NSNotification *)note {
+  
+    _count= [RiddingPictureDao getRiddingPictureCount];
+    [self.uiTableView reloadData];
+  
 }
 @end

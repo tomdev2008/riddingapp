@@ -14,6 +14,7 @@
 #import "SinaApiRequestUtil.h"
 #import "NSString+Addition.h"
 #import "NSDate+Addition.h"
+#import "BlockAlertView.h"
 #import "RiddingPictureDao.h"
 @interface PhotoDescViewController () {
   NSString *_riddingName;
@@ -111,15 +112,25 @@
   _riddingPicture.pictureDescription=self.textView.text;
   
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-  [prefs setBool:YES forKey:kStaticInfo_SaveInWifi];
-  [prefs synchronize];
+
   if([prefs boolForKey:kStaticInfo_SaveInWifi]&&![[ResponseCodeCheck getSinglton] isWifi]){
     
     [RiddingPictureDao addRiddingPicture:_riddingPicture];
     
     if(![prefs boolForKey:kStaticInfo_SaveInWifiTips]){
-      UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"小提示" message:@"您当前处于非wifi状态下，照片已经保存到本地，在wifi状态下会继续为您上传" delegate:self cancelButtonTitle:@"好的,知道了" otherButtonTitles:@"不再提示",nil];
-      [alertView show];
+      BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"小提示" message:@"您当前处于非wifi状态下，照片已经保存到本地，在wifi状态下会继续为您上传"];
+      [alert setCancelButtonWithTitle:@"我知道了" block:^(void) {
+        [self dismissModalViewControllerAnimated:YES];
+      }];
+      [alert addButtonWithTitle:@"不再提示" block:^{
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        [prefs setBool:YES forKey:kStaticInfo_SaveInWifiTips];
+        [prefs synchronize];
+        [self dismissModalViewControllerAnimated:YES];
+      }];
+      [alert show];
+    }else{
+      [self dismissModalViewControllerAnimated:YES];
     }
 
   }else{
@@ -131,18 +142,10 @@
     task.paramDic = dic;
     QQNRServerTaskQueue *queue = [QQNRServerTaskQueue sharedQueue];
     [queue addTask:task withDependency:NO];
+    [self dismissModalViewControllerAnimated:YES];
   }
   
-  [self dismissModalViewControllerAnimated:YES];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
   
-  if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"不再提示"]) {
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setBool:YES forKey:kStaticInfo_SaveInWifiTips];
-    [prefs synchronize];
-  }
 }
 
 

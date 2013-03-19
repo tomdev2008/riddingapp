@@ -39,6 +39,8 @@
 @property (nonatomic, retain) IBOutlet UIImageView *lineView;
 @property (nonatomic, retain) IBOutlet UIView *nothingView;
 @property (nonatomic) BOOL isMyFeedHome;
+@property (nonatomic, retain) IBOutlet UIView *evaluateView;
+@property (nonatomic, retain) IBOutlet UIButton *evaluateBtn;
 
 
 - (id)initWithUser:(User *)toUser isFromLeft:(BOOL)isFromLeft;

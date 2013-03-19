@@ -322,7 +322,7 @@
   
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     Ridding *ridding = [_dataSource objectAtIndex:cell.index];
-    NSDictionary *dic = [self.requestUtil getUserProfile:ridding.leaderUser.userId sourceType:SOURCE_SINA];
+    NSDictionary *dic = [self.requestUtil getUserProfile:ridding.leaderUser.userId sourceType:SOURCE_SINA needCheckRegister:NO];
     User *_user = [[User alloc] initWithJSONDic:[dic objectForKey:keyUser]];
     dispatch_async(dispatch_get_main_queue(), ^{
       QQNRFeedViewController *QQNRFVC = [[QQNRFeedViewController alloc] initWithUser:_user isFromLeft:FALSE];

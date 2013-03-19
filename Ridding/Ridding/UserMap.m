@@ -15,9 +15,12 @@
 #import "UIImageView+WebCache.h"
 #import "MapUtil.h"
 #import "MapFix.h"
+#import "VipViewController.h"
 #import "Utilities.h"
 #import "GpsDao.h"
+#import "UserPay.h"
 #import "Gps.h"
+#import "BlockAlertView.h"
 #import "QiNiuUtils.h"
 #import "StartAnnotation.h"
 #import "UserSettingViewController.h"
@@ -151,12 +154,13 @@
     [_sendMyLocationTimer fire];
   }
   [super viewDidAppear:animated];
-  dispatch_async(dispatch_queue_create("download", NULL), ^{
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self download];
-    });
-  });
+  [self download];
   
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+  [super viewDidDisappear:animated];
+  [_sendMyLocationTimer invalidate];
 }
 
 - (void)download {
@@ -956,7 +960,7 @@
 }
 
 - (IBAction)takePhotoAction:(id)sender{
-  
+  _showListView.hidden=YES;
   [self.takePhotoBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_iconbackground_hl") forState:UIControlStateNormal];
   [self.takePhotoBtn setBackgroundImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_iconbackground_hl") forState:UIControlStateHighlighted];
   [self showActionSheet];
@@ -981,8 +985,12 @@
   if([Utilities deviceVersion]<6.0){
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     if (![prefs boolForKey:kStaticInfo_Ios5Tips_ShowPhoto]) {
-      UIAlertView *view= [[UIAlertView alloc]initWithTitle:@"小提示" message:@"您的手机版本低于ios6,查看照片大图需要长按" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"我知道了", nil];
-      [view show];
+      BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"小提示" message:@"您的手机版本低于ios6,查看照片大图需要长按"];
+      [alert setCancelButtonWithTitle:@"我知道了" block:^(void) {
+        
+      }];
+      
+      [alert show];
       [prefs setBool:YES forKey:kStaticInfo_Ios5Tips_ShowPhoto];
     }
   }
@@ -992,6 +1000,7 @@
   [MobClick event:@"2013022510"];
 
   [_showListView reset];
+  _showListView.hidden=YES;
   [self doAnimate:sender];
   [_mySelfBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_single_hl") forState:UIControlStateNormal];
   [self removeAllAnnotations];
@@ -1005,6 +1014,7 @@
 - (IBAction)showTeamerAction:(id)sender{
   [MobClick event:@"2013022511"];
   [_showListView reset];
+  _showListView.hidden=YES;
   [self doAnimate:sender];
   [_teamerBtn setImage:UIIMAGE_FROMPNG(@"qqnr_map_tabbar_icon_member_hl") forState:UIControlStateNormal];
   [self removeAllAnnotations];
@@ -1153,29 +1163,71 @@
   [SVProgressHUD showWithStatus:@"正在获取天气数据"];
   __block int count=0;
   __block int totalBlock=[_ridding.map.mapTaps count];
-  for(NSString *taps in _ridding.map.mapTaps){
-    dispatch_queue_t q;
-    q = dispatch_queue_create("didFinishPickingMediaWithInfo", NULL);
-    dispatch_async(q, ^{
-      NSArray *splits = [taps componentsSeparatedByString:@","];
-      NSDictionary *dic= [self.requestUtil weatherRequest:taps];
-      dispatch_async(dispatch_get_main_queue(), ^{
-        NSArray *dateArray=[dic objectForKey:keyWeather];
-        Weather *weather=[[Weather alloc]initWithJSONDic:[dateArray objectAtIndex:0]];
-        WeatherAnnotation *weatherAnnotation =[[WeatherAnnotation alloc]init];
-        NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:[weather urlFromUrl]]];
-        weatherAnnotation.headImage =[UIImage imageWithData:data];
-        weatherAnnotation.coordinate=CLLocationCoordinate2DMake([[splits objectAtIndex:0]doubleValue], [[splits objectAtIndex:1]doubleValue]);
-        weatherAnnotation.subtitle=[weather subTitle];
-        weatherAnnotation.title=[weather weatherDescStr];
-        [self.mapView addAnnotation:weatherAnnotation];
-        [self.mapView selectAnnotation:weatherAnnotation animated:YES];
-        count++;
-        if(count==totalBlock){
+  dispatch_queue_t q;
+  q = dispatch_queue_create("didFinishPickingMediaWithInfo", NULL);
+  dispatch_async(q, ^{
+    NSArray *array =[self.requestUtil getUserPays:UserPay_Weather];
+    if([array count]>0){
+      NSDictionary *dic=[array objectAtIndex:0];
+      UserPay *weatherUserPay=[[UserPay alloc]initWithJSONDic:[dic objectForKey:keyUserPay]];
+      if(weatherUserPay.status==UserPayStatus_Invalid){
+        dispatch_async(dispatch_get_main_queue(), ^{
+          BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"小提示" message:@"您的天气服务已过期,快去续费吧"];
+          [alert setCancelButtonWithTitle:@"无情的拒绝" block:^(void) {
+            
+          }];
+          [alert addButtonWithTitle:@"继续买！" block:^{
+            VipViewController *vip=[[VipViewController alloc]initWithUserPay:weatherUserPay];
+            [self.navigationController pushViewController:vip animated:YES];
+          }];
+          [alert show];
           [SVProgressHUD dismiss];
+        });
+      }else{
+        for(NSString *taps in _ridding.map.mapTaps){
+          NSArray *splits = [taps componentsSeparatedByString:@","];
+          NSDictionary *dic= [self.requestUtil weatherRequest:taps];
+          dispatch_async(dispatch_get_main_queue(), ^{
+            if(dic){
+              NSArray *dateArray=[dic objectForKey:keyWeather];
+              if([dateArray count]>0){
+                Weather *weather=[[Weather alloc]initWithJSONDic:[dateArray objectAtIndex:0]];
+                WeatherAnnotation *weatherAnnotation =[[WeatherAnnotation alloc]init];
+                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:[weather urlFromUrl]]];
+                weatherAnnotation.headImage =[UIImage imageWithData:data];
+                weatherAnnotation.coordinate=CLLocationCoordinate2DMake([[splits objectAtIndex:0]doubleValue], [[splits objectAtIndex:1]doubleValue]);
+                weatherAnnotation.subtitle=[weather subTitle];
+                weatherAnnotation.title=[weather weatherDescStr];
+                [self.mapView addAnnotation:weatherAnnotation];
+                [self.mapView selectAnnotation:weatherAnnotation animated:YES];
+              }
+            }
+            count++;
+            if(count==totalBlock){
+              [SVProgressHUD dismiss];
+            }
+          });
         }
-      });
-    });
-  }
+      }
+    }else{
+      [self toBuyWeather];
+    }
+  });
+}
+
+- (void)toBuyWeather{
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [SVProgressHUD dismiss];
+    BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"小提示" message:@"请支持我们,购买天气服务"];
+    [alert setCancelButtonWithTitle:@"无情的拒绝" block:^(void) {
+      
+    }];
+    [alert addButtonWithTitle:@"这就去!" block:^{
+      VipViewController *vip=[[VipViewController alloc]initWithUserPay:nil];
+      [self.navigationController pushViewController:vip animated:YES];
+    }];
+    [alert show];
+    
+  });
 }
 @end

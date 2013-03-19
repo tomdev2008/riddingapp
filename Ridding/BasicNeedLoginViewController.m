@@ -7,7 +7,7 @@
 //
 
 #import "BasicNeedLoginViewController.h"
-
+#import "BlockAlertView.h"
 @interface BasicNeedLoginViewController ()
 
 @end
@@ -37,15 +37,14 @@
 
 - (void)showLoginAlertView {
 
-  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"您还没登录噢" message:@"该操作需要登录后才能执行" delegate:self cancelButtonTitle:@"暂时不登录" otherButtonTitles:@"登录", nil];
-  [alertView show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-
-  if (alertView.cancelButtonIndex != buttonIndex) {
+  BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"您还没登录噢" message:@"该操作需要登录后才能执行"];
+  [alert setCancelButtonWithTitle:@"我知道错了~" block:^(void) {
+    
+  }];
+  [alert addButtonWithTitle:@"登录" block:^{
     [self presentLoginView];
-  }
+  }];
+  [alert show];
 }
 
 - (void)presentLoginView {

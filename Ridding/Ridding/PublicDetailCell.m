@@ -39,6 +39,8 @@
   _ibDescLabel.numberOfLines=0;
   UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewTap:)];
   [_ibImageView addGestureRecognizer:tap];
+  UILongPressGestureRecognizer *longPress=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressImageView:)];
+  [_ibImageView addGestureRecognizer:longPress];
 }
 
 - (void)initContentView {
@@ -150,6 +152,19 @@
   if (self.delegate) {
     [self.delegate imageViewClick:self picture:self.info imageView:imageView];
   }
+}
+
+- (void)longPressImageView:(UILongPressGestureRecognizer *)gestureRecognize {
+  
+  if (gestureRecognize.state == UIGestureRecognizerStateBegan){
+    if(self.delegate){
+      [self.delegate deletePicture:self index:self.index];
+    }
+  }
+  if (gestureRecognize.state == UIGestureRecognizerStateEnded) {
+    return;
+  }
+  
 }
 
 

@@ -16,6 +16,7 @@
 #import "MapCreateDescVCTL.h"
 #import "MyLocationManager.h"
 #import "FirstAnnotationView.h"
+#import "BlockAlertView.h"
 #import "UIImage+UIImage_Retina4.h"
 #import "ShowTapAnnotation.h"
 @interface MapCreateVCTL ()
@@ -197,8 +198,12 @@
   if([Utilities deviceVersion]<6.0){
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     if (![prefs boolForKey:kStaticInfo_Ios5Tips]||(_longPressCount>5&&[_locationViews count]==0)) {
-      UIAlertView *view= [[UIAlertView alloc]initWithTitle:@"小提示" message:@"您的手机版本低于ios6,选择起点、终点是需要长按才能添加。" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"我知道了", nil];
-      [view show];
+      
+      BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"小提示" message:@"您的手机版本低于ios6,选择起点、终点是需要长按才能添加。"];
+      [alert setCancelButtonWithTitle:@"我知道了" block:^(void) {
+        
+      }];
+      [alert show];
       [prefs setBool:YES forKey:kStaticInfo_Ios5Tips];
       _longPressCount=0;
     }

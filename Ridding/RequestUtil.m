@@ -247,12 +247,12 @@
   }
 }
 
-- (NSDictionary *)getUserProfile:(long long)userId sourceType:(int)sourceType {
+- (NSDictionary *)getUserProfile:(long long)userId sourceType:(int)sourceType needCheckRegister:(BOOL)needCheckRegister{
 
   if (!userId) {
     return nil;
   }
-  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/user/%lld/profile/?sourceType=%@", QIQUNARHOME, userId, [NSNumber numberWithInt:sourceType]]];
+  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/user/%lld/profile/?sourceType=%d&register=%d", QIQUNARHOME, userId,sourceType,needCheckRegister?-1:1]];
   ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
   [asiRequest startSynchronous];
   NSString *apiResponse = [asiRequest responseString];
@@ -476,6 +476,18 @@
   NSString *apiResponse = [asiRequest responseString];
   NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
   return [responseDic objectForKey:@"data"];
+}
+
+- (NSDictionary *)tryUserPay:(int)typeId{
+  
+  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/user/%lld/userPay/try/?typeId=%d", QIQUNARHOME, self.staticInfo.user.userId,typeId]];
+  
+  ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest startSynchronous];
+  NSString *apiResponse = [asiRequest responseString];
+  NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
+  return [responseDic objectForKey:@"data"];
+
 }
 
 /**

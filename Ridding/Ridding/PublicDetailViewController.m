@@ -15,6 +15,7 @@
 #import "Utilities.h"
 #import "QQNRFeedViewController.h"
 #import "PublicLinkWebViewController.h"
+#import "BlockAlertView.h"
 #define pageSize 10
 
 @interface PublicDetailViewController ()
@@ -86,7 +87,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 
-  
+   [super viewDidAppear:animated];
   if (!self.didAppearOnce) {
     _isTheEnd = FALSE;
     _lastUpdateTime = -1;
@@ -99,7 +100,7 @@
     }
     self.didAppearOnce = TRUE;
   }
-  [super viewDidAppear:animated];
+ 
 }
 
 - (void)downLoadRiddingAction {
@@ -317,19 +318,15 @@
   NSDictionary *dic = [self.requestUtil useRidding:_ridding.riddingId];
   [self updateRidding:dic];
   if (dic) {
-    UIAlertView *view = [[UIAlertView alloc] initWithTitle:@"恭喜恭喜" message:@"骑行活动创建成功,去看看吧!" delegate:self cancelButtonTitle:@"待会儿吧" otherButtonTitles:@"走起!", nil];
-    [view show];
-  }
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  
-  if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"走起!"]) {
-    QQNRFeedViewController *viewController=[[QQNRFeedViewController alloc]initWithUser:[StaticInfo getSinglton].user isFromLeft:FALSE];
-    [self.navigationController pushViewController:viewController animated:YES];
-  }else{
-    [super alertView:alertView clickedButtonAtIndex:buttonIndex];
-    
+    BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"恭喜恭喜" message:@"骑行活动创建成功,去看看吧!"];
+    [alert setCancelButtonWithTitle:@"待会儿吧" block:^(void) {
+     
+    }];
+    [alert addButtonWithTitle:@"走起!" block:^{
+      QQNRFeedViewController *viewController=[[QQNRFeedViewController alloc]initWithUser:[StaticInfo getSinglton].user isFromLeft:FALSE];
+      [self.navigationController pushViewController:viewController animated:YES];
+    }];
+    [alert show];
   }
 }
 
@@ -353,8 +350,6 @@
 }
 
 - (void)commentAdd:(id)sender {
-  [_cellArray removeAllObjects];
-  self.didAppearOnce = FALSE;
   PublicCommentVCTL *commentVCTL = [[PublicCommentVCTL alloc] initWithNibName:@"PublicCommentVCTL" bundle:nil ridding:_ridding];
   [self.navigationController pushViewController:commentVCTL animated:YES];
 }
@@ -410,6 +405,7 @@
 }
 
 - (void)deletePicture:(PublicDetailCell *)view index:(int)index {
+  
   [MobClick event:@"2013022504"];
   RiddingPicture *picture=(RiddingPicture*)[_cellArray objectAtIndex:index];
   if(![StaticInfo getSinglton].user||picture.user.userId!=[StaticInfo getSinglton].user.userId){
@@ -429,6 +425,7 @@
   
   if ([str isEqualToString:@"删除照片"]) {
     RiddingPicture *picture=[_cellArray objectAtIndex:_deletePicIndex];
+   
     [self.requestUtil deleteRiddingPicture:_ridding.riddingId pictureId:picture.dbId];
     [_cellArray removeObjectAtIndex:_deletePicIndex];
     _deletePicIndex=-1;
@@ -438,9 +435,9 @@
 
 #pragma mark - PublicDetailHeaderView delegate
 - (void)mapViewTap:(PublicDetailHeaderView *)view {
-
-    UserMap *map = [[UserMap alloc] initWithUser:_toUser ridding:_ridding isMyFeedHome:_isMyFeedHome];
-    [self.navigationController pushViewController:map animated:YES];
+  
+  UserMap *map = [[UserMap alloc] initWithUser:_toUser ridding:_ridding isMyFeedHome:_isMyFeedHome];
+  [self.navigationController pushViewController:map animated:YES];
   
 }
 
@@ -462,10 +459,8 @@
 #pragma mark - MapCreateDescVCTL delegate
 - (void)succUploadPicture:(NSNotification *)note {
   
-  if([self.navigationController visibleViewController]==self){
-    _lastUpdateTime = -1;
-    [self downLoad];
-  }
+  _lastUpdateTime = -1;
+  [self downLoad];
 
 }
 
