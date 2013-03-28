@@ -8,7 +8,8 @@
 
 #import "SinaUserProfile.h"
 #import "Utilities.h"
-
+#import "JSONKit.h"
+#import "NSString+Addition.h"
 @implementation RequestUtil
 
 - (id)init {
@@ -234,13 +235,35 @@
   return [responseDic objectForKey:@"data"];
 }
 
+- (NSArray *)getMapFixs:(NSArray*)array {
+  
+  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/pub/mapfix/", QIQUNARHOME]];
+  ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
+  NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+  SET_DICTIONARY_A_OBJ_B_FOR_KEY_C_ONLYIF_B_IS_NOT_NIL(dic, array, @"mapfixs");
+  
+  NSLog(@"%@",dic);
+  NSData *data = [[dic JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
+  [asiRequest appendPostData:data];
+
+  [asiRequest startSynchronous];
+  NSString *apiResponse = [asiRequest responseString];
+  NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
+  NSLog(@"apiResponse%@", apiResponse);
+  return [responseDic objectForKey:@"data"];
+}
+
 - (void)sendApns {
 
   NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
   NSString *token = [prefs objectForKey:kStaticInfo_apnsToken];
   if (token) {
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/user/%lld/apns/?token=%@&version=%@", QIQUNARHOME, self.staticInfo.user.userId, token, [Utilities appVersion]]];
+    int isPro=0;
+#ifdef isProVersion
+    isPro=1;
+#endif
+    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/user/%lld/apns/?token=%@&version=%@&ispro=%d", QIQUNARHOME, self.staticInfo.user.userId, token, [Utilities appVersion],isPro]];
     ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
     [asiRequest addRequestHeader:@"authToken" value:self.staticInfo.user.authToken];
     [asiRequest startAsynchronous];
@@ -488,6 +511,15 @@
   NSDictionary *responseDic = [self returnJsonFromResponse:apiResponse asiRequest:asiRequest];
   return [responseDic objectForKey:@"data"];
 
+}
+
+- (void)uploadRiddingGps:(long long)riddingId mapPoints:(NSArray *)mapPoints{
+  
+  NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/ridding/%lld/user/%lld/gps/add/?mapPoints=%@", QIQUNARHOME, riddingId,self.staticInfo.user.userId,[[mapPoints JSONRepresentation]urlEncode]]];
+  
+  ASIHTTPRequest *asiRequest = [ASIHTTPRequest requestWithURL:url];
+  [asiRequest startAsynchronous];
+  
 }
 
 /**

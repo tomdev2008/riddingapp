@@ -181,7 +181,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   [MobClick event:@"2013031906"];
 }
 
-#pragma mark - MapCreateDescVCTL delegate
 - (void)succUploadPicture:(NSNotification *)note {
   
     _count= [RiddingPictureDao getRiddingPictureCount];

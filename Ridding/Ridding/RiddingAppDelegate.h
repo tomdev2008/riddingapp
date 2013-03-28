@@ -12,10 +12,8 @@
 #import "PublicViewController.h"
 #import "BasicLeftViewController.h"
 #import "User.h"
-#import <MapKit/MapKit.h>
-@interface RiddingAppDelegate : UIResponder <UIApplicationDelegate,CLLocationManagerDelegate> {
+@interface RiddingAppDelegate : UIResponder <UIApplicationDelegate> {
   BOOL _canGetLocation;
-  //CLLocationManager *_backGroundLocationManager;
 }
 
 @property (retain, nonatomic) UIWindow *window;
@@ -25,8 +23,6 @@
 @property (nonatomic, retain) BasicLeftViewController *leftViewController;
 
 @property (retain, nonatomic) UINavigationController *navController;
-
-@property (nonatomic) long long nowRiddingId;
 
 + (RiddingAppDelegate *)shareDelegate;
 

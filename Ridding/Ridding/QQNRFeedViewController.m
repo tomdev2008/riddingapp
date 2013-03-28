@@ -16,8 +16,11 @@
 #import "PublicDetailViewController.h"
 #import "QiNiuUtils.h"
 #import "UIImageView+WebCache.h"
-#import "RiddingLocationDao.h"
+#import "RiddingMapPointDao.h"
+#import "RiddingMapPoint.h"
 #import "MapUtil.h"
+#import "MapCreateDescVCTL.h"
+#import "Gps.h"
 #define chaBtn @"chaBtn"
 #define dataLimit 10
 
@@ -372,31 +375,26 @@
       q = dispatch_queue_create("drawRoutes", NULL);
       dispatch_async(q, ^{
         Ridding *ridding = [_dataSource objectAtIndex:cell.index];
-        NSArray *tempRoutes=(NSArray*)[[StaticInfo getSinglton].routesDic objectForKey:LONGLONG2NUM(ridding.riddingId)];
+        NSArray *tempRoutes=(NSArray*)[[StaticInfo getSinglton].routesDic objectForKey:[StaticInfo routeDicKey:ridding.riddingId userId:_toUser.userId]];
         [routes addObjectsFromArray:tempRoutes];
         if(!routes||[routes count]==0){
-          int count = [RiddingLocationDao getRiddingLocationCount:ridding.riddingId];
-          if (count > 0) {
-            NSArray *routeArray = [RiddingLocationDao getRiddingLocations:ridding.riddingId beginWeight:0];
-            for (RiddingLocation *location in routeArray) {
-              CLLocation *loc = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longtitude];
-              [routes addObject:loc];
-            }
+          RiddingMapPoint *riddingMapPoint=[RiddingMapPointDao getRiddingMapPoint:ridding.riddingId userId:_toUser.userId];
+          if (riddingMapPoint) {
+            NSLog(@"%@",riddingMapPoint.mappoint);
+            [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:[riddingMapPoint.mappoint JSONValue]]];
           } else {
             //如果数据库中存在，那么取数据库中的地图路径，如果不存在，http去请求服务器。
             //数据库中取出是mapTaps或者points
-            NSMutableDictionary *map_dic = [self.requestUtil getMapMessage:ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
+            NSMutableDictionary *map_dic = [self.requestUtil getMapMessage:ridding.riddingId userId:_toUser.userId];
             Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:keyMap]];
-            NSArray *array = map.mapPoint;
-            [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
-            [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:array]];
-            [RiddingLocationDao setRiddingLocationToDB:routes riddingId:ridding.riddingId];
+            [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:map.mapPoint]];
+            [RiddingMapPointDao addRiddingMapPointToDB:[map.mapPoint JSONRepresentation] riddingId:ridding.riddingId userId:_toUser.userId];
           }
-          [[StaticInfo getSinglton].routesDic setObject:routes forKey:LONGLONG2NUM(ridding.riddingId)];
+          [[StaticInfo getSinglton].routesDic setObject:routes forKey:[StaticInfo routeDicKey:ridding.riddingId userId:_toUser.userId]];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
           if(cell){
-            [cell drawRoutes:routes riddingId:ridding.riddingId];
+            [cell drawRoutes:routes riddingId:ridding.riddingId userId:_toUser.userId];
           }
         });
       });
@@ -426,7 +424,7 @@
 
   NSString *str = [actionSheet buttonTitleAtIndex:buttonIndex];
   Ridding *ridding = [_dataSource objectAtIndex:_selectedCell.index];
-  if ([str isEqualToString:@"活动已经完成"]) {
+  if ([str isEqualToString:@"本次骑行已经完成"]) {
     [MobClick event:@"2012070206"];
     [SVProgressHUD show];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -448,7 +446,7 @@
         if (returnCode == kServerSuccessCode) {
           [_dataSource removeObject:ridding];
           [self.tv reloadData];
-          if([Ridding isLeader:ridding.userRole]){
+          if([Ridding isLeader:ridding.riddingUser.userRole]){
             [SVProgressHUD showSuccessWithStatus:@"删除成功" duration:1.0];
           }else{
             [SVProgressHUD showSuccessWithStatus:@"退出成功" duration:1.0];
@@ -486,16 +484,16 @@
     Ridding *ridding = [_dataSource objectAtIndex:cell.index];
     NSString *title=[NSString stringWithFormat:@"需要对骑行活动:\"%@\"做操作吗?",ridding.riddingName];
     if(![ridding isEnd]){
-      if ([Ridding isLeader:ridding.userRole]){
+      if ([Ridding isLeader:ridding.riddingUser.userRole]){
         
-          showSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"活动已经完成" otherButtonTitles:@"删除活动", nil];
+          showSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"本次骑行已经完成" otherButtonTitles:@"删除活动", nil];
       }else{
         
          showSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"退出活动" otherButtonTitles:nil];
       }
     }else{
       
-      if ([Ridding isLeader:ridding.userRole]){
+      if ([Ridding isLeader:ridding.riddingUser.userRole]){
         
         showSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除活动" otherButtonTitles:nil];
       }else{
@@ -588,10 +586,11 @@
 - (void)finishCreate:(MapCreateVCTL *)controller ridding:(Ridding *)ridding {
 
   [controller dismissModalViewControllerAnimated:NO];
-  MapCreateDescVCTL *descVCTL = [[MapCreateDescVCTL alloc] initWithNibName:@"MapCreateDescVCTL" bundle:nil ridding:ridding isShortPath:NO];
+  MapCreateDescVCTL *descVCTL = [[MapCreateDescVCTL alloc] initWithNibName:@"MapCreateDescVCTL" bundle:nil ridding:ridding];
 
   [self presentModalViewController:descVCTL animated:YES];
 }
+
 #pragma mark - MapCreateDescVCTL delegate
 - (void)succAddRidding:(NSNotification *)note {
 

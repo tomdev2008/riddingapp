@@ -13,6 +13,7 @@
 
   self = [super init];
   if (self) {
+    
     self.mapId = [[jsonDic objectForKey:@"mapid"] longLongValue];
     self.mapUrl = [jsonDic objectForKey:@"mapurl"];
     self.mapTaps = [jsonDic objectForKey:@"maptaps"];

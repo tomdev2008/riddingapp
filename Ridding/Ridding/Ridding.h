@@ -11,6 +11,7 @@
 #import "Map.h"
 #import "RiddingPicture.h"
 #import "Public.h"
+#import "RiddingUser.h"
 #define keyRidding @"ridding"
 
 typedef enum _RIDDINGACTION {
@@ -22,8 +23,8 @@ typedef enum _RIDDINGACTION {
 } RIDDINGACTION;
 
 typedef enum _RiddingType {
-  RiddingType_FarAway = 0,
-  RiddingType_ShortAway = 10,
+  RiddingType_FarAway = 0,  //远途
+  RiddingType_ShortAway = 10, //短途
 } RiddingType;
 
 
@@ -37,9 +38,11 @@ typedef enum _RiddingType {
 @property (nonatomic) int userCount;
 @property (nonatomic, copy) NSString *riddingName;
 @property (nonatomic, retain) User *leaderUser;
+
 //当前用户的userrole
-@property (nonatomic) int userRole;
-@property (nonatomic) int riddingType;
+@property (nonatomic, retain) RiddingUser *riddingUser;
+
+@property (nonatomic) RiddingType riddingType;
 @property (nonatomic) long long createTime;
 @property (nonatomic, copy) NSString *createTimeStr;
 @property (nonatomic) long long lastUpdateTime;
@@ -49,7 +52,6 @@ typedef enum _RiddingType {
 @property (nonatomic) int isPublic;
 @property (nonatomic) int isRecom;
 @property (nonatomic) int isGps;
-
 
 @property (nonatomic) int likeCount;
 @property (nonatomic) int useCount;

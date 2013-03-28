@@ -53,25 +53,25 @@
   }
 }
 
-- (void)drawRoutes:(NSArray *)routes riddingId:(long long)riddingId{
-  
-  UIImage *image=[self imageFromLocal:riddingId];
+- (void)drawRoutes:(NSArray *)routes riddingId:(long long)riddingId userId:(long long)userId{
+
+  UIImage *image=[self imageFromLocal:riddingId userId:userId];
   [[MapUtil getSinglton] center_map:_mapView routes:routes];
   if(image){
     _mapLineView.image=image;
   }else{
     [[MapUtil getSinglton] update_route_view:_mapView to:_mapLineView line_color:[UIColor getColor:lineColor] routes:routes width:3.0];
-    [self saveToLocal:riddingId];
+    [self saveToLocal:riddingId userId:userId];
   }
   
 }
 
-- (void)saveToLocal:(long long)riddingId{
+- (void)saveToLocal:(long long)riddingId userId:(long long)userId{
 
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
   //set image
   NSString *savePath= [[paths objectAtIndex:0] stringByAppendingPathComponent:
-                       [NSString stringWithFormat:@"s_%lld.png",riddingId]];
+                       [NSString stringWithFormat:@"s_%lld_%lld.png",riddingId,userId]];
   NSFileManager *manager = [NSFileManager defaultManager];
   if (savePath&&![manager fileExistsAtPath:savePath]) {
     //save pic
@@ -79,12 +79,12 @@
   }
 }
 
-- (UIImage*)imageFromLocal:(long long)riddingId{
+- (UIImage*)imageFromLocal:(long long)riddingId userId:(long long)userId{
   
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
   //set image
   NSString *picPath=[[paths objectAtIndex:0] stringByAppendingPathComponent:
-                     [NSString stringWithFormat:@"s_%lld.png",riddingId]];
+                     [NSString stringWithFormat:@"s_%lld_%lld.png",riddingId,userId]];
   NSFileManager *manager = [NSFileManager defaultManager];
   if (![manager fileExistsAtPath:picPath]) {
     return nil;

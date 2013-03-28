@@ -16,6 +16,7 @@
 #import "QQNRFeedViewController.h"
 #import "PublicLinkWebViewController.h"
 #import "BlockAlertView.h"
+#import "ShortMapViewController.h"
 #define pageSize 10
 
 @interface PublicDetailViewController ()
@@ -183,7 +184,7 @@
   if(_ridding.aPublic.adContentType==PublicType_Image){
     height+=60;
   }
-  _headerView = [[PublicDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, height) ridding:_ridding isMyHome:_isMyFeedHome];
+  _headerView = [[PublicDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, height) ridding:_ridding isMyHome:_isMyFeedHome toUser:_toUser];
   _headerView.delegate = self;
   [self.tv setTableHeaderView:_headerView];
 
@@ -436,9 +437,13 @@
 #pragma mark - PublicDetailHeaderView delegate
 - (void)mapViewTap:(PublicDetailHeaderView *)view {
   
-  UserMap *map = [[UserMap alloc] initWithUser:_toUser ridding:_ridding isMyFeedHome:_isMyFeedHome];
-  [self.navigationController pushViewController:map animated:YES];
-  
+  if(_ridding.riddingType==RiddingType_FarAway){
+    UserMap *map = [[UserMap alloc] initWithUser:_toUser ridding:_ridding isMyFeedHome:_isMyFeedHome];
+    [self.navigationController pushViewController:map animated:YES];
+  }else{
+    ShortMapViewController *shortMap=[[ShortMapViewController alloc]initWithUser:_toUser ridding:_ridding isMyFeedHome:_isMyFeedHome];
+    [self.navigationController pushViewController:shortMap animated:YES];
+  }
 }
 
 - (void)avatorClick:(PublicDetailHeaderView *)view {
@@ -456,7 +461,6 @@
 }
 
 
-#pragma mark - MapCreateDescVCTL delegate
 - (void)succUploadPicture:(NSNotification *)note {
   
   _lastUpdateTime = -1;

@@ -11,7 +11,7 @@
 #import "PhotoAnnotation.h"
 #import "QQNRFeedViewController.h"
 #import "PhotoDescViewController.h"
-#import "RiddingLocation.h"
+#import "RiddingMapPointDao.h"
 #import "UIImageView+WebCache.h"
 #import "MapUtil.h"
 #import "MapFix.h"
@@ -31,7 +31,7 @@
 #import "QQNRServerTaskQueue.h"
 #import "SVProgressHUD.h"
 #import "QQNRImagesScrollVCTL.h"
-#import "RiddingLocationDao.h"
+#import "RiddingMapPoint.h"
 #import "MyLocationManager.h"
 #import "PhotoAnnotationView.h"
 #import "BasicPhotoAnnotation.h"
@@ -259,26 +259,24 @@
   dispatch_queue_t q;
   q = dispatch_queue_create("drawRoutes", NULL);
   dispatch_async(q, ^{
-    NSArray *tempRoutes=(NSArray*)[[StaticInfo getSinglton].routesDic objectForKey:LONGLONG2NUM(_ridding.riddingId)];
+    NSArray *tempRoutes=(NSArray*)[[StaticInfo getSinglton].routesDic objectForKey:[StaticInfo routeDicKey:_ridding.riddingId userId:_toUser.userId]];
     [_routes addObjectsFromArray:tempRoutes];
     if(!_routes||[_routes count]==0){
       
-      NSArray *routeArray = [RiddingLocationDao getRiddingLocations:_ridding.riddingId beginWeight:0];
-      if ([routeArray count] > 0) {
-        for (RiddingLocation *location in routeArray) {
-          CLLocation *loc = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longtitude];
-          [self.routes addObject:loc];
-        }
+      RiddingMapPoint *riddingMapPoint=[RiddingMapPointDao getRiddingMapPoint:_ridding.riddingId userId:_toUser.userId];
+      if (riddingMapPoint) {
+        
+        [_routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:[riddingMapPoint.mappoint JSONValue]]];
       } else {
         //如果数据库中存在，那么取数据库中的地图路径，如果不存在，http去请求服务器。
         //数据库中取出是mapTaps或者points
         NSMutableDictionary *map_dic = [self.requestUtil getMapMessage:_ridding.riddingId userId:_staticInfo.user.userId];
         Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:keyMap]];
         NSArray *array = map.mapPoint;
-        [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
         self.routes = [[MapUtil getSinglton] decodePolyLineArray:array];
-        [RiddingLocationDao setRiddingLocationToDB:self.routes riddingId:_ridding.riddingId];
+        [RiddingMapPointDao addRiddingMapPointToDB:[map.mapPoint JSONRepresentation] riddingId:_ridding.riddingId userId:_toUser.userId];
       }
+      [[StaticInfo getSinglton].routesDic setObject:_routes forKey:[StaticInfo routeDicKey:_ridding.riddingId userId:_toUser.userId]];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
       if (self&&self.routes) {

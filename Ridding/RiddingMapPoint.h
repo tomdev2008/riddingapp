@@ -8,12 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RiddingLocation : NSObject {
+@interface RiddingMapPoint : NSObject {
 }
 @property (nonatomic) long long dbId;
 @property (nonatomic) long long riddingId;
 @property (nonatomic) double latitude;
 @property (nonatomic) double longtitude;
-@property (nonatomic) int weight;
+@property (nonatomic,copy) NSString *mappoint;
+@property (nonatomic) long long userId;
 
 @end

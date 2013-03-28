@@ -13,6 +13,8 @@
 #import "Gps.h"
 #import "Utilities.h"
 #import "GpsDao.h"
+#import "PSLocationManager.h"
+#include <stdio.h>
 #define moveSpeed 0.5
 @interface RiddingAppDelegate(){
   
@@ -38,13 +40,6 @@
     [[UIApplication sharedApplication] setStatusBarHidden:NO
                                             withAnimation:UIStatusBarAnimationNone];
   }
-  
-//  if(!_backGroundLocationManager){
-//    _backGroundLocationManager=[[CLLocationManager alloc]init];
-//    _backGroundLocationManager.delegate=self;
-//    _backGroundLocationManager.distanceFilter=50.0f;
-//    [_backGroundLocationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
-//  }
   
   if([self canLogin]){
     
@@ -77,6 +72,7 @@
     [prefs setBool:YES forKey:kStaticInfo_StartApp];
     
   }
+  [self checkDBUpdate];
   [self firstInit];
   
   // Let the device know we want to receive push notifications
@@ -95,7 +91,23 @@
     [prefs synchronize];
     
   }
+}
 
+- (void)checkDBUpdate{
+  NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+  NSString *version=[Utilities appVersion];
+  if(![prefs boolForKey:version]){
+    FMDatabase *db = [StaticInfo getSinglton].sqlDB;
+    
+    if([version compare:@"1.3"]==NSOrderedDescending){
+      
+      [db executeUpdate:@"CREATE TABLE \"TB_Gps1\" (\"id\" INTEGER PRIMARY KEY  NOT NULL ,\"latitude\" DOUBLE NOT NULL  DEFAULT (0.0) ,\"longtitude\" DOUBLE NOT NULL  DEFAULT (0.0) ,\"riddingId\" INTEGER,\"userId\" INTEGER,\"fixedLatitude\" double,\"fixedLongtitude\" double),\"altitude\" double, \"speed\" DOUBLE"];
+      
+      [db executeUpdate:@"CREATE TABLE \"TB_RiddingMapPoint\" (\"id\" INTEGER PRIMARY KEY  NOT NULL , \"riddingid\" INTEGER, \"userid\" INTEGER, \"mappoint\" TEXT)"];
+      [db executeUpdate:@"CREATE INDEX index_RiddingMapPoint on \"TB_RiddingMapPoint\" (riddingid,userid)"];
+      
+    }
+  }
 }
 
 - (void)setUserInfo {
@@ -186,17 +198,8 @@
 
 //进入后台
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-//  if([StaticInfo getSinglton].logined&&self.nowRiddingId){
-//    
-//    if ([CLLocationManager significantLocationChangeMonitoringAvailable]) {
-//      // Stop normal location updates and start significant location change updates for battery efficiency.
-//      [_backGroundLocationManager startUpdatingLocation];
-//      [_backGroundLocationManager startMonitoringSignificantLocationChanges];
-//    }
-//    else {
-//      NSLog(@"Significant location change monitoring is not available.");
-//    }
-//  }
+  PSLocationManager *locationManager=[PSLocationManager sharedLocationManager];
+  [locationManager startBackgroundLocation];
 }
 
 //回到前台
@@ -208,46 +211,15 @@
   /*
    Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
    */
-//  if([StaticInfo getSinglton].logined&&self.nowRiddingId){
-//    if ([CLLocationManager significantLocationChangeMonitoringAvailable])
-//    {
-//      // Stop significant location updates and start normal location updates again since the app is in the forefront.
-//      [_backGroundLocationManager stopMonitoringSignificantLocationChanges];
-//      [_backGroundLocationManager stopUpdatingLocation];
-//    }
-//    else
-//    {
-//      NSLog(@"Significant location change monitoring is not available.");
-//    }
-//  }
-
+  PSLocationManager *locationManager=[PSLocationManager sharedLocationManager];
+  [locationManager stopBackgroundLocation];
 
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
   
-//  if(_backGroundLocationManager){
-//    [_backGroundLocationManager stopUpdatingLocation];
-//    [_backGroundLocationManager stopMonitoringSignificantLocationChanges];
-//  }
-
-  /*
-   Called when the application is about to terminate.
-   Save data if appropriate.
-   See also applicationDidEnterBackground:.
-   */
-}
-
-#pragma mark locationManager delegate functions
-- (void)locationManager:(CLLocationManager *)manager
-       didFailWithError:(NSError *)error {
-  
- // [_backGroundLocationManager stopUpdatingLocation];
-}
-
-- (void)locationManager:(CLLocationManager *)manager
-    didUpdateToLocation:(CLLocation *)newLocation
-           fromLocation:(CLLocation *)oldLocation {
+  PSLocationManager *locationManager=[PSLocationManager sharedLocationManager];
+  [locationManager stopBackgroundLocation];
   
 }
 

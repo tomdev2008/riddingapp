@@ -112,6 +112,9 @@
 - (NSArray*)getUserPays:(int)typeId;
 
 - (NSDictionary *)tryUserPay:(int)typeId;
+
+- (NSArray *)getMapFixs:(NSArray*)locations;
+- (void)uploadRiddingGps:(long long)riddingId mapPoints:(NSArray*)mapPoints;
 @end
 
 

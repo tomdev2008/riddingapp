@@ -9,7 +9,8 @@
 #import "BasicViewController.h"
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
-@interface ShortMapViewController : BasicViewController<CLLocationManagerDelegate, MKAnnotation, MKMapViewDelegate>{
+#import "PSLocationManager.h"
+@interface ShortMapViewController : BasicViewController<CLLocationManagerDelegate, MKAnnotation, MKMapViewDelegate,PSLocationManagerDelegate>{
   
   NSMutableArray *_routes;
   User *_toUser;
@@ -20,6 +21,8 @@
 
 @property (nonatomic,retain) IBOutlet UIImageView *route_view;
 @property (nonatomic,retain) IBOutlet MKMapView *mapView;
+@property (nonatomic,retain) IBOutlet UILabel *speedLabel;
+@property (nonatomic,retain) IBOutlet UILabel *altitudeLabel;
 
 
 - (id)initWithUser:(User *)toUser ridding:(Ridding *)ridding isMyFeedHome:(BOOL)isMyFeedHome;

@@ -61,4 +61,6 @@
 
 - (NSString*)kRecomAppKey;
 
++ (NSString*)routeDicKey:(long long)riddingId userId:(long long)userId;
+
 @end

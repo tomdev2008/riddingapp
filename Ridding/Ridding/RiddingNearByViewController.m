@@ -11,7 +11,8 @@
 #import "Utilities.h"
 #import "MyLocationManager.h"
 #import "PublicDetailViewController.h"
-#import "RiddingLocationDao.h"
+#import "RiddingMapPoint.h"
+#import "RiddingMapPointDao.h"
 #import "MapUtil.h"
 #import "QQNRFeedViewController.h"
 #define keyLimit 10
@@ -226,31 +227,25 @@
       q = dispatch_queue_create("drawRoutes", NULL);
       dispatch_async(q, ^{
         Ridding *ridding = [_dataSource objectAtIndex:cell.index];
-        NSArray *tempRoutes=(NSArray*)[[StaticInfo getSinglton].routesDic objectForKey:LONGLONG2NUM(ridding.riddingId)];
+        NSArray *tempRoutes=(NSArray*)[[StaticInfo getSinglton].routesDic objectForKey:[StaticInfo routeDicKey:ridding.riddingId userId:ridding.leaderUser.userId]];
         [routes addObjectsFromArray:tempRoutes];
         if(!routes||[routes count]==0){
-          int count = [RiddingLocationDao getRiddingLocationCount:ridding.riddingId];
-          if (count > 0) {
-            NSArray *routeArray = [RiddingLocationDao getRiddingLocations:ridding.riddingId beginWeight:0];
-            for (RiddingLocation *location in routeArray) {
-              CLLocation *loc = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longtitude];
-              [routes addObject:loc];
-            }
+          RiddingMapPoint *riddingMapPoint=[RiddingMapPointDao getRiddingMapPoint:ridding.riddingId userId:ridding.leaderUser.userId];
+          if (riddingMapPoint) {
+            [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:[riddingMapPoint.mappoint JSONValue]]];
           } else {
             //如果数据库中存在，那么取数据库中的地图路径，如果不存在，http去请求服务器。
             //数据库中取出是mapTaps或者points
             NSMutableDictionary *map_dic = [self.requestUtil getMapMessage:ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
             Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:keyMap]];
-            NSArray *array = map.mapPoint;
-            [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
-            [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:array]];
-            [RiddingLocationDao setRiddingLocationToDB:routes riddingId:ridding.riddingId];
+            [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:map.mapPoint]];
+           [RiddingMapPointDao addRiddingMapPointToDB:[map.mapPoint JSONRepresentation] riddingId:ridding.riddingId userId:ridding.leaderUser.userId];
           }
-          [[StaticInfo getSinglton].routesDic setObject:routes forKey:LONGLONG2NUM(ridding.riddingId)];
+          [[StaticInfo getSinglton].routesDic setObject:routes forKey:[StaticInfo routeDicKey:ridding.riddingId userId:ridding.leaderUser.userId]];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
           if(cell){
-            [cell drawRoutes:routes riddingId:ridding.riddingId];
+            [cell drawRoutes:routes riddingId:ridding.riddingId userId:ridding.leaderUser.userId];
           }
         });
       });

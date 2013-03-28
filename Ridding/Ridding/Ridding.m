@@ -23,45 +23,44 @@
   self = [super init];
   if (self) {
     
-    self.riddingId = [[jsonDic objectForKey:@"riddingid"] longLongValue];
-    self.riddingStatus = [[jsonDic objectForKey:@"riddingstatus"] intValue];
-    self.userCount = [[jsonDic objectForKey:@"usercount"] intValue];
-    self.userRole = [[jsonDic objectForKey:@"userrole"] intValue];
-    self.riddingName = [jsonDic objectForKey:@"riddingname"];
-    self.leaderUser = [[User alloc] initWithJSONDic:[jsonDic objectForKey:keyUser]];
-    self.riddingType = [[jsonDic objectForKey:@"riddingtype"] intValue];
-    self.createTime = [[jsonDic objectForKey:@"createtime"] longLongValue];
-    self.createTimeStr = [jsonDic objectForKey:@"createtimestr"];
-    self.lastUpdateTime = [[jsonDic objectForKey:@"lastupdatetime"] longLongValue];
-    self.lastUpdateTimeStr = [jsonDic objectForKey:@"lastupdatetimestr"];
-    self.map = [[Map alloc] initWithJSONDic:[jsonDic objectForKey:keyMap]];
-    self.userCount = [[jsonDic objectForKey:@"usercount"] intValue];
-    self.likeCount = [[jsonDic objectForKey:@"likecount"] intValue];
-    self.commentCount = [[jsonDic objectForKey:@"commentcount"] intValue];
-    self.useCount = [[jsonDic objectForKey:@"usecount"] intValue];
-    self.careCount = [[jsonDic objectForKey:@"carecount"] intValue];
+    _riddingId = [[jsonDic objectForKey:@"riddingid"] longLongValue];
+    _riddingStatus = [[jsonDic objectForKey:@"riddingstatus"] intValue];
+    _userCount = [[jsonDic objectForKey:@"usercount"] intValue];
+    
+    _riddingName = [jsonDic objectForKey:@"riddingname"];
+    _leaderUser = [[User alloc] initWithJSONDic:[jsonDic objectForKey:keyUser]];
+    _riddingType = [[jsonDic objectForKey:@"riddingtype"] intValue];
+    _createTime = [[jsonDic objectForKey:@"createtime"] longLongValue];
+    _createTimeStr = [jsonDic objectForKey:@"createtimestr"];
+    _lastUpdateTime = [[jsonDic objectForKey:@"lastupdatetime"] longLongValue];
+    _lastUpdateTimeStr = [jsonDic objectForKey:@"lastupdatetimestr"];
+    _map = [[Map alloc] initWithJSONDic:[jsonDic objectForKey:keyMap]];
+    _userCount = [[jsonDic objectForKey:@"usercount"] intValue];
+    _likeCount = [[jsonDic objectForKey:@"likecount"] intValue];
+    _commentCount = [[jsonDic objectForKey:@"commentcount"] intValue];
+    _useCount = [[jsonDic objectForKey:@"usecount"] intValue];
+    _careCount = [[jsonDic objectForKey:@"carecount"] intValue];
 
-    self.nowUserLiked = [[jsonDic objectForKey:@"nowuserliked"] boolValue];
-    self.nowUserCared = [[jsonDic objectForKey:@"nowusercared"] boolValue];
-    self.nowUserUsed = [[jsonDic objectForKey:@"nowuserused"] boolValue];
+    _nowUserLiked = [[jsonDic objectForKey:@"nowuserliked"] boolValue];
+    _nowUserCared = [[jsonDic objectForKey:@"nowusercared"] boolValue];
+    _nowUserUsed = [[jsonDic objectForKey:@"nowuserused"] boolValue];
     
-    self.aPublic=[[Public alloc]initWithJSONDic:[jsonDic objectForKey:keyPublic]];
+    _aPublic=[[Public alloc]initWithJSONDic:[jsonDic objectForKey:keyPublic]];
     
-    self.riddingType=[[jsonDic objectForKey:@"riddingtype"] intValue];
+    _riddingType=[[jsonDic objectForKey:@"riddingtype"] intValue];
     
-    self.isGps =[[jsonDic objectForKey:@"isgps"]intValue];
+    _riddingUser=[[RiddingUser alloc]initWithJSONDic:[jsonDic objectForKey:keyRiddingUser]];
     
     NSArray *array = [jsonDic objectForKey:@"riddingpictures"];
     
     if (array) {
-      self.riddingPictures = [[NSMutableArray alloc] init];
+      _riddingPictures = [[NSMutableArray alloc] init];
 
       for (NSDictionary *dic in array) {
         RiddingPicture *picture = [[RiddingPicture alloc] initWithJSONDic:dic];
-        [self.riddingPictures addObject:picture];
+        [_riddingPictures addObject:picture];
       }
     }
-
   }
   return self;
 }

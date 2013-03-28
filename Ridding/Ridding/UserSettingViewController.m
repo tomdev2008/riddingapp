@@ -418,7 +418,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 
-#pragma mark - MapCreateDescVCTL delegate
 - (void)succUploadPicture:(NSNotification *)note {
   
     _count= [RiddingPictureDao getRiddingPictureCount];

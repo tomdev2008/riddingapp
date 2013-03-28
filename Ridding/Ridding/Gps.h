@@ -17,4 +17,6 @@
 @property (nonatomic) long long userId;
 @property (nonatomic) double fixedLatitude;
 @property (nonatomic) double fixedLongtitude;
+@property (nonatomic) double altitude;
+@property (nonatomic) double speed;
 @end

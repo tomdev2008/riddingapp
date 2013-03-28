@@ -30,9 +30,20 @@
 #define kSuccLoginNotification @"succLoginNotification"
 #define kSuccLogoutNotification @"succLogoutNotification"
 #define apiSinaHost @"api.weibo.com"
+#ifdef isProVersion
+
+#define downLoadPath @"https://itunes.apple.com/cn/app/qi-xing-zhe/id613211411?ls=1&mt=8"
+#define linkAppStore @"itms-apps://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=613211411"
+#define linkAppStoreComment @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=613211411"
+
+#else
+
 #define downLoadPath @"https://itunes.apple.com/cn/app/qi-xing-zhe/id557123754?ls=1&mt=8"
 #define linkAppStore @"itms-apps://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=557123754"
 #define linkAppStoreComment @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=557123754"
+
+#endif
+
 #define online_taobao_url_weather [MobClick getConfigParams:@"online_taobao_url_weather"]
 
 #define online_taobao_link_weather [MobClick getConfigParams:@"online_taobao_link_weather"]
@@ -43,7 +54,7 @@
 
 #define imageHost  [MobClick getConfigParams:@"online_imageHost"]
 
-#define QIQUNARHOME  [MobClick getConfigParams:@"online_QIQUNARHOME"] 
+#define QIQUNARHOME   [MobClick getConfigParams:@"online_QIQUNARHOME"] 
 
 #define QIQUNARGood1  [MobClick getConfigParams:@"online_good1"] 
 #define QIQUNARGood2  [MobClick getConfigParams:@"online_good2"] 
@@ -53,7 +64,10 @@
 
 #define sendMyLocationTime 30.0
 #define showRightViewTime 5.0
+
+
 #define YouMenAppKey @"4fb3ce805270152b53000128"
+
 #define MY_BANNER_UNIT_ID [MobClick getConfigParams:@"online_MY_BANNER_UNIT_ID"]
 #define WeatherOnlineKey [MobClick getConfigParams:@"online_WeatherOnlineKey"]
 #define WeatherOnlineUrl [MobClick getConfigParams:@"online_weather_online"]

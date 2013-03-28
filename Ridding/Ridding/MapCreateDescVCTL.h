@@ -16,7 +16,6 @@
   Ridding *_ridding;
   UIButton *_syncSinaBtn;
   BOOL _showingKeyBoard;
-  BOOL _isShortPath;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *nameField;
@@ -29,5 +28,5 @@
 @property (nonatomic, retain) IBOutlet UIImageView *separatorLine2;
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil ridding:(Ridding *)ridding isShortPath:(BOOL)isShortPath;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil ridding:(Ridding *)ridding;
 @end

@@ -11,7 +11,7 @@
 #import "SVProgressHUD.h"
 #import "QQNRFeedViewController.h"
 #import "MapUtil.h"
-#import "RiddingLocationDao.h"
+#import "RiddingMapPointDao.h"
 #import "PublicDetailViewController.h"
 #import "ShortMapViewController.h"
 @interface MapCreateDescVCTL ()
@@ -20,12 +20,11 @@
 
 @implementation MapCreateDescVCTL
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil ridding:(Ridding *)ridding isShortPath:(BOOL)isShortPath{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil ridding:(Ridding *)ridding{
 
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
     _ridding = ridding;
-    _isShortPath=isShortPath;
   }
   return self;
 }
@@ -47,21 +46,14 @@
   self.barView.titleLabel.text = @"创建活动";
   self.beginLocationTV.text = _ridding.map.beginLocation;
   
-  if(_isShortPath){
-    
-    self.nameField.text=@"短途旅行";
-    
-  }else{
-    
-    self.endLocationTV.text = _ridding.map.endLocation;
-    self.totalDistanceLB.text = [NSString stringWithFormat:@"%@", [_ridding.map totalDistanceToKm]];
-    NSMutableArray *routes = [[NSMutableArray alloc] init];
-    [[MapUtil getSinglton] calculate_routes_from:_ridding.map.mapTaps map:_ridding.map];
-    [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:_ridding.map.mapPoint]];
-    [[MapUtil getSinglton] center_map:_mapView routes:routes];
-    [[MapUtil getSinglton] update_route_view:_mapView to:_lineImageView line_color:[UIColor getColor:lineColor] routes:routes width:5.0];
+  self.endLocationTV.text = _ridding.map.endLocation;
+  self.totalDistanceLB.text = [NSString stringWithFormat:@"%@", [_ridding.map totalDistanceToKm]];
+  NSMutableArray *routes = [[NSMutableArray alloc] init];
+  [[MapUtil getSinglton] calculate_routes_from:_ridding.map.mapTaps map:_ridding.map];
+  [routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:_ridding.map.mapPoint]];
+  [[MapUtil getSinglton] center_map:_mapView routes:routes];
+  [[MapUtil getSinglton] update_route_view:_mapView to:_lineImageView line_color:[UIColor getColor:lineColor] routes:routes width:5.0];
 
-  }
   
   self.nameField.returnKeyType = UIReturnKeyGo;
 
@@ -89,20 +81,19 @@
     self.barView.rightButton.enabled = YES;
     return;
   }
-  if(!_isShortPath){
-    if ([self.beginLocationTV.text isEqualToString:@""]) {
-      [SVProgressHUD showErrorWithStatus:@"请输入起点" duration:2];
-      self.barView.rightButton.enabled = YES;
-      return;
-    }
-    if ([self.endLocationTV.text isEqualToString:@""]) {
-      [SVProgressHUD showErrorWithStatus:@"去输入终点" duration:2];
-      self.barView.rightButton.enabled = YES;
-      return;
-    }
-    _ridding.map.endLocation = self.endLocationTV.text;
-    _ridding.map.beginLocation = self.beginLocationTV.text;
+  if ([self.beginLocationTV.text isEqualToString:@""]) {
+    [SVProgressHUD showErrorWithStatus:@"请输入起点" duration:2];
+    self.barView.rightButton.enabled = YES;
+    return;
   }
+  if ([self.endLocationTV.text isEqualToString:@""]) {
+    [SVProgressHUD showErrorWithStatus:@"去输入终点" duration:2];
+    self.barView.rightButton.enabled = YES;
+    return;
+  }
+  _ridding.map.endLocation = self.endLocationTV.text;
+  _ridding.map.beginLocation = self.beginLocationTV.text;
+  
   [self.nameField resignFirstResponder];
   [SVProgressHUD showWithStatus:@"创建中,请稍候"];
   _ridding.riddingName = self.nameField.text;
@@ -117,35 +108,18 @@
       dispatch_async(dispatch_get_main_queue(), ^{
         [SVProgressHUD showWithStatus:@"正在保存数据"];
       });
-      if(!_isShortPath){
-        //保存到本地数据库
-        Map *map = _ridding.map;
-        NSArray *array = map.mapPoint;
-        [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
-        NSMutableArray *mapPoints = [[MapUtil getSinglton] decodePolyLineArray:array];
-        [RiddingLocationDao setRiddingLocationToDB:mapPoints riddingId:_ridding.riddingId];
-      }
+      //保存到本地数据库
+      [RiddingMapPointDao addRiddingMapPointToDB:[_ridding.map.mapPoint JSONRepresentation] riddingId:_ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
       
       dispatch_async(dispatch_get_main_queue(), ^{
         
         [[NSNotificationCenter defaultCenter]postNotificationName:kSuccAddRiddingNotification object:nil];
         [SVProgressHUD dismiss];
         RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
-        if(_isShortPath){
-          QQNRFeedViewController *FVC = [[QQNRFeedViewController alloc] initWithUser:[StaticInfo getSinglton].user isFromLeft:TRUE];
-          [RiddingAppDelegate popAllNavgation];
-          PublicDetailViewController *publicDetail=[[PublicDetailViewController alloc]initWithNibName:@"PublicDetailViewController" bundle:nil ridding:_ridding isMyHome:TRUE toUser:[StaticInfo getSinglton].user];
-          ShortMapViewController *shortMap=[[ShortMapViewController alloc]init];
-          [delegate.navController pushViewController:FVC animated:NO];
-          [delegate.navController pushViewController:publicDetail animated:NO];
-          [delegate.navController pushViewController:shortMap animated:YES];
-          
-        }else{
-          
-          QQNRFeedViewController *FVC = [[QQNRFeedViewController alloc] initWithUser:[StaticInfo getSinglton].user isFromLeft:TRUE];
-          [RiddingAppDelegate popAllNavgation];
-          [delegate.navController pushViewController:FVC animated:NO];
-        }
+        
+        QQNRFeedViewController *FVC = [[QQNRFeedViewController alloc] initWithUser:[StaticInfo getSinglton].user isFromLeft:TRUE];
+        [RiddingAppDelegate popAllNavgation];
+        [delegate.navController pushViewController:FVC animated:NO];
       });
     }
   });

@@ -53,7 +53,6 @@
 - (void)leftBtnClicked:(id)sender{
   
   
-  
 }
 
 
@@ -99,13 +98,12 @@
           [[NSNotificationCenter defaultCenter]postNotificationName:kSuccAddRiddingNotification object:nil];
           [SVProgressHUD dismiss];
           RiddingAppDelegate *delegate = [RiddingAppDelegate shareDelegate];
-          delegate.nowRiddingId=ridding.riddingId;
+          
           QQNRFeedViewController *FVC = [[QQNRFeedViewController alloc] initWithUser:[StaticInfo getSinglton].user isFromLeft:TRUE];
           [RiddingAppDelegate popAllNavgation];
-          PublicDetailViewController *publicDetail=[[PublicDetailViewController alloc]initWithNibName:@"PublicDetailViewController" bundle:nil ridding:ridding isMyHome:TRUE toUser:[StaticInfo getSinglton].user];
-          ShortMapViewController *shortMap=[[ShortMapViewController alloc]init];
+          
+          ShortMapViewController *shortMap=[[ShortMapViewController alloc]initWithUser:[StaticInfo getSinglton].user ridding:returnRidding isMyFeedHome:YES];
           [delegate.navController pushViewController:FVC animated:NO];
-          [delegate.navController pushViewController:publicDetail animated:NO];
           [delegate.navController pushViewController:shortMap animated:YES];
         });
       }

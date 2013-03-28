@@ -38,6 +38,6 @@
 
 - (void)initContentView:(Ridding *)ridding;
 
-- (void)drawRoutes:(NSArray *)routes riddingId:(long long)riddingId;
+- (void)drawRoutes:(NSArray *)routes riddingId:(long long)riddingId userId:(long long)userId;
 
 @end

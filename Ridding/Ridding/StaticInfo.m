@@ -109,6 +109,10 @@ static StaticInfo *staticInfo = nil;
 
 }
 
++ (NSString*)routeDicKey:(long long)riddingId userId:(long long)userId{
+  return [NSString stringWithFormat:@"%lld_%lld",riddingId,userId];
+}
+
 
 - (NSString*)kRecomAppKey{
   

@@ -11,20 +11,22 @@
 #import "UIColor+XMin.h"
 #import "MapUtil.h"
 #import "Utilities.h"
-#import "RiddingLocationDao.h"
+#import "RiddingMapPoint.h"
+#import "RiddingMapPointDao.h"
 #import "UIButton+WebCache.h"
 
 #define frameSize @"28"
 
 @implementation PublicDetailHeaderView
 
-- (id)initWithFrame:(CGRect)frame ridding:(Ridding *)ridding isMyHome:(BOOL)isMyHome {
+- (id)initWithFrame:(CGRect)frame ridding:(Ridding *)ridding isMyHome:(BOOL)isMyHome toUser:(User*)toUser{
 
   self = [super initWithFrame:frame];
   if (self) {
     
     CGFloat height=0;
     _ridding = ridding;
+    _toUser=toUser;
     _isMyHome = isMyHome;
     self.backgroundColor = [UIColor clearColor];
 
@@ -149,46 +151,42 @@
   dispatch_queue_t q;
   q = dispatch_queue_create("drawRoutes", NULL);
   dispatch_async(q, ^{
-    NSArray *tempRoutes=(NSArray*)[[StaticInfo getSinglton].routesDic objectForKey:LONGLONG2NUM(_ridding.riddingId)];
+    NSArray *tempRoutes=(NSArray*)[[StaticInfo getSinglton].routesDic objectForKey:[StaticInfo routeDicKey:_ridding.riddingId userId:_toUser.userId]];
     [_routes addObjectsFromArray:tempRoutes];
     if(!_routes||[_routes count]==0){
-      NSArray *routeArray = [RiddingLocationDao getRiddingLocations:_ridding.riddingId beginWeight:0];
-      if ([routeArray count] > 0) {
-        for (RiddingLocation *location in routeArray) {
-          CLLocation *loc = [[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longtitude];
-          [_routes addObject:loc];
-        }
+      RiddingMapPoint *riddingMapPoint=[RiddingMapPointDao getRiddingMapPoint:_ridding.riddingId userId:_toUser.userId];
+      if (riddingMapPoint) {
+        [_routes addObjectsFromArray:[[MapUtil getSinglton] decodePolyLineArray:[riddingMapPoint.mappoint JSONValue]]];
       } else {
         //如果数据库中存在，那么取数据库中的地图路径，如果不存在，http去请求服务器。
         //数据库中取出是mapTaps或者points
         RequestUtil *requestUtil = [[RequestUtil alloc] init];
         NSMutableDictionary *map_dic = [requestUtil getMapMessage:_ridding.riddingId userId:[StaticInfo getSinglton].user.userId];
         Map *map = [[Map alloc] initWithJSONDic:[map_dic objectForKey:keyMap]];
-        NSArray *array = map.mapPoint;
-        [[MapUtil getSinglton] calculate_routes_from:map.mapTaps map:map];
-        _routes = [[MapUtil getSinglton] decodePolyLineArray:array];
-        [RiddingLocationDao setRiddingLocationToDB:_routes riddingId:_ridding.riddingId];
+        _routes = [[MapUtil getSinglton] decodePolyLineArray:map.mapPoint];
+        [RiddingMapPointDao addRiddingMapPointToDB:[map.mapPoint JSONRepresentation] riddingId:_ridding.riddingId userId:_toUser.userId];
       }
+       [[StaticInfo getSinglton].routesDic setObject:_routes forKey:[StaticInfo routeDicKey:_ridding.riddingId userId:_toUser.userId]];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
       [[MapUtil getSinglton] center_map:_mapView routes:_routes];
-      UIImage *image=[self imageFromLocal:_ridding.riddingId];
+      UIImage *image=[self imageFromLocal:_ridding.riddingId userId:_toUser.userId];
       if(image){
         _route_view.image=image;
       }else{
         [[MapUtil getSinglton] update_route_view:_mapView to:_route_view line_color:[UIColor getColor:lineColor] routes:_routes width:3.0];
-        [self saveToLocal:_ridding.riddingId];
+        [self saveToLocal:_ridding.riddingId userId:_toUser.userId];
       }
     });
   });
 }
 
-- (void)saveToLocal:(long long)riddingId{
+- (void)saveToLocal:(long long)riddingId userId:(long long)userId{
   
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
   //set image
   NSString *savePath= [[paths objectAtIndex:0] stringByAppendingPathComponent:
-                       [NSString stringWithFormat:@"b_%lld.png",riddingId]];
+                       [NSString stringWithFormat:@"b_%lld_%lld.png",riddingId,userId]];
   NSFileManager *manager = [NSFileManager defaultManager];
   if (savePath&&![manager fileExistsAtPath:savePath]) {
     //save pic
@@ -196,12 +194,12 @@
   }
 }
 
-- (UIImage*)imageFromLocal:(long long)riddingId{
+- (UIImage*)imageFromLocal:(long long)riddingId userId:(long long)userId{
   
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
   //set image
   NSString *picPath=[[paths objectAtIndex:0] stringByAppendingPathComponent:
-                     [NSString stringWithFormat:@"b_%lld.png",riddingId]];
+                     [NSString stringWithFormat:@"b_%lld_%lld.png",riddingId,userId]];
   NSFileManager *manager = [NSFileManager defaultManager];
   if (![manager fileExistsAtPath:picPath]) {
     return nil;

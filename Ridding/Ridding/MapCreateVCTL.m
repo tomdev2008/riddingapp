@@ -134,7 +134,7 @@
     self.barView.rightButton.enabled = YES;
     return;
   }
-  MapCreateDescVCTL *descVCTL = [[MapCreateDescVCTL alloc] initWithNibName:@"MapCreateDescVCTL" bundle:nil ridding:_ridding isShortPath:NO];
+  MapCreateDescVCTL *descVCTL = [[MapCreateDescVCTL alloc] initWithNibName:@"MapCreateDescVCTL" bundle:nil ridding:_ridding];
   [self.navigationController pushViewController:descVCTL animated:YES];
   self.barView.rightButton.enabled = YES;
   self.didAppearOnce=NO;

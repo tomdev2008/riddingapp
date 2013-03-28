@@ -7,7 +7,7 @@
 //
 
 #import "MapUtil.h"
-
+#import "Gps.h"
 static MapUtil *mapUtil = nil;
 
 @implementation MapUtil
@@ -32,7 +32,7 @@ static MapUtil *mapUtil = nil;
 
 //得到point的array
 - (void)calculate_routes_from:(NSArray *)mapLoactions map:(Map *)map {
-
+  
   if (!mapLoactions || [mapLoactions count] == 0) {
     return;
   }
@@ -48,7 +48,7 @@ static MapUtil *mapUtil = nil;
       succ = false;
       break;
     }
-     NSString *point = [self getPoints:response];
+    NSString *point = [self getPoints:response];
     if(!point){
       return;
     }
@@ -191,12 +191,58 @@ static MapUtil *mapUtil = nil;
     lng += dlng;
     NSNumber *latitude = [[NSNumber alloc] initWithFloat:lat * 1e-5];
     NSNumber *longitude = [[NSNumber alloc] initWithFloat:lng * 1e-5];
-
+    NSLog(@"%@,%@",latitude,longitude);
     CLLocation *loc = [[CLLocation alloc] initWithLatitude:[latitude floatValue] longitude:[longitude floatValue]];
     [array addObject:loc];
   }
   return array;
 }
+
+
+//解析googleapi传过来的地址
+- (NSString *)encodePolyLine:(NSArray *)locations {
+  
+  NSMutableString *polyLine=[NSMutableString stringWithFormat:@""];
+  double relateLatitude=0;
+  double relateLongitude=0;
+  for(Gps *gps in locations){
+    if(gps.fixedLatitude==0&&gps.fixedLongtitude==0){
+      continue;
+    }
+    char buffer[32] = { 0 };
+    
+    int lat=  (int)((gps.fixedLatitude-relateLatitude) * 1e5);
+    int lat_signed = lat<<=1;
+    if(lat<0){
+      lat_signed=~lat_signed;
+    }
+    while (lat_signed>=0x20) {
+      sprintf(buffer, "%c", (char)(0x20 | (lat_signed & 0x1f)) + 63);
+      [polyLine appendString:[NSString stringWithUTF8String:buffer]];
+      lat_signed >>= 5;
+    }
+    sprintf(buffer, "%c", (char)(lat_signed + 63));
+    [polyLine appendString:[NSString stringWithUTF8String:buffer]];
+    
+    int lng=  (int)((gps.fixedLongtitude-relateLongitude) * 1e5);
+    int lng_signed = lng<<=1;
+    if(lng<0){
+      lng_signed=~lng_signed;
+    }
+    while (lng_signed>=0x20) {
+      sprintf(buffer, "%c", (char)(0x20 | (lng_signed & 0x1f)) + 63);
+      [polyLine appendString:[NSString stringWithUTF8String:buffer]];
+      lng_signed >>= 5;
+    }
+    sprintf(buffer, "%c", (char)(lng_signed + 63));
+    [polyLine appendString:[NSString stringWithUTF8String:buffer]];
+    relateLatitude=gps.fixedLatitude;
+    relateLongitude=gps.fixedLongtitude;
+  }
+  return polyLine;
+}
+
+
 
 //显示地图的中心位置，这样可以显示所有路线在中间
 - (void)center_map:(MKMapView *)mapView routes:(NSArray *)routes {

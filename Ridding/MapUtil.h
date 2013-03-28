@@ -42,4 +42,6 @@
 - (int)getTotalDistance:(NSDictionary *)dic_data;
 
 - (NSArray *)getStartLocation:(NSDictionary *)dic_data;
+
+- (NSString *)encodePolyLine:(NSArray *)locations ;
 @end

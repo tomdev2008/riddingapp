@@ -12,7 +12,6 @@
 #import "EGORefreshTableHeaderView.h"
 #import "QQNRFeedHeaderView.h"
 #import "MapCreateVCTL.h"
-#import "MapCreateDescVCTL.h"
 #import "EGORefreshTableHeaderView.h"
 #import "GADSearchBannerView.h"
 #import "GADSearchRequest.h"

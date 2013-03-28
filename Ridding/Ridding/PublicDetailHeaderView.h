@@ -29,10 +29,11 @@
   UILabel *_adLabel;
   UIImageView *_adImageView;
   UIButton *_goBtn;
+  User *_toUser;
    
 }
 
 @property (nonatomic, assign) id <PublicDetailHeaderDelegate> delegate;
 
-- (id)initWithFrame:(CGRect)frame ridding:(Ridding *)ridding isMyHome:(BOOL)isMyHome;
+- (id)initWithFrame:(CGRect)frame ridding:(Ridding *)ridding isMyHome:(BOOL)isMyHome toUser:(User*)toUser;
 @end
